@@ -92,7 +92,7 @@ router.get('/altcointrader/live-stats', async (req, res) => {
 
   res.json({
     success: true,
-    source: 'altcointrader_v3_node',
+    source: 'mock_fallback',
     data: mockLiveStats,
     timestamp: Date.now()
   });

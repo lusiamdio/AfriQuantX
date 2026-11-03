@@ -5,7 +5,7 @@ import OpenAI from "openai";
 // For this preview environment, we use the provided import.meta.env.VITE_OPENROUTER_API_KEY
 const ai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
-  apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY || '',
+  apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || '',
   dangerouslyAllowBrowser: true,
 });
 

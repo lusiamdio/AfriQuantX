@@ -230,7 +230,7 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
     try {
       const openai = new OpenAI({
         baseURL: "https://openrouter.ai/api/v1",
-        apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY || '',
+        apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || '',
         dangerouslyAllowBrowser: true,
       });
       const prompt = `Analyze this financial transaction and provide a 1-2 sentence professional insight or projection. 
