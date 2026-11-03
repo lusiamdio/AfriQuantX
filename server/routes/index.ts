@@ -1,10 +1,7 @@
 import { Router } from 'express';
 import aiRoutes from './ai.routes.js';
 import marketRoutes from './market.routes.js';
-import tradeRoutes from './trade.routes.js';
 import authRoutes from './auth.routes.js';
-import botRoutes from './bot.routes.js';
-import whopRoutes from './whop.routes.js';
 import africanRoutes from './african_exchange.routes.js';
 import integrationsRoutes from './integrations.routes.js';
 
@@ -13,10 +10,11 @@ const router = Router();
 // API Modules
 router.use('/ai', aiRoutes);
 router.use('/market', marketRoutes);
-router.use('/trade', tradeRoutes);
+// These operations require authenticated, atomic accounting before they can be enabled.
+router.use('/trade', (_req, res) => res.status(503).json({ error: 'Trading and wallet operations are unavailable.' }));
 router.use('/auth', authRoutes);
-router.use('/bot', botRoutes);
-router.use('/whop', whopRoutes);
+router.use('/bot', (_req, res) => res.status(503).json({ error: 'Automated trading is unavailable.' }));
+router.use('/whop', (_req, res) => res.status(503).json({ error: 'Whop integration is unavailable.' }));
 router.use('/african', africanRoutes);
 router.use('/integrations', integrationsRoutes);
 

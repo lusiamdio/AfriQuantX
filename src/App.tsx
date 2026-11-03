@@ -69,20 +69,9 @@ export default function App() {
     }
   }, [isUserOnboarded, activeTab, hasSeenIntro, userRole]);
 
-  const handleRoleChange = async (role: 'admin' | 'investor' | 'company') => {
+  const handleRoleChange = (role: 'admin' | 'investor' | 'company') => {
     setUserRole(role);
     localStorage.setItem('userRole', role);
-    
-    if (isSupabaseConfigured) {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          await supabase.from('profiles').update({ role: role }).eq('id', user.id);
-        }
-      } catch (e) {
-        console.warn('Could not sync role to remote Supabase profiles:', e);
-      }
-    }
   };
 
   const handleNavigateToCompany = (companyId: string) => {
@@ -110,6 +99,7 @@ export default function App() {
 
   const handleAuthComplete = () => {
     setIsLoading(true);
+    setUserRole((localStorage.getItem('userRole') as 'admin' | 'investor' | 'company') || 'investor');
     setIsUserOnboarded(true);
     localStorage.setItem('isUserOnboarded', 'true');
     if (typeof window !== 'undefined') {
@@ -118,7 +108,17 @@ export default function App() {
     setActiveTab('dashboard');
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    if (isSupabaseConfigured) {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Sign out failed:', error);
+        alert('Could not sign out. Please try again.');
+        return;
+      }
+    }
+    setUserRole('investor');
+    localStorage.removeItem('userRole');
     setIsUserOnboarded(false);
     setHasSeenIntro(false);
     localStorage.removeItem('isUserOnboarded');
@@ -255,7 +255,7 @@ export default function App() {
   };
 
   const mainContent = () => {
-    if (activeTab === 'admin' && isUserOnboarded) {
+    if (activeTab === 'admin' && isUserOnboarded && userRole === 'admin') {
       return <AdminPanel onExit={() => setActiveTab('dashboard')} />;
     }
 
@@ -285,6 +285,7 @@ export default function App() {
           <InitialLoader key="initial-loader" onLoaded={() => setIsLoading(false)} />
         )}
       </AnimatePresence>
+      <div role="status" className="relative z-[100] bg-amber-300 px-4 py-2 text-center text-xs font-semibold text-black">Prototype: some data and integrations are simulated. Trading, wallet operations and card funding are unavailable.</div>
       {mainContent()}
       <CookieConsentBanner />
     </>

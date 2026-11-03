@@ -140,6 +140,10 @@ ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view their own profile" ON profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Users can update their own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
 
+-- Restrict self-service profile updates to non-privileged fields.
+REVOKE UPDATE ON profiles FROM anon, authenticated;
+GRANT UPDATE (full_name, avatar_url) ON profiles TO authenticated;
+
 -- Companies Policies
 CREATE POLICY "Anyone can view companies" ON companies FOR SELECT USING (true);
 CREATE POLICY "Users can manage their own company" ON companies FOR ALL USING (profile_id = auth.uid());
@@ -149,15 +153,12 @@ CREATE POLICY "Users can view their own wallets" ON wallets FOR SELECT USING (pr
 
 -- Transactions Policies
 CREATE POLICY "Users can view their own transactions" ON transactions FOR SELECT USING (profile_id = auth.uid());
-CREATE POLICY "Users can insert their own transactions" ON transactions FOR INSERT WITH CHECK (profile_id = auth.uid());
 
 -- Assets Policies
 CREATE POLICY "Anyone can view active assets" ON assets FOR SELECT USING (is_active = true);
 
 -- Orders Policies
 CREATE POLICY "Users can view their own orders" ON orders FOR SELECT USING (profile_id = auth.uid());
-CREATE POLICY "Users can insert their own orders" ON orders FOR INSERT WITH CHECK (profile_id = auth.uid());
-CREATE POLICY "Users can update their own open orders" ON orders FOR UPDATE USING (profile_id = auth.uid() AND status = 'open');
 
 -- Portfolio Policies
 CREATE POLICY "Users can view their own portfolio" ON portfolio_items FOR SELECT USING (profile_id = auth.uid());

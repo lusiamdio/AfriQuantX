@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT || 3000);
 
   // Middleware
   app.use(express.json());
@@ -24,6 +24,9 @@ async function startServer() {
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
   });
+
+  // Unknown API routes must not return the SPA HTML.
+  app.use('/api', (_req, res) => res.status(404).json({ error: 'API route not found' }));
 
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
@@ -46,4 +49,7 @@ async function startServer() {
   });
 }
 
-startServer().catch(console.error);
+startServer().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

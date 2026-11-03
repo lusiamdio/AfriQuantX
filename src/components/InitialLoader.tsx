@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import { motion, useIsPresent } from 'motion/react';
 
 interface InitialLoaderProps {
   onLoaded?: () => void;
@@ -16,6 +16,7 @@ const LOADING_STEPS = [
 
 export function InitialLoader({ onLoaded, minDurationMs = 1800 }: InitialLoaderProps) {
   const [stepIndex, setStepIndex] = useState(0);
+  const isPresent = useIsPresent();
 
   useEffect(() => {
     const stepInterval = setInterval(() => {
@@ -44,6 +45,7 @@ export function InitialLoader({ onLoaded, minDurationMs = 1800 }: InitialLoaderP
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
+      style={{ pointerEvents: isPresent ? 'auto' : 'none' }}
       className="fixed inset-0 z-[9999] bg-black text-white flex flex-col items-center justify-center p-6 overflow-hidden select-none"
     >
       {/* Background ambient lighting effects */}

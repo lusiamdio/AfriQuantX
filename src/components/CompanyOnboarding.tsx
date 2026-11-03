@@ -98,7 +98,7 @@ export function CompanyOnboarding({ onBack, setActiveTab }: CompanyOnboardingPro
       // Call OpenRouter API for dynamic insights
       const openai = new OpenAI({
         baseURL: "https://openrouter.ai/api/v1",
-        apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY || '',
+        apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || '',
         dangerouslyAllowBrowser: true,
       });
       const prompt = `Analyze a company named "${formData.name || 'Unknown'}" in the "${formData.sector}" sector located in "${formData.jurisdiction}". 

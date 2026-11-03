@@ -558,7 +558,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
     setActiveToolTab('chat');
 
     try {
-      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || process.env.OPENROUTER_API_KEY;
+      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
       
       if (apiKey && apiKey !== 'dummy' && apiKey.length > 5) {
         const openai = new OpenAI({

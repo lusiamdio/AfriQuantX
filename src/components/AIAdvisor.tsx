@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { 
   BrainCircuit, Send, Sparkles, TrendingUp, AlertTriangle, Info, Bot, User,
   Search, BarChart2, Building2, FolderKanban, Cpu, Shield, FileText, Globe, 
@@ -362,13 +363,8 @@ export function AIAdvisor({ setActiveTab }: { setActiveTab: (tab: string) => voi
                       ? 'bg-emerald-500 text-black rounded-tr-sm font-medium' 
                       : 'bg-white/5 text-zinc-200 border border-white/10 rounded-tl-sm backdrop-blur-md'
                   }`}>
-                    {/* Render basic markdown-like formatting */}
-                    <div dangerouslySetInnerHTML={{ 
-                      __html: msg.content
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\n/g, '<br/>') 
-                    }} />
-                    
+                    <div className="whitespace-pre-wrap"><ReactMarkdown>{msg.content}</ReactMarkdown></div>
+
                     {/* Citations */}
                     {msg.citations && msg.citations.length > 0 && (
                       <div className="mt-3 pt-2 border-t border-white/10 flex flex-wrap gap-1.5">
