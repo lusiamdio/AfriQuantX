@@ -19,7 +19,7 @@ before(async () => {
 });
 after(() => server?.close());
 
-for (const path of ['/trade/deposit', '/trade/withdraw', '/trade/execute', '/trade/history', '/bot/start', '/bot/stop', '/bot/status', '/whop/fund-card', '/whop/verify', '/whop/memberships']) {
+for (const path of ['/trade/deposit', '/trade/withdraw', '/trade/execute', '/trade/history', '/bot/start', '/bot/stop', '/bot/status', '/whop/fund-card', '/whop/verify', '/whop/memberships', '/auth/login', '/ai/market-intelligence', '/african/ovex/deposit_address', '/african/ovex/withdraws/create', '/integrations/compliance/screen', '/integrations/custody/settle', '/integrations/oms/route']) {
   test(`${path} fails closed`, async () => {
     for (const method of ['GET', 'POST']) {
       const response = await fetch(base + path, { method });

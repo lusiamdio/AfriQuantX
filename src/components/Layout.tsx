@@ -85,30 +85,7 @@ export function Layout({
     return localStorage.getItem('sidebar_collapsed') === 'true';
   });
 
-  const [isAuthed, setIsAuthed] = useState<boolean>(() => {
-    if (typeof isAuthenticated === 'boolean') return isAuthenticated;
-    return typeof window !== 'undefined' ? localStorage.getItem('isUserOnboarded') === 'true' : false;
-  });
-
-  useEffect(() => {
-    if (typeof isAuthenticated === 'boolean') {
-      setIsAuthed(isAuthenticated);
-    } else {
-      setIsAuthed(localStorage.getItem('isUserOnboarded') === 'true');
-    }
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    const handleAuthChange = () => {
-      setIsAuthed(localStorage.getItem('isUserOnboarded') === 'true');
-    };
-    window.addEventListener('storage', handleAuthChange);
-    window.addEventListener('nxg_auth_state_changed', handleAuthChange);
-    return () => {
-      window.removeEventListener('storage', handleAuthChange);
-      window.removeEventListener('nxg_auth_state_changed', handleAuthChange);
-    };
-  }, []);
+  const isAuthed = isAuthenticated === true;
 
   const currentUserName = typeof window !== 'undefined'
     ? localStorage.getItem('userName') || (localStorage.getItem('userEmail') ? localStorage.getItem('userEmail')!.split('@')[0] : 'Alex Investor')

@@ -4,7 +4,6 @@ import {
   ArrowLeft, BrainCircuit, Send, User, Bot, 
   ChevronDown, ChevronUp, BarChart3, Zap, ShieldCheck
 } from 'lucide-react';
-import OpenAI from 'openai';
 
 interface Message {
   id: string;
@@ -31,7 +30,7 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
     {
       id: 'welcome',
       role: 'assistant',
-      content: "Hello! I'm your AQX AI Assistant. I've analyzed your portfolio, current AQX market data, and macroeconomic signals. How can I help you optimize your strategy today?",
+      content: 'The AI assistant is currently unavailable.',
       timestamp: new Date(),
     }
   ]);
@@ -62,126 +61,13 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
     setInput('');
     setIsTyping(true);
 
-    try {
-      const openai = new OpenAI({
-        baseURL: "https://openrouter.ai/api/v1",
-        apiKey: import.meta.env.VITE_OPENROUTER_API_KEY,
-        dangerouslyAllowBrowser: true,
-      });
-      
-      // Construct context for the AI
-      const context = `You are an elite financial AI assistant for the AfriQuant X (AQX) and global markets. 
-      The user's portfolio is projected to grow 18% this quarter. 
-      They have exposure to Technology (Naspers) which reduces volatility by 12%. 
-      Financials sector shows pre-dividend momentum. 
-      AQX Tech 100 index is trending bullish. 
-      Risk profile is Low Risk.
-      Provide concise, professional, and actionable financial advice.
-      You have access to a tool to fetch real-time data from ANY public API. Use it to get live prices, news, or macroeconomic data when asked.`;
-
-      const apiMessages: any[] = [
-        { role: 'system', content: context },
-        ...messages.filter(m => m.id !== 'welcome').map(m => ({
-          role: m.role,
-          content: m.content
-        })),
-        { role: 'user', content: text }
-      ];
-
-      const tools: OpenAI.Chat.ChatCompletionTool[] = [
-        {
-          type: "function",
-          function: {
-            name: "fetch_api",
-            description: "Fetch data from a public API URL in real-time. Useful for getting live crypto prices (e.g. from CoinGecko), stock data, or news.",
-            parameters: {
-              type: "object",
-              properties: {
-                url: { type: "string", description: "The full URL of the API to fetch" }
-              },
-              required: ["url"]
-            }
-          }
-        }
-      ];
-
-      let response = await openai.chat.completions.create({
-        model: "openai/gpt-4o-mini",
-        messages: apiMessages,
-        tools: tools,
-        tool_choice: "auto"
-      });
-
-      let responseMessage = response.choices[0].message;
-
-      if (responseMessage.tool_calls) {
-        apiMessages.push(responseMessage);
-        for (const toolCall of responseMessage.tool_calls) {
-          if (toolCall.type !== "function") continue;
-          const functionName = toolCall.function.name;
-          const functionArgs = JSON.parse(toolCall.function.arguments);
-          
-          let functionResponse = "";
-          if (functionName === "fetch_api") {
-            try {
-              const res = await fetch(functionArgs.url);
-              const data = await res.json();
-              functionResponse = JSON.stringify(data).substring(0, 2000); // Limit length to avoid token limits
-            } catch (e: any) {
-              functionResponse = JSON.stringify({ error: e.message });
-            }
-          } else {
-            functionResponse = JSON.stringify({ error: "Unknown function" });
-          }
-
-          apiMessages.push({
-            tool_call_id: toolCall.id,
-            role: "tool",
-            name: functionName,
-            content: functionResponse,
-          });
-        }
-
-        response = await openai.chat.completions.create({
-          model: "openai/gpt-4o-mini",
-          messages: apiMessages,
-        });
-        responseMessage = response.choices[0].message;
-      }
-
-      const finalContent = responseMessage.content || "I'm analyzing that request...";
-      
-      // Simulate reasoning and confidence generation
-      const confidence = Math.floor(Math.random() * 15) + 80; // 80-95%
-      const reasoning = responseMessage.tool_calls ? "Based on real-time data fetched from external APIs." : "Based on historical correlation and portfolio analysis.";
-      
-      // Determine if a visual should be shown (simulated logic)
-      let visualType: 'chart' | 'scenario' | null = null;
-      if (text.toLowerCase().includes('grow') || text.toLowerCase().includes('chart')) visualType = 'chart';
-      if (text.toLowerCase().includes('move') || text.toLowerCase().includes('scenario')) visualType = 'scenario';
-
-      const aiMsg: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: finalContent,
-        timestamp: new Date(),
-        reasoning: reasoning,
-        confidence: confidence,
-        visualType: visualType
-      };
-
-      setMessages(prev => [...prev, aiMsg]);
-    } catch (error) {
-      console.error("AI Error:", error);
-      setMessages(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: "I'm currently experiencing connectivity issues with the AQX data feed. Please try again in a moment.",
-        timestamp: new Date(),
-      }]);
-    } finally {
-      setIsTyping(false);
-    }
+    setMessages(prev => [...prev, {
+      id: (Date.now() + 1).toString(),
+      role: 'assistant',
+      content: 'The AI assistant is currently unavailable.',
+      timestamp: new Date(),
+    }]);
+    setIsTyping(false);
   };
 
   const toggleReasoning = (id: string) => {

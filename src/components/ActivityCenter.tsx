@@ -6,7 +6,6 @@ import {
   ArrowRightLeft, DollarSign, BrainCircuit, ExternalLink, ShieldCheck, Loader2,
   BellRing, Zap
 } from 'lucide-react';
-import OpenAI from 'openai';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { priceAlertService } from '../services/priceAlertService';
 
@@ -224,43 +223,8 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
   };
 
   const generateInsight = async (activity: ActivityItem) => {
-    if (aiInsights[activity.id]) return; // Already generated
-    
-    setIsGeneratingInsight(activity.id);
-    try {
-      const openai = new OpenAI({
-        baseURL: "https://openrouter.ai/api/v1",
-        apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || '',
-        dangerouslyAllowBrowser: true,
-      });
-      const prompt = `Analyze this financial transaction and provide a 1-2 sentence professional insight or projection. 
-      Type: ${activity.type}, Asset: ${activity.asset}, Amount: $${activity.amount}, Performance: ${activity.performance}%. 
-      Format it as a direct statement to the user (e.g., "You invested... projected return...").`;
-
-      const response = await openai.chat.completions.create({
-        model: 'openai/gpt-4o-mini',
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert financial analyst."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-      });
-
-      const text = response.choices[0].message.content;
-      if (text) {
-        setAiInsights(prev => ({ ...prev, [activity.id]: text }));
-      }
-    } catch (error) {
-      console.error("Error generating AI insight:", error);
-      setAiInsights(prev => ({ ...prev, [activity.id]: "AI insight generation failed. Please try again later." }));
-    } finally {
-      setIsGeneratingInsight(null);
-    }
+    if (aiInsights[activity.id]) return;
+    setAiInsights(prev => ({ ...prev, [activity.id]: 'AI insights are unavailable.' }));
   };
 
   const toggleRow = (activity: ActivityItem) => {
@@ -483,7 +447,7 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
                                   </div>
                                 ) : (
                                   <p className="text-white text-lg leading-relaxed">
-                                    {aiInsights[activity.id] || "You invested $60,000 in Naspers — projected annual return: 18.4% based on current market signals."}
+                                    {aiInsights[activity.id] || "AI insights are unavailable."}
                                   </p>
                                 )}
                                 <p className="text-sm text-zinc-500 mt-2">

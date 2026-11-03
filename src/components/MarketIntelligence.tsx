@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { generateMarketIntelligence } from '../services/geminiService';
 
 export function MarketIntelligence() {
+  const [aiUnavailable, setAiUnavailable] = useState<string | null>(null);
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -11,9 +12,8 @@ export function MarketIntelligence() {
     const fetchData = async () => {
       setLoading(true);
       const result = await generateMarketIntelligence();
-      if (result) {
-        setData(result);
-      }
+      if (result.ok === true) { setData(result.data); setAiUnavailable(null); }
+      else { setData(null); setAiUnavailable(result.message); }
       setLoading(false);
     };
     fetchData();
@@ -21,6 +21,7 @@ export function MarketIntelligence() {
 
   return (
     <div className="flex-1 bg-black border border-white/10 rounded-3xl flex flex-col overflow-hidden relative shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500 text-white">
+      {aiUnavailable && <p role="status" className="p-4 text-sm text-amber-300">{aiUnavailable}</p>}
       <div className="absolute top-0 inset-x-0 h-1 bg-[#FFFFFF]" />
       
       <div className="p-6 border-b border-white/10 bg-white/[0.01] flex items-center justify-between relative z-10">

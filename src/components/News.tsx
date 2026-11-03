@@ -3,17 +3,11 @@ import {
   Activity, Globe, BarChart2, User, Sparkles, Send, 
   RefreshCw, TrendingUp, TrendingDown, Calendar, Zap, ArrowUpRight
 } from 'lucide-react';
-import OpenAI from "openai";
 import { 
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer 
 } from 'recharts';
 import { africanExchangeService, AltcoinLiveStats } from '../services/africanExchangeService';
 
-const ai = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || 'dummy',
-  dangerouslyAllowBrowser: true,
-});
 
 // Curated high-fidelity African and global macroeconomic news feed
 const CURATED_NEWS = [
@@ -105,8 +99,6 @@ const OFFICERS_BY_SYMBOL: Record<string, Array<{ name: string; role: string; pre
 
 export function News() {
   const [aiQuery, setAiQuery] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   // Active Symbol for Market Chart and Key Persons
   const [selectedSymbol, setSelectedSymbol] = useState('AAPL');
@@ -231,32 +223,6 @@ export function News() {
     fetchChartData(selectedSymbol);
   }, [selectedSymbol]);
 
-  const handleAiAnalysis = async () => {
-    if (!aiQuery.trim()) return;
-    setIsAnalyzing(true);
-    try {
-      const response = await ai.chat.completions.create({
-        model: 'openai/gpt-4o-mini',
-        messages: [
-          {
-            role: "system",
-            content: "You are an AI financial analyst specializing in African markets. Analyze the following news or market query and provide insights."
-          },
-          {
-            role: "user",
-            content: aiQuery
-          }
-        ],
-      });
-      setAiResponse(response.choices[0].message.content || 'No insights generated.');
-    } catch (error) {
-      console.error('Error generating AI insights:', error);
-      setAiResponse('Failed to generate insights. Please try again.');
-    } finally {
-      setIsAnalyzing(false);
-    }
-  };
-
   const loadNewsToAI = (newsTitle: string, summary: string) => {
     setAiQuery(`Analyze the following economic announcement and explain its tactical investment implications for African equities: "${newsTitle}" - ${summary}`);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -337,28 +303,18 @@ export function News() {
             onChange={(e) => setAiQuery(e.target.value)}
             placeholder="Ask about market trends, specific companies, or macro impacts across African economies..."
             className="flex-1 bg-neutral-800 rounded-xl px-4 py-3 text-white placeholder:text-zinc-500 focus:outline-none focus:bg-neutral-700 text-xs"
-            onKeyDown={(e) => e.key === 'Enter' && handleAiAnalysis()}
           />
           <button
-            onClick={handleAiAnalysis}
-            disabled={isAnalyzing || !aiQuery.trim()}
+            disabled
             className="px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer text-xs shrink-0"
           >
-            {isAnalyzing ? (
-              <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-            ) : (
-              <>
-                <Send className="w-4 h-4" /> Synthesize
-              </>
-            )}
+            <><Send className="w-4 h-4" /> Synthesize</>
           </button>
         </div>
 
-        {aiResponse && (
-          <div className="mt-4 p-4 bg-white/[0.03] rounded-xl text-zinc-300 text-xs leading-relaxed">
-            {aiResponse}
-          </div>
-        )}
+        <p role="status" className="mt-3 text-xs text-zinc-400">AI news analysis is currently unavailable.</p>
+
+
       </div>
 
       {/* Market Terminal & Finnhub Quotes - Stretched 2-Column Grid */}

@@ -136,6 +136,7 @@ const BACKTEST_CURVES: Record<string, any[]> = {
 };
 
 export function TradingEngine() {
+  const [aiUnavailable, setAiUnavailable] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'ovex_rfq' | 'nautilus_strategies' | 'nautilus_backtest' | 'ai_recommendations' | 'nautilus_venue'>('ovex_rfq');
   const [strategies, setStrategies] = useState(MOCK_STRATEGIES);
   const [selectedStrategy, setSelectedStrategy] = useState(MOCK_STRATEGIES[0]);
@@ -154,9 +155,8 @@ export function TradingEngine() {
     const fetchSignals = async () => {
       setAiLoading(true);
       const result = await generateTradingSignals();
-      if (result) {
-        setAiData(result);
-      }
+      if (result.ok === true) { setAiData(result.data); setAiUnavailable(null); }
+      else { setAiData(null); setAiUnavailable(result.message); }
       setAiLoading(false);
     };
     fetchSignals();
@@ -252,6 +252,7 @@ export function TradingEngine() {
 
   return (
     <div className="flex-1 bg-gradient-to-b from-[#0A0F1C] to-[#04060C] border border-white/10 rounded-3xl flex flex-col overflow-hidden relative backdrop-blur-3xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {aiUnavailable && <p role="status" className="p-4 text-sm text-amber-300">{aiUnavailable}</p>}
       
       {/* Visual Accent top border */}
       <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#0057FF] via-[#F9B233] to-[#00C853]" />

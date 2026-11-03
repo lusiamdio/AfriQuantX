@@ -24,6 +24,7 @@ const mockStocks = [
 ];
 
 export function StockScreener() {
+  const [aiUnavailable, setAiUnavailable] = useState<string | null>(null);
   const [query, setQuery] = useState("Top African tech startups by market cap");
   const [results, setResults] = useState<StockResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +33,8 @@ export function StockScreener() {
     if (!query.trim()) return;
     setIsLoading(true);
     const data = await generateStockScreening(query);
-    setResults(data);
+    if (data.ok === true) { setResults(data.data); setAiUnavailable(null); }
+    else setAiUnavailable(data.message);
     setIsLoading(false);
   };
 
@@ -48,6 +50,7 @@ export function StockScreener() {
 
   return (
     <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl flex flex-col overflow-hidden relative backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {aiUnavailable && <p role="status" className="p-4 text-sm text-amber-300">{aiUnavailable}</p>}
       <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#0066FF] via-[#FFFFFF] to-[#00C896]" />
       
       <div className="p-6 border-b border-white/10 bg-white/[0.01] flex flex-col gap-4 relative z-10">

@@ -88,9 +88,9 @@ export function AIAdvisor({ setActiveTab }: { setActiveTab: (tab: string) => voi
       const aiResponse = {
         id: Date.now() + 1,
         role: 'ai',
-        content: aiResponseData.text,
+        content: aiResponseData.ok === true ? aiResponseData.data.text : aiResponseData.message,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        citations: aiResponseData.citations || []
+        citations: aiResponseData.ok === true ? aiResponseData.data.citations || [] : []
       };
       
       setMessages(prev => [...prev, aiResponse]);
