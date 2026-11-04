@@ -28,6 +28,7 @@ interface Agent {
 }
 
 export function AutonomousAgents() {
+  const [aiUnavailable, setAiUnavailable] = useState<string | null>(null);
   const [logs, setLogs] = useState<AgentLog[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
@@ -43,7 +44,8 @@ export function AutonomousAgents() {
   const fetchLogs = async () => {
     setIsLoading(true);
     const data = await generateAgentLogs("Recent market volatility in the tech sector");
-    setLogs(data);
+    if (data.ok === true) { setLogs(data.data); setAiUnavailable(null); }
+    else setAiUnavailable(data.message);
     setIsLoading(false);
   };
 
@@ -88,6 +90,7 @@ export function AutonomousAgents() {
 
   return (
     <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl flex flex-col overflow-hidden relative backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {aiUnavailable && <p role="status" className="p-4 text-sm text-amber-300">{aiUnavailable}</p>}
       <div className="absolute top-0 inset-x-0 h-1 bg-purple-500" />
       
       <div className="p-6 border-b border-white/10 bg-white/[0.01] flex items-center justify-between relative z-10">

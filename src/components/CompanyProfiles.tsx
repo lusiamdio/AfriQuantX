@@ -11,6 +11,7 @@ interface ProfileData {
 }
 
 export function CompanyProfiles() {
+  const [aiUnavailable, setAiUnavailable] = useState<string | null>(null);
   const [companyName, setCompanyName] = useState('Naspers');
   const [searchInput, setSearchInput] = useState('');
   const [profile, setProfile] = useState<ProfileData | null>(null);
@@ -19,7 +20,8 @@ export function CompanyProfiles() {
   const fetchProfile = async (name: string) => {
     setIsLoading(true);
     const data = await generateCompanyProfile(name);
-    setProfile(data);
+    if (data.ok === true) { setProfile(data.data); setAiUnavailable(null); }
+    else setAiUnavailable(data.message);
     setIsLoading(false);
   };
 
@@ -37,6 +39,7 @@ export function CompanyProfiles() {
 
   return (
     <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl flex flex-col overflow-hidden relative backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {aiUnavailable && <p role="status" className="p-4 text-sm text-amber-300">{aiUnavailable}</p>}
       <div className="absolute top-0 inset-x-0 h-1 bg-[#0066FF]" />
       
       <div className="p-6 border-b border-white/10 bg-white/[0.01] flex flex-col md:flex-row items-start md:items-center justify-between gap-4 relative z-10">

@@ -4,11 +4,23 @@
 
 AfriQuantX is a React and Express prototype for exploring African market dashboards, company profiles, portfolio views, and investment intelligence. It combines a Vite client with a Node.js API and optional Supabase and market-data integrations.
 
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:79abb4e36e95f0d4456f3df1cf090e8612f846929f58c6ee6cc973f2b641778a -->
+
 ## Current status
 
-**This repository is a prototype, not a production financial platform. Do not use real money, payment details, sensitive personal data, or production credentials.** Many screens and institutional integrations use simulated data or simulated results. Market endpoints may return fallback data when a provider is unavailable. Local storage and demo login are not security boundaries. The API currently returns HTTP 503 for all `/api/trade`, `/api/bot`, and `/api/whop` requests: the original implementations lacked the controls needed for safe financial operations.
+**This repository is a prototype, not a production financial platform. Do not use real money, payment details, sensitive personal data, or production credentials.** Many screens use simulated data and market endpoints may return fallback data when a provider is unavailable. The `/api/trade`, `/api/bot`, `/api/whop`, `/api/african`, `/api/integrations`, `/api/ai`, and placeholder `/api/auth` routes return HTTP 503 until safe integrations are implemented. <!-- coderabbit-ai-generated:v1 -->
 
-Significant work remains before deployment: server-side authentication and authorization, safe session handling, atomic and idempotent ledger operations, trusted pricing and execution, verified payment settlement, protection of provider credentials, validation and rate limits, operational monitoring, accessibility, integration testing, and an independent security review. Client-side AI features currently use `VITE_OPENROUTER_API_KEY`, which is included in the browser bundle; do not put a secret there. Several displays describe simulated services as live or verified and must be reviewed before public release.
+<!-- coderabbit-ai-generated-section:v1:b588223ac1ac72e7f6b9b2daf870d776fa4aaace6af929e03e003a6bf4513ac1 -->
+
+The former browser AI key is no longer used; some screens still show simulated AI content.
+
+<!-- /coderabbit-ai-generated:v1 -->
+
+Significant work remains before deployment: server-side authorization, atomic and idempotent ledger operations, trusted pricing and execution, verified payment settlement, authenticated and rate-limited provider access, operational monitoring, accessibility, integration testing, dependency remediation, and an independent security review. Several displays describe simulated services as live or verified and must be reviewed before public release.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 ## Requirements
 
@@ -38,7 +50,13 @@ The server listens on `PORT` (default 3000), on all interfaces. `/api/health` is
 
 ## Configuration
 
-See `.env.example` for the complete list. `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` configure the browser Supabase client. Values prefixed with `VITE_` are public in the generated frontend. `OPENROUTER_API_KEY`, `TWELVEDATA_API_KEY`, `FINNHUB_API_KEY`, `BAVEST_API_KEY`, and Massive variables are read by server integrations where implemented. Whop and financial API routes are disabled. Provider availability and credentials have not been verified by the local smoke checks.
+<!-- coderabbit-ai-generated:v1 -->
+
+<!-- coderabbit-ai-generated-section:v1:4f77564477952ea125cb28655f5ef513838c77abd9fbde4cb1c968c24b1a9ef8 -->
+
+See `.env.example` for the complete list. `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` configure the browser Supabase client. Values prefixed with `VITE_` are public in the generated frontend. Sign-in requires a valid Supabase session and a readable profile; signup may require email confirmation. Legacy demo login and sensitive onboarding drafts are removed. Role access in the interface comes from the profile, and database policies and grants must enforce authorization independently. Identity verification and company onboarding are not implemented. `TWELVEDATA_API_KEY`, `FINNHUB_API_KEY`, `BAVEST_API_KEY`, and Massive variables are read by market routes where implemented. Provider availability and credentials have not been verified by the local smoke checks.
+
+<!-- /coderabbit-ai-generated:v1 -->
 
 ## Data model
 

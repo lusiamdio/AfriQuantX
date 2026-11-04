@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Shield, Mail, Lock, ArrowRight, User, Building, AlertCircle } from 'lucide-react';
-import { InvestorOnboardingFlow } from './InvestorOnboardingFlow';
-import { CompanyOnboardingFlow } from './CompanyOnboardingFlow';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { cn } from '../lib/utils';
 
 interface AuthPanelProps {
   onComplete: () => void;
+  authError?: string | null;
+  onAuthAttempt?: () => void;
 }
 
-type AuthMode = 'signin' | 'select-role' | 'investor-flow' | 'company-flow';
+type AuthMode = 'signin' | 'signup';
 
 function LiveTradingVisualArt() {
   const [candles, setCandles] = useState<{ x: number; open: number; close: number; high: number; low: number }[]>([]);
@@ -255,87 +255,47 @@ function LiveTradingVisualArt() {
   );
 }
 
-export function AuthPanel({ onComplete }: AuthPanelProps) {
+export function AuthPanel({ onComplete, authError, onAuthAttempt }: AuthPanelProps) {
   const [mode, setMode] = useState<AuthMode>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const saved = localStorage.getItem('onboardingProgress');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.type === 'investor') setMode('investor-flow');
-        else if (parsed.type === 'company') setMode('company-flow');
-      } catch (e) {}
-    }
-  }, []);
+  const [notice, setNotice] = useState<string | null>(null);
 
-  const handleSignIn = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    onAuthAttempt?.();
+    setNotice(null);
     setLoading(true);
-
     try {
-      if (isSupabaseConfigured) {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
+      if (!isSupabaseConfigured) throw new Error('Authentication is not configured. Please contact the administrator.');
+      if (mode === 'signup') {
+        const { data, error } = await supabase.auth.signUp({ email: email.trim(), password });
         if (error) throw error;
-
-        if (data.user) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('role')
-            .eq('id', data.user.id)
-            .single();
-            
-          if (profile?.role) {
-            localStorage.setItem('userRole', profile.role);
-          }
-          onComplete();
+        setPassword('');
+        if (!data.session) {
+          setMode('signin');
+          setNotice('Check your email to confirm your account, then sign in.');
           return;
         }
+      } else {
+        const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+        if (error) throw error;
+        if (!data.session) throw new Error('No authenticated session was returned.');
+        setPassword('');
       }
-
-      // Seamless Demo / Preview Mode Fallback when Supabase keys are unconfigured or endpoint unreachable
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      const role = email.toLowerCase().includes('company') || email.toLowerCase().includes('enterprise')
-        ? 'company'
-        : email.toLowerCase().includes('admin')
-        ? 'admin'
-        : 'investor';
-      localStorage.setItem('userRole', role);
-      localStorage.setItem('userEmail', email);
       onComplete();
     } catch (err: any) {
-      // If live Supabase call fails due to network / Failed to fetch, allow simulated access with notification
-      if (err?.message?.includes('fetch') || err?.message?.includes('NetworkError') || err?.name === 'TypeError') {
-        const role = email.toLowerCase().includes('company') ? 'company' : 'investor';
-        localStorage.setItem('userRole', role);
-        localStorage.setItem('userEmail', email);
-        onComplete();
-      } else {
-        setError(err.message || 'Failed to sign in');
-      }
+      setError(err?.message || 'Authentication failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const renderContent = () => {
-    if (mode === 'investor-flow') {
-      return <InvestorOnboardingFlow onComplete={onComplete} onCancel={() => setMode('select-role')} />;
-    }
-
-    if (mode === 'company-flow') {
-      return <CompanyOnboardingFlow onComplete={onComplete} onCancel={() => setMode('select-role')} />;
-    }
-
     return (
       <div className="w-full max-w-md mx-auto relative z-10 flex flex-col justify-center min-h-[500px]">
         <div className="text-center mb-8">
@@ -350,14 +310,15 @@ export function AuthPanel({ onComplete }: AuthPanelProps) {
           className="bg-black border border-white/10 rounded-3xl p-8 relative overflow-hidden shadow-2xl"
         >
           <div className="relative z-10">
-            {mode === 'signin' ? (
-              <form onSubmit={handleSignIn} className="space-y-5">
-                <h2 className="text-xl font-bold text-white mb-6 tracking-widest uppercase border-b border-white/10 pb-2">Sign In</h2>
+            {(
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <h2 className="text-xl font-bold text-white mb-6 tracking-widest uppercase border-b border-white/10 pb-2">{mode === 'signin' ? 'Sign In' : 'Create Account'}</h2>
                 
-                {error && (
+                {notice && <p role="status" className="text-sm text-emerald-300">{notice}</p>}
+                {(error || authError) && (
                   <div className="p-3 bg-white/5 border border-white/10 rounded-xl flex items-start gap-3">
                     <AlertCircle className="w-5 h-5 text-white shrink-0 mt-0.5" />
-                    <p className="text-xs text-white">{error}</p>
+                    <p role="alert" className="text-xs text-white">{error || authError}</p>
                   </div>
                 )}
 
@@ -383,6 +344,8 @@ export function AuthPanel({ onComplete }: AuthPanelProps) {
                       <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                       <input 
                         type="password" 
+                        minLength={mode === 'signup' ? 8 : undefined}
+                        autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -398,64 +361,17 @@ export function AuthPanel({ onComplete }: AuthPanelProps) {
                   disabled={loading}
                   className="group relative w-full py-3.5 bg-white text-black hover:bg-neutral-200 rounded-xl font-extrabold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 mt-6 disabled:opacity-50"
                 >
-                  <span className="relative">{loading ? 'Authenticating...' : 'Access Platform'}</span>
+                  <span className="relative">{loading ? 'Please wait...' : mode === 'signin' ? 'Access Platform' : 'Create Account'}</span>
                   {!loading && <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />}
                 </button>
 
                 <p className="text-center text-xs text-zinc-500 mt-6 font-medium">
-                  Don't have an account?{' '}
-                  <button 
-                    type="button" 
-                    onClick={() => setMode('select-role')} 
-                    className="text-white hover:underline font-bold transition-colors uppercase tracking-wider text-[10px]"
-                  >
-                    Complete Onboarding
+                  {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
+                  <button type="button" onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(null); setNotice(null); setPassword(''); }} className="text-white hover:underline font-bold uppercase tracking-wider text-[10px]">
+                    {mode === 'signin' ? 'Create account' : 'Sign in'}
                   </button>
                 </p>
               </form>
-            ) : (
-              <div className="space-y-6">
-                <h2 className="text-xl font-bold text-white mb-6 tracking-widest uppercase border-b border-white/10 pb-2">Select Account Type</h2>
-
-                <div className="space-y-4">
-                  <button 
-                    onClick={() => setMode('investor-flow')}
-                    className="w-full p-4 bg-neutral-950 hover:bg-white/5 border border-white/10 hover:border-white rounded-2xl transition-all text-left group flex items-start gap-4"
-                  >
-                    <div className="p-3 bg-white/5 text-white border border-white/10 rounded-xl group-hover:bg-white group-hover:text-black transition-all">
-                      <User className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-sm mb-1 group-hover:text-white transition-colors uppercase tracking-wider">Individual Investor</h3>
-                      <p className="text-xs text-zinc-400">Access secondary markets, trade listed indices, and evaluate AQEI intelligence.</p>
-                    </div>
-                  </button>
-
-                  <button 
-                    onClick={() => setMode('company-flow')}
-                    className="w-full p-4 bg-neutral-950 hover:bg-white/5 border border-white/10 hover:border-white rounded-2xl transition-all text-left group flex items-start gap-4"
-                  >
-                    <div className="p-3 bg-white/5 text-white border border-white/10 rounded-xl group-hover:bg-white group-hover:text-black transition-all">
-                      <Building className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-sm mb-1 group-hover:text-white transition-colors uppercase tracking-wider">Institutional Enterprise</h3>
-                      <p className="text-xs text-zinc-400">List high-growth corporate assets, handle enterprise payout events, and stream telemetry.</p>
-                    </div>
-                  </button>
-                </div>
-
-                <p className="text-center text-xs text-zinc-500 mt-6 font-medium">
-                  Already onboarded?{' '}
-                  <button 
-                    type="button" 
-                    onClick={() => setMode('signin')} 
-                    className="text-white hover:underline font-bold transition-colors uppercase tracking-wider text-[10px]"
-                  >
-                    Sign In
-                  </button>
-                </p>
-              </div>
             )}
           </div>
         </motion.div>

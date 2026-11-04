@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { supabase, isSupabaseConfigured } from './lib/supabase';
 import { Layout } from './components/Layout';
 import { Dashboard } from './components/Dashboard';
@@ -44,14 +44,77 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [hasSeenIntro, setHasSeenIntro] = useState(() => localStorage.getItem('hasSeenIntro') === 'true');
 
-  const [isUserOnboarded, setIsUserOnboarded] = useState(() => localStorage.getItem('isUserOnboarded') === 'true');
+  const [isUserOnboarded, setIsUserOnboarded] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const verifiedUserId = useRef<string | null>(null);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [userRole, setUserRole] = useState<'admin' | 'investor' | 'company'>(() => (localStorage.getItem('userRole') as 'admin' | 'investor' | 'company') || 'investor');
+  const [userRole, setUserRole] = useState<'admin' | 'investor' | 'company'>('investor');
 
   useEffect(() => {
+    // Remove legacy demo state, including sensitive data saved by older onboarding versions.
+    ['onboardingProgress', 'isUserOnboarded', 'userRole', 'userEmail', 'userName'].forEach(key => localStorage.removeItem(key));
+    if (!isSupabaseConfigured) {
+      setAuthChecked(true);
+      return;
+    }
+    let disposed = false;
+    let generation = 0;
+    const refreshIdentity = async () => {
+      const request = ++generation;
+      setAuthChecked(false);
+      verifiedUserId.current = null;
+      setIsUserOnboarded(false);
+      setUserRole('investor');
+      localStorage.removeItem('userEmail');
+      localStorage.removeItem('userName');
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error || !user) return;
+        const { data: profile, error: profileError } = await supabase.from('profiles').select('role, full_name').eq('id', user.id).single();
+        if (disposed || request !== generation) return;
+        if (profileError || !profile) {
+          setAuthError('Unable to load your profile. Please try signing in again or contact support.');
+          await supabase.auth.signOut({ scope: 'local' });
+          return;
+        }
+        verifiedUserId.current = user.id;
+        setAuthError(null);
+        const role = profile.role === 'admin' || profile.role === 'company' ? profile.role : 'investor';
+        setUserRole(role);
+        setIsUserOnboarded(true);
+        if (user.email) localStorage.setItem('userEmail', user.email);
+        if (profile.full_name) localStorage.setItem('userName', profile.full_name);
+      } catch (error) {
+        console.error('Could not verify the current session:', error);
+      } finally {
+        if (!disposed && request === generation) setAuthChecked(true);
+      }
+    };
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        generation++;
+        verifiedUserId.current = null;
+        setIsUserOnboarded(false);
+        setUserRole('investor');
+        localStorage.removeItem('userEmail');
+        localStorage.removeItem('userName');
+        setAuthChecked(true);
+      } else if (event !== 'TOKEN_REFRESHED' && event !== 'INITIAL_SESSION' && !(event === 'SIGNED_IN' && session?.user?.id === verifiedUserId.current)) {
+        setAuthChecked(false);
+        // Supabase callbacks must not await other Supabase operations.
+        setTimeout(() => { if (!disposed) void refreshIdentity(); }, 0);
+      }
+    });
+    void refreshIdentity();
+    return () => { disposed = true; generation++; subscription.unsubscribe(); };
+  }, []);
+
+  useEffect(() => {
+    if (!authChecked) return;
     // Access control logic: Redirect non-onboarded users to auth panel if they try to access restricted features
     if (!isUserOnboarded && activeTab !== 'auth' && activeTab !== 'aqei' && activeTab !== 'intro') {
       if (activeTab === 'admin') {
@@ -67,12 +130,10 @@ export default function App() {
     if (activeTab === 'admin' && isUserOnboarded && userRole !== 'admin') {
       setActiveTab('dashboard');
     }
-  }, [isUserOnboarded, activeTab, hasSeenIntro, userRole]);
+  }, [isUserOnboarded, activeTab, hasSeenIntro, userRole, authChecked]);
 
-  const handleRoleChange = (role: 'admin' | 'investor' | 'company') => {
-    setUserRole(role);
-    localStorage.setItem('userRole', role);
-  };
+  // Roles are assigned by the database, never by a browser preference.
+  const handleRoleChange = () => {};
 
   const handleNavigateToCompany = (companyId: string) => {
     setSelectedCompanyId(companyId);
@@ -99,12 +160,6 @@ export default function App() {
 
   const handleAuthComplete = () => {
     setIsLoading(true);
-    setUserRole((localStorage.getItem('userRole') as 'admin' | 'investor' | 'company') || 'investor');
-    setIsUserOnboarded(true);
-    localStorage.setItem('isUserOnboarded', 'true');
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new Event('nxg_auth_state_changed'));
-    }
     setActiveTab('dashboard');
   };
 
@@ -138,12 +193,12 @@ export default function App() {
 
     if (!isUserOnboarded) {
       if (activeTab === 'auth') {
-        return <AuthPanel onComplete={handleAuthComplete} />;
+        return <AuthPanel onComplete={handleAuthComplete} authError={authError} onAuthAttempt={() => setAuthError(null)} />;
       }
       if (activeTab === 'aqei') {
         return <AQEI />;
       }
-      return <AuthPanel onComplete={handleAuthComplete} />;
+      return <AuthPanel onComplete={handleAuthComplete} authError={authError} onAuthAttempt={() => setAuthError(null)} />;
     }
 
     if (activeTab.startsWith('market-forex-order-')) {
@@ -255,6 +310,7 @@ export default function App() {
   };
 
   const mainContent = () => {
+    if (!authChecked) return <div role="status" className="p-6 text-white">Checking session...</div>;
     if (activeTab === 'admin' && isUserOnboarded && userRole === 'admin') {
       return <AdminPanel onExit={() => setActiveTab('dashboard')} />;
     }

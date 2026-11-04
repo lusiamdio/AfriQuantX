@@ -15,7 +15,7 @@ import {
   LineChart as LineChartIcon, 
   Globe, 
   Zap, 
-  ShieldCheck, 
+  AlertTriangle,
   Sparkles, 
   Coins, 
   Scale, 
@@ -37,7 +37,6 @@ import {
   ChevronRight,
   HelpCircle
 } from 'lucide-react';
-import OpenAI from 'openai';
 import Markdown from 'react-markdown';
 
 // ============================================================================
@@ -557,63 +556,14 @@ The African investment landscape is undergoing a structural paradigm shift chara
     setIsTyping(true);
     setActiveToolTab('chat');
 
-    try {
-      const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
-      
-      if (apiKey && apiKey !== 'dummy' && apiKey.length > 5) {
-        const openai = new OpenAI({
-          baseURL: "https://openrouter.ai/api/v1",
-          apiKey: apiKey,
-          dangerouslyAllowBrowser: true,
-        });
-
-        const history: any[] = messages.slice(-8).map(m => ({
-          role: m.role === 'model' ? 'assistant' : 'user',
-          content: m.content
-        }));
-        history.push({ role: 'user', content: query });
-        history.unshift({ role: 'system', content: activeDesk.systemPrompt });
-
-        const response = await openai.chat.completions.create({
-          model: 'openai/gpt-4o-mini',
-          messages: history,
-          temperature: 0.35,
-        });
-
-        const responseContent = response.choices[0]?.message?.content || generateDeepInstitutionalFallback(query, activeDesk);
-        
-        setMessages(prev => [...prev, {
-          id: (Date.now() + 1).toString(),
-          role: 'model',
-          content: responseContent,
-          deskId: activeDesk.id,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }]);
-      } else {
-        // High-fidelity instant institutional knowledge engine fallback
-        await new Promise(resolve => setTimeout(resolve, 800));
-        const deepAnalysis = generateDeepInstitutionalFallback(query, activeDesk);
-        setMessages(prev => [...prev, {
-          id: (Date.now() + 1).toString(),
-          role: 'model',
-          content: deepAnalysis,
-          deskId: activeDesk.id,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }]);
-      }
-    } catch (err) {
-      console.warn("AI API Error, switching to institutional engine:", err);
-      const deepAnalysis = generateDeepInstitutionalFallback(query, activeDesk);
-      setMessages(prev => [...prev, {
-        id: (Date.now() + 1).toString(),
-        role: 'model',
-        content: deepAnalysis,
-        deskId: activeDesk.id,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      }]);
-    } finally {
-      setIsTyping(false);
-    }
+    setMessages(prev => [...prev, {
+      id: (Date.now() + 1).toString(),
+      role: 'model',
+      content: 'AI analysis is currently unavailable.',
+      deskId: activeDesk.id,
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    }]);
+    setIsTyping(false);
   };
 
   const handleSelectValuationPreset = (item: typeof PRESET_VALUATIONS[0]) => {
@@ -665,8 +615,8 @@ The African investment landscape is undergoing a structural paradigm shift chara
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-white tracking-wide">{activeDesk.name}</h2>
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                LIVE DESK
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                DESK UNAVAILABLE
               </span>
             </div>
             <p className="text-xs text-zinc-400 truncate max-w-md">{activeDesk.tagline}</p>
@@ -1165,10 +1115,9 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       {msg.role === 'model' && (
                         <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between text-[10px] font-mono text-zinc-500">
                           <span className="flex items-center gap-1.5 text-zinc-400">
-                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                            Institutional Quantitative Advisory Desk • T+0 Clearing Engine
+                            <AlertTriangle className="w-3.5 h-3.5 text-amber-300" />
+                            AI analysis unavailable
                           </span>
-                          <span className="hidden sm:inline text-zinc-600">Model: AQEI DeepMind v4.2 Quant</span>
                         </div>
                       )}
                     </div>

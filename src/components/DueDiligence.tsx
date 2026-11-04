@@ -10,6 +10,7 @@ interface ReportData {
 }
 
 export function DueDiligence() {
+  const [aiUnavailable, setAiUnavailable] = useState<string | null>(null);
   const [activeProject, setActiveProject] = useState('Project Phoenix (Safaricom)');
   const [report, setReport] = useState<ReportData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +25,8 @@ export function DueDiligence() {
   const fetchReport = async (projectName: string) => {
     setIsLoading(true);
     const data = await generateDueDiligenceReport(projectName);
-    setReport(data);
+    if (data.ok === true) { setReport(data.data); setAiUnavailable(null); }
+    else setAiUnavailable(data.message);
     setIsLoading(false);
   };
 
@@ -73,6 +75,7 @@ export function DueDiligence() {
 
   return (
     <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-3xl flex flex-col overflow-hidden relative backdrop-blur-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {aiUnavailable && <p role="status" className="p-4 text-sm text-amber-300">{aiUnavailable}</p>}
       <div className="absolute top-0 inset-x-0 h-1 bg-[#00C896]" />
       
       <div className="p-6 border-b border-white/10 bg-white/[0.01] flex items-center justify-between relative z-10">
