@@ -18,10 +18,10 @@ const projectionData = [
 ];
 
 const sectorData = [
-  { name: 'FinTech', value: 45, color: '#0066FF' },
-  { name: 'Technology', value: 25, color: '#00FFB2' },
-  { name: 'Financials', value: 20, color: '#FFFFFF' },
-  { name: 'Manufacturing', value: 10, color: '#9333EA' },
+  { name:'FinTech', value: 45, color:'#0066FF'},
+  { name:'Technology', value: 25, color:'#00FFB2'},
+  { name:'Financials', value: 20, color:'#FFFFFF'},
+  { name:'Manufacturing', value: 10, color:'#9333EA'},
 ];
 
 interface AQXIntelligenceProps {
@@ -37,7 +37,7 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -45,12 +45,12 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
             onClick={() => setActiveTab('dashboard')}
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors mb-4"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4"/>
             <span>Back to Dashboard</span>
           </button>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#0066FF]/20 flex items-center justify-center border border-[#0066FF]/30">
-              <BrainCircuit className="w-5 h-5 text-[#0066FF]" />
+            <div className="w-10 h-10 rounded-xl bg-[#0066FF]/20 flex items-center justify-center">
+              <BrainCircuit className="w-5 h-5 text-[#0066FF]"/>
             </div>
             <h1 className="text-3xl font-bold text-white tracking-tight">AQX Intelligence</h1>
           </div>
@@ -61,39 +61,39 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setActiveTab('intelligence-ngx-assistant')}
-            className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-all flex items-center gap-2"
+            className="px-4 py-2 rounded-xl bg-white/5 text-white font-medium hover:bg-white/10 transition-all flex items-center gap-2"
           >
-            <BrainCircuit className="w-4 h-4" /> Ask AI Assistant
+            <BrainCircuit className="w-4 h-4"/> Ask AI Assistant
           </button>
           <button 
             onClick={handleRefresh}
-            className="p-2 rounded-xl bg-[#0066FF]/10 border border-[#0066FF]/20 text-[#0066FF] hover:bg-[#0066FF]/20 transition-all"
+            className="p-2 rounded-xl bg-[#0066FF]/10 text-[#0066FF] hover:bg-[#0066FF]/20 transition-all"
           >
             <RefreshCw className={`w-5 h-5 ${isRefreshing ? 'animate-spin' : ''}`} />
           </button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Left Column: Projection & Risk */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-3">
           {/* Portfolio Projection */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-6 relative overflow-hidden group hover:border-[#0066FF]/30 transition-colors"
+            className="bg-[#0A0A0A] rounded-xl p-3.5 relative overflow-hidden group transition-colors"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-[#0066FF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            <div className="relative z-10 flex justify-between items-start mb-6">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#0066FF]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"/>
+            <div className="relative z-10 flex justify-between items-start mb-3">
               <div>
                 <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-[#0066FF]" />
+                  <TrendingUp className="w-5 h-5 text-[#0066FF]"/>
                   Portfolio Projection
                 </h2>
                 <p className="text-2xl font-bold text-[#00C896] mt-2">Projected Growth: +18% this quarter</p>
               </div>
-              <div className="bg-[#0066FF]/10 border border-[#0066FF]/20 px-3 py-1.5 rounded-full flex items-center gap-2">
-                <Target className="w-4 h-4 text-[#0066FF]" />
+              <div className="bg-[#0066FF]/10 px-3 py-1.5 rounded-full flex items-center gap-2">
+                <Target className="w-4 h-4 text-[#0066FF]"/>
                 <span className="text-xs font-bold text-[#0066FF]">87% AI Certainty</span>
               </div>
             </div>
@@ -114,8 +114,8 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
                   <XAxis dataKey="month" stroke="#ffffff50" fontSize={12} tickLine={false} axisLine={false} />
                   <YAxis stroke="#ffffff50" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value / 1000}k`} />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0A0A0A', borderColor: '#ffffff20', borderRadius: '12px' }}
-                    itemStyle={{ color: '#fff' }}
+                    contentStyle={{ backgroundColor: '#0A0A0A', borderColor: 'transparent', borderRadius: '12px' }}
+                    itemStyle={{ color:'#fff'}}
                   />
                   <Area type="monotone" dataKey="value" stroke="#0066FF" strokeWidth={3} fillOpacity={1} fill="url(#colorValue)" />
                   <Area type="monotone" dataKey="projected" stroke="#00FFB2" strokeWidth={3} strokeDasharray="5 5" fillOpacity={1} fill="url(#colorProjected)" />
@@ -131,27 +131,27 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
             transition={{ delay: 0.1 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-4"
           >
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors cursor-default group">
+            <div className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-colors cursor-default group">
               <div className="flex items-center gap-2 mb-3">
-                <PieChart className="w-4 h-4 text-[#FFFFFF]" />
+                <PieChart className="w-4 h-4 text-[#FFFFFF]"/>
                 <h3 className="text-sm font-bold text-white">Diversification</h3>
               </div>
               <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors">
                 Your exposure to Technology (Naspers) has reduced volatility by <span className="text-[#00C896] font-bold">12%</span>.
               </p>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors cursor-default group">
+            <div className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-colors cursor-default group">
               <div className="flex items-center gap-2 mb-3">
-                <Zap className="w-4 h-4 text-[#FFFFFF]" />
+                <Zap className="w-4 h-4 text-[#FFFFFF]"/>
                 <h3 className="text-sm font-bold text-white">Opportunity Signals</h3>
               </div>
               <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors">
                 <span className="text-[#FFFFFF] font-bold">Financials</span> sector shows strong pre-dividend momentum.
               </p>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors cursor-default group">
+            <div className="bg-white/5 rounded-lg p-3 hover:bg-white/10 transition-colors cursor-default group">
               <div className="flex items-center gap-2 mb-3">
-                <Activity className="w-4 h-4 text-[#0066FF]" />
+                <Activity className="w-4 h-4 text-[#0066FF]"/>
                 <h3 className="text-sm font-bold text-white">Market Signals</h3>
               </div>
               <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors">
@@ -162,20 +162,20 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
         </div>
 
         {/* Right Column: Actions & Deep Dive */}
-        <div className="space-y-6">
+        <div className="space-y-3">
           {/* Risk Profile */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-6"
+            className="bg-[#0A0A0A] rounded-xl p-3.5"
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-[#00C896]" />
+                <ShieldCheck className="w-5 h-5 text-[#00C896]"/>
                 Risk Profile
               </h2>
-              <span className="px-3 py-1 bg-[#00C896]/10 text-[#00C896] border border-[#00C896]/20 rounded-full text-xs font-bold uppercase tracking-wider">
+              <span className="px-3 py-1 bg-[#00C896]/10 text-[#00C896] rounded-full text-xs font-bold uppercase tracking-wider">
                 Low Risk
               </span>
             </div>
@@ -200,21 +200,21 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-br from-[#0066FF]/20 to-[#FFFFFF]/20 border border-[#0066FF]/20 rounded-3xl p-6 relative overflow-hidden"
+            className="bg-gradient-to-br from-[#0066FF]/20 to-[#FFFFFF]/20 rounded-xl p-3.5 relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-4 opacity-10">
-              <BrainCircuit className="w-24 h-24 text-[#0066FF]" />
+              <BrainCircuit className="w-24 h-24 text-[#0066FF]"/>
             </div>
             <h2 className="text-lg font-bold text-white mb-4 relative z-10 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-[#FFFFFF]" />
+              <Zap className="w-5 h-5 text-[#FFFFFF]"/>
               AI Decision Engine
             </h2>
             
             <div className="space-y-4 relative z-10">
-              <div className="p-4 bg-black/40 border border-white/10 rounded-2xl hover:border-[#FFFFFF]/50 transition-colors cursor-pointer group">
+              <div className="p-4 bg-black/40 rounded-lg transition-colors cursor-pointer group">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full bg-[#FFFFFF]/20 flex items-center justify-center shrink-0 mt-1">
-                    <ArrowRight className="w-4 h-4 text-[#FFFFFF]" />
+                    <ArrowRight className="w-4 h-4 text-[#FFFFFF]"/>
                   </div>
                   <div>
                     <h4 className="text-white font-medium group-hover:text-[#FFFFFF] transition-colors">Reallocate to Financials</h4>
@@ -225,10 +225,10 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
                 </div>
               </div>
 
-              <div className="p-4 bg-black/40 border border-white/10 rounded-2xl hover:border-[#00C896]/50 transition-colors cursor-pointer group">
+              <div className="p-4 bg-black/40 rounded-lg transition-colors cursor-pointer group">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full bg-[#00C896]/20 flex items-center justify-center shrink-0 mt-1">
-                    <CheckCircle2 className="w-4 h-4 text-[#00C896]" />
+                    <CheckCircle2 className="w-4 h-4 text-[#00C896]"/>
                   </div>
                   <div>
                     <h4 className="text-white font-medium group-hover:text-[#00C896] transition-colors">Hold Technology Positions</h4>
@@ -237,10 +237,10 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
                 </div>
               </div>
               
-              <div className="p-4 bg-black/40 border border-white/10 rounded-2xl hover:border-[#0066FF]/50 transition-colors cursor-pointer group">
+              <div className="p-4 bg-black/40 rounded-lg transition-colors cursor-pointer group">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-full bg-[#0066FF]/20 flex items-center justify-center shrink-0 mt-1">
-                    <AlertTriangle className="w-4 h-4 text-[#0066FF]" />
+                    <AlertTriangle className="w-4 h-4 text-[#0066FF]"/>
                   </div>
                   <div>
                     <h4 className="text-white font-medium group-hover:text-[#0066FF] transition-colors">Monitor Tech Index</h4>
@@ -258,14 +258,14 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-[#0A0A0A] border border-white/10 rounded-3xl p-6 md:p-8"
+        className="bg-[#0A0A0A] rounded-xl p-3.5 md:p-4"
       >
-        <div className="flex items-center gap-2 mb-6">
-          <BarChart3 className="w-5 h-5 text-[#FFFFFF]" />
+        <div className="flex items-center gap-2 mb-3">
+          <BarChart3 className="w-5 h-5 text-[#FFFFFF]"/>
           <h2 className="text-xl font-bold text-white">Deep Dive Analytics</h2>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex flex-col items-center">
             <h3 className="text-sm font-medium text-zinc-400 mb-4">Sector Breakdown</h3>
             <div className="h-48 w-full relative">
@@ -285,8 +285,8 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
                     ))}
                   </Pie>
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#0A0A0A', borderColor: '#ffffff20', borderRadius: '8px' }}
-                    itemStyle={{ color: '#fff' }}
+                    contentStyle={{ backgroundColor: '#0A0A0A', borderColor: 'transparent', borderRadius: '8px' }}
+                    itemStyle={{ color:'#fff'}}
                   />
                 </RechartsPieChart>
               </ResponsiveContainer>
@@ -304,7 +304,7 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
             </div>
           </div>
           
-          <div className="md:col-span-2 space-y-6">
+          <div className="md:col-span-2 space-y-3">
             <div>
               <h3 className="text-sm font-medium text-zinc-400 mb-3">Historical Performance vs AQX Benchmarks</h3>
               <div className="space-y-4">
@@ -314,7 +314,7 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
                     <span className="text-[#00C896]">+14.2%</span>
                   </div>
                   <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-[#00C896] rounded-full" style={{ width: '75%' }} />
+                    <div className="h-full bg-[#00C896] rounded-full" style={{ width:'75%'}} />
                   </div>
                 </div>
                 <div>
@@ -323,7 +323,7 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
                     <span className="text-[#0066FF]">+8.5%</span>
                   </div>
                   <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                    <div className="h-full bg-[#0066FF] rounded-full" style={{ width: '45%' }} />
+                    <div className="h-full bg-[#0066FF] rounded-full" style={{ width:'45%'}} />
                   </div>
                 </div>
               </div>
@@ -332,11 +332,11 @@ export function AQXIntelligence({ setActiveTab }: AQXIntelligenceProps) {
             <div>
               <h3 className="text-sm font-medium text-zinc-400 mb-3">Predictive Modeling (Next 30-90 Days)</h3>
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <div className="bg-white/5 rounded-xl p-4">
                   <span className="text-xs text-zinc-500 uppercase tracking-wider">30-Day Outlook</span>
                   <p className="text-lg font-bold text-white mt-1">+4.5% <span className="text-sm font-normal text-zinc-400">Expected</span></p>
                 </div>
-                <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <div className="bg-white/5 rounded-xl p-4">
                   <span className="text-xs text-zinc-500 uppercase tracking-wider">90-Day Outlook</span>
                   <p className="text-lg font-bold text-white mt-1">+12.8% <span className="text-sm font-normal text-zinc-400">Expected</span></p>
                 </div>

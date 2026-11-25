@@ -70,7 +70,7 @@ export function PanAfricanHeroSection({
     <section
       ref={heroRef}
       onMouseMove={handleMouseMove}
-      className="relative min-h-[92vh] flex flex-col justify-between bg-[#0D0F13] text-[#F4F1E8] overflow-hidden selection:bg-[#D9A94E] selection:text-[#0D0F13] border-b border-white/[0.08]"
+      className="relative min-h-[92vh] flex flex-col justify-between bg-[#0D0F13] text-[#F4F1E8] overflow-hidden selection:bg-[#D9A94E] selection:text-[#0D0F13]"
     >
       {/* 1. Ambient Gradient Mesh */}
       <div 
@@ -97,10 +97,10 @@ export function PanAfricanHeroSection({
       />
 
       {/* 3. Hero Main Grid Content */}
-      <div className="relative z-10 w-full px-6 sm:px-12 lg:px-16 xl:px-24 pt-16 sm:pt-20 pb-16 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
+      <div className="relative z-10 w-full px-3.5 sm:px-5 lg:px-16 xl:px-24 pt-16 sm:pt-20 pb-16 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-5 items-center">
         
         {/* Left Column: Copy, Headline & CTAs */}
-        <div className="lg:col-span-6 space-y-8 text-left">
+        <div className="lg:col-span-6 space-y-4 text-left">
           
           {/* Headline with Staggered Slide-Up */}
           <div className="space-y-1">
@@ -132,13 +132,13 @@ export function PanAfricanHeroSection({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.55 }}
-            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-5 pt-2"
+            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-2"
           >
             <a
               href="https://docs.google.com/forms/d/e/1FAIpQLSeSJRTsgzwwqIbZzpIT1_xvqu8_K-gsjqwFuhGNHYPlH2rAGA/viewform?usp=mail_form_link&urp=gmail_link"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 rounded-full bg-[#D9A94E] hover:bg-[#e4b55c] text-[#0D0F13] font-bold text-sm sm:text-base tracking-tight transition-all duration-200 shadow-[0_10px_28px_rgba(217,169,78,0.32)] hover:scale-105 flex items-center justify-center gap-2 group cursor-pointer text-decoration-none"
+              className="px-4 py-4 rounded-full bg-[#D9A94E] hover:bg-[#e4b55c] text-[#0D0F13] font-bold text-sm sm:text-base tracking-tight transition-all duration-200 shadow-[0_10px_28px_rgba(217,169,78,0.32)] hover:scale-105 flex items-center justify-center gap-2 group cursor-pointer text-decoration-none"
             >
               <span>Request Early Access</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -158,7 +158,7 @@ export function PanAfricanHeroSection({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.7 }}
-            className="pt-6 border-t border-white/10 flex flex-wrap items-center gap-8 sm:gap-12"
+            className="pt-6 flex flex-wrap items-center gap-4 sm:gap-5"
           >
             <div className="font-mono">
               <div className="text-2xl sm:text-3xl font-bold text-[#F4F1E8] tracking-tight">
@@ -365,7 +365,7 @@ export function PanAfricanHeroSection({
             </svg>
 
             {/* Micro Badge Overlay on Network Map */}
-            <div className="absolute bottom-2 right-4 px-3.5 py-1.5 rounded-xl bg-[#171B26]/90 backdrop-blur-md border border-white/10 text-[10px] font-mono text-[#D9A94E] flex items-center gap-2 shadow-lg">
+            <div className="absolute bottom-2 right-4 px-3.5 py-1.5 rounded-xl bg-[#171B26]/90 backdrop-blur-md text-[10px] font-mono text-[#D9A94E] flex items-center gap-2 shadow-lg">
               <span className="w-1.5 h-1.5 rounded-full bg-[#34A87E] animate-pulse" />
               <span>LIVE AQEI ORDER ROUTING</span>
             </div>

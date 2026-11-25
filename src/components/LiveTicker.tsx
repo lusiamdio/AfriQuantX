@@ -15,15 +15,15 @@ const tickerData = [
 
 export function LiveTicker() {
   return (
-    <div className="w-full h-10 bg-transparent border-b border-white/10 overflow-hidden flex items-center shrink-0">
+    <div className="w-full h-10 bg-transparent overflow-hidden flex items-center shrink-0">
       <div className="flex whitespace-nowrap animate-[ticker_30s_linear_infinite] hover:[animation-play-state:paused]">
         {/* Double the data to create a seamless loop */}
         {[...tickerData, ...tickerData].map((item, index) => (
-          <div key={index} className="flex items-center gap-3 px-8 border-r border-white/10">
+          <div key={index} className="flex items-center gap-3 px-4 bg-white/[0.03]">
             <span className="font-mono text-xs font-bold text-white/90">{item.symbol}</span>
             <span className="font-mono text-xs text-white">{item.price}</span>
             <span className="flex items-center gap-1 font-mono text-xs text-[#FFFFFF]">
-              {item.up ? <TrendingUp className="w-3 h-3 text-[#FFFFFF]" /> : <TrendingDown className="w-3 h-3 text-[#FFFFFF]" />}
+              {item.up ? <TrendingUp className="w-3 h-3 text-[#FFFFFF]"/> : <TrendingDown className="w-3 h-3 text-[#FFFFFF]"/>}
               {item.change}
             </span>
           </div>

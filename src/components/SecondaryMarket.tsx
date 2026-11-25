@@ -82,6 +82,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
   const [tradeAmount, setTradeAmount] = useState('');
   const [currentTradeType, setCurrentTradeType] = useState(tradeType);
+  const [sectorFilter, setSectorFilter] = useState<'All' | 'FinTech' | 'Manufacturing'>('All');
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -125,31 +126,31 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
 
   if (view === 'confirmation') {
     return (
-      <div className="p-6 md:p-8 max-w-3xl mx-auto space-y-8 text-center pt-20">
+      <div className="p-3.5 md:p-4 max-w-3xl mx-auto space-y-4 text-center pt-20">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="w-24 h-24 bg-[#00C896]/20 rounded-full flex items-center justify-center mx-auto mb-6"
+          className="w-24 h-24 bg-[#00C896]/20 rounded-full flex items-center justify-center mx-auto mb-3"
         >
           <CheckCircle2 className="w-12 h-12 text-[#00C896]" />
         </motion.div>
         
         <h1 className="text-3xl font-bold text-white tracking-tight mb-2">Trade Executed Successfully</h1>
-        <p className="text-zinc-400 mb-8">
+        <p className="text-zinc-400 mb-4">
           Your {currentTradeType.toUpperCase()} order for {tradeAmount} shares of {selectedAsset.ticker} has been filled.
         </p>
 
-        <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 text-left max-w-md mx-auto mb-8">
+        <div className="bg-[#0A0A0A] rounded-xl p-3.5 text-left max-w-md mx-auto mb-4">
           <div className="space-y-4">
-            <div className="flex justify-between items-center pb-4 border-b border-white/5">
+            <div className="flex justify-between items-center pb-4">
               <span className="text-zinc-500 text-sm">Asset</span>
               <span className="text-white font-medium">{selectedAsset.name} ({selectedAsset.ticker})</span>
             </div>
-            <div className="flex justify-between items-center pb-4 border-b border-white/5">
+            <div className="flex justify-between items-center pb-4">
               <span className="text-zinc-500 text-sm">Execution Price</span>
               <span className="text-white font-mono">${selectedAsset.price.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between items-center pb-4 border-b border-white/5">
+            <div className="flex justify-between items-center pb-4">
               <span className="text-zinc-500 text-sm">Total Value</span>
               <span className="text-white font-mono">${(Number(tradeAmount) * selectedAsset.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
             </div>
@@ -165,13 +166,13 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
         <div className="flex gap-4 justify-center">
           <button 
             onClick={() => setView('hub')}
-            className="px-6 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-medium transition-colors"
+            className="px-3.5 py-3 bg-white/5 hover:bg-white/10 text-white rounded-xl font-medium transition-colors"
           >
             Back to Market
           </button>
           <button 
             onClick={() => setActiveTab('portfolio')}
-            className="px-6 py-3 bg-[#0066FF] hover:bg-[#0052CC] text-white rounded-xl font-medium transition-colors"
+            className="px-3.5 py-3 bg-[#0066FF] hover:bg-[#0052CC] text-white rounded-xl font-medium transition-colors"
           >
             View Portfolio
           </button>
@@ -182,7 +183,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
 
   if (view === 'trade') {
     return (
-      <div className="p-6 md:p-8 max-w-4xl mx-auto space-y-8">
+      <div className="p-3.5 md:p-4 max-w-4xl mx-auto space-y-4">
         <button 
           onClick={() => setView('asset')}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -191,36 +192,32 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
           Back to {selectedAsset.ticker}
         </button>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Order Form */}
-          <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 md:p-8">
-            <h2 className="text-2xl font-bold text-white mb-6">
+          <div className="bg-[#0A0A0A] rounded-xl p-3.5 md:p-4">
+            <h2 className="text-2xl font-bold text-white mb-3">
               {currentTradeType === 'buy' ? 'Buy' : 'Sell'} {selectedAsset.ticker}
             </h2>
 
-            <div className="flex p-1 bg-white/5 rounded-xl mb-8">
+            <div className="flex p-1 bg-white/5 rounded-xl mb-4">
               <button
                 onClick={() => setCurrentTradeType('buy')}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${
-                  currentTradeType === 'buy' ? 'bg-[#00FFB2]/20 text-[#00FFB2]' : 'text-zinc-400 hover:text-white'
-                }`}
+                className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${ currentTradeType === 'buy' ? 'bg-[#00FFB2]/20 text-[#00FFB2]' : 'text-zinc-400 hover:text-white' }`}
               >
                 Buy
               </button>
               <button
                 onClick={() => setCurrentTradeType('sell')}
-                className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${
-                  currentTradeType === 'sell' ? 'bg-[#FF3B3B]/20 text-[#FF3B3B]' : 'text-zinc-400 hover:text-white'
-                }`}
+                className={`flex-1 py-2.5 rounded-lg text-sm font-bold transition-all ${ currentTradeType === 'sell' ? 'bg-[#FF3B3B]/20 text-[#FF3B3B]' : 'text-zinc-400 hover:text-white' }`}
               >
                 Sell
               </button>
             </div>
 
-            <div className="space-y-6">
+            <div className="space-y-3">
               <div>
                 <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-2 block">Order Type</label>
-                <select className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-[#0066FF]/50 transition-colors appearance-none">
+                <select className="w-full bg-black/40 rounded-xl px-4 py-3 text-white outline-none transition-colors appearance-none">
                   <option>Market Order</option>
                   <option>Limit Order</option>
                 </select>
@@ -233,11 +230,11 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
                   value={tradeAmount}
                   onChange={(e) => setTradeAmount(e.target.value)}
                   placeholder="0"
-                  className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white outline-none focus:border-[#0066FF]/50 transition-colors text-xl font-mono"
+                  className="w-full bg-black/40 rounded-xl px-4 py-3 text-white outline-none transition-colors text-xl font-mono"
                 />
               </div>
 
-              <div className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-3">
+              <div className="p-4 rounded-xl bg-white/5 space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-zinc-400">Current Price</span>
                   <span className="text-white font-mono">${selectedAsset.price.toFixed(2)}</span>
@@ -248,7 +245,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
                     ${(Number(tradeAmount || 0) * selectedAsset.price).toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </span>
                 </div>
-                <div className="flex justify-between text-xs pt-3 border-t border-white/5">
+                <div className="flex justify-between text-xs pt-3">
                   <span className="text-zinc-500">Available Balance</span>
                   <span className="text-zinc-300">$45,200.00</span>
                 </div>
@@ -257,13 +254,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
               <button 
                 onClick={handleSubmitTrade}
                 disabled={!tradeAmount || Number(tradeAmount) <= 0}
-                className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 ${
-                  !tradeAmount || Number(tradeAmount) <= 0
-                    ? 'bg-white/5 text-zinc-500 cursor-not-allowed'
-                    : currentTradeType === 'buy'
-                      ? 'bg-[#00FFB2] text-black hover:bg-[#00E6A0] shadow-[0_0_20px_rgba(0,255,178,0.3)]'
-                      : 'bg-[#FF3B3B] text-white hover:bg-[#FF3B3B]/80 shadow-[0_0_20px_rgba(255,59,59,0.3)]'
-                }`}
+                className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 ${ !tradeAmount || Number(tradeAmount) <= 0 ? 'bg-white/5 text-zinc-500 cursor-not-allowed' : currentTradeType === 'buy' ? 'bg-[#00FFB2] text-black hover:bg-[#00E6A0] shadow-[0_0_20px_rgba(0,255,178,0.3)]' : 'bg-[#FF3B3B] text-white hover:bg-[#FF3B3B]/80 shadow-[0_0_20px_rgba(255,59,59,0.3)]' }`}
               >
                 {currentTradeType === 'buy' ? 'Place Buy Order' : 'Place Sell Order'}
               </button>
@@ -271,8 +262,8 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
           </div>
 
           {/* Market Context */}
-          <div className="space-y-6">
-            <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6">
+          <div className="space-y-3">
+            <div className="bg-[#0A0A0A] rounded-xl p-3.5">
               <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Live Order Book</h3>
               <div className="flex justify-between text-xs text-zinc-500 mb-2 px-2">
                 <span>Size</span>
@@ -288,7 +279,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
                     <span className="text-zinc-800 relative z-10">-</span>
                   </div>
                 ))}
-                <div className="py-2 text-center text-white font-bold border-y border-white/5 my-2">
+                <div className="py-2 text-center text-white font-bold my-2">
                   ${selectedAsset.price.toFixed(2)}
                 </div>
                 {[...Array(5)].map((_, i) => (
@@ -302,7 +293,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-[#0066FF]/10 to-transparent border border-[#0066FF]/20 rounded-3xl p-6">
+            <div className="bg-gradient-to-br from-[#0066FF]/10 to-transparent rounded-xl p-3.5">
               <div className="flex items-center gap-2 mb-2">
                 <AlertCircle className="w-4 h-4 text-[#0066FF]" />
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider">Execution Note</h3>
@@ -319,7 +310,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
 
   if (view === 'asset') {
     return (
-      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+      <div className="p-3.5 md:p-4 max-w-6xl mx-auto space-y-4">
         <button 
           onClick={() => setView('hub')}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -329,9 +320,9 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
         </button>
 
         {/* Asset Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-2xl bg-white text-black flex items-center justify-center text-2xl font-bold shadow-lg">
+            <div className="w-16 h-16 rounded-lg bg-white text-black flex items-center justify-center text-2xl font-bold shadow-lg">
               {selectedAsset.logo}
             </div>
             <div>
@@ -346,13 +337,13 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
           <div className="flex gap-3 w-full md:w-auto">
             <button 
               onClick={() => handleTradeClick('buy')}
-              className="flex-1 md:flex-none px-8 py-3 bg-[#00FFB2] hover:bg-[#00E6A0] text-black rounded-xl font-bold transition-colors shadow-[0_0_15px_rgba(0,255,178,0.2)]"
+              className="flex-1 md:flex-none px-4 py-3 bg-[#00FFB2] hover:bg-[#00E6A0] text-black rounded-xl font-bold transition-colors shadow-[0_0_15px_rgba(0,255,178,0.2)]"
             >
               Buy
             </button>
             <button 
               onClick={() => handleTradeClick('sell')}
-              className="flex-1 md:flex-none px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold transition-colors"
+              className="flex-1 md:flex-none px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold transition-colors"
             >
               Sell
             </button>
@@ -361,7 +352,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
 
         {/* Overview Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-2xl p-5">
+          <div className="bg-[#0A0A0A] rounded-lg p-3">
             <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Price</p>
             <div className="flex items-end gap-2">
               <p className="text-2xl font-mono text-white">${selectedAsset.price.toFixed(2)}</p>
@@ -371,15 +362,15 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
               </p>
             </div>
           </div>
-          <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-2xl p-5">
+          <div className="bg-[#0A0A0A] rounded-lg p-3">
             <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Implied Market Cap</p>
             <p className="text-2xl font-mono text-white">{selectedAsset.marketCap}</p>
           </div>
-          <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-2xl p-5">
+          <div className="bg-[#0A0A0A] rounded-lg p-3">
             <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">24h Volume</p>
             <p className="text-2xl font-mono text-white">{selectedAsset.volume24h}</p>
           </div>
-          <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-2xl p-5">
+          <div className="bg-[#0A0A0A] rounded-lg p-3">
             <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Liquidity Score</p>
             <div className="flex items-center gap-2">
               <p className="text-2xl font-mono text-[#0066FF]">{selectedAsset.liquidityScore}</p>
@@ -389,16 +380,14 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
         </div>
 
         {/* Chart Section */}
-        <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6">
-          <div className="flex justify-between items-center mb-6">
+        <div className="bg-[#0A0A0A] rounded-xl p-3.5">
+          <div className="flex justify-between items-center mb-3">
             <div className="flex gap-2">
               {['1H', '1D', '1W', '1M', '1Y'].map((tf) => (
                 <button
                   key={tf}
                   onClick={() => setTimeframe(tf)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                    timeframe === tf ? 'bg-white/10 text-white' : 'text-zinc-500 hover:text-zinc-300'
-                  }`}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${ timeframe === tf ? 'bg-white/10 text-white' : 'text-zinc-500 hover:text-zinc-300' }`}
                 >
                   {tf}
                 </button>
@@ -423,7 +412,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
                 <XAxis dataKey="time" stroke="#ffffff40" fontSize={10} tickLine={false} axisLine={false} minTickGap={30} />
                 <YAxis domain={['auto', 'auto']} stroke="#ffffff40" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(val) => `$${val.toFixed(2)}`} orientation="right" />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(12px)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(12px)', borderColor: 'transparent', borderRadius: '12px' }}
                   itemStyle={{ color: '#fff', fontFamily: 'monospace' }}
                   labelStyle={{ color: '#888' }}
                 />
@@ -442,13 +431,13 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
         </div>
 
         {/* About & Order Flow */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div className="lg:col-span-2 bg-[#0A0A0A] rounded-xl p-3.5">
             <h3 className="text-lg font-bold text-white mb-4">About {selectedAsset.name}</h3>
-            <p className="text-zinc-400 leading-relaxed mb-6">
+            <p className="text-zinc-400 leading-relaxed mb-3">
               {selectedAsset.description}
             </p>
-            <div className="grid grid-cols-2 gap-4 pt-6 border-t border-white/5">
+            <div className="grid grid-cols-2 gap-4 pt-6">
               <div>
                 <p className="text-xs text-zinc-500 mb-1">Sector</p>
                 <p className="text-white font-medium">{selectedAsset.sector}</p>
@@ -460,7 +449,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
             </div>
           </div>
 
-          <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6">
+          <div className="bg-[#0A0A0A] rounded-xl p-3.5">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Recent Trades</h3>
             <div className="space-y-3">
               {[...Array(6)].map((_, i) => {
@@ -485,7 +474,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
 
   // Default Hub View
   return (
-    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-3.5 md:p-4 max-w-6xl mx-auto space-y-4">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -493,7 +482,7 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
           <p className="text-zinc-400">Trade private equity with instant liquidity.</p>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00FFB2]/10 border border-[#00FFB2]/20">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00FFB2]/10">
             <span className="w-2 h-2 rounded-full bg-[#00FFB2] animate-pulse" />
             <span className="text-xs font-bold text-[#00FFB2] uppercase tracking-wider">Market Open</span>
           </div>
@@ -505,20 +494,20 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
       </div>
 
       {/* Market Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-gradient-to-br from-[#0A0A0A] to-[#111] border border-white/[0.08] rounded-3xl p-6 relative overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="bg-gradient-to-br from-[#0A0A0A] to-[#111] rounded-xl p-3.5 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10"><Activity className="w-16 h-16 text-white" /></div>
           <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">24h Volume</p>
           <p className="text-3xl font-mono text-white mb-2">$12.4M</p>
           <p className="text-sm text-[#00FFB2] flex items-center gap-1"><TrendingUp className="w-3 h-3" /> +15.2% vs yesterday</p>
         </div>
-        <div className="bg-gradient-to-br from-[#0A0A0A] to-[#111] border border-white/[0.08] rounded-3xl p-6 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#0A0A0A] to-[#111] rounded-xl p-3.5 relative overflow-hidden">
           <div className="absolute top-0 right-0 p-4 opacity-10"><ArrowRightLeft className="w-16 h-16 text-[#0066FF]" /></div>
           <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">Active Orders</p>
           <p className="text-3xl font-mono text-white mb-2">1,432</p>
           <p className="text-sm text-zinc-400">Across 45 assets</p>
         </div>
-        <div className="bg-gradient-to-br from-[#0066FF]/10 to-transparent border border-[#0066FF]/20 rounded-3xl p-6 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-[#0066FF]/10 to-transparent rounded-xl p-3.5 relative overflow-hidden">
           <p className="text-[#0066FF] text-xs font-bold uppercase tracking-wider mb-2">Market Sentiment</p>
           <p className="text-3xl font-bold text-white mb-2">Bullish</p>
           <div className="w-full bg-black/40 h-2 rounded-full mt-4 overflow-hidden flex">
@@ -532,39 +521,89 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
         </div>
       </div>
 
+      {/* Controlled RWA Secondary Transfer Desk */}
+      <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 className="text-base font-bold text-white flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              Controlled Digital Asset Secondary Transfers (Eligibility-Gated)
+            </h2>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              Transfers execute strictly within each asset&apos;s legal model: Order Book, Institutional RFQ, Allowlisted P2P, or Administrator-Approved.
+            </p>
+          </div>
+          <div className="flex gap-1.5 text-xs">
+            {(['ORDER_BOOK', 'RFQ', 'PEER_TO_PEER', 'ADMINISTRATOR_APPROVED'] as const).map((model) => (
+              <span
+                key={model}
+                className="px-2.5 py-1 rounded bg-neutral-900 text-zinc-300 font-mono text-[11px]"
+              >
+                {model.replace(/_/g, ' ')}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div className="p-3.5 rounded-xl bg-neutral-900/60">
+            <div className="font-mono text-zinc-400">AQX-RE-000184 · ORDER_BOOK</div>
+            <div className="font-bold text-white mt-0.5">Cape Urban Property Fund (DEMO)</div>
+            <div className="text-emerald-400 mt-1">Allowlisted Tier-2 & Institutional holders</div>
+          </div>
+          <div className="p-3.5 rounded-xl bg-neutral-900/60">
+            <div className="font-mono text-zinc-400">AQX-TECH-000102 · RFQ</div>
+            <div className="font-bold text-white mt-0.5">AgriPay Africa (DEMO)</div>
+            <div className="text-amber-300 mt-1">Compliance counter-signature RFQ desk</div>
+          </div>
+          <div className="p-3.5 rounded-xl bg-neutral-900/60">
+            <div className="font-mono text-zinc-400">AQX-INF-000309 · ADMINISTRATOR_APPROVED</div>
+            <div className="font-bold text-white mt-0.5">AfriLogistics Infrastructure (DEMO)</div>
+            <div className="text-zinc-300 mt-1">Requires Custodian + Asset Admin approval</div>
+          </div>
+        </div>
+      </div>
+
       {/* Asset List */}
-      <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl overflow-hidden">
-        <div className="p-6 border-b border-white/5 flex justify-between items-center">
+      <div className="bg-[#0A0A0A] rounded-xl overflow-hidden">
+        <div className="p-3.5 flex justify-between items-center bg-white/[0.03]">
           <h2 className="text-lg font-bold text-white uppercase tracking-wider">Available Assets</h2>
           <div className="flex gap-2">
-            <button className="px-3 py-1.5 rounded-lg bg-white/10 text-white text-xs font-bold">All</button>
-            <button className="px-3 py-1.5 rounded-lg text-zinc-500 hover:text-white text-xs font-bold transition-colors">FinTech</button>
-            <button className="px-3 py-1.5 rounded-lg text-zinc-500 hover:text-white text-xs font-bold transition-colors">Manufacturing</button>
+            {(['All', 'FinTech', 'Manufacturing'] as const).map((sector) => (
+              <button
+                key={sector}
+                onClick={() => setSectorFilter(sector)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${ sectorFilter === sector ? 'bg-white/10 text-white' : 'text-zinc-500 hover:text-white' }`}
+              >
+                {sector}
+              </button>
+            ))}
           </div>
         </div>
         
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full text-left">
             <thead>
-              <tr className="bg-white/[0.02] border-b border-white/5">
-                <th className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Asset</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Price</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">24h Change</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Market Cap</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider">Liquidity</th>
-                <th className="p-4 text-xs font-bold text-zinc-500 uppercase tracking-wider text-right">Action</th>
+              <tr className="bg-white/[0.02]">
+                <th className="px-2.5 py-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider">Asset</th>
+                <th className="px-2.5 py-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider">Price</th>
+                <th className="px-2.5 py-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider">24h Change</th>
+                <th className="px-2.5 py-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider">Market Cap</th>
+                <th className="px-2.5 py-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider">Liquidity</th>
+                <th className="px-2.5 py-1.5 text-xs font-bold text-zinc-500 uppercase tracking-wider text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
-              {assets.map((asset) => (
+            <tbody className="">
+              {assets
+                .filter((a) => sectorFilter === 'All' || a.sector.toLowerCase().includes(sectorFilter.toLowerCase()))
+                .map((asset) => (
                 <tr 
                   key={asset.id} 
                   onClick={() => handleAssetClick(asset)}
                   className="hover:bg-white/[0.02] transition-colors cursor-pointer group"
                 >
-                  <td className="p-4">
+                  <td className="px-2.5 py-1.5">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center font-bold text-white border border-white/10">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 flex items-center justify-center font-bold text-white">
                         {asset.logo}
                       </div>
                       <div>
@@ -576,15 +615,15 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
                       </div>
                     </div>
                   </td>
-                  <td className="p-4 font-mono text-white">${asset.price.toFixed(2)}</td>
+                  <td className="px-2.5 py-1.5 font-mono text-white">${asset.price.toFixed(2)}</td>
                   <td className={`p-4 font-medium ${asset.trend === 'up' ? 'text-[#00C896]' : 'text-[#FF3B3B]'}`}>
                     <div className="flex items-center gap-1">
                       {asset.trend === 'up' ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                       {asset.change}
                     </div>
                   </td>
-                  <td className="p-4 text-zinc-400 font-mono">{asset.marketCap}</td>
-                  <td className="p-4">
+                  <td className="px-2.5 py-1.5 text-zinc-400 font-mono">{asset.marketCap}</td>
+                  <td className="px-2.5 py-1.5">
                     <div className="flex items-center gap-2">
                       <div className="w-16 h-1.5 bg-white/10 rounded-full overflow-hidden">
                         <div className="bg-[#0066FF] h-full" style={{ width: `${asset.liquidityScore}%` }} />
@@ -592,13 +631,29 @@ export function SecondaryMarket({ setActiveTab, initialView = 'hub', assetSlug, 
                       <span className="text-xs text-zinc-500">{asset.liquidityScore}</span>
                     </div>
                   </td>
-                  <td className="p-4 text-right">
-                    <button className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg text-sm font-bold transition-colors opacity-0 group-hover:opacity-100">
+                  <td className="px-2.5 py-1.5 text-right">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedAsset(asset);
+                        setChartData(generateChartData(60, asset.price));
+                        handleTradeClick('buy');
+                      }}
+                      className="px-4 py-2 bg-white/5 hover:bg-white/10 text-white rounded-lg text-sm font-bold transition-colors opacity-0 group-hover:opacity-100"
+                    >
                       Trade
                     </button>
                   </td>
                 </tr>
               ))}
+              {assets.filter((a) => sectorFilter === 'All' || a.sector.toLowerCase().includes(sectorFilter.toLowerCase())).length === 0 && (
+                <tr>
+                  <td colSpan={6} className="p-4 text-center text-xs text-zinc-400">
+                    No secondary offerings currently listed in {sectorFilter}.{' '}
+                    <button onClick={() => setSectorFilter('All')} className="text-white underline ml-1">Show all sectors</button>
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

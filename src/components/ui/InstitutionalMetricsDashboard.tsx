@@ -103,10 +103,10 @@ export function InstitutionalMetricsDashboard() {
   }, []);
 
   return (
-    <div className="w-full space-y-12">
+    <div className="w-full space-y-5">
       
       {/* Top Status & Telemetry Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6">
         <div className="flex items-center gap-3">
           <span className="relative flex h-3 w-3">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34A87E] opacity-75" />
@@ -117,7 +117,7 @@ export function InstitutionalMetricsDashboard() {
           </span>
         </div>
 
-        <div className="flex items-center gap-6 font-mono text-xs text-[#F4F1E8]/50">
+        <div className="flex items-center gap-3 font-mono text-xs text-[#F4F1E8]/50">
           <div className="flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-[#D9A94E]" />
             <span>14 Bourses Online</span>
@@ -127,7 +127,7 @@ export function InstitutionalMetricsDashboard() {
       </div>
 
       {/* Metrics Row: Clean Minimal Data-First Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
         {INSTITUTIONAL_METRICS.map(item => {
           let displayValue = '';
           if (item.id === 'aua') displayValue = `$${metrics.aua}B`;
@@ -140,18 +140,14 @@ export function InstitutionalMetricsDashboard() {
           return (
             <div 
               key={item.id}
-              className={`space-y-3 transition-all duration-500 pb-6 border-b sm:border-b-0 sm:border-r border-white/[0.06] last:border-r-0 ${
-                isFlashing ? 'opacity-100 scale-[1.02]' : 'opacity-90'
-              }`}
+              className={`space-y-3 transition-all duration-500 pb-6 ${ isFlashing ? 'opacity-100 scale-[1.02]' : 'opacity-90' }`}
             >
               <div className="text-[11px] font-mono uppercase tracking-wider text-[#F4F1E8]/50">
                 {item.label}
               </div>
 
               <div className="flex items-baseline gap-2">
-                <div className={`text-4xl lg:text-5xl font-extrabold text-[#F4F1E8] font-mono tracking-tight transition-colors duration-300 ${
-                  isFlashing ? 'text-[#D9A94E]' : ''
-                }`}>
+                <div className={`text-4xl lg:text-5xl font-extrabold text-[#F4F1E8] font-mono tracking-tight transition-colors duration-300 ${ isFlashing ? 'text-[#D9A94E]' : '' }`}>
                   {displayValue}
                 </div>
               </div>
@@ -169,7 +165,7 @@ export function InstitutionalMetricsDashboard() {
       </div>
 
       {/* Secondary Real-time Flow Stream Indicator */}
-      <div className="pt-6 border-t border-white/[0.08] grid grid-cols-1 md:grid-cols-3 gap-6 text-xs font-mono text-[#F4F1E8]/60">
+      <div className="pt-6 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs font-mono text-[#F4F1E8]/60">
         <div className="flex items-center gap-3">
           <Activity className="w-4 h-4 text-[#D9A94E] shrink-0" />
           <span>Daily Matching Engine Capacity: 1.4B messages/sec</span>

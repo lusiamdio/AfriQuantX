@@ -60,9 +60,9 @@ const ADVISOR_DESKS: AdvisorDesk[] = [
     shortName: 'Chief Strategist',
     tagline: 'Multi-asset allocation, cross-border capital flows & macroeconomic strategy',
     icon: Globe,
-    color: '#3B82F6',
+    color:'#3B82F6',
     bgGradient: 'from-[#3B82F6]/20 via-[#3B82F6]/5 to-transparent',
-    systemPrompt: `You are the Chief Investment Strategist at AfriQuantX, a tier-1 global and pan-African investment bank. You possess comprehensive, elite-level mastery across African stock exchanges (JSE, NGX, NSE, EGX, CSE, BRVM, GSE, SEM), global macroeconomics, central bank monetary policy (CBN, SARB, CBK, CBE, Federal Reserve, ECB, BOE, PBOC), foreign exchange corridors (NAFEM, ZAR, KES, EGP, GHS, CFA Francs), hard & soft commodities (Gold, PGM, Lithium, Copper, Bonny Light Crude, Natural Gas, Cocoa, Coffee), and geopolitical risk dynamics (AfCFTA, BRICS+ expansion, sovereign debt restructuring, energy corridors).
+    systemPrompt:`You are the Chief Investment Strategist at AfriQuantX, a tier-1 global and pan-African investment bank. You possess comprehensive, elite-level mastery across African stock exchanges (JSE, NGX, NSE, EGX, CSE, BRVM, GSE, SEM), global macroeconomics, central bank monetary policy (CBN, SARB, CBK, CBE, Federal Reserve, ECB, BOE, PBOC), foreign exchange corridors (NAFEM, ZAR, KES, EGP, GHS, CFA Francs), hard & soft commodities (Gold, PGM, Lithium, Copper, Bonny Light Crude, Natural Gas, Cocoa, Coffee), and geopolitical risk dynamics (AfCFTA, BRICS+ expansion, sovereign debt restructuring, energy corridors).
 
 Provide sophisticated, institutional-grade financial analysis. Structure your responses logically with:
 1. Executive Summary & Core Thesis
@@ -80,7 +80,7 @@ Format with Markdown tables, bold section headers, and precise numerical estimat
     shortName: 'African Equities',
     tagline: 'Fundamental valuation, earnings quality & dual-listings across 38+ bourses',
     icon: TrendingUp,
-    color: '#34A87E',
+    color:'#34A87E',
     bgGradient: 'from-[#34A87E]/20 via-[#34A87E]/5 to-transparent',
     systemPrompt: `You are the Head of African Equity Research at AfriQuantX. You have deep expertise in single-stock valuation, DCF modeling, EV/EBITDA multiples, dividend sustainability, ROE/ROIC profiles, and earnings cycles across African bourses (Johannesburg Stock Exchange, Nigerian Exchange, Nairobi Securities Exchange, Egyptian Exchange, Casablanca Stock Exchange, BRVM Abidjan, Ghana Stock Exchange, Stock Exchange of Mauritius). You understand dual-listed equities (LSE/JSE/NGX), central securities depositories (CSCS, Strate, CDSC), and institutional liquidity dynamics. Provide rigorous company valuations, earnings revisions, peer comparisons, and tactical stock-picking frameworks.`
   },
@@ -90,7 +90,7 @@ Format with Markdown tables, bold section headers, and precise numerical estimat
     shortName: 'Commodities & Energy',
     tagline: 'Hard/soft commodities, battery minerals (Cobalt, Lithium, PGM) & OPEC+ energy',
     icon: Coins,
-    color: '#F59E0B',
+    color:'#F59E0B',
     bgGradient: 'from-[#F59E0B]/20 via-[#F59E0B]/5 to-transparent',
     systemPrompt: `You are the Lead Commodities & Energy Strategist at AfriQuantX. You are a world authority on critical minerals (DRC Cobalt, Zimbabwe/Mali Lithium, South African Platinum & Palladium, Zambian Copper, Guinean Bauxite), energy markets (Bonny Light, Brent Crude, Mozambique LNG, Algerian Gas, OPEC+ supply quotas), and agricultural cash crops (Ivory Coast/Ghana Cocoa, Kenyan Tea & Coffee). Analyze physical supply-demand balances, refining bottlenecks, mining fiscal regimes, resource nationalism, global green energy transition demand, and commodity-linked sovereign revenue forecasting.`
   },
@@ -100,7 +100,7 @@ Format with Markdown tables, bold section headers, and precise numerical estimat
     shortName: 'FX & Sovereign Debt',
     tagline: 'Currency corridors, dynamic NDF hedging, Eurobond yield spreads & rates',
     icon: Landmark,
-    color: '#0666EB',
+    color:'#0666EB',
     bgGradient: 'from-[#0666EB]/20 via-[#0666EB]/5 to-transparent',
     systemPrompt: `You are the Head of Foreign Exchange & Sovereign Debt Strategy at AfriQuantX. You specialize in emerging & frontier currency dynamics (USD/ZAR, USD/NGN NAFEM/parallel spreads, USD/KES, USD/EGP, USD/GHS, EUR/XOF), central bank foreign reserve adequacy, sovereign Eurobond yield curves (EMBI+ spreads for Nigeria, Kenya, Egypt, Angola, South Africa, Ghana), domestic T-Bills/Omo rates, and cross-currency swap / non-deliverable forward (NDF) hedging structures. Provide precise carry-trade metrics, real effective exchange rate (REER) valuations, and debt sustainability analyses.`
   },
@@ -110,9 +110,9 @@ Format with Markdown tables, bold section headers, and precise numerical estimat
     shortName: 'Macro & Geopolitics',
     tagline: 'Sovereign risk, AfCFTA trade corridors, BRICS+ alignment & elections',
     icon: Scale,
-    color: '#A855F7',
+    color:'#A855F7',
     bgGradient: 'from-[#A855F7]/20 via-[#A855F7]/5 to-transparent',
-    systemPrompt: `You are the Principal Geopolitical Risk and Macro Policy Advisor at AfriQuantX. You analyze sovereign risk ratings (Moody's, S&P, Fitch), AfCFTA (African Continental Free Trade Area) corridor developments, bilateral trade treaties, AGOA, BRICS+ expansion (Egypt, Ethiopia, South Africa), infrastructure projects (Lobito Rail Corridor, Dangote Petrochemicals, GERD Dam, Trans-Saharan gas pipeline), elections, regulatory expropriation risk, and global multilateral financing (IMF Extended Fund Facilities, World Bank DPOs). Provide strategic geoeconomic risk scoring and institutional mitigation plays.`
+    systemPrompt:`You are the Principal Geopolitical Risk and Macro Policy Advisor at AfriQuantX. You analyze sovereign risk ratings (Moody's, S&P, Fitch), AfCFTA (African Continental Free Trade Area) corridor developments, bilateral trade treaties, AGOA, BRICS+ expansion (Egypt, Ethiopia, South Africa), infrastructure projects (Lobito Rail Corridor, Dangote Petrochemicals, GERD Dam, Trans-Saharan gas pipeline), elections, regulatory expropriation risk, and global multilateral financing (IMF Extended Fund Facilities, World Bank DPOs). Provide strategic geoeconomic risk scoring and institutional mitigation plays.`
   },
   {
     id: 'portfolio_quant',
@@ -120,7 +120,7 @@ Format with Markdown tables, bold section headers, and precise numerical estimat
     shortName: 'Quant & Optimizer',
     tagline: 'Markowitz mean-variance, Sharpe optimization & institutional stress testing',
     icon: Sliders,
-    color: '#EC4899',
+    color:'#EC4899',
     bgGradient: 'from-[#EC4899]/20 via-[#EC4899]/5 to-transparent',
     systemPrompt: `You are the Chief Quantitative Risk Architect at AfriQuantX. You specialize in mathematical portfolio optimization, Black-Litterman asset allocation, Value-at-Risk (VaR), Conditional VaR (Expected Shortfall), Sharpe/Sortino maximization, liquidity-adjusted frontier modeling, and tail-risk Monte Carlo simulations for institutional portfolios allocating across African equities, Eurobonds, local currency sovereign paper, and commodities. Deliver exact mathematical risk-budgeting frameworks and factor exposure breakdowns.`
   }
@@ -149,7 +149,7 @@ const SOVEREIGN_MATRIX: SovereignData[] = [
   { country: 'Kenya', code: 'KES', flag: '🇰🇪', policyRate: '12.75%', inflation: '4.3%', sovereignSpread: '510 bps', fxVol1Y: '8.4%', debtToGdp: '68.2%', creditRating: 'B- / Caa1', outlook: 'Stable', keyRisk: 'Fiscal consolidation & Eurobond refinancing schedule' },
   { country: 'Egypt', code: 'EGP', flag: '🇪🇬', policyRate: '27.25%', inflation: '25.7%', sovereignSpread: '680 bps', fxVol1Y: '18.1%', debtToGdp: '89.4%', creditRating: 'B- / Caa1', outlook: 'Positive', keyRisk: 'Red Sea Suez revenue contraction & external debt servicing' },
   { country: 'Morocco', code: 'MAD', flag: '🇲🇦', policyRate: '2.75%', inflation: '1.3%', sovereignSpread: '140 bps', fxVol1Y: '4.2%', debtToGdp: '70.1%', creditRating: 'BB+ / Ba1', outlook: 'Positive', keyRisk: 'Agricultural drought cycles & European demand' },
-  { country: 'Ghana', code: 'GHS', flag: '🇬🇭', policyRate: '29.00%', inflation: '20.9%', sovereignSpread: '850 bps', fxVol1Y: '21.5%', debtToGdp: '78.5%', creditRating: 'CCC+ / Caa2', outlook: 'Stable', keyRisk: 'Post-DDEP external debt restructuring completion' },
+  { country:'Ghana', code:'GHS', flag:'🇬🇭', policyRate:'29.00%', inflation:'20.9%', sovereignSpread:'850 bps', fxVol1Y:'21.5%', debtToGdp:'78.5%', creditRating:'CCC+ / Caa2', outlook:'Stable', keyRisk:'Post-DDEP external debt restructuring completion'},
   { country: 'Ivory Coast', code: 'XOF', flag: '🇨🇮', policyRate: '3.50%', inflation: '3.8%', sovereignSpread: '320 bps', fxVol1Y: '5.1%', debtToGdp: '58.0%', creditRating: 'BB- / Ba3', outlook: 'Positive', keyRisk: 'Cocoa farmgate price adjustments & regional security' },
   { country: 'Zambia', code: 'ZMW', flag: '🇿🇲', policyRate: '13.50%', inflation: '15.5%', sovereignSpread: '720 bps', fxVol1Y: '16.9%', debtToGdp: '84.0%', creditRating: 'CCC+ / Ca', outlook: 'Positive', keyRisk: 'Hydropower drought deficit & copper production ramp-up' },
   { country: 'Mauritius', code: 'MUR', flag: '🇲🇺', policyRate: '4.50%', inflation: '4.0%', sovereignSpread: '190 bps', fxVol1Y: '6.3%', debtToGdp: '79.2%', creditRating: 'Baa3 (IG)', outlook: 'Stable', keyRisk: 'Offshore financial center regulatory compliance & tourism' },
@@ -184,7 +184,7 @@ interface MacroScenario {
   title: string;
   description: string;
   vulnerabilityIndex: string;
-  impacts: { assetClass: string; impact: string; direction: 'up' | 'down' | 'neutral' }[];
+  impacts: { assetClass: string; impact: string; direction:'up'|'down'|'neutral'}[];
 }
 
 const MACRO_SCENARIOS: MacroScenario[] = [
@@ -194,10 +194,10 @@ const MACRO_SCENARIOS: MacroScenario[] = [
     description: 'Federal Reserve delays rate cuts, pushing 10Y US Treasury yields to 4.80% and driving flight-to-safety capital out of emerging/frontier markets.',
     vulnerabilityIndex: 'High Risk (Score: 78/100)',
     impacts: [
-      { assetClass: 'African Sovereign Eurobonds', impact: 'Spreads widen 40-75 bps; yield selloff', direction: 'down' },
-      { assetClass: 'Frontier Currencies (NGN, ZAR, KES)', impact: 'Depreciation pressure of 2-5%', direction: 'down' },
-      { assetClass: 'Local Equities (JSE, NGX)', impact: 'Foreign outflow in banking; miners hedged', direction: 'neutral' },
-      { assetClass: 'Gold & Hard Commodities', impact: 'Headwinds in USD terms, positive in local FX', direction: 'neutral' }
+      { assetClass:'African Sovereign Eurobonds', impact:'Spreads widen 40-75 bps; yield selloff', direction:'down'},
+      { assetClass:'Frontier Currencies (NGN, ZAR, KES)', impact:'Depreciation pressure of 2-5%', direction:'down'},
+      { assetClass:'Local Equities (JSE, NGX)', impact:'Foreign outflow in banking; miners hedged', direction:'neutral'},
+      { assetClass:'Gold & Hard Commodities', impact:'Headwinds in USD terms, positive in local FX', direction:'neutral'}
     ]
   },
   {
@@ -206,10 +206,10 @@ const MACRO_SCENARIOS: MacroScenario[] = [
     description: 'Geopolitical disruption in key maritime straits creates sustained supply constraints, inflating global energy and shipping costs.',
     vulnerabilityIndex: 'Divergent Impact (Score: 65/100)',
     impacts: [
-      { assetClass: 'Net Exporters (Nigeria, Angola, Algeria)', impact: 'Surging FX receipts & sovereign budget surplus', direction: 'up' },
-      { assetClass: 'Net Importers (Kenya, South Africa, Egypt)', impact: 'Import inflation & fuel subsidy fiscal strain', direction: 'down' },
-      { assetClass: 'Pan-African Energy Equities (Seplat, Sasol)', impact: 'Significant EBITDA expansion & dividend hikes', direction: 'up' },
-      { assetClass: 'Transportation & Consumer Stocks', impact: 'Compressed operating margins due to freight costs', direction: 'down' }
+      { assetClass:'Net Exporters (Nigeria, Angola, Algeria)', impact:'Surging FX receipts & sovereign budget surplus', direction:'up'},
+      { assetClass:'Net Importers (Kenya, South Africa, Egypt)', impact:'Import inflation & fuel subsidy fiscal strain', direction:'down'},
+      { assetClass:'Pan-African Energy Equities (Seplat, Sasol)', impact:'Significant EBITDA expansion & dividend hikes', direction:'up'},
+      { assetClass:'Transportation & Consumer Stocks', impact:'Compressed operating margins due to freight costs', direction:'down'}
     ]
   },
   {
@@ -218,10 +218,10 @@ const MACRO_SCENARIOS: MacroScenario[] = [
     description: 'Accelerated cross-border goods movement under PAPSS (Pan-African Payment and Settlement System), slashing FX friction and boosting intra-African trade.',
     vulnerabilityIndex: 'Massive Structural Bull (Score: 92/100)',
     impacts: [
-      { assetClass: 'Pan-African Conglomerates (Dangote, BUA)', impact: 'Regional export TAM increases 3x', direction: 'up' },
-      { assetClass: 'Banking & Clearing Hubs (Standard Bank, ETI)', impact: 'Cross-border trade fee revenue surges 28%', direction: 'up' },
-      { assetClass: 'Local Currency Stability', impact: 'Reduced US dollar dependency in intra-trade', direction: 'up' },
-      { assetClass: 'Logistics & FMCG Sectors', impact: 'Supply chain cycle compression of 40%', direction: 'up' }
+      { assetClass:'Pan-African Conglomerates (Dangote, BUA)', impact:'Regional export TAM increases 3x', direction:'up'},
+      { assetClass:'Banking & Clearing Hubs (Standard Bank, ETI)', impact:'Cross-border trade fee revenue surges 28%', direction:'up'},
+      { assetClass:'Local Currency Stability', impact:'Reduced US dollar dependency in intra-trade', direction:'up'},
+      { assetClass:'Logistics & FMCG Sectors', impact:'Supply chain cycle compression of 40%', direction:'up'}
     ]
   }
 ];
@@ -239,9 +239,9 @@ const PROMPT_TEMPLATES = [
   {
     category: 'Equities & Valuation',
     prompts: [
-      "Conduct a comprehensive fundamental valuation of Safaricom (NSE: SCOM) vs MTN Nigeria (NGX: MTNN), comparing EV/EBITDA, mobile money monetization, and FX risk.",
+"Conduct a comprehensive fundamental valuation of Safaricom (NSE: SCOM) vs MTN Nigeria (NGX: MTNN), comparing EV/EBITDA, mobile money monetization, and FX risk.",
       "Identify the top 5 high-dividend, high-ROE African banking blue chips across JSE, NGX, and CSE with fortress balance sheets.",
-      "Analyze the earnings quality and net asset value (NAV) discount of Naspers/Prosus on the JSE considering Tencent holdings."
+"Analyze the earnings quality and net asset value (NAV) discount of Naspers/Prosus on the JSE considering Tencent holdings."
     ]
   },
   {
@@ -256,7 +256,7 @@ const PROMPT_TEMPLATES = [
     category: 'FX & Sovereign Debt',
     prompts: [
       "Construct an optimal institutional FX hedging structure for a $100M portfolio split between South African Rand (ZAR) and Nigerian Naira (NGN).",
-      "Evaluate the credit risk and yield spread attractiveness of Egypt and Kenya Eurobonds maturing in 2027-2031 under current IMF programs.",
+"Evaluate the credit risk and yield spread attractiveness of Egypt and Kenya Eurobonds maturing in 2027-2031 under current IMF programs.",
       "Compare real interest rates and carry-trade appeal across Central Bank of Nigeria (CBN 26.75%), SARB (8.25%), and Bank of Ghana (29%)."
     ]
   },
@@ -272,7 +272,7 @@ const PROMPT_TEMPLATES = [
     category: 'Portfolio Construction',
     prompts: [
       "Build a $50M Institutional Pan-African Multi-Asset Portfolio optimized for a 14% USD target return with maximum Sharpe Ratio and tail-risk protection.",
-      "Generate an institutional Investment Memorandum for acquiring a 5% cornerstone stake in a Tier-1 African telecom infrastructure REIT."
+"Generate an institutional Investment Memorandum for acquiring a 5% cornerstone stake in a Tier-1 African telecom infrastructure REIT."
     ]
   }
 ];
@@ -449,7 +449,7 @@ The **Lobito Atlantic Railway (LAR)**—backed by the US DFC, EU, and African De
 ┌────────────────────────────────────────────────────────────────────────┐
 │  PORTFOLIO COMPOSITION & CAPITAL WEIGHTS                               │
 ├──────────────────────────────────────┬─────────┬──────────────┬────────┤
-│ Asset Class & Sub-Sector             │ Weight  │ USD Amount   │ Yield  │
+│ Asset Class & Sub-Sector │ Weight │ USD Amount │ Yield │
 ├──────────────────────────────────────┼─────────┼──────────────┼────────┤
 │ 1. Pan-African Blue-Chip Equities    │ 35.0%   │ $17,500,000  │ 16.4%  │
 │    • JSE Fortress Financials (FSR)   │ (12.0%) │ $6,000,000   │        │
@@ -548,7 +548,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
       id: Date.now().toString(),
       role: 'user',
       content: query,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      timestamp: new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit'})
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -561,7 +561,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
       role: 'model',
       content: 'AI analysis is currently unavailable.',
       deskId: activeDesk.id,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      timestamp: new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit'})
     }]);
     setIsTyping(false);
   };
@@ -595,27 +595,27 @@ The African investment landscape is undergoing a structural paradigm shift chara
   };
 
   return (
-    <div className="h-full flex flex-col bg-[#080A0E] border border-white/[0.08] rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)]">
+    <div className="h-full flex flex-col bg-[#080A0E] rounded-lg overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)]">
       
       {/* 1. TOP ADVISORY DESK SELECTOR & WORKSTATION NAVIGATION */}
-      <div className="px-6 py-4 border-b border-white/[0.08] bg-[#0A0D14]/90 backdrop-blur-md flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 z-20">
+      <div className="px-3.5 py-4 bg-[#0A0D14]/90 backdrop-blur-md flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 z-20">
         
         {/* Left: Active Desk Branding */}
         <div className="flex items-center gap-3">
           <div 
-            className="w-10 h-10 rounded-xl flex items-center justify-center border shadow-lg transition-all"
+            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-all bg-white/[0.03]"
             style={{ 
-              backgroundColor: `${activeDesk.color}20`, 
+              backgroundColor:`${activeDesk.color}20`, 
               borderColor: `${activeDesk.color}50`,
               color: activeDesk.color 
             }}
           >
-            <activeDesk.icon className="w-5 h-5" />
+            <activeDesk.icon className="w-5 h-5"/>
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-white tracking-wide">{activeDesk.name}</h2>
-              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300 border border-amber-500/20">
+              <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-300">
                 DESK UNAVAILABLE
               </span>
             </div>
@@ -625,16 +625,12 @@ The African investment landscape is undergoing a structural paradigm shift chara
 
         {/* Right: Desk Quick-Switchers & Interactive Tool Tabs */}
         <div className="flex items-center gap-2 overflow-x-auto w-full lg:w-auto scrollbar-none">
-          <div className="flex items-center bg-white/[0.03] p-1 rounded-xl border border-white/[0.06] gap-1">
+          <div className="flex items-center bg-white/[0.03] p-1 rounded-xl gap-1">
             {ADVISOR_DESKS.map(desk => (
               <button
                 key={desk.id}
                 onClick={() => setActiveDesk(desk)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${
-                  activeDesk.id === desk.id 
-                    ? 'bg-white/10 text-white shadow-sm border border-white/15' 
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap cursor-pointer ${ activeDesk.id === desk.id ?'bg-white/10 text-white shadow-sm ' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
               >
                 <desk.icon className="w-3.5 h-3.5" style={{ color: desk.color }} />
                 <span>{desk.shortName}</span>
@@ -643,44 +639,34 @@ The African investment landscape is undergoing a structural paradigm shift chara
           </div>
 
           {/* Workstation Tool Switcher */}
-          <div className="flex items-center bg-white/5 p-1 rounded-xl border border-white/10 gap-1 shrink-0">
+          <div className="flex items-center bg-white/5 p-1 rounded-xl gap-1 shrink-0">
             <button
               onClick={() => setActiveToolTab('chat')}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                activeToolTab === 'chat' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${ activeToolTab ==='chat'?'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
             >
               Advisory Chat
             </button>
             <button
               onClick={() => setActiveToolTab('valuations')}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                activeToolTab === 'valuations' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${ activeToolTab ==='valuations'?'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
             >
               DCF Multiples
             </button>
             <button
               onClick={() => setActiveToolTab('sovereign')}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                activeToolTab === 'sovereign' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${ activeToolTab ==='sovereign'?'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
             >
               Sovereign Radar
             </button>
             <button
               onClick={() => setActiveToolTab('commodities')}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                activeToolTab === 'commodities' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${ activeToolTab ==='commodities'?'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
             >
               Commodities
             </button>
             <button
               onClick={() => setActiveToolTab('scenarios')}
-              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                activeToolTab === 'scenarios' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${ activeToolTab ==='scenarios'?'bg-white text-black' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
             >
               Shock Simulator
             </button>
@@ -693,11 +679,11 @@ The African investment landscape is undergoing a structural paradigm shift chara
 
         {/* TAB 1: INTERACTIVE VALUATION & DCF WORKBENCH */}
         {activeToolTab === 'valuations' && (
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Calculator className="w-5 h-5 text-[#34A87E]" />
+                  <Calculator className="w-5 h-5 text-[#34A87E]"/>
                   Institutional Equity DCF & Multiples Valuation Engine
                 </h3>
                 <p className="text-xs text-zinc-400 mt-0.5">
@@ -718,11 +704,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                 <div 
                   key={idx}
                   onClick={() => handleSelectValuationPreset(preset)}
-                  className={`p-3 rounded-xl border transition-all cursor-pointer ${
-                    valSelectedStock.name === preset.name 
-                      ? 'bg-[#34A87E]/10 border-[#34A87E] shadow-[0_0_15px_rgba(52,168,126,0.2)]' 
-                      : 'bg-white/[0.02] border-white/10 hover:bg-white/5'
-                  }`}
+                  className={`p-3 rounded-xl transition-all cursor-pointer bg-white/[0.03] ${ valSelectedStock.name === preset.name ?'bg-[#34A87E]/10 shadow-[0_0_15px_rgba(52,168,126,0.2)]' : 'bg-white/[0.02] hover:bg-white/5'}`}
                 >
                   <div className="text-[10px] text-zinc-500 font-mono">{preset.currency}</div>
                   <div className="font-bold text-xs text-white truncate mt-0.5">{preset.name.split('(')[0]}</div>
@@ -736,7 +718,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
             </div>
 
             {/* Interactive Calculator Workspace */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 bg-[#0B0E14] border border-white/10 rounded-2xl p-6">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 bg-[#0B0E14] rounded-lg p-3.5">
               
               {/* Inputs */}
               <div className="lg:col-span-6 space-y-4">
@@ -749,7 +731,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       type="text" 
                       value={customTicker}
                       onChange={(e) => setCustomTicker(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:border-[#34A87E]"
+                      className="w-full bg-white/5 rounded-lg px-3 py-2 text-xs text-white font-mono"
                     />
                   </div>
                   <div>
@@ -758,7 +740,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       type="number" 
                       value={customPrice}
                       onChange={(e) => setCustomPrice(parseFloat(e.target.value) || 0)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:border-[#34A87E]"
+                      className="w-full bg-white/5 rounded-lg px-3 py-2 text-xs text-white font-mono"
                     />
                   </div>
                 </div>
@@ -770,7 +752,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       type="number" 
                       value={customGrowth}
                       onChange={(e) => setCustomGrowth(parseFloat(e.target.value) || 0)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:border-[#34A87E]"
+                      className="w-full bg-white/5 rounded-lg px-3 py-2 text-xs text-white font-mono"
                     />
                   </div>
                   <div>
@@ -779,12 +761,12 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       type="number" 
                       value={customWacc}
                       onChange={(e) => setCustomWacc(parseFloat(e.target.value) || 0)}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-xs text-white font-mono focus:border-[#34A87E]"
+                      className="w-full bg-white/5 rounded-lg px-3 py-2 text-xs text-white font-mono"
                     />
                   </div>
                 </div>
 
-                <div className="p-3 bg-white/[0.02] border border-white/5 rounded-xl text-xs text-zinc-400 leading-relaxed">
+                <div className="p-3 bg-white/[0.02] rounded-xl text-xs text-zinc-400 leading-relaxed">
                   <span className="font-bold text-white">Analyst Thesis: </span>
                   {valSelectedStock.verdict}
                 </div>
@@ -793,14 +775,14 @@ The African investment landscape is undergoing a structural paradigm shift chara
                   onClick={handleSendValuationToAI}
                   className="w-full py-3 bg-gradient-to-r from-[#34A87E] to-[#059669] text-white font-bold text-xs uppercase tracking-wider rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-900/30"
                 >
-                  <Sparkles className="w-4 h-4" /> Run Deep Valuation In AI Advisor Desk
+                  <Sparkles className="w-4 h-4"/> Run Deep Valuation In AI Advisor Desk
                 </button>
               </div>
 
               {/* Outputs Summary Card */}
-              <div className="lg:col-span-6 bg-gradient-to-br from-[#121722] to-[#080B10] border border-white/10 rounded-xl p-5 flex flex-col justify-between">
+              <div className="lg:col-span-6 bg-gradient-to-br from-[#121722] to-[#080B10] rounded-xl p-3 flex flex-col justify-between">
                 <div>
-                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                  <div className="flex items-center justify-between pb-3">
                     <span className="text-xs font-mono text-zinc-400">INTRINSIC VALUE (DCF)</span>
                     <span className="text-xs font-mono font-bold px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded">
                       {valSelectedStock.upside} IMPLIED UPSIDE
@@ -816,7 +798,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 py-3 border-t border-white/5 text-center font-mono">
+                  <div className="grid grid-cols-3 gap-2 py-3 text-center font-mono">
                     <div className="bg-white/5 p-2 rounded-lg">
                       <div className="text-[9px] text-zinc-400">BEAR CASE</div>
                       <div className="text-xs font-bold text-zinc-300">{(valSelectedStock.price * 0.9).toFixed(1)}</div>
@@ -832,7 +814,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                   </div>
                 </div>
 
-                <div className="text-[10px] text-zinc-500 font-mono flex items-center justify-between pt-2 border-t border-white/5">
+                <div className="text-[10px] text-zinc-500 font-mono flex items-center justify-between pt-2">
                   <span>Discounting 10Y Unlevered Free Cash Flows</span>
                   <span>Terminal Rate: 3.5%</span>
                 </div>
@@ -844,11 +826,11 @@ The African investment landscape is undergoing a structural paradigm shift chara
 
         {/* TAB 2: SOVEREIGN RISK & CENTRAL BANK RADAR */}
         {activeToolTab === 'sovereign' && (
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Landmark className="w-5 h-5 text-[#0666EB]" />
+                  <Landmark className="w-5 h-5 text-[#0666EB]"/>
                   Pan-African Sovereign Debt & Central Bank Matrix
                 </h3>
                 <p className="text-xs text-zinc-400 mt-0.5">
@@ -863,44 +845,44 @@ The African investment landscape is undergoing a structural paradigm shift chara
               </button>
             </div>
 
-            <div className="bg-[#0B0E14] border border-white/10 rounded-2xl overflow-hidden shadow-xl">
-              <table className="w-full text-left border-collapse font-sans">
+            <div className="bg-[#0B0E14] rounded-lg overflow-hidden shadow-xl">
+              <table className="w-full text-left font-sans">
                 <thead>
-                  <tr className="border-b border-white/10 bg-white/[0.02] text-[10px] uppercase font-mono tracking-wider text-zinc-400">
-                    <th className="p-3.5">Country / Sovereign</th>
-                    <th className="p-3.5">Policy Rate</th>
-                    <th className="p-3.5">Inflation (CPI)</th>
-                    <th className="p-3.5">EMBI Spread</th>
-                    <th className="p-3.5">Debt / GDP</th>
-                    <th className="p-3.5">1Y FX Vol</th>
-                    <th className="p-3.5">Credit Rating</th>
-                    <th className="p-3.5 text-right">Action</th>
+                  <tr className="bg-white/[0.02] text-[10px] uppercase font-mono tracking-wider text-zinc-400">
+                    <th className="px-2.5 py-1.5">Country / Sovereign</th>
+                    <th className="px-2.5 py-1.5">Policy Rate</th>
+                    <th className="px-2.5 py-1.5">Inflation (CPI)</th>
+                    <th className="px-2.5 py-1.5">EMBI Spread</th>
+                    <th className="px-2.5 py-1.5">Debt / GDP</th>
+                    <th className="px-2.5 py-1.5">1Y FX Vol</th>
+                    <th className="px-2.5 py-1.5">Credit Rating</th>
+                    <th className="px-2.5 py-1.5 text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 text-xs">
+                <tbody className="text-xs">
                   {SOVEREIGN_MATRIX.map((sov, idx) => (
                     <tr key={idx} className="hover:bg-white/[0.03] transition-colors group">
-                      <td className="p-3.5 font-bold text-white flex items-center gap-2">
+                      <td className="px-2.5 py-1.5 font-bold text-white flex items-center gap-2">
                         <span className="text-base">{sov.flag}</span>
                         <div>
                           <div>{sov.country}</div>
                           <div className="text-[10px] text-zinc-500 font-mono">{sov.code}</div>
                         </div>
                       </td>
-                      <td className="p-3.5 font-mono font-bold text-white">{sov.policyRate}</td>
-                      <td className="p-3.5 font-mono text-zinc-300">{sov.inflation}</td>
-                      <td className="p-3.5 font-mono font-bold text-amber-400">{sov.sovereignSpread}</td>
-                      <td className="p-3.5 font-mono text-zinc-300">{sov.debtToGdp}</td>
-                      <td className="p-3.5 font-mono text-zinc-400">{sov.fxVol1Y}</td>
-                      <td className="p-3.5">
-                        <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-white/5 border border-white/10 text-white">
+                      <td className="px-2.5 py-1.5 font-mono font-bold text-white">{sov.policyRate}</td>
+                      <td className="px-2.5 py-1.5 font-mono text-zinc-300">{sov.inflation}</td>
+                      <td className="px-2.5 py-1.5 font-mono font-bold text-amber-400">{sov.sovereignSpread}</td>
+                      <td className="px-2.5 py-1.5 font-mono text-zinc-300">{sov.debtToGdp}</td>
+                      <td className="px-2.5 py-1.5 font-mono text-zinc-400">{sov.fxVol1Y}</td>
+                      <td className="px-2.5 py-1.5">
+                        <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-white/5 text-white">
                           {sov.creditRating}
                         </span>
                       </td>
-                      <td className="p-3.5 text-right">
+                      <td className="px-2.5 py-1.5 text-right">
                         <button
                           onClick={() => handleSendSovereignToAI(sov)}
-                          className="px-3 py-1 bg-[#0666EB]/20 hover:bg-[#0666EB]/40 border border-[#0666EB]/40 text-[#0666EB] font-bold rounded-lg text-[11px] transition-all cursor-pointer"
+                          className="px-3 py-1 bg-[#0666EB]/20 hover:bg-[#0666EB]/40 text-[#0666EB] font-bold rounded-lg text-[11px] transition-all cursor-pointer"
                         >
                           Analyze Risk
                         </button>
@@ -915,11 +897,11 @@ The African investment landscape is undergoing a structural paradigm shift chara
 
         {/* TAB 3: COMMODITIES & CRITICAL MINERALS */}
         {activeToolTab === 'commodities' && (
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Coins className="w-5 h-5 text-[#F59E0B]" />
+                  <Coins className="w-5 h-5 text-[#F59E0B]"/>
                   Global Commodities & African Critical Minerals Intelligence
                 </h3>
                 <p className="text-xs text-zinc-400 mt-0.5">
@@ -938,17 +920,15 @@ The African investment landscape is undergoing a structural paradigm shift chara
               {COMMODITIES_MATRIX.map((comm, idx) => (
                 <div 
                   key={idx}
-                  className="p-4 bg-[#0B0E14] border border-white/10 rounded-2xl hover:border-[#F59E0B]/50 transition-all flex flex-col justify-between group"
+                  className="p-4 bg-[#0B0E14] rounded-lg transition-all flex flex-col justify-between group"
                 >
                   <div>
                     <div className="flex items-center justify-between">
                       <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-zinc-400">
                         {comm.category}
                       </span>
-                      <span className={`text-xs font-mono font-bold flex items-center gap-0.5 ${
-                        comm.up ? 'text-emerald-400' : 'text-red-400'
-                      }`}>
-                        {comm.up ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                      <span className={`text-xs font-mono font-bold flex items-center gap-0.5 ${ comm.up ?'text-emerald-400' : 'text-red-400'}`}>
+                        {comm.up ? <TrendingUp className="w-3 h-3"/> : <TrendingDown className="w-3 h-3"/>}
                         {comm.change}
                       </span>
                     </div>
@@ -961,7 +941,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       {comm.price}
                     </div>
 
-                    <div className="mt-3 p-2 rounded-lg bg-white/[0.02] border border-white/5 text-[11px] text-zinc-300 space-y-1">
+                    <div className="mt-3 p-2 rounded-lg bg-white/[0.02] text-[11px] text-zinc-300 space-y-1">
                       <div className="text-[#F59E0B] font-bold font-mono text-[10px]">{comm.africaShare}</div>
                       <div className="text-zinc-400 text-[10px]">Producers: {comm.primaryProducers}</div>
                       <div className="text-[10px] text-zinc-500 line-clamp-2 mt-1">{comm.strategicSignificance}</div>
@@ -970,9 +950,9 @@ The African investment landscape is undergoing a structural paradigm shift chara
 
                   <button
                     onClick={() => handleSendCommodityToAI(comm)}
-                    className="w-full mt-4 py-2 bg-[#F59E0B]/10 hover:bg-[#F59E0B]/20 border border-[#F59E0B]/30 text-[#F59E0B] text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                    className="w-full mt-4 py-2 bg-[#F59E0B]/10 hover:bg-[#F59E0B]/20 text-[#F59E0B] text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-1.5"
                   >
-                    <Sparkles className="w-3.5 h-3.5" /> Analyze Super-Cycle
+                    <Sparkles className="w-3.5 h-3.5"/> Analyze Super-Cycle
                   </button>
                 </div>
               ))}
@@ -982,11 +962,11 @@ The African investment landscape is undergoing a structural paradigm shift chara
 
         {/* TAB 4: SHOCK SCENARIO SIMULATOR */}
         {activeToolTab === 'scenarios' && (
-          <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          <div className="flex-1 overflow-y-auto p-3.5 space-y-3">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Flame className="w-5 h-5 text-red-400" />
+                  <Flame className="w-5 h-5 text-red-400"/>
                   Macroeconomic & Geopolitical Shock Simulator
                 </h3>
                 <p className="text-xs text-zinc-400 mt-0.5">
@@ -1005,21 +985,21 @@ The African investment landscape is undergoing a structural paradigm shift chara
               {MACRO_SCENARIOS.map((scenario) => (
                 <div 
                   key={scenario.id}
-                  className="p-5 bg-[#0B0E14] border border-white/10 rounded-2xl space-y-4"
+                  className="p-3 bg-[#0B0E14] rounded-lg space-y-4"
                 >
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div>
                       <h4 className="text-base font-bold text-white">{scenario.title}</h4>
                       <p className="text-xs text-zinc-400 mt-1">{scenario.description}</p>
                     </div>
-                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-red-500/10 text-red-400 border border-red-500/20 shrink-0">
+                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-red-500/10 text-red-400 shrink-0">
                       {scenario.vulnerabilityIndex}
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 border-t border-white/5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3">
                     {scenario.impacts.map((imp, i) => (
-                      <div key={i} className="p-2.5 bg-white/[0.02] border border-white/5 rounded-xl text-xs">
+                      <div key={i} className="p-2.5 bg-white/[0.02] rounded-xl text-xs">
                         <div className="text-[10px] text-zinc-500 font-mono uppercase">{imp.assetClass}</div>
                         <div className="font-semibold text-white mt-1 text-[11px]">{imp.impact}</div>
                       </div>
@@ -1031,7 +1011,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       onClick={() => handleSendScenarioToAI(scenario)}
                       className="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-700 text-white text-xs font-bold rounded-xl hover:opacity-90 transition-all flex items-center gap-2 cursor-pointer shadow-lg shadow-red-900/30"
                     >
-                      <Zap className="w-3.5 h-3.5" /> Execute Stress Test In AI Desk
+                      <Zap className="w-3.5 h-3.5"/> Execute Stress Test In AI Desk
                     </button>
                   </div>
                 </div>
@@ -1045,7 +1025,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
           <div className="flex-1 flex flex-col overflow-hidden">
             
             {/* Messages Scroll Area */}
-            <div className="flex-1 p-6 overflow-y-auto space-y-6">
+            <div className="flex-1 p-3.5 overflow-y-auto space-y-3">
               <AnimatePresence initial={false}>
                 {messages.map((msg) => (
                   <motion.div 
@@ -1053,30 +1033,26 @@ The African investment landscape is undergoing a structural paradigm shift chara
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className={`flex gap-4 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`flex gap-4 ${msg.role ==='user'?'justify-end' : 'justify-start'}`}
                   >
                     {msg.role === 'model' && (
                       <div 
-                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 shadow-lg border"
+                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-1 shadow-lg bg-white/[0.03]"
                         style={{ 
-                          backgroundColor: `${activeDesk.color}20`,
+                          backgroundColor:`${activeDesk.color}20`,
                           borderColor: `${activeDesk.color}40`,
                           color: activeDesk.color 
                         }}
                       >
-                        <BrainCircuit className="w-4 h-4" />
+                        <BrainCircuit className="w-4 h-4"/>
                       </div>
                     )}
                     
-                    <div className={`max-w-[90%] lg:max-w-[82%] ${
-                      msg.role === 'user' 
-                        ? 'bg-gradient-to-r from-[#0666EB] to-[#0048B5] text-white rounded-2xl rounded-tr-none p-4 shadow-xl border border-blue-400/20' 
-                        : 'bg-[#0B0E14] border border-white/[0.12] rounded-2xl rounded-tl-none p-6 shadow-2xl space-y-3'
-                    }`}>
+                    <div className={`max-w-[90%] lg:max-w-[82%] ${ msg.role ==='user'?'bg-gradient-to-r from-[#0666EB] to-[#0048B5] text-white rounded-2xl rounded-tr-none p-4 shadow-xl ' : 'bg-[#0B0E14] rounded-2xl rounded-tl-none p-6 shadow-2xl space-y-3'}`}>
                       
                       {/* Message Header (Model) */}
                       {msg.role === 'model' && (
-                        <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] text-xs">
+                        <div className="flex items-center justify-between pb-3 text-xs">
                           <div className="flex items-center gap-2">
                             <span className="font-bold text-white font-mono text-[11px]">
                               AFRIQUANTX CAPITAL ADVISORY
@@ -1089,14 +1065,14 @@ The African investment landscape is undergoing a structural paradigm shift chara
                               className="p-1 rounded text-zinc-400 hover:text-white transition-colors cursor-pointer"
                               title="Read Out Loud"
                             >
-                              {isSpeaking ? <VolumeX className="w-3.5 h-3.5 text-amber-400" /> : <Volume2 className="w-3.5 h-3.5" />}
+                              {isSpeaking ? <VolumeX className="w-3.5 h-3.5 text-amber-400"/> : <Volume2 className="w-3.5 h-3.5"/>}
                             </button>
                             <button
                               onClick={() => handleCopy(msg.id, msg.content)}
                               className="p-1 rounded text-zinc-400 hover:text-white transition-colors cursor-pointer"
                               title="Copy Intelligence"
                             >
-                              {copiedMessageId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                              {copiedMessageId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-400"/> : <Copy className="w-3.5 h-3.5"/>}
                             </button>
                           </div>
                         </div>
@@ -1113,9 +1089,9 @@ The African investment landscape is undergoing a structural paradigm shift chara
 
                       {/* Model Institutional Footer */}
                       {msg.role === 'model' && (
-                        <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between text-[10px] font-mono text-zinc-500">
+                        <div className="pt-3 flex items-center justify-between text-[10px] font-mono text-zinc-500">
                           <span className="flex items-center gap-1.5 text-zinc-400">
-                            <AlertTriangle className="w-3.5 h-3.5 text-amber-300" />
+                            <AlertTriangle className="w-3.5 h-3.5 text-amber-300"/>
                             AI analysis unavailable
                           </span>
                         </div>
@@ -1123,8 +1099,8 @@ The African investment landscape is undergoing a structural paradigm shift chara
                     </div>
 
                     {msg.role === 'user' && (
-                      <div className="w-9 h-9 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center flex-shrink-0 mt-1">
-                        <User className="w-4 h-4 text-white" />
+                      <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 mt-1">
+                        <User className="w-4 h-4 text-white"/>
                       </div>
                     )}
                   </motion.div>
@@ -1138,21 +1114,21 @@ The African investment landscape is undergoing a structural paradigm shift chara
                   className="flex gap-4 items-center"
                 >
                   <div 
-                    className="w-9 h-9 rounded-xl flex items-center justify-center border shadow-lg"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg bg-white/[0.03]"
                     style={{ 
-                      backgroundColor: `${activeDesk.color}20`,
+                      backgroundColor:`${activeDesk.color}20`,
                       borderColor: `${activeDesk.color}40`,
                       color: activeDesk.color 
                     }}
                   >
                     <BrainCircuit className="w-4 h-4 animate-spin" />
                   </div>
-                  <div className="bg-[#0B0E14] border border-white/10 rounded-2xl rounded-tl-none px-5 py-3.5 flex items-center gap-3 shadow-xl">
+                  <div className="bg-[#0B0E14] rounded-lg rounded-tl-none px-5 py-3.5 flex items-center gap-3 shadow-xl">
                     <span className="text-xs font-mono text-zinc-400">Synthesizing cross-border bourses & macro telemetry...</span>
                     <div className="flex gap-1">
-                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay:'0ms'}} />
+                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay:'150ms'}} />
+                      <div className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay:'300ms'}} />
                     </div>
                   </div>
                 </motion.div>
@@ -1161,15 +1137,15 @@ The African investment landscape is undergoing a structural paradigm shift chara
             </div>
 
             {/* Prompt Templates Library Pills */}
-            <div className="px-6 py-2 bg-[#090C12] border-t border-white/5 overflow-x-auto scrollbar-none flex gap-2 shrink-0">
+            <div className="px-3.5 py-2 bg-[#090C12] overflow-x-auto scrollbar-none flex gap-2 shrink-0">
               <span className="text-[10px] font-mono uppercase text-zinc-500 font-bold self-center shrink-0 flex items-center gap-1">
-                <Sparkles className="w-3 h-3 text-white" /> Prompts:
+                <Sparkles className="w-3 h-3 text-white"/> Prompts:
               </span>
               {PROMPT_TEMPLATES.flatMap(cat => cat.prompts).slice(0, 7).map((prompt, i) => (
                 <button 
                   key={i}
                   onClick={() => handleSend(prompt)}
-                  className="whitespace-nowrap px-3 py-1 rounded-lg bg-white/[0.03] border border-white/10 text-[11px] font-medium text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/30 transition-all shrink-0 cursor-pointer"
+                  className="whitespace-nowrap px-3 py-1 rounded-lg bg-white/[0.03] text-[11px] font-medium text-zinc-400 hover:text-white hover:bg-white/10 transition-all shrink-0 cursor-pointer"
                 >
                   {prompt.length > 55 ? prompt.slice(0, 55) + '...' : prompt}
                 </button>
@@ -1177,7 +1153,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
             </div>
 
             {/* Input Bar */}
-            <div className="p-4 border-t border-white/[0.08] bg-[#0A0D14]/90 backdrop-blur-md z-10">
+            <div className="p-4 bg-[#0A0D14]/90 backdrop-blur-md z-10">
               <div className="relative flex items-center gap-3">
                 <div className="relative flex-1">
                   <input 
@@ -1188,7 +1164,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                       if (e.key === 'Enter') handleSend();
                     }}
                     placeholder={`Ask ${activeDesk.shortName} (e.g. valuation of Safaricom, DRC Cobalt outlook, NGN/ZAR carry-trade)...`} 
-                    className="w-full bg-white/[0.04] border border-white/[0.12] rounded-xl pl-4 pr-12 py-3.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-white/40 focus:bg-white/[0.07] transition-all font-sans"
+                    className="w-full bg-white/[0.04] rounded-xl pl-4 pr-12 py-3.5 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:bg-white/[0.07] transition-all font-sans"
                   />
                 </div>
                 
@@ -1198,7 +1174,7 @@ The African investment landscape is undergoing a structural paradigm shift chara
                   className="px-5 py-3.5 bg-white text-black font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-zinc-200 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(255,255,255,0.2)] flex items-center gap-2 cursor-pointer shrink-0"
                 >
                   <span>Inquire</span>
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4"/>
                 </button>
               </div>
             </div>

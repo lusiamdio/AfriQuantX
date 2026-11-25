@@ -43,6 +43,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationData, setConfirmationData] = useState<any>(null);
   const [profileName, setProfileName] = useState('John Doe');
+  const [tradeError, setTradeError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -209,9 +210,10 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
         })
       });
 
+      setTradeError(null);
       const resData = await res.json();
       if (!res.ok) {
-        alert(resData.error || "Trade execution failed");
+        setTradeError(resData.error || "Trade execution failed");
         return;
       }
 
@@ -253,7 +255,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
       setShowConfirmation(true);
     } catch (err: any) {
       console.warn("Trade execution error:", err);
-      alert(err.message || "An unexpected error occurred during execution.");
+      setTradeError(err.message || "An unexpected error occurred during execution.");
     }
   };
 
@@ -261,15 +263,15 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
   const chartColor = isPositiveTrend ? '#00C896' : '#FF3B3B';
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-white/5 pb-4 gap-4">
+    <div className="space-y-3">
+      <div className="flex flex-col md:flex-row md:items-center justify-between pb-4 gap-4">
         <div>
           <h1 className="text-3xl font-bold text-white tracking-tight">Trading Desk</h1>
           <p className="text-zinc-400 mt-1">Access private equity, start-up shares, and global financial networks.</p>
         </div>
       </div>
 
-      <div className="w-full flex-1 flex flex-col lg:flex-row gap-6 items-start">
+      <div className="w-full flex-1 flex flex-col lg:flex-row gap-3 items-start">
         {/* LEFT SUB-MENU - COLLAPSIBLE */}
         <AnimatePresence initial={false} mode="wait">
           {isSubMenuOpen ? (
@@ -281,8 +283,8 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
               transition={{ duration: 0.2 }}
               className="w-full lg:w-64 shrink-0 overflow-hidden"
             >
-              <div className="bg-neutral-900/80 border border-white/10 rounded-2xl p-3 space-y-3 shadow-xl backdrop-blur-md">
-                <div className="flex items-center justify-between px-2 py-1.5 border-b border-white/5 pb-2.5">
+              <div className="bg-neutral-900/80 rounded-lg p-3 space-y-3 shadow-xl backdrop-blur-md">
+                <div className="flex items-center justify-between px-2 py-1.5 pb-2.5 bg-white/[0.03]">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
@@ -312,11 +314,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                       <button
                         key={item.id}
                         onClick={() => setActiveSubTab(item.id as any)}
-                        className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${
-                          isActive
-                            ? 'bg-white text-black shadow-lg shadow-white/10'
-                            : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                        }`}
+                        className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${ isActive ? 'bg-white text-black shadow-lg shadow-white/10' : 'text-zinc-400 hover:text-white hover:bg-white/5' }`}
                       >
                         <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${isActive ? 'text-black' : item.color}`} />
                         <div className="min-w-0 flex-1">
@@ -332,10 +330,10 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                   })}
                 </nav>
 
-                <div className="pt-2.5 border-t border-white/5 px-2 space-y-2">
+                <div className="pt-2.5 px-2 space-y-2 bg-white/[0.03]">
                   <button
                     onClick={() => setActiveTab('integrations')}
-                    className="w-full py-2 px-2.5 rounded-xl bg-blue-600/15 border border-blue-500/30 hover:bg-blue-600/25 text-blue-300 text-[11px] font-bold flex items-center justify-between transition-all cursor-pointer"
+                    className="w-full py-2 px-2.5 rounded-xl bg-blue-600/15 hover:bg-blue-600/25 text-blue-300 text-[11px] font-bold flex items-center justify-between transition-all cursor-pointer"
                   >
                     <span>FIX & SOR Cockpit</span>
                     <span>→</span>
@@ -359,7 +357,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
             >
               <button
                 onClick={() => setIsSubMenuOpen(true)}
-                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-neutral-900/80 border border-white/10 text-zinc-300 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all shadow-xl cursor-pointer group"
+                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-neutral-900/80 text-zinc-300 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all shadow-xl cursor-pointer group"
                 title="Show Sub-Menu"
               >
                 <PanelLeftOpen className="w-4 h-4 text-emerald-400 group-hover:text-white transition-colors" />
@@ -378,28 +376,28 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
           ) : activeSubTab === 'twelvedata' ? (
             <TwelveDataTrade setActiveTab={setActiveTab} />
           ) : (
-            <div className="space-y-6">
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div>
                   <h1 className="text-3xl font-bold text-white tracking-tight">Secondary Market</h1>
                   <p className="text-zinc-400 mt-1">Trade private equity with instant liquidity</p>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00C896]/10 border border-[#00C896]/20 text-[#00C896] text-sm font-medium">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#00C896]/10 text-[#00C896] text-sm font-medium">
                     <Activity className="w-4 h-4 animate-pulse" />
                     Market Open
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
                 {/* Left Column: Chart & Trade Panel */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2 space-y-3">
                   {/* Chart Area */}
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg">
-            <div className="flex items-center justify-between mb-6">
+                  <div className="bg-white/5 rounded-lg p-3.5 backdrop-blur-xl shadow-lg">
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-white text-black flex items-center justify-center font-bold text-xl shadow-lg">
+                <div className="w-12 h-12 rounded-lg bg-white text-black flex items-center justify-center font-bold text-xl shadow-lg">
                   {selectedAsset.symbol[0]}
                 </div>
                 <div>
@@ -435,7 +433,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
             </div>
             
             {/* Live Chart Area */}
-            <div className="h-64 w-full bg-[#0A0A0A]/50 rounded-xl border border-white/5 p-4 relative overflow-hidden">
+            <div className="h-64 w-full bg-[#0A0A0A]/50 rounded-xl p-4 relative overflow-hidden">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData}>
                   <defs>
@@ -461,7 +459,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                     orientation="right"
                   />
                   <Tooltip 
-                    contentStyle={{ backgroundColor: '#18181b', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                    contentStyle={{ backgroundColor: '#18181b', borderColor: 'transparent', borderRadius: '8px' }}
                     itemStyle={{ color: '#fff' }}
                     labelStyle={{ color: '#a1a1aa', marginBottom: '4px' }}
                     formatter={(value: number) => [`$${value.toFixed(2)}`, 'Price']}
@@ -480,11 +478,11 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
             </div>
 
             <div className="grid grid-cols-3 gap-4 mt-6">
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-4 rounded-lg bg-white/5">
                 <p className="text-sm text-zinc-400 mb-1">24h Volume</p>
                 <p className="text-lg font-semibold text-white">{selectedAsset.volume}</p>
               </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-4 rounded-lg bg-white/5">
                 <p className="text-sm text-zinc-400 mb-1">Liquidity Score</p>
                 <div className="flex items-center gap-2">
                   <p className="text-lg font-semibold text-[#00C896]">{selectedAsset.liquidityScore}/100</p>
@@ -493,7 +491,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                   </div>
                 </div>
               </div>
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+              <div className="p-4 rounded-lg bg-white/5">
                 <p className="text-sm text-zinc-400 mb-1">Market Cap</p>
                 <p className="text-lg font-semibold text-white">$1.2B</p>
               </div>
@@ -501,14 +499,14 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
           </div>
 
           {/* Trade Panel */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg">
-            <div className="flex items-center justify-between mb-6">
+          <div className="bg-white/5 rounded-lg p-3.5 backdrop-blur-xl shadow-lg">
+            <div className="flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold text-white">Trade Panel</h3>
               <ShieldCheck className="w-5 h-5 text-[#00C896]" />
             </div>
 
             {/* Buy/Sell Toggle */}
-            <div className="flex p-1 bg-white/5 rounded-xl mb-6">
+            <div className="flex p-1 bg-white/5 rounded-xl mb-3">
               <button 
                 onClick={() => setTradeAction('buy')}
                 className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${tradeAction === 'buy' ? 'bg-[#00C896] text-white shadow-lg shadow-[#00C896]/20' : 'text-zinc-400 hover:text-white'}`}
@@ -523,7 +521,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {/* Order Type & Inputs */}
               <div className="space-y-4">
                 <div className="flex gap-4 mb-2">
@@ -533,7 +531,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                       name="orderType" 
                       checked={orderType === 'market'} 
                       onChange={() => setOrderType('market')}
-                      className="w-4 h-4 text-[#0066FF] bg-white/10 border-white/20 focus:ring-[#0066FF] focus:ring-offset-gray-900"
+                      className="w-4 h-4 text-[#0066FF] bg-white/10 focus:ring-[#0066FF] focus:ring-offset-gray-900"
                     />
                     <span className="text-sm text-zinc-300">Market</span>
                   </label>
@@ -543,7 +541,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                       name="orderType" 
                       checked={orderType === 'limit'} 
                       onChange={() => setOrderType('limit')}
-                      className="w-4 h-4 text-[#0066FF] bg-white/10 border-white/20 focus:ring-[#0066FF] focus:ring-offset-gray-900"
+                      className="w-4 h-4 text-[#0066FF] bg-white/10 focus:ring-[#0066FF] focus:ring-offset-gray-900"
                     />
                     <span className="text-sm text-zinc-300">Limit</span>
                   </label>
@@ -557,7 +555,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                       <input 
                         type="number" 
                         placeholder="0.00"
-                        className="w-full bg-white/5 border border-white/10 rounded-xl pl-8 pr-4 py-3 text-white focus:outline-none focus:border-[#0066FF]/50 transition-colors"
+                        className="w-full bg-white/5 rounded-xl pl-8 pr-4 py-3 text-white focus:outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -570,9 +568,13 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                       placeholder="0"
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#0066FF]/50 transition-colors"
+                      className="w-full bg-white/5 rounded-xl px-4 py-3 text-white focus:outline-none transition-colors"
                     />
-                    <button className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-[#0066FF] hover:text-[#0066FF]/80">
+                    <button
+                      type="button"
+                      onClick={() => setAmount(Math.max(1, Math.floor(12450 / selectedAsset.price)).toString())}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-[#0066FF] hover:text-[#0066FF]/80"
+                    >
                       MAX
                     </button>
                   </div>
@@ -581,7 +583,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
 
               {/* Order Summary & CTA */}
               <div className="flex flex-col justify-end space-y-4">
-                <div className="p-4 rounded-xl bg-white/5 border border-white/5 space-y-2">
+                <div className="p-4 rounded-xl bg-white/5 space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-zinc-400">Available Balance</span>
                     <span className="text-white font-medium">$12,450.00</span>
@@ -592,19 +594,21 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                       ${amount ? (parseFloat(amount) * selectedAsset.price).toFixed(2) : '0.00'}
                     </span>
                   </div>
-                  <div className="flex justify-between text-xs pt-2 border-t border-white/5">
+                  <div className="flex justify-between text-xs pt-2">
                     <span className="text-zinc-500">Network Fee</span>
                     <span className="text-zinc-400">$0.50</span>
                   </div>
                 </div>
 
+                {tradeError && (
+                  <p role="alert" className="text-xs text-rose-400 bg-rose-500/10 rounded-xl px-3 py-2">
+                    {tradeError}
+                  </p>
+                )}
+
                 <button 
                   onClick={handleExecuteTrade}
-                  className={`w-full py-4 rounded-xl font-bold text-white transition-all shadow-lg ${
-                    tradeAction === 'buy' 
-                      ? 'bg-[#00C896] hover:bg-[#00C896]/80 shadow-[#00C896]/20' 
-                      : 'bg-rose-500 hover:bg-rose-600 shadow-rose-500/20'
-                  }`}
+                  className={`w-full py-4 rounded-xl font-bold text-white transition-all shadow-lg ${ tradeAction === 'buy' ? 'bg-[#00C896] hover:bg-[#00C896]/80 shadow-[#00C896]/20' : 'bg-rose-500 hover:bg-rose-600 shadow-rose-500/20' }`}
                 >
                   {tradeAction === 'buy' ? 'Buy' : 'Sell'} {selectedAsset.symbol}
                 </button>
@@ -614,21 +618,21 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
         </div>
 
         {/* Right Column: Order Book */}
-        <div className="space-y-6">
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg sticky top-6">
+        <div className="space-y-3">
+          <div className="bg-white/5 rounded-lg p-3.5 backdrop-blur-xl shadow-lg sticky top-6">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold text-white">Order Book</h3>
               <div className="flex items-center gap-2">
                 <div className="relative">
                   <Search className="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <input type="text" placeholder="Search..." className="bg-white/5 border border-white/10 rounded-xl pl-9 pr-4 py-1.5 text-sm text-white focus:outline-none focus:border-[#0066FF]/50 w-full" />
+                  <input type="text" placeholder="Search..." className="bg-white/5 rounded-xl pl-9 pr-4 py-1.5 text-sm text-white focus:outline-none w-full" />
                 </div>
               </div>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left">
                 <thead>
-                  <tr className="text-zinc-400 text-xs border-b border-white/5">
+                  <tr className="text-zinc-400 text-xs">
                     <th className="pb-3 font-medium">Asset</th>
                     <th className="pb-3 font-medium text-right">Price</th>
                     <th className="pb-3 font-medium text-right">24h</th>
@@ -639,9 +643,9 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                     <tr 
                       key={asset.id} 
                       onClick={() => setSelectedAssetId(asset.id)}
-                      className={`border-b border-white/5 cursor-pointer transition-colors hover:bg-white/5 ${selectedAsset.id === asset.id ? 'bg-white/10' : ''}`}
+                      className={`cursor-pointer transition-colors hover:bg-white/5 ${selectedAsset.id === asset.id ? 'bg-white/10' : ''}`}
                     >
-                      <td className="py-3">
+                      <td className="py-1.5">
                         <div className="flex items-center gap-2">
                           <div className="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center font-bold text-white text-[10px]">
                             {asset.symbol[0]}
@@ -651,7 +655,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                           </div>
                         </div>
                       </td>
-                      <td className="py-3 text-sm text-white text-right">
+                      <td className="py-1.5 text-xs text-white text-right">
                         <motion.span
                           key={asset.price}
                           initial={{ color: asset.price > (prevPriceRef.current || 0) ? '#10b981' : '#f43f5e' }}
@@ -661,7 +665,7 @@ export function Trade({ setActiveTab }: { setActiveTab: (tab: string) => void })
                           ${asset.price.toFixed(2)}
                         </motion.span>
                       </td>
-                      <td className="py-3 text-sm text-right">
+                      <td className="py-1.5 text-xs text-right">
                         <span className={`flex items-center justify-end ${asset.change >= 0 ? 'text-[#00C896]' : 'text-[#FF3B3B]'}`}>
                           {asset.change >= 0 ? <ArrowUpRight className="w-3 h-3" /> : <ArrowDownRight className="w-3 h-3" />}
                           {Math.abs(asset.change).toFixed(2)}%

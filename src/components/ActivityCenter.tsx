@@ -62,7 +62,7 @@ const mockActivities: ActivityItem[] = [
     amount: 22000.00,
     performance: 0.4,
     details: 'Revenue share contract execution for Q1 logistics volume.',
-    counterparty: 'Dangote Cement Manufacturing',
+    counterparty:'Dangote Cement Manufacturing',
     documents: ['RevShare Contract 2026.pdf']
   }
 ];
@@ -120,7 +120,7 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
           time: new Date(t.created_at).toLocaleString(),
           amount: Number(t.amount),
           performance: null,
-          details: t.metadata?.details || `Status: ${t.status}`,
+          details: t.metadata?.details ||`Status: ${t.status}`,
           counterparty: t.metadata?.counterparty || 'NXG Platform',
         }));
         setActivities([...alertActivities, ...formattedActivities]);
@@ -202,23 +202,23 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
 
   const getIconForType = (type: string) => {
     switch (type) {
-      case 'Price Alert': return <BellRing className="w-5 h-5 text-amber-400" />;
-      case 'Investment': return <Briefcase className="w-5 h-5 text-blue-400" />;
-      case 'Payout': return <DollarSign className="w-5 h-5 text-emerald-400" />;
-      case 'Trade': return <ArrowRightLeft className="w-5 h-5 text-amber-400" />;
-      case 'Contract': return <FileText className="w-5 h-5 text-purple-400" />;
-      default: return <Activity className="w-5 h-5 text-zinc-400" />;
+      case'Price Alert': return <BellRing className="w-5 h-5 text-amber-400"/>;
+      case'Investment': return <Briefcase className="w-5 h-5 text-blue-400"/>;
+      case'Payout': return <DollarSign className="w-5 h-5 text-emerald-400"/>;
+      case'Trade': return <ArrowRightLeft className="w-5 h-5 text-amber-400"/>;
+      case'Contract': return <FileText className="w-5 h-5 text-purple-400"/>;
+      default: return <Activity className="w-5 h-5 text-zinc-400"/>;
     }
   };
 
   const getBgForType = (type: string) => {
     switch (type) {
-      case 'Price Alert': return 'bg-amber-500/10 border-amber-500/25';
-      case 'Investment': return 'bg-blue-500/10 border-blue-500/20';
-      case 'Payout': return 'bg-emerald-500/10 border-emerald-500/20';
-      case 'Trade': return 'bg-amber-500/10 border-amber-500/20';
-      case 'Contract': return 'bg-purple-500/10 border-purple-500/20';
-      default: return 'bg-zinc-500/10 border-zinc-500/20';
+      case'Price Alert': return'bg-amber-500/10';
+      case'Investment': return'bg-blue-500/10';
+      case'Payout': return'bg-emerald-500/10';
+      case'Trade': return'bg-amber-500/10';
+      case'Contract': return'bg-purple-500/10';
+      default: return'bg-zinc-500/10';
     }
   };
 
@@ -237,7 +237,7 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
@@ -245,17 +245,36 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
             onClick={() => setActiveTab('dashboard')}
             className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors mb-4"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4"/>
             <span>Back to Dashboard</span>
           </button>
           <h1 className="text-3xl font-bold text-white tracking-tight">Activity Center</h1>
           <p className="text-zinc-400 mt-1">Track all your transactions, investments, and financial events in real-time.</p>
         </div>
         <div className="flex items-center gap-3">
-          <button className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-all flex items-center gap-2">
-            <Download className="w-4 h-4" /> Export CSV
+          <button
+            onClick={() => {
+              const rows = [
+                ['ID', 'Type', 'Asset', 'Amount', 'Counterparty', 'Time', 'Details'],
+                ...filteredActivities.map((a) => [a.id, a.type, a.asset, a.amount, a.counterparty || 'AfriQuantX', a.time, a.details]),
+              ];
+              const csv = rows.map((r) => r.map((v) =>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+              const blob = new Blob([csv], { type: 'text/csv' });
+              const url = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = 'afriquantx-activity.csv';
+              link.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="px-4 py-2 rounded-xl bg-white/5 text-white font-medium hover:bg-white/10 transition-all flex items-center gap-2 cursor-pointer"
+          >
+            <Download className="w-4 h-4"/> Export CSV
           </button>
-          <button className="px-4 py-2 rounded-xl bg-blue-500 text-white font-medium hover:bg-blue-400 transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+          <button
+            onClick={() => setActiveTab('reports')}
+            className="px-4 py-2 rounded-xl bg-blue-500 text-white font-medium hover:bg-blue-400 transition-all cursor-pointer"
+          >
             Generate Report
           </button>
         </div>
@@ -263,18 +282,18 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
 
       {/* AI Insights Panel */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-500/10 to-transparent border border-blue-500/20 flex items-start gap-4">
+        <div className="p-3 rounded-lg bg-gradient-to-br from-blue-500/10 to-transparent flex items-start gap-4">
           <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
-            <Activity className="w-5 h-5 text-blue-400" />
+            <Activity className="w-5 h-5 text-blue-400"/>
           </div>
           <div>
             <h3 className="text-white font-medium mb-1">Activity Surge</h3>
             <p className="text-sm text-zinc-400">Your trading activity increased by 32% this week compared to the previous 7 days.</p>
           </div>
         </div>
-        <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-transparent border border-emerald-500/20 flex items-start gap-4">
+        <div className="p-3 rounded-lg bg-gradient-to-br from-emerald-500/10 to-transparent flex items-start gap-4">
           <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0">
-            <TrendingUp className="w-5 h-5 text-emerald-400" />
+            <TrendingUp className="w-5 h-5 text-emerald-400"/>
           </div>
           <div>
             <h3 className="text-white font-medium mb-1">Top Performing Asset</h3>
@@ -284,9 +303,9 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
       </div>
 
       {/* Filters & Search */}
-      <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-4 rounded-2xl bg-white/5 border border-white/10">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-center p-4 rounded-lg bg-white/5">
         <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-          <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-white/5 flex-wrap">
+          <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl flex-wrap">
             {[
               { label: 'All', value: 'All' },
               { label: 'Price Alerts', value: 'Price Alert' },
@@ -298,43 +317,31 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
               <button
                 key={item.label}
                 onClick={() => setFilterType(item.value)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                  filterType === item.value
-                    ? 'bg-white/10 text-white font-bold' 
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${ filterType === item.value ?'bg-white/10 text-white font-bold' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
               >
                 {item.label}
               </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-white/5">
+          <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl">
             {['All Time', 'Today', 'Last 7 Days', 'Last 30 Days'].map(range => (
               <button
                 key={range}
                 onClick={() => setDateRange(range)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                  dateRange === range
-                    ? 'bg-white/10 text-white' 
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${ dateRange === range ?'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
               >
                 {range}
               </button>
             ))}
           </div>
 
-          <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl border border-white/5">
+          <div className="flex items-center gap-1 bg-black/40 p-1 rounded-xl">
             {['All', 'Gains', 'Losses'].map(perf => (
               <button
                 key={perf}
                 onClick={() => setPerformanceFilter(perf)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${
-                  performanceFilter === perf
-                    ? 'bg-white/10 text-white' 
-                    : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                }`}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors ${ performanceFilter === perf ?'bg-white/10 text-white' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
               >
                 {perf}
               </button>
@@ -344,36 +351,36 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
         
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500"/>
             <input 
               type="text" 
               placeholder="Search asset, company..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-black/40 border border-white/10 rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500/50 transition-colors"
+              className="w-full bg-black/40 rounded-xl pl-9 pr-4 py-2 text-sm text-white focus:outline-none transition-colors"
             />
           </div>
         </div>
       </div>
 
       {/* Activity Table */}
-      <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden">
+      <div className="bg-white/5 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse whitespace-nowrap">
+          <table className="w-full text-left whitespace-nowrap">
             <thead>
-              <tr className="border-b border-white/10 bg-black/20">
-                <th className="p-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Type</th>
-                <th className="p-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Asset / Event</th>
-                <th className="p-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Time</th>
-                <th className="p-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider text-right">Amount</th>
-                <th className="p-4 text-xs font-semibold text-zinc-400 uppercase tracking-wider text-right">Performance</th>
-                <th className="p-4 w-10"></th>
+              <tr className="bg-black/20">
+                <th className="px-2.5 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Type</th>
+                <th className="px-2.5 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Asset / Event</th>
+                <th className="px-2.5 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider">Time</th>
+                <th className="px-2.5 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider text-right">Amount</th>
+                <th className="px-2.5 py-1.5 text-xs font-semibold text-zinc-400 uppercase tracking-wider text-right">Performance</th>
+                <th className="px-2.5 py-1.5 w-10"></th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="">
               {isLoading ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center">
+                  <td colSpan={6} className="p-4 text-center">
                     <div className="flex flex-col items-center justify-center gap-3">
                       <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
                       <p className="text-zinc-400 text-sm">Loading live transactions...</p>
@@ -382,7 +389,7 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
                 </tr>
               ) : filteredActivities.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-zinc-500 text-sm">
+                  <td colSpan={6} className="p-4 text-center text-zinc-500 text-xs">
                     No activities found matching your criteria.
                   </td>
                 </tr>
@@ -391,34 +398,34 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
                   <React.Fragment key={activity.id}>
                     <tr 
                       onClick={() => toggleRow(activity)}
-                      className={`hover:bg-white/[0.02] transition-colors cursor-pointer ${expandedRow === activity.id ? 'bg-white/[0.02]' : ''}`}
+                      className={`hover:bg-white/[0.02] transition-colors cursor-pointer ${expandedRow === activity.id ?'bg-white/[0.02]' : ''}`}
                     >
-                    <td className="p-4">
-                      <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-lg border ${getBgForType(activity.type)}`}>
+                    <td className="px-2.5 py-1.5">
+                      <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-white/[0.03] ${getBgForType(activity.type)}`}>
                         {getIconForType(activity.type)}
                         <span className="text-xs font-medium text-white">{activity.type}</span>
                       </div>
                     </td>
-                    <td className="p-4">
+                    <td className="px-2.5 py-1.5">
                       <span className="text-sm font-medium text-white">{activity.asset}</span>
                     </td>
-                    <td className="p-4 text-sm text-zinc-400">{activity.time}</td>
-                    <td className="p-4 text-sm font-mono text-white text-right">
+                    <td className="px-2.5 py-1.5 text-xs text-zinc-400">{activity.time}</td>
+                    <td className="px-2.5 py-1.5 text-xs font-mono text-white text-right">
                       {activity.type === 'Payout' || activity.type === 'Trade' && activity.amount > 0 ? '+' : ''}
                       ${activity.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </td>
-                    <td className="p-4 text-right">
+                    <td className="px-2.5 py-1.5 text-right">
                       {activity.performance !== null ? (
-                        <span className={`inline-flex items-center gap-1 text-sm font-medium ${activity.performance >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                          {activity.performance >= 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                        <span className={`inline-flex items-center gap-1 text-sm font-medium ${activity.performance >= 0 ?'text-emerald-400' : 'text-red-400'}`}>
+                          {activity.performance >= 0 ? <TrendingUp className="w-3 h-3"/> : <TrendingDown className="w-3 h-3"/>}
                           {activity.performance > 0 ? '+' : ''}{activity.performance}%
                         </span>
                       ) : (
                         <span className="text-zinc-500">—</span>
                       )}
                     </td>
-                    <td className="p-4 text-zinc-500">
-                      {expandedRow === activity.id ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    <td className="px-2.5 py-1.5 text-zinc-500">
+                      {expandedRow === activity.id ? <ChevronUp className="w-5 h-5"/> : <ChevronDown className="w-5 h-5"/>}
                     </td>
                   </tr>
                   
@@ -426,18 +433,18 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
                   <AnimatePresence>
                     {expandedRow === activity.id && (
                       <tr>
-                        <td colSpan={6} className="p-0 border-b border-white/10">
+                        <td colSpan={6} className="p-0 bg-white/[0.03]">
                           <motion.div 
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
                             className="overflow-hidden bg-black/40"
                           >
-                            <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="p-3.5 grid grid-cols-1 lg:grid-cols-3 gap-3">
                               {/* AI Insight */}
                               <div className="lg:col-span-2 space-y-3">
                                 <div className="flex items-center gap-2 text-blue-400">
-                                  <BrainCircuit className="w-4 h-4" />
+                                  <BrainCircuit className="w-4 h-4"/>
                                   <span className="text-xs font-bold uppercase tracking-wider">Financial Intelligence Feed</span>
                                 </div>
                                 {isGeneratingInsight === activity.id ? (
@@ -456,20 +463,20 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
                               </div>
                               
                               {/* Details & Documents */}
-                              <div className="space-y-4 border-t lg:border-t-0 lg:border-l border-white/10 pt-4 lg:pt-0 lg:pl-6">
+                              <div className="space-y-4 pt-4 lg:pt-0 lg:pl-6">
                                 <div>
                                   <span className="text-xs text-zinc-500 uppercase tracking-wider">Counterparty</span>
                                   <div className="flex items-center gap-2 mt-1">
-                                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                                    <span className="text-sm text-white">{activity.counterparty || 'Verified Entity'}</span>
+                                    <ShieldCheck className="w-4 h-4 text-emerald-400"/>
+                                    <span className="text-sm text-white">{activity.counterparty ||'Verified Entity'}</span>
                                   </div>
                                 </div>
                                 
                                 {activity.type === 'Price Alert' ? (
                                   <div className="space-y-3">
-                                    <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl space-y-1">
+                                    <div className="p-3 bg-amber-500/10 rounded-xl space-y-1">
                                       <div className="text-[10px] font-mono text-amber-400 uppercase font-bold flex items-center gap-1.5">
-                                        <BellRing className="w-3.5 h-3.5 text-amber-400" />
+                                        <BellRing className="w-3.5 h-3.5 text-amber-400"/>
                                         <span>Automated Alert Action Ready</span>
                                       </div>
                                       <p className="text-xs text-zinc-300">
@@ -483,7 +490,7 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
                                       }}
                                       className="w-full py-2.5 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-xs uppercase tracking-wider rounded-xl transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] flex items-center justify-center gap-2 cursor-pointer"
                                     >
-                                      <Zap className="w-4 h-4 fill-black" />
+                                      <Zap className="w-4 h-4 fill-black"/>
                                       <span>Execute in Algorithmic Trading Desk →</span>
                                     </button>
                                   </div>
@@ -494,10 +501,10 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
                                       {activity.documents.map((doc, i) => (
                                         <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group">
                                           <div className="flex items-center gap-2">
-                                            <FileText className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 transition-colors" />
+                                            <FileText className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 transition-colors"/>
                                             <span className="text-xs text-zinc-300 group-hover:text-white transition-colors">{doc}</span>
                                           </div>
-                                          <ExternalLink className="w-3 h-3 text-zinc-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                          <ExternalLink className="w-3 h-3 text-zinc-500 opacity-0 group-hover:opacity-100 transition-opacity"/>
                                         </div>
                                       ))}
                                     </div>
@@ -515,7 +522,7 @@ export function ActivityCenter({ setActiveTab }: ActivityCenterProps) {
             </tbody>
           </table>
           {filteredActivities.length === 0 && !isLoading && (
-            <div className="p-8 text-center text-zinc-500">
+            <div className="p-4 text-center text-zinc-500">
               No activities found matching your criteria.
             </div>
           )}

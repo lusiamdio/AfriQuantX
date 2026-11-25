@@ -77,16 +77,16 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
   return (
     <div className="flex flex-col h-[calc(100vh-100px)] animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Header */}
-      <div className="flex items-center gap-4 mb-6 shrink-0">
+      <div className="flex items-center gap-4 mb-3 shrink-0">
         <button 
           onClick={() => setActiveTab('intelligence-ngx')}
-          className="p-2 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
+          className="p-2 rounded-xl bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-5 h-5"/>
         </button>
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
-            <BrainCircuit className="w-6 h-6 text-[#0066FF]" />
+            <BrainCircuit className="w-6 h-6 text-[#0066FF]"/>
             AQX AI Assistant
           </h1>
           <p className="text-sm text-zinc-400">Conversational intelligence trained on your portfolio and AQX data.</p>
@@ -94,38 +94,32 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
       </div>
 
       {/* Chat Area */}
-      <div className="flex-1 overflow-y-auto bg-[#0A0A0A] border border-white/10 rounded-3xl p-4 md:p-6 mb-6 space-y-6 custom-scrollbar">
+      <div className="flex-1 overflow-y-auto bg-[#0A0A0A] rounded-xl p-4 md:p-3.5 mb-3 space-y-3 custom-scrollbar">
         {messages.map((msg) => (
           <motion.div 
             key={msg.id}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
+            className={`flex gap-4 ${msg.role ==='user'?'flex-row-reverse' : ''}`}
           >
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-              msg.role === 'user' ? 'bg-[#0066FF]/20 border border-[#0066FF]/30' : 'bg-[#FFFFFF]/20 border border-[#FFFFFF]/30'
-            }`}>
-              {msg.role === 'user' ? <User className="w-5 h-5 text-[#0066FF]" /> : <Bot className="w-5 h-5 text-[#FFFFFF]" />}
+            <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${ msg.role ==='user'?'bg-[#0066FF]/20 ' : 'bg-[#FFFFFF]/20 '}`}>
+              {msg.role ==='user'? <User className="w-5 h-5 text-[#0066FF]"/> : <Bot className="w-5 h-5 text-[#FFFFFF]"/>}
             </div>
             
-            <div className={`max-w-[80%] ${msg.role === 'user' ? 'items-end' : 'items-start'} flex flex-col gap-2`}>
-              <div className={`p-4 rounded-2xl ${
-                msg.role === 'user' 
-                  ? 'bg-[#0066FF] text-white rounded-tr-sm' 
-                  : 'bg-white/5 border border-white/10 text-zinc-200 rounded-tl-sm'
-              }`}>
+            <div className={`max-w-[80%] ${msg.role ==='user'?'items-end' : 'items-start'} flex flex-col gap-2`}>
+              <div className={`p-4 rounded-lg ${ msg.role ==='user'?'bg-[#0066FF] text-white rounded-tr-sm' : 'bg-white/5 text-zinc-200 rounded-tl-sm'}`}>
                 <p className="leading-relaxed whitespace-pre-wrap">{msg.content}</p>
                 
                 {/* Visual Outputs (Simulated) */}
                 {msg.visualType === 'chart' && (
-                  <div className="mt-4 p-4 bg-black/40 rounded-xl border border-white/5 flex flex-col items-center justify-center h-32">
-                    <BarChart3 className="w-8 h-8 text-[#0066FF] mb-2" />
+                  <div className="mt-4 p-4 bg-black/40 rounded-xl flex flex-col items-center justify-center h-32">
+                    <BarChart3 className="w-8 h-8 text-[#0066FF] mb-2"/>
                     <span className="text-xs text-zinc-500 uppercase tracking-wider">Interactive Chart Generated</span>
                   </div>
                 )}
                 {msg.visualType === 'scenario' && (
-                  <div className="mt-4 p-4 bg-black/40 rounded-xl border border-white/5 flex flex-col items-center justify-center h-32">
-                    <Zap className="w-8 h-8 text-[#FFFFFF] mb-2" />
+                  <div className="mt-4 p-4 bg-black/40 rounded-xl flex flex-col items-center justify-center h-32">
+                    <Zap className="w-8 h-8 text-[#FFFFFF] mb-2"/>
                     <span className="text-xs text-zinc-500 uppercase tracking-wider">Scenario Simulation Ready</span>
                   </div>
                 )}
@@ -136,8 +130,8 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
                 <div className="flex flex-col gap-2 w-full">
                   <div className="flex items-center gap-3 px-2">
                     {msg.confidence && (
-                      <span className="text-xs font-bold text-[#00C896] flex items-center gap-1 bg-[#00C896]/10 px-2 py-1 rounded-md border border-[#00C896]/20">
-                        <ShieldCheck className="w-3 h-3" />
+                      <span className="text-xs font-bold text-[#00C896] flex items-center gap-1 bg-[#00C896]/10 px-2 py-1 rounded-md">
+                        <ShieldCheck className="w-3 h-3"/>
                         {msg.confidence}% Certainty
                       </span>
                     )}
@@ -147,7 +141,7 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
                         className="text-xs text-zinc-500 hover:text-[#0066FF] transition-colors flex items-center gap-1"
                       >
                         Why this recommendation?
-                        {expandedReasoning === msg.id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                        {expandedReasoning === msg.id ? <ChevronUp className="w-3 h-3"/> : <ChevronDown className="w-3 h-3"/>}
                       </button>
                     )}
                   </div>
@@ -160,7 +154,7 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
                         exit={{ height: 0, opacity: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="p-3 bg-[#0066FF]/5 border border-[#0066FF]/10 rounded-xl text-sm text-zinc-400 ml-2 border-l-2 border-l-[#0066FF]">
+                        <div className="p-3 bg-[#0066FF]/5 rounded-xl text-sm text-zinc-400 ml-2">
                           {msg.reasoning}
                         </div>
                       </motion.div>
@@ -178,13 +172,13 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
             animate={{ opacity: 1 }}
             className="flex gap-4"
           >
-            <div className="w-10 h-10 rounded-xl bg-[#FFFFFF]/20 border border-[#FFFFFF]/30 flex items-center justify-center shrink-0">
-              <Bot className="w-5 h-5 text-[#FFFFFF]" />
+            <div className="w-10 h-10 rounded-xl bg-[#FFFFFF]/20 flex items-center justify-center shrink-0">
+              <Bot className="w-5 h-5 text-[#FFFFFF]"/>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm p-4 flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-bounce" style={{ animationDelay: '0ms' }} />
-              <div className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-bounce" style={{ animationDelay: '150ms' }} />
-              <div className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-bounce" style={{ animationDelay: '300ms' }} />
+            <div className="bg-white/5 rounded-lg rounded-tl-sm p-4 flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-bounce" style={{ animationDelay:'0ms'}} />
+              <div className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-bounce" style={{ animationDelay:'150ms'}} />
+              <div className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-bounce" style={{ animationDelay:'300ms'}} />
             </div>
           </motion.div>
         )}
@@ -199,7 +193,7 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
             <button
               key={i}
               onClick={() => handleSend(prompt)}
-              className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-zinc-400 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap"
+              className="px-3 py-1.5 rounded-lg bg-white/5 text-xs text-zinc-400 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap"
             >
               {prompt}
             </button>
@@ -213,14 +207,14 @@ export function AQXAssistant({ setActiveTab }: AQXAssistantProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
             placeholder="Ask AI about your portfolio..."
-            className="w-full bg-[#0A0A0A] border border-white/10 rounded-2xl pl-4 pr-14 py-4 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-[#0066FF]/50 transition-colors font-medium shadow-[0_0_30px_rgba(0,0,0,0.5)]"
+            className="w-full bg-[#0A0A0A] rounded-lg pl-4 pr-14 py-4 text-sm text-white placeholder:text-zinc-500 focus:outline-none transition-colors font-medium shadow-[0_0_30px_rgba(0,0,0,0.5)]"
           />
           <button 
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
             className="absolute right-2 p-2.5 bg-[#0066FF] text-white hover:bg-[#0066FF]/80 disabled:opacity-50 disabled:hover:bg-[#0066FF] rounded-xl transition-colors shadow-[0_0_15px_rgba(0,102,255,0.3)]"
           >
-            <Send className="w-4 h-4" />
+            <Send className="w-4 h-4"/>
           </button>
         </div>
       </div>

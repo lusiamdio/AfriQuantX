@@ -44,6 +44,7 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationData, setConfirmationData] = useState<any>(null);
   const [profileName, setProfileName] = useState('John Doe');
+  const [tradeError, setTradeError] = useState<string | null>(null);
 
   const [chartData, setChartData] = useState<any[]>([]);
   const [chartLoading, setChartLoading] = useState(true);
@@ -206,6 +207,7 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
   }, [tickLogs]);
 
   const handleExecuteTrade = async () => {
+    setTradeError(null);
     const sharesNum = parseFloat(amount) || 10;
     const value = sharesNum * selectedAsset.price;
     
@@ -235,8 +237,9 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
 
       const resData = await res.json();
       if (!res.ok) {
-        alert(resData.error || "Trade execution failed");
-        addLog(`[Error] ${resData.error || "Trade execution failed"}`);
+        const msg = resData.error || "Trade execution failed";
+        setTradeError(msg);
+        addLog(`[Error] ${msg}`);
         return;
       }
 
@@ -279,7 +282,9 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
       addLog(`[Trade] Executed order successfully: ${tradeAction.toUpperCase()} ${sharesNum} shares of ${selectedAsset.symbol}`);
     } catch (err: any) {
       console.warn("Trade execution error:", err);
-      alert(err.message || "An unexpected error occurred during execution.");
+      const msg = err.message || "An unexpected error occurred during execution.";
+      setTradeError(msg);
+      addLog(`[Error] ${msg}`);
     }
   };
 
@@ -287,24 +292,22 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
   const chartColor = isPositiveTrend ? '#00C896' : '#FF3B3B';
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-3 animate-in fade-in duration-300">
       
       {/* Top Banner & Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-3xl font-bold text-white tracking-tight">Twelve Data Terminal</h1>
-            <span className="bg-[#0057FF]/15 border border-[#0057FF]/30 text-[#0057FF] px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider">LIVE WEBSOCKETS</span>
+            <span className="bg-[#0057FF]/15 text-[#0057FF] px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider">LIVE WEBSOCKETS</span>
           </div>
           <p className="text-zinc-400 mt-1">Institutional real-time global stock, crypto, and forex streaming network.</p>
         </div>
 
         {/* Live Stream Telemetry Indicator */}
-        <div className="flex items-center gap-3 bg-white/[0.02] border border-white/10 px-4 py-2.5 rounded-2xl">
+        <div className="flex items-center gap-3 bg-white/[0.02] px-4 py-2.5 rounded-lg">
           <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full animate-pulse ${
-              streamStatus.mode === 'live' ? 'bg-[#00C853]' : streamStatus.mode === 'mock' ? 'bg-[#F9B233]' : 'bg-blue-400'
-            }`} />
+            <div className={`w-3 h-3 rounded-full animate-pulse ${ streamStatus.mode === 'live' ? 'bg-[#00C853]' : streamStatus.mode === 'mock' ? 'bg-[#F9B233]' : 'bg-blue-400' }`} />
             <span className="text-xs font-mono font-semibold text-white">
               {streamStatus.mode === 'live' ? 'Twelve Data Live Feed' : streamStatus.mode === 'mock' ? 'High-Fi Sandbox Simulation' : 'Bridge Connecting...'}
             </span>
@@ -315,16 +318,16 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
       </div>
 
       {/* Main Grid Workspace */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         
         {/* Left/Middle Column: Asset Selector, Historical Chart & Live Stream logs */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-3">
           
           {/* Chart Header & Workspace Selection */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg relative overflow-hidden">
+          <div className="bg-white/5 rounded-lg p-3.5 backdrop-blur-xl shadow-lg relative overflow-hidden">
             
             {/* Asset Selection Horizontal Scroll */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-4 border-b border-white/5 scrollbar-thin scrollbar-thumb-white/10">
+            <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10">
               {assets.map(asset => {
                 const isSelected = asset.symbol === selectedSymbol;
                 const isAssetUp = flashingAssets[asset.symbol] === 'up';
@@ -333,13 +336,7 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
                   <button
                     key={asset.symbol}
                     onClick={() => setSelectedSymbol(asset.symbol)}
-                    className={`px-4 py-2.5 rounded-xl border font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
-                      isSelected 
-                        ? 'bg-white/10 border-white/20 text-white shadow-lg shadow-black/25' 
-                        : 'bg-white/[0.01] border-white/5 text-zinc-400 hover:text-white hover:border-white/10'
-                    } ${isAssetUp ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300' : ''} ${
-                      isAssetDown ? 'bg-rose-500/20 border-rose-500/30 text-rose-300' : ''
-                    }`}
+                    className={`px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap bg-white/[0.03] ${ isSelected ? 'bg-white/10 border-white/20 text-white shadow-lg shadow-black/25' : 'bg-white/[0.01] border-white/5 text-zinc-400 hover:text-white hover:border-white/10' } ${isAssetUp ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300' : ''} ${ isAssetDown ? 'bg-rose-500/20 border-rose-500/30 text-rose-300' : '' }`}
                   >
                     <span>{asset.symbol}</span>
                     <span className="font-mono font-medium opacity-80">${asset.price.toFixed(asset.type === 'Crypto' ? 2 : 4)}</span>
@@ -349,15 +346,15 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
             </div>
 
             {/* Selected Asset Information */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6 mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6 mb-3">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0057FF] to-[#00C853] flex items-center justify-center font-bold text-white text-lg shadow-xl shadow-[#0057FF]/20">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#0057FF] to-[#00C853] flex items-center justify-center font-bold text-white text-lg shadow-xl shadow-[#0057FF]/20">
                   {selectedAsset.symbol[0]}
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
                     {selectedAsset.name}
-                    <span className="bg-white/5 border border-white/10 px-2 py-0.5 rounded text-[10px] text-zinc-400 font-mono font-medium uppercase">{selectedAsset.type}</span>
+                    <span className="bg-white/5 px-2 py-0.5 rounded text-[10px] text-zinc-400 font-mono font-medium uppercase">{selectedAsset.type}</span>
                   </h2>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-2xl font-bold font-mono tracking-tight text-white">${selectedAsset.price.toFixed(selectedAsset.type === 'Crypto' ? 2 : 4)}</span>
@@ -370,7 +367,7 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
               </div>
 
               {/* Chart Source Badge */}
-              <div className="flex items-center gap-2 bg-white/5 border border-white/5 px-3 py-1.5 rounded-xl text-xs font-mono">
+              <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-xl text-xs font-mono">
                 <Database className="w-3.5 h-3.5 text-zinc-400" />
                 <span className="text-zinc-400">Source:</span>
                 <span className={chartSource === 'live' ? 'text-[#00C853] font-bold' : 'text-zinc-400 font-medium'}>
@@ -380,7 +377,7 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
             </div>
 
             {/* Historical Recharts AreaChart */}
-            <div className="h-72 w-full bg-[#04060C]/50 rounded-xl border border-white/5 p-4 relative flex items-center justify-center">
+            <div className="h-72 w-full bg-[#04060C]/50 rounded-xl p-4 relative flex items-center justify-center">
               {chartLoading ? (
                 <div className="flex flex-col items-center gap-2">
                   <Loader2 className="w-8 h-8 text-[#0057FF] animate-spin" />
@@ -411,7 +408,7 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
                       tickFormatter={(val) => `$${val}`}
                     />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#0A0F1C', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                      contentStyle={{ backgroundColor: '#0A0F1C', borderColor: 'transparent', borderRadius: '12px' }}
                       labelStyle={{ color: '#888888', fontFamily: 'monospace' }}
                       itemStyle={{ color: '#ffffff', fontFamily: 'monospace' }}
                     />
@@ -426,8 +423,8 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
           </div>
 
           {/* Real-time Streaming Tick Console */}
-          <div className="bg-[#04060C] border border-white/10 rounded-2xl p-5 flex flex-col h-60 relative overflow-hidden">
-            <div className="flex items-center justify-between pb-3 border-b border-white/5 mb-3">
+          <div className="bg-[#04060C] rounded-lg p-3 flex flex-col h-60 relative overflow-hidden">
+            <div className="flex items-center justify-between pb-3 mb-3">
               <div className="flex items-center gap-2">
                 <Terminal className="w-4 h-4 text-[#00C853]" />
                 <span className="text-xs font-bold text-white font-mono uppercase tracking-widest">WebSocket Streaming Terminal Logs</span>
@@ -442,7 +439,7 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
                 </div>
               ) : (
                 tickLogs.map((log, idx) => (
-                  <div key={idx} className="leading-relaxed whitespace-pre-wrap break-all border-l-2 border-white/5 pl-2 hover:border-white/25 transition-all">
+                  <div key={idx} className="leading-relaxed whitespace-pre-wrap break-all pl-2 transition-all">
                     {log}
                   </div>
                 ))
@@ -454,11 +451,11 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
         </div>
 
         {/* Right Column: Execution Form / Trade Settings */}
-        <div className="space-y-6">
+        <div className="space-y-3">
           
           {/* Order Placement Panel */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg flex flex-col justify-between">
-            <div className="space-y-6">
+          <div className="bg-white/5 rounded-lg p-3.5 backdrop-blur-xl shadow-lg flex flex-col justify-between">
+            <div className="space-y-3">
               
               {/* Buy / Sell Selection Tabs */}
               <div className="grid grid-cols-2 gap-2 bg-white/5 p-1 rounded-xl">
@@ -486,13 +483,13 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
                 <div className="grid grid-cols-2 gap-2">
                   <button 
                     onClick={() => setOrderType('market')}
-                    className={`py-2 text-xs font-bold rounded-lg border font-mono uppercase ${orderType === 'market' ? 'bg-white/10 border-white/20 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                    className={`py-2 text-xs font-bold rounded-lg font-mono uppercase bg-white/[0.03] ${orderType === 'market' ? 'bg-white/10 border-white/20 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
                   >
                     Market
                   </button>
                   <button 
                     onClick={() => setOrderType('limit')}
-                    className={`py-2 text-xs font-bold rounded-lg border font-mono uppercase ${orderType === 'limit' ? 'bg-white/10 border-white/20 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                    className={`py-2 text-xs font-bold rounded-lg font-mono uppercase bg-white/[0.03] ${orderType === 'limit' ? 'bg-white/10 border-white/20 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
                   >
                     Limit
                   </button>
@@ -507,14 +504,14 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                       placeholder="e.g. 10"
-                      className="w-full bg-[#0A0F1C]/50 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white font-mono font-bold focus:outline-none focus:border-[#0057FF] transition-colors"
+                      className="w-full bg-[#0A0F1C]/50 rounded-xl py-3 pl-4 pr-12 text-white font-mono font-bold focus:outline-none transition-colors"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-500 font-mono">QTY</span>
                   </div>
                 </div>
 
                 {/* Estimated Order Summary */}
-                <div className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-2 font-mono text-xs">
+                <div className="bg-black/40 p-4 rounded-xl space-y-2 font-mono text-xs">
                   <div className="flex justify-between text-zinc-500">
                     <span>Selected Asset:</span>
                     <span className="text-white font-bold">{selectedAsset.symbol}</span>
@@ -533,20 +530,23 @@ export function TwelveDataTrade({ setActiveTab }: TwelveDataTradeProps) {
 
             </div>
 
+            {tradeError && (
+              <div role="alert" className="mt-4 p-3 rounded-xl bg-rose-500/10 text-rose-300 text-xs font-mono flex items-center justify-between gap-2">
+                <span>{tradeError}</span>
+                <button type="button" onClick={() => setTradeError(null)} className="text-zinc-400 hover:text-white shrink-0">Dismiss</button>
+              </div>
+            )}
+
             <button 
               onClick={handleExecuteTrade}
-              className={`w-full py-4 rounded-xl font-bold mt-8 text-black transition-all shadow-lg ${
-                tradeAction === 'buy' 
-                  ? 'bg-[#00C896] hover:bg-[#00C896]/80 shadow-[#00C896]/20' 
-                  : 'bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20'
-              }`}
+              className={`w-full py-4 rounded-xl font-bold mt-6 text-black transition-all shadow-lg cursor-pointer ${ tradeAction === 'buy' ? 'bg-[#00C896] hover:bg-[#00C896]/80 shadow-[#00C896]/20' : 'bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20' }`}
             >
               {tradeAction === 'buy' ? 'Execute Buy Order' : 'Execute Sell Order'}
             </button>
           </div>
 
           {/* Institutional Compliance Card */}
-          <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-5 relative overflow-hidden space-y-3">
+          <div className="bg-white/[0.02] rounded-lg p-3 relative overflow-hidden space-y-3">
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-5 h-5 text-[#00C853]" />
               <h4 className="font-bold text-xs uppercase tracking-widest text-white font-mono">Securitized & Cleared</h4>

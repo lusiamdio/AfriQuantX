@@ -46,6 +46,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [confirmationData, setConfirmationData] = useState<any>(null);
   const [profileName, setProfileName] = useState('John Doe');
+  const [tradeError, setTradeError] = useState<string | null>(null);
 
   const [chartData, setChartData] = useState<any[]>([]);
   const [chartLoading, setChartLoading] = useState(true);
@@ -59,13 +60,13 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
     previousClose: 185.40
   });
 
-  const [streamStatus, setStreamStatus] = useState<{ message: string; type: string; mode: 'live' | 'mock' | 'connecting' }>({
+  const [streamStatus, setStreamStatus] = useState<{ message: string; type: string; mode:'live'|'mock'|'connecting'}>({
     message: 'Establishing live channel...',
     type: 'info',
     mode: 'connecting'
   });
   const [tickLogs, setTickLogs] = useState<string[]>([]);
-  const [flashingAssets, setFlashingAssets] = useState<Record<string, 'up' | 'down' | null>>({});
+  const [flashingAssets, setFlashingAssets] = useState<Record<string,'up'|'down'| null>>({});
   const [tickCount, setTickCount] = useState(0);
 
   const logEndRef = useRef<HTMLDivElement>(null);
@@ -153,7 +154,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
     const symbolsParam = assets.map(a => a.symbol).join(',');
     const sseUrl = `/api/market/finnhub/stream?symbols=${encodeURIComponent(symbolsParam)}`;
     
-    setStreamStatus({ message: 'Initiating Finnhub socket bridge...', type: 'info', mode: 'connecting' });
+    setStreamStatus({ message:'Initiating Finnhub socket bridge...', type:'info', mode:'connecting'});
     const eventSource = new EventSource(sseUrl);
 
     addLog(`[System] Connected to Finnhub Server-Sent Events Gateway for: ${symbolsParam}`);
@@ -238,6 +239,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
   }, [tickLogs]);
 
   const handleExecuteTrade = async () => {
+    setTradeError(null);
     const sharesNum = parseFloat(amount) || 10;
     const value = sharesNum * selectedAsset.price;
     
@@ -267,8 +269,9 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
 
       const resData = await res.json();
       if (!res.ok) {
-        alert(resData.error || "Trade execution failed");
-        addLog(`[Error] ${resData.error || "Trade execution failed"}`);
+        const msg = resData.error || "Trade execution failed";
+        setTradeError(msg);
+        addLog(`[Error] ${msg}`);
         return;
       }
 
@@ -300,7 +303,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
         investmentValue: value,
         ownershipPercentage: parseFloat((sharesNum / 1000000).toFixed(6)) || 0.000010,
         issuerName: "Finnhub Securitize Brokerage",
-        issuerSignature: "Finnhub Smart Clearing Protocol",
+        issuerSignature:"Finnhub Smart Clearing Protocol",
         sealImage: "Finnhub Seal",
         qrUrl: `https://verify.finnhub.io/certificate/${certId}`,
         transactionId: txId,
@@ -311,52 +314,52 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
       addLog(`[Trade Order] Executed transaction successfully: ${tradeAction.toUpperCase()} ${sharesNum} shares of ${selectedAsset.symbol}`);
     } catch (err: any) {
       console.warn("Trade execution error:", err);
-      alert(err.message || "An unexpected error occurred during execution.");
+      const msg = err.message ||"An unexpected error occurred during execution.";
+      setTradeError(msg);
+      addLog(`[Error] ${msg}`);
     }
   };
 
   const isPositiveTrend = selectedAsset.change >= 0;
-  const chartColor = isPositiveTrend ? '#00FFB2' : '#FF3B3B';
+  const chartColor = isPositiveTrend ?'#00FFB2':'#FF3B3B';
 
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
+    <div className="space-y-3 animate-in fade-in duration-300">
       
       {/* Page Sub-header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-3xl font-extrabold text-white tracking-tight">Finnhub Real-time Workspace</h1>
-            <span className="bg-[#FFFFFF]/15 border border-[#FFFFFF]/30 text-[#FFFFFF] px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider">SECURE FINNHUB STREAM</span>
+            <span className="bg-[#FFFFFF]/15 text-[#FFFFFF] px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase tracking-wider">SECURE FINNHUB STREAM</span>
           </div>
           <p className="text-zinc-400 mt-1">Multi-asset streaming ticks backed by Finnhub APIs & high-frequency socket pipelines.</p>
         </div>
 
         {/* Live status panel */}
-        <div className="flex items-center gap-3 bg-white/[0.02] border border-white/10 px-4 py-2.5 rounded-2xl">
+        <div className="flex items-center gap-3 bg-white/[0.02] px-4 py-2.5 rounded-lg">
           <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded-full animate-pulse ${
-              streamStatus.mode === 'live' ? 'bg-[#00FFB2]' : streamStatus.mode === 'mock' ? 'bg-[#FF9100]' : 'bg-blue-400'
-            }`} />
+            <div className={`w-3 h-3 rounded-full animate-pulse ${ streamStatus.mode ==='live'?'bg-[#00FFB2]': streamStatus.mode ==='mock'?'bg-[#FF9100]':'bg-blue-400'}`} />
             <span className="text-xs font-mono font-bold text-white uppercase">
-              {streamStatus.mode === 'live' ? 'FINNHUB PRODUCTION' : streamStatus.mode === 'mock' ? 'SANDBOX STREAM' : 'ROUTING BRIDGE'}
+              {streamStatus.mode ==='live'?'FINNHUB PRODUCTION': streamStatus.mode ==='mock'?'SANDBOX STREAM':'ROUTING BRIDGE'}
             </span>
           </div>
-          <div className="h-4 w-px bg-white/10" />
+          <div className="h-4 w-px bg-white/10"/>
           <span className="text-xs font-mono text-zinc-400">Ticks: <span className="text-[#00FFB2] font-semibold">{tickCount}</span></span>
         </div>
       </div>
 
       {/* Workspace Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         
         {/* Left Column Area (Chart, Ticker Horizontal Selector, Stats, Logs) */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-3">
           
           {/* Chart Card */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg relative overflow-hidden">
+          <div className="bg-white/5 rounded-lg p-3.5 backdrop-blur-xl shadow-lg relative overflow-hidden">
             
             {/* Asset Horizontal Scrolling Bar */}
-            <div className="flex items-center gap-2 overflow-x-auto pb-4 border-b border-white/5 scrollbar-thin scrollbar-thumb-white/10">
+            <div className="flex items-center gap-2 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10">
               {assets.map(asset => {
                 const isSelected = asset.symbol === selectedSymbol;
                 const isAssetUp = flashingAssets[asset.symbol] === 'up';
@@ -365,13 +368,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
                   <button
                     key={asset.symbol}
                     onClick={() => setSelectedSymbol(asset.symbol)}
-                    className={`px-4 py-2.5 rounded-xl border font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap ${
-                      isSelected 
-                        ? 'bg-gradient-to-r from-emerald-500/20 to-blue-500/20 border-[#00FFB2]/30 text-white shadow-lg' 
-                        : 'bg-white/[0.01] border-white/5 text-zinc-400 hover:text-white hover:border-white/10'
-                    } ${isAssetUp ? 'bg-emerald-500/30 border-emerald-500/50 text-emerald-200 animate-pulse' : ''} ${
-                      isAssetDown ? 'bg-rose-500/30 border-rose-500/50 text-rose-200 animate-pulse' : ''
-                    }`}
+                    className={`px-4 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2 whitespace-nowrap bg-white/[0.03] ${ isSelected ?'bg-gradient-to-r from-emerald-500/20 to-blue-500/20 text-white shadow-lg':'bg-white/[0.01] text-zinc-400 hover:text-white'} ${isAssetUp ?'bg-emerald-500/30 text-emerald-200 animate-pulse':''} ${ isAssetDown ?'bg-rose-500/30 text-rose-200 animate-pulse':''}`}
                   >
                     <span>{asset.symbol}</span>
                     <span className="font-mono font-bold text-[#00FFB2]">${asset.price.toFixed(2)}</span>
@@ -381,20 +378,20 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
             </div>
 
             {/* Asset Name, price tag, & high-level stats grid */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6 mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mt-6 mb-3">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#00FFB2] to-[#0057FF] flex items-center justify-center font-black text-[#04060C] text-lg shadow-xl shadow-emerald-500/10">
+                <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#00FFB2] to-[#0057FF] flex items-center justify-center font-black text-[#04060C] text-lg shadow-xl shadow-emerald-500/10">
                   {selectedAsset.symbol[0]}
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-white flex items-center gap-2">
                     {selectedAsset.name}
-                    <span className="bg-white/5 border border-white/10 px-2 py-0.5 rounded text-[10px] text-zinc-400 font-mono uppercase">{selectedAsset.type}</span>
+                    <span className="bg-white/5 px-2 py-0.5 rounded text-[10px] text-zinc-400 font-mono uppercase">{selectedAsset.type}</span>
                   </h2>
                   <div className="flex items-center gap-2 mt-1">
                     <span className="text-2xl font-black font-mono tracking-tight text-white">${selectedAsset.price.toFixed(2)}</span>
-                    <span className={`flex items-center text-xs font-bold font-mono ${isPositiveTrend ? 'text-[#00FFB2]' : 'text-[#FF3B3B]'}`}>
-                      {isPositiveTrend ? <ArrowUpRight className="w-4 h-4 mr-1" /> : <ArrowDownRight className="w-4 h-4 mr-1" />}
+                    <span className={`flex items-center text-xs font-bold font-mono ${isPositiveTrend ?'text-[#00FFB2]':'text-[#FF3B3B]'}`}>
+                      {isPositiveTrend ? <ArrowUpRight className="w-4 h-4 mr-1"/> : <ArrowDownRight className="w-4 h-4 mr-1"/>}
                       {selectedAsset.change.toFixed(2)}%
                     </span>
                   </div>
@@ -402,17 +399,17 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
               </div>
 
               {/* Data Source Details */}
-              <div className="flex items-center gap-2 bg-white/5 border border-white/5 px-3 py-1.5 rounded-xl text-xs font-mono">
-                <Database className="w-3.5 h-3.5 text-zinc-400" />
+              <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-xl text-xs font-mono">
+                <Database className="w-3.5 h-3.5 text-zinc-400"/>
                 <span className="text-zinc-400">Source:</span>
-                <span className={chartSource === 'live' ? 'text-[#00FFB2] font-extrabold' : 'text-zinc-500 font-medium'}>
+                <span className={chartSource ==='live'?'text-[#00FFB2] font-extrabold':'text-zinc-500 font-medium'}>
                   {chartSource === 'live' ? 'Finnhub REST API' : 'Simulated Daily Ticks'}
                 </span>
               </div>
             </div>
 
             {/* Quote details Grid metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 bg-white/[0.02] border border-white/5 p-4 rounded-xl font-mono text-xs">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-3 bg-white/[0.02] p-4 rounded-xl font-mono text-xs">
               <div>
                 <span className="text-zinc-500 block mb-1">Open Price</span>
                 <span className="text-white font-bold">${quoteDetails.open.toFixed(2)}</span>
@@ -432,7 +429,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
             </div>
 
             {/* Historical Recharts Graph */}
-            <div className="h-72 w-full bg-[#04060C]/60 rounded-xl border border-white/5 p-4 relative flex items-center justify-center">
+            <div className="h-72 w-full bg-[#04060C]/60 rounded-xl p-4 relative flex items-center justify-center">
               {chartLoading ? (
                 <div className="flex flex-col items-center gap-2">
                   <Loader2 className="w-8 h-8 text-[#00FFB2] animate-spin" />
@@ -442,9 +439,9 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={chartData}>
                     <defs>
-                      <linearGradient id="colorFinnhub" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor={chartColor} stopOpacity={0.25}/>
-                        <stop offset="95%" stopColor={chartColor} stopOpacity={0}/>
+                      <linearGradient id="colorFinnhub"x1="0"y1="0"x2="0"y2="1">
+                        <stop offset="5%"stopColor={chartColor} stopOpacity={0.25}/>
+                        <stop offset="95%"stopColor={chartColor} stopOpacity={0}/>
                       </linearGradient>
                     </defs>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.02)" vertical={false} />
@@ -463,9 +460,9 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
                       tickFormatter={(val) => `$${val}`}
                     />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#04060C', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                      labelStyle={{ color: '#888888', fontFamily: 'monospace' }}
-                      itemStyle={{ color: '#ffffff', fontFamily: 'monospace' }}
+                      contentStyle={{ backgroundColor: '#04060C', borderColor: 'transparent', borderRadius: '12px' }}
+                      labelStyle={{ color:'#888888', fontFamily:'monospace'}}
+                      itemStyle={{ color:'#ffffff', fontFamily:'monospace'}}
                     />
                     <Area type="monotone" dataKey="price" stroke={chartColor} strokeWidth={2} fillOpacity={1} fill="url(#colorFinnhub)" />
                   </AreaChart>
@@ -478,10 +475,10 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
           </div>
 
           {/* Interactive logs console */}
-          <div className="bg-[#04060C] border border-white/10 rounded-2xl p-5 flex flex-col h-60 relative overflow-hidden">
-            <div className="flex items-center justify-between pb-3 border-b border-white/5 mb-3">
+          <div className="bg-[#04060C] rounded-lg p-3 flex flex-col h-60 relative overflow-hidden">
+            <div className="flex items-center justify-between pb-3 mb-3">
               <div className="flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-[#00FFB2]" />
+                <Terminal className="w-4 h-4 text-[#00FFB2]"/>
                 <span className="text-xs font-bold text-white font-mono uppercase tracking-widest">Finnhub WebSocket Pipeline Streams</span>
               </div>
               <span className="text-[10px] font-mono text-zinc-500">Stream buffer listening...</span>
@@ -494,7 +491,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
                 </div>
               ) : (
                 tickLogs.map((log, idx) => (
-                  <div key={idx} className="leading-relaxed whitespace-pre-wrap break-all border-l-2 border-white/5 pl-2 hover:border-white/20 transition-all">
+                  <div key={idx} className="leading-relaxed whitespace-pre-wrap break-all pl-2 transition-all">
                     {log}
                   </div>
                 ))
@@ -506,23 +503,23 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
         </div>
 
         {/* Right Column (Trades form & specifications) */}
-        <div className="space-y-6">
+        <div className="space-y-3">
           
           {/* Order Placement Panel */}
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-lg flex flex-col justify-between">
-            <div className="space-y-6">
+          <div className="bg-white/5 rounded-lg p-3.5 backdrop-blur-xl shadow-lg flex flex-col justify-between">
+            <div className="space-y-3">
               
               {/* Buy / Sell Tabs */}
               <div className="grid grid-cols-2 gap-2 bg-white/5 p-1 rounded-xl">
                 <button 
                   onClick={() => setTradeAction('buy')}
-                  className={`py-2 text-sm font-bold rounded-lg transition-colors ${tradeAction === 'buy' ? 'bg-[#00FFB2] text-[#04060C]' : 'text-zinc-400 hover:text-white'}`}
+                  className={`py-2 text-sm font-bold rounded-lg transition-colors ${tradeAction ==='buy'?'bg-[#00FFB2] text-[#04060C]':'text-zinc-400 hover:text-white'}`}
                 >
                   Buy
                 </button>
                 <button 
                   onClick={() => setTradeAction('sell')}
-                  className={`py-2 text-sm font-bold rounded-lg transition-colors ${tradeAction === 'sell' ? 'bg-rose-500 text-white' : 'text-zinc-400 hover:text-white'}`}
+                  className={`py-2 text-sm font-bold rounded-lg transition-colors ${tradeAction ==='sell'?'bg-rose-500 text-white':'text-zinc-400 hover:text-white'}`}
                 >
                   Sell
                 </button>
@@ -538,13 +535,13 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
                 <div className="grid grid-cols-2 gap-2">
                   <button 
                     onClick={() => setOrderType('market')}
-                    className={`py-2 text-xs font-bold rounded-lg border font-mono uppercase ${orderType === 'market' ? 'bg-white/10 border-white/20 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                    className={`py-2 text-xs font-bold rounded-lg font-mono uppercase bg-white/[0.03] ${orderType ==='market'?'bg-white/10 text-white':'text-zinc-500 hover:text-zinc-300'}`}
                   >
                     Market
                   </button>
                   <button 
                     onClick={() => setOrderType('limit')}
-                    className={`py-2 text-xs font-bold rounded-lg border font-mono uppercase ${orderType === 'limit' ? 'bg-white/10 border-white/20 text-white' : 'border-transparent text-zinc-500 hover:text-zinc-300'}`}
+                    className={`py-2 text-xs font-bold rounded-lg font-mono uppercase bg-white/[0.03] ${orderType ==='limit'?'bg-white/10 text-white':'text-zinc-500 hover:text-zinc-300'}`}
                   >
                     Limit
                   </button>
@@ -559,14 +556,14 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
                       value={amount}
                       onChange={(e) => setAmount(e.target.value)}
                       placeholder="e.g. 15"
-                      className="w-full bg-[#0A0F1C]/50 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-white font-mono font-bold focus:outline-none focus:border-[#00FFB2] transition-colors"
+                      className="w-full bg-[#0A0F1C]/50 rounded-xl py-3 pl-4 pr-12 text-white font-mono font-bold focus:outline-none transition-colors"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-zinc-500 font-mono">QTY</span>
                   </div>
                 </div>
 
                 {/* Cost/Pricing Summary details */}
-                <div className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-2 font-mono text-xs">
+                <div className="bg-black/40 p-4 rounded-xl space-y-2 font-mono text-xs">
                   <div className="flex justify-between text-zinc-500">
                     <span>Instrument:</span>
                     <span className="text-white font-bold">{selectedAsset.symbol}</span>
@@ -575,7 +572,7 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
                     <span>Tick Price:</span>
                     <span className="text-white">${selectedAsset.price.toFixed(2)}</span>
                   </div>
-                  <div className="h-px bg-white/5 my-1" />
+                  <div className="h-px bg-white/5 my-1"/>
                   <div className="flex justify-between text-zinc-400 font-bold">
                     <span>Est. Settle Cost:</span>
                     <span className="text-[#00FFB2]">${((parseFloat(amount) || 15) * selectedAsset.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
@@ -585,22 +582,25 @@ export function FinnhubTrade({ setActiveTab }: FinnhubTradeProps) {
 
             </div>
 
+            {tradeError && (
+              <div role="alert"className="mt-4 p-3 rounded-xl bg-rose-500/10 text-rose-300 text-xs font-mono flex items-center justify-between gap-2">
+                <span>{tradeError}</span>
+                <button type="button"onClick={() => setTradeError(null)} className="text-zinc-400 hover:text-white shrink-0">Dismiss</button>
+              </div>
+            )}
+
             <button 
               onClick={handleExecuteTrade}
-              className={`w-full py-4 rounded-xl font-bold mt-8 text-black transition-all shadow-lg ${
-                tradeAction === 'buy' 
-                  ? 'bg-[#00FFB2] hover:bg-[#00FFB2]/85 shadow-[#00FFB2]/10' 
-                  : 'bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20'
-              }`}
+              className={`w-full py-4 rounded-xl font-bold mt-6 text-black transition-all shadow-lg cursor-pointer ${ tradeAction ==='buy'?'bg-[#00FFB2] hover:bg-[#00FFB2]/85 shadow-[#00FFB2]/10':'bg-rose-500 hover:bg-rose-600 text-white shadow-rose-500/20'}`}
             >
               {tradeAction === 'buy' ? 'Execute Buy Order' : 'Execute Sell Order'}
             </button>
           </div>
 
           {/* Secure Clearing Certificate Notice */}
-          <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-5 relative overflow-hidden space-y-3">
+          <div className="bg-white/[0.02] rounded-lg p-3 relative overflow-hidden space-y-3">
             <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#00FFB2]" />
+              <ShieldCheck className="w-5 h-5 text-[#00FFB2]"/>
               <h4 className="font-bold text-xs uppercase tracking-widest text-white font-mono">Finnhub Secure Clearing</h4>
             </div>
             <p className="text-xs text-zinc-400 font-mono leading-relaxed">

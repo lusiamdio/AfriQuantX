@@ -90,7 +90,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
       {/* ========================================================================= */}
       {/* 1. HERO SECTION: FULL-BLEED BLACK #0D0F13 WITH IPO LAUNCH VIDEO BACKGROUND */}
       {/* ========================================================================= */}
-      <section className="relative min-h-[92vh] flex items-center justify-center bg-[#0D0F13] text-[#F4F1E8] px-6 sm:px-12 lg:px-16 xl:px-24 overflow-hidden border-b border-white/[0.08]">
+      <section className="relative min-h-[92vh] flex items-center justify-center bg-[#0D0F13] text-[#F4F1E8] px-3.5 sm:px-5 lg:px-16 xl:px-24 overflow-hidden">
         
         {/* IPO Launch YouTube Background Video */}
         <HeroVideoBackground 
@@ -102,7 +102,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
         {/* Ambient Glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[500px] bg-gradient-to-r from-[#D9A94E]/12 via-[#34A87E]/10 to-[#0666EB]/12 rounded-full blur-[160px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8 py-28 sm:py-36">
+        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-4 py-28 sm:py-36">
           
           {/* Kinetic Headline */}
           <motion.h1 
@@ -144,7 +144,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
 
             <button
               onClick={handleAuth}
-              className="w-full sm:w-auto h-[54px] px-8 rounded-full bg-white/[0.08] hover:bg-white/[0.14] text-[#F4F1E8] border border-white/[0.15] font-mono text-xs tracking-wider uppercase font-semibold transition-all duration-200 backdrop-blur-md flex items-center justify-center gap-2"
+              className="w-full sm:w-auto h-[54px] px-4 rounded-full bg-white/[0.08] hover:bg-white/[0.14] text-[#F4F1E8] font-mono text-xs tracking-wider uppercase font-semibold transition-all duration-200 backdrop-blur-md flex items-center justify-center gap-2"
             >
               <Cpu className="w-4 h-4 text-[#34A87E]" />
               <span>Launch Institutional Terminal</span>
@@ -162,9 +162,9 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="py-24 bg-[#000000] text-[#F4F1E8] border-b border-white/[0.08] px-6 sm:px-12 lg:px-16 xl:px-24 w-full relative overflow-hidden"
+        className="py-8 bg-[#000000] text-[#F4F1E8] px-3.5 sm:px-5 lg:px-16 xl:px-24 w-full relative overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <InstitutionalMetricsDashboard />
         </div>
       </motion.section>
@@ -177,9 +177,9 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="py-28 lg:py-36 bg-white text-[#0D0F13] px-6 sm:px-12 lg:px-16 xl:px-24 w-full relative overflow-hidden"
+        className="py-28 lg:py-36 bg-white text-[#0D0F13] px-3.5 sm:px-5 lg:px-16 xl:px-24 w-full relative overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto space-y-16">
+        <div className="max-w-6xl mx-auto space-y-5">
           
           <div className="max-w-3xl space-y-4">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#34A87E]">
@@ -206,9 +206,9 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="py-28 lg:py-36 bg-[#F5F5F7] text-[#0D0F13] border-y border-black/[0.06] px-6 sm:px-12 lg:px-16 xl:px-24 w-full"
+        className="py-28 lg:py-36 bg-[#F5F5F7] text-[#0D0F13] px-3.5 sm:px-5 lg:px-16 xl:px-24 w-full"
       >
-        <div className="max-w-7xl mx-auto space-y-20">
+        <div className="max-w-6xl mx-auto space-y-20">
           
           <div className="max-w-3xl space-y-4">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D9A94E]">
@@ -223,7 +223,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
           </div>
 
           {/* Fluid Solutions Grid - Non-boxed Minimalist List */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-16">
             {INSTITUTIONAL_SOLUTIONS.map((sol, idx) => (
               <motion.div 
                 key={idx}
@@ -231,7 +231,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
-                className="space-y-5 pt-6 border-t-2 border-black/[0.08]"
+                className="space-y-2.5 pt-6"
               >
                 <div className="flex items-baseline justify-between">
                   <span className="text-3xl font-extrabold font-mono text-[#D9A94E]">
@@ -273,7 +273,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="py-16 sm:py-24 px-4 sm:px-8 lg:px-12 xl:px-16 max-w-[1540px] mx-auto w-full"
+        className="py-6 sm:py-8 px-4 sm:px-4 lg:px-5 xl:px-16 max-w-[1540px] mx-auto w-full"
       >
         <GlobalPaymentMesh />
       </motion.section>
@@ -286,16 +286,16 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="py-28 lg:py-36 bg-[#0D0F13] text-[#F4F1E8] px-6 sm:px-12 lg:px-16 xl:px-24 w-full relative overflow-hidden border-y border-white/[0.08]"
+        className="py-28 lg:py-36 bg-[#0D0F13] text-[#F4F1E8] px-3.5 sm:px-5 lg:px-16 xl:px-24 w-full relative overflow-hidden"
       >
         {/* Glow */}
         <div className="absolute top-1/2 left-1/4 w-[700px] h-[350px] bg-gradient-to-r from-[#34A87E]/10 to-[#0666EB]/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-16 items-center relative z-10">
           
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-7 space-y-3">
             <div className="flex items-center gap-3">
-              <span className="px-3 py-1 rounded-full bg-[#34A87E]/10 border border-[#34A87E]/20 text-[#34A87E] text-xs font-mono font-bold uppercase tracking-wider">
+              <span className="px-3 py-1 rounded-full bg-[#34A87E]/10 text-[#34A87E] text-xs font-mono font-bold uppercase tracking-wider">
                 TRANSACTION BRIEF • PRE-IPO EXPANSION
               </span>
             </div>
@@ -316,7 +316,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
           </div>
 
           <div className="lg:col-span-5 space-y-4">
-            <div className="p-8 rounded-3xl bg-[#14171F] border border-white/[0.08] space-y-6">
+            <div className="p-4 rounded-xl bg-[#14171F] space-y-3">
               <div className="space-y-1">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-[#F4F1E8]/40">
                   TREASURY YIELD REALIZED
@@ -329,7 +329,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/[0.08] space-y-1">
+              <div className="pt-4 space-y-1">
                 <div className="text-[11px] font-mono uppercase tracking-wider text-[#F4F1E8]/40">
                   SECONDARY TRANCHE OVERSUBSCRIPTION
                 </div>
@@ -355,9 +355,9 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: '-60px' }}
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="py-28 lg:py-36 bg-white text-[#0D0F13] px-6 sm:px-12 lg:px-16 xl:px-24 w-full"
+        className="py-28 lg:py-36 bg-white text-[#0D0F13] px-3.5 sm:px-5 lg:px-16 xl:px-24 w-full"
       >
-        <div className="max-w-4xl mx-auto space-y-12">
+        <div className="max-w-4xl mx-auto space-y-5">
           
           <div className="text-center space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D9A94E]">
@@ -375,7 +375,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="p-10 rounded-3xl bg-[#F5F5F7] border border-black/[0.08] text-center space-y-4"
+              className="p-4 rounded-xl bg-[#F5F5F7] text-center space-y-4"
             >
               <div className="w-14 h-14 rounded-full bg-[#34A87E]/10 text-[#34A87E] flex items-center justify-center mx-auto">
                 <CheckCircle2 className="w-8 h-8" />
@@ -388,9 +388,9 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
               </p>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6 pt-4">
+            <form onSubmit={handleSubmit} className="space-y-3 pt-4">
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#0D0F13]">
                     CORPORATE / ENTITY NAME
@@ -401,7 +401,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                     placeholder="e.g. Flutterwave Group Ltd"
                     value={companyName} 
                     onChange={e => setCompanyName(e.target.value)}
-                    className="w-full bg-[#F5F5F7] border border-black/[0.08] rounded-2xl px-5 py-4 text-sm text-[#0D0F13] focus:outline-none focus:border-[#D9A94E] transition-colors"
+                    className="w-full bg-[#F5F5F7] rounded-lg px-5 py-4 text-sm text-[#0D0F13] focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -415,12 +415,12 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                     placeholder="e.g. Adebayo Ogunlesi, CFO"
                     value={contactName} 
                     onChange={e => setContactName(e.target.value)}
-                    className="w-full bg-[#F5F5F7] border border-black/[0.08] rounded-2xl px-5 py-4 text-sm text-[#0D0F13] focus:outline-none focus:border-[#D9A94E] transition-colors"
+                    className="w-full bg-[#F5F5F7] rounded-lg px-5 py-4 text-sm text-[#0D0F13] focus:outline-none transition-colors"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <label className="text-xs font-mono font-bold uppercase tracking-wider text-[#0D0F13]">
                     INSTITUTIONAL WORK EMAIL
@@ -431,7 +431,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                     placeholder="treasury@company.com"
                     value={workEmail} 
                     onChange={e => setWorkEmail(e.target.value)}
-                    className="w-full bg-[#F5F5F7] border border-black/[0.08] rounded-2xl px-5 py-4 text-sm text-[#0D0F13] focus:outline-none focus:border-[#D9A94E] transition-colors"
+                    className="w-full bg-[#F5F5F7] rounded-lg px-5 py-4 text-sm text-[#0D0F13] focus:outline-none transition-colors"
                   />
                 </div>
 
@@ -442,7 +442,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                   <select 
                     value={objective} 
                     onChange={e => setObjective(e.target.value)}
-                    className="w-full bg-[#F5F5F7] border border-black/[0.08] rounded-2xl px-5 py-4 text-sm text-[#0D0F13] focus:outline-none focus:border-[#D9A94E] transition-colors"
+                    className="w-full bg-[#F5F5F7] rounded-lg px-5 py-4 text-sm text-[#0D0F13] focus:outline-none transition-colors"
                   >
                     <option>Treasury Yield &amp; FX Hedging</option>
                     <option>Pre-IPO Underwriting &amp; Syndication</option>
@@ -460,7 +460,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                 <select 
                   value={aumRange} 
                   onChange={e => setAumRange(e.target.value)}
-                  className="w-full bg-[#F5F5F7] border border-black/[0.08] rounded-2xl px-5 py-4 text-sm text-[#0D0F13] focus:outline-none focus:border-[#D9A94E] transition-colors"
+                  className="w-full bg-[#F5F5F7] rounded-lg px-5 py-4 text-sm text-[#0D0F13] focus:outline-none transition-colors"
                 >
                   <option>$500k - $2M</option>
                   <option>$2M - $10M</option>
@@ -480,7 +480,7 @@ export function BusinessPage({ onNavigatePage, onNavigateToAuth }: BusinessPageP
                 </button>
               </div>
 
-              <div className="flex items-center justify-center gap-6 text-[11px] font-mono text-[#6E737B] pt-2">
+              <div className="flex items-center justify-center gap-3 text-[11px] font-mono text-[#6E737B] pt-2">
                 <div className="flex items-center gap-1.5">
                   <Lock className="w-3.5 h-3.5 text-[#34A87E]" />
                   <span>Strict NDA &amp; Non-Disclosure Protected</span>

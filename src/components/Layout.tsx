@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  LayoutDashboard, 
-  Briefcase, 
-  Store, 
-  BrainCircuit, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Briefcase,
+  Store,
+  BrainCircuit,
+  Settings,
   LogOut,
   Bell,
   Search,
@@ -21,28 +21,37 @@ import {
   Cpu,
   Calculator,
   Layers,
-  LogIn,
   BellRing,
   CheckCheck,
   Trash2,
   AlertTriangle,
   Zap,
   X,
-  Scale
+  Scale,
+  Building2,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
-import { LiveTicker } from './LiveTicker';
 import { CommandPalette } from './CommandPalette';
-import { ThemeToggleSwitch } from './ThemeToggleSwitch';
+import { ThemeToggleSwitch } from'./ThemeToggleSwitch';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import {
+  canRoleAccessTab,
+  getCompanyPositionMeta,
+  getInvestorIdentityMeta,
+  type CompanyPosition,
+  type InvestorIdentity,
+  type WorkspaceRole,
+} from '../lib/roleAccess';
 
 interface LayoutProps {
   children: React.ReactNode;
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onLogout?: () => void;
-  userRole?: 'admin' | 'investor' | 'company';
+  userRole?: WorkspaceRole;
+  investorIdentity?: InvestorIdentity | null;
+  companyPosition?: CompanyPosition | null;
   searchQuery?: string;
   setSearchQuery?: (query: string) => void;
   isAuthenticated?: boolean;
@@ -50,36 +59,45 @@ interface LayoutProps {
 
 const allNavItems = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'integrations', label: 'Integrations Hub', icon: Layers },
-  { id: 'ipo-launch', label: 'IPO Bookbuilding', icon: Rocket },
-  { id: 'algo-trading', label: 'Algo Execution Desk', icon: Cpu },
-  { id: 'valuation-workbench', label: 'Valuation & Advisory', icon: Calculator },
-  { id: 'wallet', label: 'Wallet', icon: Wallet },
-  { id: 'marketplace', label: 'Markets', icon: Store },
-  { id: 'market-secondary', label: 'Secondary Market', icon: Store },
-  { id: 'market-forex', label: 'Forex Market', icon: Store },
-  { id: 'trade', label: 'Trade', icon: ArrowRightLeft },
-  { id: 'index', label: 'Index', icon: BarChart3 },
+  // Investor & Market Discovery
+  { id: 'marketplace', label: 'RWA Marketplace', icon: Store },
+  { id: 'index', label: 'AQX RWA100 Index', icon: BarChart3 },
   { id: 'portfolio', label: 'Portfolio', icon: Briefcase },
-  { id: 'activity', label: 'Activity Center', icon: Bell },
-  { id: 'payouts', label: 'Payouts', icon: ArrowRightLeft },
+  { id: 'wallet', label: 'NXG Wallet', icon: Wallet },
+  { id: 'market-secondary', label: 'Secondary Market', icon: ArrowRightLeft },
+  { id: 'market-forex', label: 'Forex Market', icon: TrendingUp },
+  { id: 'trade', label: 'Execution Desk', icon: ArrowRightLeft },
+  { id: 'algo-trading', label: 'Algo Execution', icon: Cpu },
   { id: 'performance', label: 'Performance', icon: TrendingUp },
-  { id: 'reports', label: 'Reports & Audits', icon: BarChart3 },
+  // Company / Issuer Exclusive Structuring & Issuance
+  { id: 'issuer-dashboard', label: 'Issuer Console', icon: Building2 },
+  { id: 'tokenisation-hub', label: 'Tokenisation Hub', icon: Layers },
+  { id: 'ipo-launch', label: 'Capital Raise & IPO', icon: Rocket },
+  // Role-adapted Compliance, Valuation, Distributions & Reports
+  { id: 'kyc-kyb', label: 'KYC / KYB Center', icon: ShieldCheck },
+  { id: 'valuation-workbench', label: 'Valuation Models', icon: Calculator },
+  { id: 'payouts', label: 'Distributions', icon: ArrowRightLeft },
   { id: 'tax-compliance', label: 'Tax & Compliance', icon: Scale },
+  { id: 'reports', label: 'Reports & Audits', icon: BarChart3 },
+  { id: 'integrations', label: 'Integrations Hub', icon: Layers },
+  // Investor Intelligence
   { id: 'aqei', label: 'AQEI Intelligence', icon: BrainCircuit },
+  // Governance & Admin
+  { id: 'governance-audit', label: 'Governance & Audit', icon: ShieldCheck },
+  { id: 'activity', label: 'Activity Center', icon: Bell },
   { id: 'settings', label: 'Settings', icon: Settings },
-  { id: 'admin', label: 'Admin', icon: ShieldAlert },
+  { id: 'admin', label: 'Admin Console', icon: ShieldAlert },
 ];
 
-export function Layout({ 
-  children, 
-  activeTab, 
-  setActiveTab, 
-  onLogout, 
+export function Layout({
+  children,
+  activeTab,
+  setActiveTab,
+  onLogout,
   userRole = 'investor',
-  searchQuery = '',
-  setSearchQuery,
-  isAuthenticated
+  investorIdentity = null,
+  companyPosition = null,
+  isAuthenticated,
 }: LayoutProps) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     return localStorage.getItem('sidebar_collapsed') === 'true';
@@ -87,12 +105,21 @@ export function Layout({
 
   const isAuthed = isAuthenticated === true;
 
-  const currentUserName = typeof window !== 'undefined'
-    ? localStorage.getItem('userName') || (localStorage.getItem('userEmail') ? localStorage.getItem('userEmail')!.split('@')[0] : 'Alex Investor')
-    : 'Alex Investor';
+  const currentUserName =
+    typeof window !== 'undefined'
+      ? localStorage.getItem('userName') ||
+        (localStorage.getItem('userEmail') ? localStorage.getItem('userEmail')!.split('@')[0] : 'Participant')
+      : 'Participant';
+
+  const roleBadgeLabel =
+    userRole === 'company'
+      ? `Company · ${getCompanyPositionMeta(companyPosition).label}`
+      : userRole === 'admin'
+        ? 'Platform Administrator'
+        : `Investor · ${getInvestorIdentityMeta(investorIdentity).label}`;
 
   const toggleSidebar = () => {
-    setIsSidebarCollapsed(prev => {
+    setIsSidebarCollapsed((prev) => {
       localStorage.setItem('sidebar_collapsed', (!prev).toString());
       return !prev;
     });
@@ -107,21 +134,30 @@ export function Layout({
   const [toastNotification, setToastNotification] = useState<any | null>(null);
 
   useEffect(() => {
-    // Initial notifications
     setNotifications([
-      { id: 'notif-init-1', title: 'Institutional Gateway Active', message: 'Direct market data feeds connected across JSE, NGX, and NSE Kenya.', time: 'Just now', read: false, type: 'info' },
-      { id: 'notif-init-2', title: 'Real-Time Market Update', message: 'Pan-African Index surged +2.48% on strong telecommunications earnings.', time: '2m ago', read: false, type: 'market' }
+      {
+        id: 'notif-init-1',
+        title: 'Compliance Gateway Ready',
+        message: 'KYC/KYB identity gates and SPV registries active across priority corridors.',
+        time: 'Just now',
+        read: false,
+        type: 'info',
+      },
+      {
+        id: 'notif-init-2',
+        title: 'AQX RWA100 Update',
+        message: 'Multi-sector benchmark recalculated across 8 African corridors.',
+        time: '2m ago',
+        read: false,
+        type: 'market',
+      },
     ]);
     setUnreadCount(2);
 
-    // Live real-time notification generator for institutional feeds
     const liveEventPool = [
-      { title: 'FIX 4.4 Trade Execution', message: 'Child slice of 2,500 shares filled for JSE:SBK at ZAR 208.50 on Strate.', type: 'trade' },
-      { title: 'IPO Bookbuilding Update', message: 'AfriHydropower Green Bond syndicate reached 3.42x institutional oversubscription.', type: 'ipo' },
-      { title: 'AQEI Predictive Signal', message: 'New high-conviction BUY alert detected for Safaricom (SCOM) with 87% confidence.', type: 'signal' },
-      { title: 'DvP Settlement Cleared', message: 'Pre-funded escrow allotment of ZAR 4,500,000 cleared by CSD Custody Node.', type: 'settlement' },
-      { title: 'Pre-Trade Risk Gate Checked', message: 'TWAP parent order VaR collar validated: 0.18% headroom within 2.5% band.', type: 'risk' },
-      { title: 'Macro FX Telemetry', message: 'USD/ZAR implied volatility compressed 14 bps following SARB policy rate release.', type: 'macro' }
+      { title: 'Distribution Ledger Sync', message: 'Quarterly pro-rata calculation verified across active unit holders.', type: 'settlement' },
+      { title: 'Bookbuilding Telemetry', message: 'Primary institutional allocation tranche updated in issuer vault.', type: 'ipo' },
+      { title: 'Pre-Trade Risk Check', message: 'Allowlist & jurisdiction rules passed for settlement window.', type: 'risk' },
     ];
 
     let eventIdx = 0;
@@ -135,35 +171,33 @@ export function Layout({
         message: selected.message,
         time: 'Just now',
         read: false,
-        type: selected.type
+        type: selected.type,
       };
 
-      setNotifications(prev => [newNotif, ...prev.slice(0, 19)]);
-      setUnreadCount(prev => prev + 1);
-
-      // Trigger temporary live real-time toast banner
+      setNotifications((prev) => [newNotif, ...prev.slice(0, 19)]);
+      setUnreadCount((prev) => prev + 1);
       setToastNotification(newNotif);
       setTimeout(() => {
         setToastNotification((curr: any) => (curr?.id === newNotif.id ? null : curr));
       }, 4500);
-    }, 12000);
+    }, 18000);
 
-    // Subscribe to real-time transactions in Supabase if configured
     let channel: any = null;
     if (isSupabaseConfigured) {
       try {
-        channel = supabase.channel('realtime-notifications')
-          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'transactions' }, payload => {
+        channel = supabase
+          .channel('realtime-notifications')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'transactions' }, (payload) => {
             const newNotif = {
               id: payload.new.id,
               title: 'New Transaction',
               message: `A new ${payload.new.type} of ${payload.new.amount} was recorded.`,
               time: 'Just now',
               read: false,
-              type: 'trade'
+              type: 'trade',
             };
-            setNotifications(prev => [newNotif, ...prev]);
-            setUnreadCount(prev => prev + 1);
+            setNotifications((prev) => [newNotif, ...prev]);
+            setUnreadCount((prev) => prev + 1);
             setToastNotification(newNotif);
             setTimeout(() => setToastNotification(null), 4000);
           })
@@ -173,21 +207,20 @@ export function Layout({
       }
     }
 
-    // Subscribe to real-time price threshold alerts dispatched by priceAlertService
     const handlePriceAlert = (e: any) => {
       if (e.detail?.alert) {
         const alert = e.detail.alert;
         const actualPrice = e.detail.actualPrice ?? alert.targetPrice;
         const newNotif = {
           id: `price-alert-${alert.id}-${Date.now()}`,
-          title: `PRICE ALERT: ${alert.symbol}`,
-          message: `${alert.assetName} breached threshold at ${alert.currency} ${actualPrice.toFixed(2)} (${alert.condition === 'GREATER_EQUAL' ? '▲ resistance' : '▼ support'}). Action: ${alert.triggerAction}`,
+          title: `Price Alert: ${alert.symbol}`,
+          message: `${alert.assetName} crossed ${alert.currency} ${actualPrice.toFixed(2)}.`,
           time: 'Just now',
           read: false,
-          type: 'alert'
+          type: 'alert',
         };
-        setNotifications(prev => [newNotif, ...prev.slice(0, 24)]);
-        setUnreadCount(prev => prev + 1);
+        setNotifications((prev) => [newNotif, ...prev.slice(0, 24)]);
+        setUnreadCount((prev) => prev + 1);
         setToastNotification(newNotif);
         setTimeout(() => {
           setToastNotification((curr: any) => (curr?.id === newNotif.id ? null : curr));
@@ -221,7 +254,7 @@ export function Layout({
     setShowNotifications(!showNotifications);
     if (!showNotifications) {
       setUnreadCount(0);
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
     }
   };
 
@@ -235,74 +268,92 @@ export function Layout({
         searchInputRef.current?.focus();
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isCommandPaletteOpen]);
 
-  const navItems = allNavItems.filter(item => {
-    if (item.id === 'admin') {
-      return userRole === 'admin';
-    }
-    return true;
-  });
+  const navItems = allNavItems
+    .filter((item) => canRoleAccessTab(userRole, item.id))
+    .map((item) => {
+      if (userRole === 'company' && companyPosition === 'HEDGE_FUND') {
+        if (item.id === 'issuer-dashboard') return { ...item, label: 'Fund Console' };
+        if (item.id === 'ipo-launch') return { ...item, label: 'Fundraise & LP Books' };
+      }
+      if (userRole === 'investor' && investorIdentity === 'VENTURE_CAPITAL') {
+        if (item.id === 'marketplace') return { ...item, label: 'Venture & RWA Deals' };
+      }
+      return item;
+    });
 
-  const mobileNavItems = navItems.filter(item => 
-    ['dashboard', 'portfolio', 'marketplace', 'settings'].includes(item.id)
-  );
+  const mobileNavIds =
+    userRole === 'company'
+      ? ['dashboard', 'issuer-dashboard', 'tokenisation-hub', 'settings']
+      : ['dashboard', 'marketplace', 'portfolio', 'settings'];
+
+  const mobileNavItems = navItems.filter((item) => mobileNavIds.includes(item.id));
 
   return (
-    <div className="flex h-screen bg-black text-white overflow-hidden font-sans selection:bg-white/30">
-      <CommandPalette 
-        isOpen={isCommandPaletteOpen} 
-        onClose={() => setIsCommandPaletteOpen(false)} 
-        onNavigate={setActiveTab} 
+    <div className="flex h-screen bg-[#07090E] text-slate-100 overflow-hidden font-sans selection:bg-emerald-400/30">
+      <CommandPalette
+        isOpen={isCommandPaletteOpen}
+        onClose={() => setIsCommandPaletteOpen(false)}
+        onNavigate={setActiveTab}
+        userRole={userRole}
       />
-      
+
       {/* Sidebar (Desktop) */}
-      <aside className={cn(
-        "hidden md:flex flex-col border-r border-white/5 bg-black relative z-20 transition-all duration-300 ease-in-out shrink-0",
-        isSidebarCollapsed ? "w-20" : "w-72"
-      )}>
-        {/* Toggle Button */}
-        <button 
+      <aside
+        className={cn(
+          'hidden md:flex flex-col bg-[#0A0D14] relative z-20 transition-all duration-200 shrink-0',
+          isSidebarCollapsed ? 'w-14' : 'w-52'
+        )}
+      >
+        <button
           onClick={toggleSidebar}
-          className="absolute top-7 -right-3 w-6 h-6 bg-white border border-neutral-800 text-black rounded-full flex items-center justify-center hover:scale-110 transition-transform cursor-pointer z-50 shadow-md"
+          aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="absolute top-4 -right-2.5 w-5 h-5 bg-[#131823] text-slate-200 rounded-full flex items-center justify-center hover:bg-white hover:text-slate-950 transition-colors cursor-pointer z-50"
         >
-          {isSidebarCollapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
+          {isSidebarCollapsed ? <ChevronRight className="w-3 h-3"/> : <ChevronLeft className="w-3 h-3"/>}
         </button>
 
-        <div className={cn("flex items-center gap-3 transition-all duration-300", isSidebarCollapsed ? "justify-center p-4" : "px-6 py-5 pb-3")}>
-          <img src="/logo.svg" alt="AfriQuantX Logo" className="w-9 h-9 object-contain" />
+        {/* Brand */}
+        <div
+          className={cn(
+            'flex items-center gap-2 transition-all duration-200',
+            isSidebarCollapsed ? 'justify-center px-2 py-3' : 'px-3.5 py-3'
+          )}
+        >
+          <img src="/logo.svg"alt="AfriQuantX Logo"className="w-6 h-6 object-contain shrink-0"/>
           {!isSidebarCollapsed && (
-            <span className="font-extrabold text-lg tracking-tight text-white">AfriQuantX</span>
+            <span className="font-bold text-sm tracking-tight text-white whitespace-nowrap">AfriQuantX</span>
           )}
         </div>
 
-        {/* Search Bar - Moved to Side Menu Bar on top of Dashboard link */}
-        <div className={cn("pb-2 transition-all duration-300 shrink-0", isSidebarCollapsed ? "px-2 flex justify-center" : "px-4")}>
+        {/* Search Bar on top of Dashboard link */}
+        <div className={cn('pb-2 shrink-0', isSidebarCollapsed ?'px-1.5 flex justify-center':'px-2.5')}>
           {isSidebarCollapsed ? (
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
-              className="w-10 h-10 flex items-center justify-center bg-neutral-900/90 hover:bg-neutral-800 border border-white/10 hover:border-white/25 rounded-xl text-zinc-400 hover:text-white transition-all cursor-pointer shadow-sm group"
-              title="Search or jump to... (⌘K)"
+              className="w-8 h-8 flex items-center justify-center bg-[#121723] hover:bg-[#192030] rounded-lg text-slate-400 hover:text-white transition-colors cursor-pointer"
+              title="Search or jump to (⌘K)"
             >
-              <Search className="w-4 h-4 text-zinc-400 group-hover:text-white" />
+              <Search className="w-3.5 h-3.5"/>
             </button>
           ) : (
             <button
               onClick={() => setIsCommandPaletteOpen(true)}
-              className="w-full flex items-center gap-2 bg-neutral-900/90 hover:bg-neutral-800/90 border border-white/10 hover:border-white/20 rounded-xl px-3 py-2 text-zinc-400 hover:text-white transition-all text-xs group cursor-pointer shadow-inner"
-              title="Search or jump to... (Press ⌘K or /)"
+              className="w-full flex items-center gap-2 bg-[#121723] hover:bg-[#171E2C] rounded-lg px-2.5 py-1.5 text-slate-400 hover:text-white transition-colors text-[11px] cursor-pointer"
+              title="Search or jump to (⌘K)"
             >
-              <Search className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white shrink-0" />
-              <span className="text-[10px] font-medium text-zinc-400 group-hover:text-zinc-200 flex-1 text-left truncate">Search or jump to...</span>
-              <kbd className="px-1.5 py-0.5 bg-white/5 rounded text-[9px] font-mono text-zinc-400 font-bold border border-white/10">⌘K</kbd>
+              <Search className="w-3 h-3 shrink-0"/>
+              <span className="text-[11px] font-medium flex-1 text-left truncate">Search or jump...</span>
+              <kbd className="px-1 py-0.5 bg-white/5 rounded text-[9px] font-mono text-slate-400">⌘K</kbd>
             </button>
           )}
         </div>
-        
-        <nav className="flex-1 px-3 py-1 space-y-1 overflow-y-auto">
+
+        {/* Extra-small clean navigation links */}
+        <nav className="flex-1 px-2 py-0.5 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeTab === item.id;
@@ -311,149 +362,115 @@ export function Layout({
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
                 className={cn(
-                  "w-full flex items-center rounded-xl transition-all duration-200 relative group uppercase tracking-wider text-[10px] font-bold",
-                  isSidebarCollapsed ? "justify-center p-3" : "px-3 py-2.5 gap-2.5",
-                  isActive 
-                    ? "text-black font-extrabold" 
-                    : "text-zinc-500 hover:text-white hover:bg-white/[0.04]"
+'w-full flex items-center rounded-md transition-colors relative group text-[11px] font-medium cursor-pointer',
+                  isSidebarCollapsed ? 'justify-center p-2' : 'px-2.5 py-1.5 gap-2',
+                  isActive
+                    ? 'bg-white text-slate-950 font-semibold'
+                    : 'text-slate-400 hover:text-white hover:bg-white/[0.04]'
                 )}
                 title={isSidebarCollapsed ? item.label : undefined}
               >
-                {isActive && (
-                  <motion.div 
-                    layoutId="active-nav-desktop"
-                    className="absolute inset-0 bg-white rounded-xl shadow-[0_0_15px_rgba(255,255,255,0.15)]"
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.5 }}
-                  />
+                <Icon className={cn('w-3.5 h-3.5 shrink-0', isActive ?'text-slate-950':'text-slate-400 group-hover:text-white')} />
+                {!isSidebarCollapsed && (
+                  <span className="truncate text-[11px] whitespace-nowrap">{item.label}</span>
                 )}
-                <Icon className={cn("w-4 h-4 relative z-10 transition-transform duration-200 shrink-0", isActive ? "scale-105 text-black" : "group-hover:scale-105")} />
-                {!isSidebarCollapsed && <span className="relative z-10 truncate text-[10px] tracking-wider">{item.label}</span>}
               </button>
             );
           })}
         </nav>
 
-        {/* Bottom Section: Profile & Wallet (if authed) + Theme Toggle & Notifications Bell */}
-        <div className="mt-auto border-t border-white/5 flex flex-col bg-neutral-950/80 shrink-0">
+        {/* Bottom Section: Role Identity + Theme Toggle & Notifications Bell */}
+        <div className="mt-auto flex flex-col bg-[#090C12] shrink-0">
           {isAuthed && (
-            <div className={cn("p-3 transition-all duration-300", isSidebarCollapsed ? "items-center flex flex-col gap-3" : "")}>
+            <div className={cn('p-2', isSidebarCollapsed ?'flex flex-col items-center gap-1.5':'space-y-1.5')}>
               {isSidebarCollapsed ? (
-                <div className="flex flex-col items-center gap-2.5">
-                  <div 
-                    onClick={() => setActiveTab('settings')}
-                    className="w-9 h-9 rounded-full bg-white p-[2px] cursor-pointer hover:scale-105 transition-transform" 
-                    title={`${currentUserName} (${userRole})`}
-                  >
-                    <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                      <User className="w-4 h-4 text-white" />
-                    </div>
-                  </div>
-                  <div 
-                    onClick={() => setActiveTab('wallet')}
-                    className="w-8 h-8 rounded-full bg-black border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white cursor-pointer" 
-                    title="Wallet Balance: $0"
-                  >
-                    <Wallet className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-              ) : (
-                <div 
+                <button
                   onClick={() => setActiveTab('settings')}
-                  className="p-3 rounded-xl bg-neutral-900/60 border border-white/5 relative overflow-hidden group cursor-pointer hover:border-white/20 transition-colors shadow-lg"
+                  className="w-8 h-8 rounded-full bg-[#131823] flex items-center justify-center text-white hover:bg-[#192030] cursor-pointer"
+                  title={`${currentUserName} (${roleBadgeLabel})`}
                 >
-                  <div className="flex items-center gap-2.5 mb-2.5 relative z-10">
-                    <div className="w-8 h-8 rounded-full bg-white p-[2px] shrink-0">
-                      <div className="w-full h-full rounded-full bg-black flex items-center justify-center">
-                        <User className="w-4 h-4 text-white" />
-                      </div>
+                  <User className="w-3.5 h-3.5"/>
+                </button>
+              ) : (
+                <div
+                  onClick={() => setActiveTab('settings')}
+                  className="p-2 rounded-lg bg-[#111622] cursor-pointer hover:bg-[#161D2C] transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center shrink-0">
+                      {userRole === 'company' ? (
+                        <Building2 className="w-3 h-3 text-sky-400"/>
+                      ) : (
+                        <User className="w-3 h-3 text-emerald-400"/>
+                      )}
                     </div>
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold text-white uppercase tracking-wider truncate">{currentUserName}</p>
-                      <p className="text-[9px] text-emerald-400 flex items-center gap-1 uppercase tracking-widest font-bold">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Verified {userRole}
-                      </p>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-semibold text-white truncate">{currentUserName}</p>
+                      <p className="text-[10px] text-slate-400 truncate">{roleBadgeLabel}</p>
                     </div>
-                  </div>
-                  <div 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setActiveTab('wallet');
-                    }}
-                    className="pt-2 border-t border-white/5 relative z-10 hover:opacity-90 transition-opacity"
-                  >
-                    <p className="text-[9px] text-zinc-400 mb-0.5 flex items-center gap-1 uppercase tracking-widest font-bold">
-                      <Wallet className="w-3 h-3 text-white" /> Wallet Balance
-                    </p>
-                    <p className="text-sm font-bold font-mono text-white tracking-tight">$0</p>
                   </div>
                 </div>
               )}
+
               {onLogout && (
-                <button 
+                <button
                   onClick={onLogout}
                   className={cn(
-                    "mt-2 flex items-center justify-center bg-zinc-900 text-white hover:bg-rose-950/40 hover:text-rose-400 border border-white/10 hover:border-rose-500/30 transition-all text-[10px] font-bold uppercase tracking-wider rounded-xl cursor-pointer",
-                    isSidebarCollapsed ? "w-9 h-9 p-0" : "w-full py-2.5 gap-2"
+'flex items-center justify-center bg-white/[0.03] hover:bg-rose-500/10 text-slate-400 hover:text-rose-300 transition-colors text-[11px] font-medium rounded-md cursor-pointer',
+                    isSidebarCollapsed ? 'w-8 h-8 p-0' : 'w-full py-1 gap-1.5'
                   )}
-                  title={isSidebarCollapsed ? "Sign Out" : undefined}
+                  title={isSidebarCollapsed ? 'Sign Out' : undefined}
                 >
-                  <LogOut className="w-3.5 h-3.5" />
-                  {!isSidebarCollapsed && "Sign Out"}
+                  <LogOut className="w-3 h-3"/>
+                  {!isSidebarCollapsed && <span>Sign Out</span>}
                 </button>
               )}
             </div>
           )}
 
-          {/* Theme Toggle & Notification Bell at the bottom side of the Side menu */}
-          <div className={cn(
-            "p-3 border-t border-white/5 flex items-center justify-between gap-2 transition-all duration-300",
-            isSidebarCollapsed ? "flex-col justify-center" : ""
-          )}>
-            <div className="flex items-center gap-2">
-              {!isSidebarCollapsed && (
-                <span className="text-[9px] font-bold uppercase tracking-wider text-zinc-500">Theme</span>
-              )}
-              <ThemeToggleSwitch scale={isSidebarCollapsed ? "micro" : "compact"} id="sidebar-bottom-theme-toggle" />
-            </div>
+          {/* Theme Toggle & Notification Bell (Transparent background & no border) */}
+          <div
+            className={cn(
+              'px-2.5 py-1.5 flex items-center justify-between gap-2',
+              isSidebarCollapsed ? 'flex-col justify-center' : ''
+            )}
+          >
+            <ThemeToggleSwitch scale={isSidebarCollapsed ?'micro':'compact'} id="sidebar-bottom-theme-toggle"/>
 
-            {/* Notification Bell with Dropdown in Sidebar */}
-            <div className="relative" ref={notificationsRef}>
-              <button 
+            <div className="relative"ref={notificationsRef}>
+              <button
                 onClick={handleNotificationClick}
-                className="relative p-2 rounded-xl bg-transparent border-0 border-none text-zinc-400 hover:text-white transition-all cursor-pointer focus:outline-none focus:ring-0 shadow-none"
-                title="Notifications & Live Telemetry"
+                className="relative p-1.5 rounded-lg bg-transparent text-slate-400 hover:text-white transition-colors cursor-pointer focus:outline-none shadow-none"
+                title="Notifications"
+                aria-label="Toggle Notifications"
               >
-                <Bell className="w-4 h-4" />
+                <Bell className="w-4 h-4"/>
                 {unreadCount > 0 && (
-                  <span className="absolute top-1 right-1 flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                  </span>
+                  <span className="absolute top-1 right-1 inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"/>
                 )}
               </button>
 
-              {/* Notification Dropdown from bottom of sidebar */}
               <AnimatePresence>
                 {showNotifications && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.96 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.18 }}
+                    transition={{ duration: 0.16 }}
                     className={cn(
-                      "fixed z-[99999] bottom-16 w-96 sm:w-[420px] bg-[#0A0E1A] border-2 border-white/20 rounded-2xl shadow-[0_25px_80px_rgba(0,0,0,0.99)] overflow-hidden",
-                      isSidebarCollapsed ? "left-24" : "left-76"
+                      'fixed z-[99999] bottom-12 w-72 sm:w-[340px] bg-[#0D111A] rounded-xl shadow-2xl overflow-hidden',
+                      isSidebarCollapsed ? 'left-16' : 'left-54'
                     )}
-                    style={{ backgroundColor: '#0A0E1A' }}
+                    style={{ backgroundColor:'#0D111A'}}
                   >
-                    <div className="p-4 border-b border-white/10 flex justify-between items-center bg-[#101626]" style={{ backgroundColor: '#101626' }}>
+                    <div
+                      className="p-2.5 flex justify-between items-center bg-[#121826]"
+                      style={{ backgroundColor:'#121826'}}
+                    >
+                      <h3 className="font-semibold text-white text-xs">Notifications & Alerts</h3>
                       <div className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-                        <h3 className="font-bold text-white text-sm">Real-Time Telemetry & Alerts</h3>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-[11px] text-zinc-400 font-mono font-semibold px-2 py-0.5 rounded bg-white/5 border border-white/10">
-                          {notifications.length} events
+                        <span className="text-[11px] text-slate-400 font-mono tabular-nums">
+                          {notifications.length} items
                         </span>
                         {notifications.length > 0 && (
                           <button
@@ -462,68 +479,70 @@ export function Layout({
                               setNotifications([]);
                               setUnreadCount(0);
                             }}
-                            title="Clear all notifications"
-                            className="text-zinc-500 hover:text-rose-400 p-1 text-xs transition-colors cursor-pointer"
+                            title="Clear notifications"
+                            className="text-slate-400 hover:text-rose-400 p-1 transition-colors cursor-pointer"
                           >
-                            <Trash2 className="w-3.5 h-3.5" />
+                            <Trash2 className="w-3 h-3"/>
                           </button>
                         )}
                       </div>
                     </div>
 
-                    <div className="max-h-[380px] overflow-y-auto divide-y divide-white/5 bg-[#0A0E1A]" style={{ backgroundColor: '#0A0E1A' }}>
+                    <div
+                      className="max-h-[280px] overflow-y-auto space-y-0.5 bg-[#0D111A]"
+                      style={{ backgroundColor:'#0D111A'}}
+                    >
                       {notifications.length > 0 ? (
-                        notifications.map(notif => (
-                          <div 
-                            key={notif.id} 
+                        notifications.map((notif) => (
+                          <div
+                            key={notif.id}
                             onClick={() => {
-                              if (notif.type === 'alert' || notif.title.includes('PRICE ALERT')) {
-                                setActiveTab('algo-trading');
-                              } else {
-                                setActiveTab('activity');
-                              }
+                              setActiveTab('activity');
                               setShowNotifications(false);
                             }}
-                            className={`p-3.5 hover:bg-[#151D2E] transition-colors cursor-pointer ${!notif.read ? 'bg-[#0E1524]' : 'bg-[#0A0E1A]'}`}
-                            style={{ backgroundColor: !notif.read ? '#0E1524' : '#0A0E1A' }}
+                            className="p-2.5 hover:bg-[#161D2C] transition-colors cursor-pointer"
+                            style={{ backgroundColor: !notif.read ?'#101624':'#0D111A'}}
                           >
-                            <div className="flex justify-between items-start mb-1 gap-2">
+                            <div className="flex justify-between items-start mb-0.5 gap-2">
                               <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                                {notif.type === 'alert' || notif.title.includes('PRICE ALERT') ? (
-                                  <BellRing className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                                ) : notif.type === 'trade' ? (
-                                  <ArrowRightLeft className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                                {notif.type === 'alert' ? (
+                                  <BellRing className="w-3 h-3 text-amber-400 shrink-0"/>
+                                ) : notif.type === 'trade' || notif.type === 'settlement' ? (
+                                  <ArrowRightLeft className="w-3 h-3 text-emerald-400 shrink-0"/>
                                 ) : notif.type === 'signal' ? (
-                                  <Zap className="w-3.5 h-3.5 text-purple-400 shrink-0" />
+                                  <Zap className="w-3 h-3 text-sky-400 shrink-0"/>
                                 ) : notif.type === 'risk' ? (
-                                  <AlertTriangle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                                  <AlertTriangle className="w-3 h-3 text-rose-400 shrink-0"/>
                                 ) : (
-                                  <Bell className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                                  <Bell className="w-3 h-3 text-slate-400 shrink-0"/>
                                 )}
-                                <h4 className="text-xs font-bold text-white uppercase tracking-wider truncate">{notif.title}</h4>
+                                <h4 className="text-[11px] font-semibold text-white truncate">{notif.title}</h4>
                               </div>
-                              <span className="text-[10px] text-zinc-400 font-mono shrink-0">{notif.time}</span>
+                              <span className="text-[10px] text-slate-500 font-mono shrink-0">{notif.time}</span>
                             </div>
-                            <p className="text-xs text-zinc-300 leading-relaxed pl-5">{notif.message}</p>
+                            <p className="text-[11px] text-slate-300 leading-snug pl-4.5">{notif.message}</p>
                           </div>
                         ))
                       ) : (
-                        <div className="p-8 text-center text-zinc-400 text-sm">
-                          <Bell className="w-8 h-8 text-zinc-600 mx-auto mb-2 opacity-50" />
+                        <div className="p-3 text-center text-slate-400 text-xs">
+                          <Bell className="w-5 h-5 text-slate-600 mx-auto mb-1.5"/>
                           No active notifications
                         </div>
                       )}
                     </div>
 
-                    <div className="p-2.5 border-t border-white/10 bg-[#0E1422] flex items-center justify-between" style={{ backgroundColor: '#0E1422' }}>
+                    <div
+                      className="p-2 bg-[#121826] flex items-center justify-between"
+                      style={{ backgroundColor:'#121826'}}
+                    >
                       <button
                         onClick={() => {
                           setUnreadCount(0);
-                          setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+                          setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
                         }}
-                        className="text-[11px] font-semibold text-zinc-400 hover:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+                        className="text-[11px] font-medium text-slate-300 hover:text-white flex items-center gap-1 px-2 py-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
                       >
-                        <CheckCheck className="w-3.5 h-3.5 text-emerald-400" />
+                        <CheckCheck className="w-3 h-3 text-emerald-400"/>
                         Mark all read
                       </button>
                       <button
@@ -531,10 +550,10 @@ export function Layout({
                           setActiveTab('activity');
                           setShowNotifications(false);
                         }}
-                        className="text-[11px] font-semibold text-blue-400 hover:text-blue-300 flex items-center gap-1 px-2 py-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+                        className="text-[11px] font-medium text-emerald-400 hover:text-emerald-300 flex items-center gap-1 px-2 py-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
                       >
-                        Activity Center
-                        <ChevronRight className="w-3 h-3" />
+                        View Activity
+                        <ChevronRight className="w-3 h-3"/>
                       </button>
                     </div>
                   </motion.div>
@@ -546,77 +565,56 @@ export function Layout({
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative bg-black">
-        {/* Ambient Background Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-white/[0.02] blur-[150px] rounded-full pointer-events-none" />
-
-        {/* Scrollable Content - FULL WIDTH STRETCHED LAYOUT */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 pb-24 md:pb-8 z-10 scroll-smooth w-full">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden relative bg-[#07090E]">
+        <div className="flex-1 overflow-y-auto p-3 md:p-4 lg:p-3 pb-16 md:pb-5 z-10 w-full">
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 10 }}
+              key={`${userRole}-${activeTab}`}
+              initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.25 }}
-              className="w-full h-full min-h-[calc(100vh-140px)]"
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.16 }}
+              className="w-full max-w-[1220px] mx-auto"
             >
               {children}
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Real-time Notification Toast Notification (Top Right, Opaque, High Z-Index) */}
+        {/* Real-time Notification Toast (Opaque, High Z-Index) */}
         <AnimatePresence>
           {toastNotification && (
             <motion.div
-              initial={{ opacity: 0, y: -25, scale: 0.95 }}
+              initial={{ opacity: 0, y: -20, scale: 0.96 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -25, scale: 0.95 }}
-              transition={{ duration: 0.22, ease: "easeOut" }}
-              className="fixed top-20 md:top-24 right-4 md:right-8 z-[99999] max-w-sm w-[calc(100vw-2rem)] md:w-96 bg-[#0A0E1A] border-2 border-emerald-500/60 p-4 rounded-2xl shadow-[0_25px_80px_rgba(0,0,0,0.98)] flex items-start gap-3 pointer-events-auto"
-              style={{ backgroundColor: '#0A0E1A' }}
+              exit={{ opacity: 0, y: -20, scale: 0.96 }}
+              transition={{ duration: 0.18 }}
+              className="fixed top-4 right-4 z-[99999] max-w-xs w-[calc(100vw-2rem)] md:w-80 bg-[#0D111A] p-3 rounded-lg shadow-2xl flex items-start gap-2.5"
+              style={{ backgroundColor:'#0D111A'}}
             >
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 mt-0.5">
-                {toastNotification.type === 'alert' || toastNotification.title.includes('PRICE ALERT') ? (
-                  <BellRing className="w-4 h-4 text-amber-400 animate-bounce" />
-                ) : toastNotification.type === 'trade' ? (
-                  <ArrowRightLeft className="w-4 h-4 text-emerald-400 animate-pulse" />
-                ) : toastNotification.type === 'signal' ? (
-                  <Zap className="w-4 h-4 text-purple-400 animate-bounce" />
-                ) : (
-                  <Bell className="w-4 h-4 text-emerald-400 animate-bounce" />
-                )}
-              </div>
-              <div 
+              <Bell className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5"/>
+              <div
                 className="flex-1 min-w-0 cursor-pointer"
                 onClick={() => {
-                  if (toastNotification.type === 'alert' || toastNotification.title.includes('PRICE ALERT')) {
-                    setActiveTab('algo-trading');
-                  } else {
-                    setActiveTab('activity');
-                  }
+                  setActiveTab('activity');
                   setToastNotification(null);
                 }}
               >
                 <div className="flex items-center justify-between gap-2 mb-0.5">
-                  <p className="text-xs font-bold text-white uppercase tracking-wider truncate">{toastNotification.title}</p>
-                  <span className="text-[10px] text-zinc-400 font-mono shrink-0">{toastNotification.time}</span>
+                  <p className="text-[11px] font-semibold text-white truncate">{toastNotification.title}</p>
+                  <span className="text-[10px] text-slate-400 font-mono shrink-0">{toastNotification.time}</span>
                 </div>
-                <p className="text-xs text-zinc-300 leading-relaxed line-clamp-2">{toastNotification.message}</p>
-                <p className="text-[10px] text-blue-400 font-semibold mt-1 flex items-center gap-1 hover:underline">
-                  Click to open in terminal <ChevronRight className="w-3 h-3" />
-                </p>
+                <p className="text-[11px] text-slate-300 leading-snug line-clamp-2">{toastNotification.message}</p>
               </div>
               <button
                 onClick={(e) => {
                   e.stopPropagation();
                   setToastNotification(null);
                 }}
-                className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
-                title="Dismiss"
+                className="text-slate-400 hover:text-white p-0.5 rounded hover:bg-white/10 transition-colors cursor-pointer"
+                aria-label="Dismiss alert"
               >
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5"/>
               </button>
             </motion.div>
           )}
@@ -624,7 +622,7 @@ export function Layout({
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-18 bg-black/95 backdrop-blur-2xl border-t border-white/10 z-50 px-4 pb-safe flex items-center justify-around">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-12 bg-[#0A0D14] z-50 px-2 flex items-center justify-around">
         {mobileNavItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
@@ -632,30 +630,22 @@ export function Layout({
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className="relative flex flex-col items-center justify-center w-12 h-12"
-            >
-              {isActive && (
-                <motion.div 
-                  layoutId="active-nav-mobile"
-                  className="absolute inset-0 bg-white rounded-xl"
-                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                />
+              className={cn(
+'flex flex-col items-center justify-center px-2.5 py-1 rounded-md transition-colors cursor-pointer',
+                isActive ? 'bg-white text-slate-950' : 'text-slate-400 hover:text-white'
               )}
-              <Icon className={cn("w-4 h-4 relative z-10 transition-transform duration-300", isActive ? "text-black -translate-y-0.5" : "text-zinc-500")} />
-              <span className={cn("text-[8px] font-bold uppercase tracking-wider absolute bottom-1 transition-opacity duration-300", isActive ? "opacity-100 text-black font-extrabold" : "opacity-0")}>
-                {item.label}
-              </span>
+            >
+              <Icon className="w-3.5 h-3.5"/>
+              <span className="text-[9px] font-medium mt-0.5 whitespace-nowrap">{item.label.split('')[0]}</span>
             </button>
           );
         })}
-        {/* Mobile Search Button */}
         <button
           onClick={() => setIsCommandPaletteOpen(true)}
-          className="relative flex flex-col items-center justify-center w-12 h-12 text-zinc-500 hover:text-white"
-          title="Search or jump to..."
+          className="flex flex-col items-center justify-center px-2.5 py-1 text-slate-400 hover:text-white cursor-pointer"
         >
-          <Search className="w-4 h-4 text-zinc-500" />
-          <span className="text-[8px] font-bold uppercase tracking-wider text-zinc-500">Search</span>
+          <Search className="w-3.5 h-3.5"/>
+          <span className="text-[9px] font-medium mt-0.5">Search</span>
         </button>
       </nav>
     </div>

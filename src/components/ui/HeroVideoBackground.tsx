@@ -35,7 +35,7 @@ export function HeroVideoBackground({
         ) : (
           <div className="w-full h-full scale-125 lg:scale-110">
             <iframe
-              className="w-full h-full object-cover border-0"
+              className="w-full h-full object-cover"
               src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&autohide=1&modestbranding=1&rel=0&enablejsapi=1&playsinline=1`}
               title={title}
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -54,7 +54,7 @@ export function HeroVideoBackground({
       <div className={`absolute bottom-0 left-0 right-0 h-px ${darkMode ? 'bg-white/[0.08]' : 'bg-gray-200/80'} pointer-events-none`} />
 
       {/* Small Video Credit Badge */}
-      <div className="absolute bottom-3 right-6 pointer-events-auto hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/85 text-white text-[10px] font-mono border border-white/10 shadow-lg">
+      <div className="absolute bottom-3 right-6 pointer-events-auto hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/85 text-white text-[10px] font-mono shadow-lg">
         <Film className="w-3 h-3 text-[#D9A94E]" />
         <span>{creditLabel}</span>
       </div>

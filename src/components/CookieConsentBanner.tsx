@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 
 export function CookieConsentBanner() {
   const [isVisible, setIsVisible] = useState(false);
+  const [showPrivacyInfo, setShowPrivacyInfo] = useState(false);
 
   useEffect(() => {
     const consent = localStorage.getItem('aqx_cookie_consent');
@@ -47,15 +48,24 @@ export function CookieConsentBanner() {
 
             <span className="cookieHeading">We use cookies.</span>
             <p className="cookieDescription">
-              AfriQuantX uses cookies to enhance institutional analytics & market speed. Learn more in our{' '}
-              <a href="#privacy" onClick={(e) => e.preventDefault()}>privacy policy</a>.
+              {showPrivacyInfo ? (
+                <span>
+                  AfriQuantX stores essential workspace preferences locally and keeps personal identity data isolated off-chain.{' '}
+                  <button type="button"onClick={() => setShowPrivacyInfo(false)} className="underline text-blue-600 cursor-pointer">Hide</button>
+                </span>
+              ) : (
+                <>
+                  AfriQuantX uses cookies for workspace preferences. Read our{' '}
+                  <button type="button"onClick={() => setShowPrivacyInfo(true)} className="underline text-blue-600 cursor-pointer">privacy policy</button>.
+                </>
+              )}
             </p>
 
             <div className="buttonContainer">
-              <button className="acceptButton" onClick={handleAccept}>
+              <button className="acceptButton"onClick={handleAccept}>
                 Allow
               </button>
-              <button className="declineButton" onClick={handleDecline}>
+              <button className="declineButton"onClick={handleDecline}>
                 Decline
               </button>
             </div>

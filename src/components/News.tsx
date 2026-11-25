@@ -229,10 +229,10 @@ export function News() {
   };
 
   return (
-    <div className="space-y-6 w-full">
+    <div className="space-y-3 w-full">
       {/* Live Pan-African Market Data Strip - Stretched */}
-      <div className="bg-neutral-900/50 rounded-2xl p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-3 mb-3">
+      <div className="bg-neutral-900/50 rounded-lg p-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 mb-3">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-white flex items-center gap-1.5">
@@ -290,7 +290,7 @@ export function News() {
       </div>
 
       {/* AI News Synthesis Terminal */}
-      <div className="bg-neutral-900/50 rounded-2xl p-6">
+      <div className="bg-neutral-900/50 rounded-lg p-3.5">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-4 h-4 text-white" />
           <h3 className="text-sm font-bold uppercase tracking-wider text-white">Generative AI Macro News Analysis</h3>
@@ -306,7 +306,7 @@ export function News() {
           />
           <button
             disabled
-            className="px-6 py-3 bg-white text-black font-bold rounded-xl hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer text-xs shrink-0"
+            className="px-3.5 py-3 bg-white text-black font-bold rounded-xl hover:bg-zinc-200 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer text-xs shrink-0"
           >
             <><Send className="w-4 h-4" /> Synthesize</>
           </button>
@@ -318,11 +318,11 @@ export function News() {
       </div>
 
       {/* Market Terminal & Finnhub Quotes - Stretched 2-Column Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3">
         
         {/* Chart View */}
-        <div className="xl:col-span-2 bg-neutral-900/50 rounded-2xl p-6 flex flex-col justify-between min-h-[420px]">
-          <div className="flex flex-row items-center justify-between gap-4 flex-wrap pb-4 border-b border-white/5">
+        <div className="xl:col-span-2 bg-neutral-900/50 rounded-lg p-3.5 flex flex-col justify-between min-h-[420px]">
+          <div className="flex flex-row items-center justify-between gap-4 flex-wrap pb-4">
             <div className="flex items-center gap-2">
               <BarChart2 className="w-4 h-4 text-blue-400" />
               <h3 className="text-sm font-bold uppercase tracking-wider text-white">Market Terminal</h3>
@@ -333,11 +333,7 @@ export function News() {
                 <button
                   key={sym}
                   onClick={() => setSelectedSymbol(sym)}
-                  className={`px-3 py-1 text-xs font-bold font-mono rounded-lg transition-all cursor-pointer ${
-                    selectedSymbol === sym 
-                      ? 'bg-white text-black' 
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
+                  className={`px-3 py-1 text-xs font-bold font-mono rounded-lg transition-all cursor-pointer ${ selectedSymbol === sym ? 'bg-white text-black' : 'text-zinc-400 hover:text-white' }`}
                 >
                   {sym}
                 </button>
@@ -347,7 +343,7 @@ export function News() {
 
           <div className="flex-1 py-4 min-h-[240px]">
             {isLoadingChart ? (
-              <div className="h-full flex flex-col items-center justify-center text-zinc-500 py-12">
+              <div className="h-full flex flex-col items-center justify-center text-zinc-500 py-4">
                 <RefreshCw className="w-6 h-6 animate-spin text-white mb-2" />
                 <span className="text-xs font-mono">Syncing TwelveData Nodes...</span>
               </div>
@@ -377,7 +373,7 @@ export function News() {
                       domain={['auto', 'auto']}
                     />
                     <Tooltip 
-                      contentStyle={{ backgroundColor: '#09090b', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                      contentStyle={{ backgroundColor: '#09090b', borderColor: 'transparent', borderRadius: '12px' }}
                       labelStyle={{ color: '#a1a1aa', fontWeight: 'bold', fontSize: '11px' }}
                       itemStyle={{ color: '#FFFFFF', fontSize: '12px', fontWeight: 'bold' }}
                     />
@@ -395,7 +391,7 @@ export function News() {
             )}
           </div>
 
-          <div className="flex justify-between items-center pt-3 border-t border-white/5 text-xs text-zinc-500">
+          <div className="flex justify-between items-center pt-3 text-xs text-zinc-500">
             <span className="flex items-center gap-1 font-mono">
               <Calendar className="w-3.5 h-3.5 text-zinc-400" /> Continuous TwelveData Feed
             </span>
@@ -404,8 +400,8 @@ export function News() {
         </div>
 
         {/* Live Quotes Board */}
-        <div className="bg-neutral-900/50 rounded-2xl p-6 flex flex-col min-h-[420px]">
-          <div className="pb-3 border-b border-white/5 flex flex-row items-center justify-between shrink-0">
+        <div className="bg-neutral-900/50 rounded-lg p-3.5 flex flex-col min-h-[420px]">
+          <div className="pb-3 flex flex-row items-center justify-between shrink-0">
             <div className="flex items-center gap-2">
               <Activity className="w-4 h-4 text-white" />
               <h3 className="text-sm font-bold uppercase tracking-wider text-white">Quotes Board</h3>
@@ -430,11 +426,7 @@ export function News() {
                 <div 
                   key={sym}
                   onClick={() => setSelectedSymbol(sym)}
-                  className={`p-3 rounded-xl transition-all cursor-pointer flex items-center justify-between ${
-                    selectedSymbol === sym 
-                      ? 'bg-white/10' 
-                      : 'bg-white/[0.02] hover:bg-white/[0.04]'
-                  }`}
+                  className={`p-3 rounded-xl transition-all cursor-pointer flex items-center justify-between ${ selectedSymbol === sym ? 'bg-white/10' : 'bg-white/[0.02] hover:bg-white/[0.04]' }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center font-bold text-xs text-white">
@@ -449,9 +441,7 @@ export function News() {
                   </div>
                   <div className="text-right">
                     <p className="text-xs font-bold font-mono text-white">${q.price.toFixed(2)}</p>
-                    <p className={`text-[10px] font-bold font-mono flex items-center gap-0.5 justify-end ${
-                      isPositive ? 'text-emerald-400' : 'text-rose-400'
-                    }`}>
+                    <p className={`text-[10px] font-bold font-mono flex items-center gap-0.5 justify-end ${ isPositive ? 'text-emerald-400' : 'text-rose-400' }`}>
                       {isPositive ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
                       {isPositive ? '+' : ''}{q.percent_change}%
                     </p>
@@ -465,11 +455,11 @@ export function News() {
       </div>
 
       {/* Strategic News & Key Governance Directory */}
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
         
         {/* Curated Macroeconomic News */}
-        <div className="bg-neutral-900/50 rounded-2xl p-6 space-y-4">
-          <div className="flex items-center gap-2 pb-3 border-b border-white/5">
+        <div className="bg-neutral-900/50 rounded-lg p-3.5 space-y-4">
+          <div className="flex items-center gap-2 pb-3">
             <Globe className="w-4 h-4 text-white" />
             <h3 className="text-sm font-bold uppercase tracking-wider text-white">Strategic Economic Feed</h3>
           </div>
@@ -478,7 +468,7 @@ export function News() {
             {CURATED_NEWS.map((item) => (
               <div 
                 key={item.id}
-                className="p-4 bg-white/[0.02] hover:bg-white/[0.04] rounded-2xl transition-all flex flex-col gap-2.5 group"
+                className="p-4 bg-white/[0.02] hover:bg-white/[0.04] rounded-lg transition-all flex flex-col gap-2.5 group"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -499,7 +489,7 @@ export function News() {
                     {item.summary}
                   </p>
                 </div>
-                <div className="flex items-center justify-between pt-2 border-t border-white/5 text-[11px]">
+                <div className="flex items-center justify-between pt-2 text-[11px]">
                   <span className="text-zinc-500 font-mono">Via {item.source}</span>
                   <button
                     onClick={() => loadNewsToAI(item.title, item.summary)}
@@ -514,8 +504,8 @@ export function News() {
         </div>
 
         {/* Officers & Directors Directory */}
-        <div className="bg-neutral-900/50 rounded-2xl p-6 space-y-4">
-          <div className="flex items-center justify-between pb-3 border-b border-white/5">
+        <div className="bg-neutral-900/50 rounded-lg p-3.5 space-y-4">
+          <div className="flex items-center justify-between pb-3">
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-white" />
               <h3 className="text-sm font-bold uppercase tracking-wider text-white">Executive Directory</h3>

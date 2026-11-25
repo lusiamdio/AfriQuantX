@@ -103,7 +103,7 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-[#0A0A0A]/90 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl min-w-[200px]">
+        <div className="bg-[#0A0A0A]/90 backdrop-blur-xl p-4 rounded-lg shadow-2xl min-w-[200px]">
           <p className="text-zinc-400 text-xs font-bold uppercase tracking-wider mb-3">{payload[0].payload.date}</p>
           <div className="space-y-2">
             <div className="flex justify-between items-center">
@@ -119,7 +119,7 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
               <span className="text-sm font-bold text-zinc-300">${payload[1].value.toLocaleString()}</span>
             </div>
             {showBenchmark && payload[2] && (
-              <div className="flex justify-between items-center pt-2 border-t border-white/10 mt-2">
+              <div className="flex justify-between items-center pt-2 mt-2">
                 <span className="text-sm text-zinc-500 flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-zinc-500" /> Benchmark
                 </span>
@@ -134,10 +134,10 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
   };
 
   return (
-    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-3.5 md:p-4 max-w-6xl mx-auto space-y-4">
       {/* Header & Sticky Time Filters */}
-      <div className="sticky top-0 z-40 bg-[#050505]/80 backdrop-blur-xl pt-4 pb-6 -mx-6 px-6 md:-mx-8 md:px-8 border-b border-white/5">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="sticky top-0 z-40 bg-[#050505]/80 backdrop-blur-xl pt-4 pb-6 -mx-6 px-3.5 md:-mx-8 md:px-4">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setActiveTab('dashboard')}
@@ -151,16 +151,12 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
             </div>
           </div>
 
-          <div className="flex bg-[#0A0A0A] p-1.5 rounded-2xl border border-white/10 shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+          <div className="flex bg-[#0A0A0A] p-1.5 rounded-lg shadow-[0_0_20px_rgba(0,0,0,0.5)]">
             {['1M', '3M', '6M', '1Y', 'ALL'].map((period) => (
               <button 
                 key={period}
                 onClick={() => handleRangeChange(period)}
-                className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
-                  range === period 
-                    ? 'bg-white/10 text-white shadow-sm scale-105' 
-                    : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5'
-                }`}
+                className={`px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 ${ range === period ? 'bg-white/10 text-white shadow-sm scale-105' : 'text-zinc-500 hover:text-zinc-300 hover:bg-white/5' }`}
               >
                 {period}
               </button>
@@ -171,15 +167,15 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
 
       {/* Core Metrics Overlay */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+        <div className="bg-[#0A0A0A] rounded-xl p-3.5 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
           <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-2">Total Value</p>
           <h3 className="text-2xl font-bold text-white">${metrics.currentValue.toLocaleString()}</h3>
         </div>
-        <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+        <div className="bg-[#0A0A0A] rounded-xl p-3.5 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
           <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-2">Net Investment</p>
           <h3 className="text-2xl font-bold text-zinc-300">${metrics.netInvestment.toLocaleString()}</h3>
         </div>
-        <div className={`bg-gradient-to-br ${metrics.isPositive ? 'from-[#00C896]/10 to-[#0A0A0A]' : 'from-[#FF3B3B]/10 to-[#0A0A0A]'} border ${metrics.isPositive ? 'border-[#00C896]/20' : 'border-[#FF3B3B]/20'} rounded-3xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.5)]`}>
+        <div className={`bg-gradient-to-br ${metrics.isPositive ? 'from-[#00C896]/10 to-[#0A0A0A]' : 'from-[#FF3B3B]/10 to-[#0A0A0A]'} ${metrics.isPositive ? 'border-[#00C896]/20' : 'border-[#FF3B3B]/20'} rounded-xl p-3.5 shadow-[0_0_30px_rgba(0,0,0,0.5)]`}>
           <p className={`text-[10px] font-bold uppercase tracking-wider mb-2 ${metrics.isPositive ? 'text-[#00C896]/70' : 'text-[#FF3B3B]/70'}`}>Profit / Loss</p>
           <div className="flex items-end gap-3">
             <h3 className={`text-2xl font-bold ${metrics.isPositive ? 'text-[#00C896]' : 'text-[#FF3B3B]'}`}>
@@ -190,7 +186,7 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
             </span>
           </div>
         </div>
-        <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+        <div className="bg-[#0A0A0A] rounded-xl p-3.5 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
           <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-2">Volatility Index</p>
           <div className="flex items-center gap-2">
             <Activity className="w-5 h-5 text-[#FFFFFF]" />
@@ -200,13 +196,13 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
       </div>
 
       {/* Main Chart Section */}
-      <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 md:p-8 shadow-[0_0_30px_rgba(0,0,0,0.5)] relative overflow-hidden">
+      <div className="bg-[#0A0A0A] rounded-xl p-3.5 md:p-4 shadow-[0_0_30px_rgba(0,0,0,0.5)] relative overflow-hidden">
         {/* AI Insight Layer */}
         <div className="absolute top-6 left-6 right-6 md:right-auto md:max-w-md z-10">
           <motion.div 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-gradient-to-r from-[#0066FF]/20 to-[#FFFFFF]/10 border border-[#0066FF]/30 backdrop-blur-md rounded-2xl p-4 shadow-[0_0_20px_rgba(0,102,255,0.15)]"
+            className="bg-gradient-to-r from-[#0066FF]/20 to-[#FFFFFF]/10 backdrop-blur-md rounded-lg p-4 shadow-[0_0_20px_rgba(0,102,255,0.15)]"
           >
             <div className="flex items-start gap-3">
               <Sparkles className="w-5 h-5 text-[#0066FF] shrink-0 mt-0.5" />
@@ -216,7 +212,10 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
                     ? `Your portfolio outperformed your net investment by ${metrics.roi.toFixed(1)}% over ${range}.`
                     : `Drawdown detected in the selected period due to broader market volatility.`}
                 </p>
-                <button className="text-[10px] font-bold uppercase tracking-wider text-[#0066FF] hover:text-[#0044AA] mt-2 transition-colors">
+                <button
+                  onClick={() => setActiveTab('intelligence-ngx')}
+                  className="text-[10px] font-bold uppercase tracking-wider text-[#0066FF] hover:text-[#0044AA] mt-2 transition-colors cursor-pointer"
+                >
                   Analyze Drivers
                 </button>
               </div>
@@ -228,11 +227,7 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
         <div className="absolute top-6 right-6 z-10 hidden md:block">
           <button 
             onClick={() => setShowBenchmark(!showBenchmark)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors border ${
-              showBenchmark 
-                ? 'bg-white/10 border-white/20 text-white' 
-                : 'bg-black/40 border-white/10 text-zinc-500 hover:text-white'
-            }`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors bg-white/[0.03] ${ showBenchmark ? 'bg-white/10 border-white/20 text-white' : 'bg-black/40 border-white/10 text-zinc-500 hover:text-white' }`}
           >
             <Target className="w-4 h-4" />
             AQX Tech Index
@@ -359,9 +354,9 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
             initial={{ opacity: 0, height: 0, y: 20 }}
             animate={{ opacity: 1, height: 'auto', y: 0 }}
             exit={{ opacity: 0, height: 0, y: 20 }}
-            className="bg-gradient-to-br from-[#111] to-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 md:p-8 shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden"
+            className="bg-gradient-to-br from-[#111] to-[#0A0A0A] rounded-xl p-3.5 md:p-4 shadow-[0_0_30px_rgba(0,0,0,0.5)] overflow-hidden"
           >
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-3">
               <h3 className="text-lg font-bold text-white uppercase tracking-wider flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-[#0066FF]" />
                 Snapshot: {selectedPoint.date}
@@ -374,7 +369,7 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="space-y-4">
                 <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider">Composition</p>
                 <div className="space-y-3">
@@ -400,7 +395,7 @@ export function PerformanceAnalytics({ setActiveTab, initialRange = '6M' }: Perf
 
               <div className="md:col-span-2 space-y-4">
                 <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider">Movement Drivers</p>
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
+                <div className="bg-white/5 rounded-lg p-3">
                   <div className="flex items-start gap-3">
                     <Info className="w-5 h-5 text-[#FFFFFF] shrink-0 mt-0.5" />
                     <div>

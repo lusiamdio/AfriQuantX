@@ -52,6 +52,20 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
   const [notifyEnabled, setNotifyEnabled] = useState(true);
   const [autoReinvest, setAutoReinvest] = useState(false);
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showAllHistory, setShowAllHistory] = useState(false);
+  const [payoutNotice, setPayoutNotice] = useState<string | null>(null);
+
+  const downloadBlob = (content: string, filename: string, mime: string) => {
+    const blob = new Blob([content], { type: mime });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
 
   // Simulate countdown
   useEffect(() => {
@@ -68,7 +82,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
 
   if (view === 'q4-dividend') {
     return (
-      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+      <div className="p-3.5 md:p-4 max-w-6xl mx-auto space-y-4">
         <button 
           onClick={() => setView('overview')}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -82,10 +96,10 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
           <p className="text-zinc-400">Estimated breakdown and contributing assets for your upcoming payout.</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 md:p-8 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
-              <div className="flex justify-between items-start mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+          <div className="lg:col-span-2 space-y-3">
+            <div className="bg-[#0A0A0A] rounded-xl p-3.5 md:p-4 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+              <div className="flex justify-between items-start mb-4">
                 <div>
                   <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-1">Total Estimated Payout</p>
                   <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70 tracking-tight">$450.00</h2>
@@ -104,7 +118,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
                   { name: 'Dangote Cement', shares: 2000, yield: '5.1%', amount: 67.50, color: '#A1A1AA' },
                   { name: 'EduTech NG', shares: 500, yield: '2.9%', amount: 45.00, color: '#888888' },
                 ].map((asset) => (
-                  <div key={asset.name} className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5">
+                  <div key={asset.name} className="flex items-center justify-between p-4 rounded-lg bg-white/5">
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: asset.color }} />
                       <div>
@@ -119,8 +133,8 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-neutral-900/60 border border-white/10 rounded-3xl p-6 relative overflow-hidden">
+          <div className="space-y-3">
+            <div className="bg-neutral-900/60 rounded-xl p-3.5 relative overflow-hidden">
               <div className="absolute top-0 right-0 p-4 opacity-50">
                 <Sparkles className="w-24 h-24 text-white blur-xl" />
               </div>
@@ -133,14 +147,14 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
               </p>
             </div>
 
-            <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6">
+            <div className="bg-[#0A0A0A] rounded-xl p-3.5">
               <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Tax Implications</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                <div className="flex justify-between items-center pb-4">
                   <span className="text-sm text-zinc-400">Gross Dividend</span>
                   <span className="text-sm text-white font-medium">$500.00</span>
                 </div>
-                <div className="flex justify-between items-center pb-4 border-b border-white/10">
+                <div className="flex justify-between items-center pb-4">
                   <span className="text-sm text-zinc-400">Withholding Tax (10%)</span>
                   <span className="text-sm text-[#FF3B3B] font-medium">-$50.00</span>
                 </div>
@@ -158,7 +172,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
 
   if (view === 'q3-history') {
     return (
-      <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+      <div className="p-3.5 md:p-4 max-w-6xl mx-auto space-y-4">
         <button 
           onClick={() => setView('overview')}
           className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
@@ -171,20 +185,31 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
           <p className="text-zinc-400">Historical breakdown of your Q3 2026 dividend payout.</p>
         </div>
         {/* Similar detailed view for Q3 can be added here */}
-        <div className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 md:p-8 text-center">
+        <div className="bg-[#0A0A0A] rounded-xl p-3.5 md:p-4 text-center">
           <CheckCircle2 className="w-16 h-16 text-[#00FFB2] mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white mb-2">Successfully Paid</h2>
-          <p className="text-zinc-400 mb-6">Your Q3 dividend of $320.00 was deposited on Jul 31, 2026.</p>
-          <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-colors">
+          <p className="text-zinc-400 mb-3">Your Q3 dividend of $320.00 was deposited on Jul 31, 2026.</p>
+          <button
+            onClick={() => {
+              downloadBlob(
+                'AfriQuantX Dividend Receipt\nPeriod: Q3 2026\nNet Paid: $320.00\nSettlement Date: Jul 31, 2026\nStatus: Completed\n',
+                'AQX_Q3_Dividend_Receipt.txt',
+                'text/plain;charset=utf-8;'
+              );
+              setPayoutNotice('Downloaded Q3 2026 dividend receipt.');
+            }}
+            className="px-3.5 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-medium transition-colors"
+          >
             Download Receipt
           </button>
+          {payoutNotice && <p className="text-xs text-emerald-400 mt-3">{payoutNotice}</p>}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-3.5 md:p-4 max-w-6xl mx-auto space-y-4">
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -194,7 +219,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
         <div className="flex items-center gap-3 relative">
           <button 
             onClick={() => setShowExportMenu(!showExportMenu)}
-            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-medium text-white transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-sm font-medium text-white transition-colors"
           >
             <Download className="w-4 h-4" />
             Export
@@ -204,31 +229,58 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
             <motion.div 
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="absolute top-full right-0 mt-2 w-48 bg-[#111] border border-white/10 rounded-xl shadow-xl overflow-hidden z-50"
+              className="absolute top-full right-0 mt-2 w-48 bg-[#111] rounded-xl shadow-xl overflow-hidden z-50"
             >
-              <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-300 hover:bg-white/5 hover:text-white transition-colors text-left">
+              <button
+                onClick={() => {
+                  downloadBlob(
+                    'AfriQuantX Payout Statement FY 2026\nQ3: +$320.00 (Jul 31, 2026)\nQ2: +$290.00 (Apr 30, 2026)\nQ1: +$250.00 (Jan 31, 2026)\nYTD Total: $860.00\n',
+                    'AQX_Payout_Statement_2026.txt',
+                    'text/plain;charset=utf-8;'
+                  );
+                  setShowExportMenu(false);
+                  setPayoutNotice('Statement downloaded.');
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-300 hover:bg-white/5 hover:text-white transition-colors text-left"
+              >
                 <FileText className="w-4 h-4" /> PDF Statement
               </button>
-              <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-300 hover:bg-white/5 hover:text-white transition-colors text-left border-t border-white/5">
+              <button
+                onClick={() => {
+                  downloadBlob(
+                    'Period,AmountUSD,Date,Status\nQ3,320.00,2026-07-31,Completed\nQ2,290.00,2026-04-30,Completed\nQ1,250.00,2026-01-31,Completed\n',
+                    'AQX_Payout_History_2026.csv',
+                    'text/csv;charset=utf-8;'
+                  );
+                  setShowExportMenu(false);
+                  setPayoutNotice('CSV payout report downloaded.');
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 text-sm text-zinc-300 hover:bg-white/5 hover:text-white transition-colors text-left"
+              >
                 <FileSpreadsheet className="w-4 h-4" /> CSV Report
               </button>
             </motion.div>
           )}
         </div>
       </div>
+      {payoutNotice && (
+        <p role="status" className="text-xs text-emerald-400 bg-emerald-500/10 rounded-xl px-4 py-2">
+          {payoutNotice}
+        </p>
+      )}
 
       {/* Section 1: Upcoming Payouts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         <div className="lg:col-span-2">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             onClick={() => setView('q4-dividend')}
-            className="bg-gradient-to-br from-[#0A0A0A] to-[#111] border border-white/[0.08] hover:border-[#00FFB2]/30 rounded-3xl p-6 md:p-8 shadow-[0_0_30px_rgba(0,0,0,0.5)] cursor-pointer transition-all group relative overflow-hidden"
+            className="bg-gradient-to-br from-[#0A0A0A] to-[#111] rounded-xl p-3.5 md:p-4 shadow-[0_0_30px_rgba(0,0,0,0.5)] cursor-pointer transition-all group relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-br from-[#00FFB2]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
             
-            <div className="flex justify-between items-start mb-8 relative z-10">
+            <div className="flex justify-between items-start mb-4 relative z-10">
               <div>
                 <div className="flex items-center gap-2 mb-2">
                   <span className="w-2 h-2 rounded-full bg-[#00FFB2] animate-pulse" />
@@ -246,7 +298,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
             </div>
 
             {/* Smart Countdown */}
-            <div className="bg-black/40 border border-white/5 rounded-2xl p-5 mb-6 relative z-10">
+            <div className="bg-black/40 rounded-lg p-3 mb-3 relative z-10">
               <div className="flex justify-between items-end mb-4">
                 <div>
                   <p className="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-2">Countdown</p>
@@ -269,7 +321,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
             </div>
 
             {/* AI Insight */}
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-[#0066FF]/10 border border-[#0066FF]/20 relative z-10">
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-[#0066FF]/10 relative z-10">
               <Sparkles className="w-5 h-5 text-[#0066FF] shrink-0 mt-0.5" />
               <p className="text-sm text-[#0066FF]/80">
                 <strong className="text-white">AI Insight:</strong> Your Q4 dividend is projected to increase by <span className="text-[#00C896]">6.2%</span> compared to Q3 based on current portfolio performance.
@@ -279,12 +331,12 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
         </div>
 
         {/* Settings & Elite Upgrade */}
-        <div className="space-y-6">
+        <div className="space-y-3">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-neutral-900/60 border border-white/10 rounded-3xl p-6 relative overflow-hidden"
+            className="bg-neutral-900/60 rounded-xl p-3.5 relative overflow-hidden"
           >
             <div className="relative z-10">
               <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/10 text-white text-[10px] font-bold uppercase tracking-wider mb-4">
@@ -294,8 +346,15 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
               <p className="text-sm text-zinc-300 mb-4 leading-relaxed">
                 $450 payout arriving in 14 days. Reinvesting into high-yield assets could generate an additional <strong className="text-white">$78 annually</strong>.
               </p>
-              <button className="w-full py-3 bg-white hover:bg-zinc-200 text-black font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer">
-                <RefreshCw className="w-4 h-4" /> Enable Auto-Reinvest
+              <button
+                type="button"
+                onClick={() => {
+                  setAutoReinvest((prev) => !prev);
+                  setPayoutNotice(!autoReinvest ? 'Auto-reinvest DRIP enabled for upcoming Q4 dividends.' : 'Auto-reinvest DRIP paused.');
+                }}
+                className={`w-full py-3 font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer ${ autoReinvest ? 'bg-emerald-500 hover:bg-emerald-400 text-black' : 'bg-white hover:bg-zinc-200 text-black' }`}
+              >
+                <RefreshCw className="w-4 h-4" /> {autoReinvest ? 'Auto-Reinvest Enabled ✓' : 'Enable Auto-Reinvest'}
               </button>
             </div>
           </motion.div>
@@ -304,7 +363,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6"
+            className="bg-[#0A0A0A] rounded-xl p-3.5"
           >
             <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">Preferences</h3>
             <div className="space-y-4">
@@ -342,23 +401,29 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
       </div>
 
       {/* Section 2 & 3: History & Analytics */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Payout History */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 md:p-8"
+          className="bg-[#0A0A0A] rounded-xl p-3.5 md:p-4"
         >
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-3">
             <h2 className="text-lg font-bold text-white uppercase tracking-wider">Payout History</h2>
-            <button className="text-xs text-[#0066FF] hover:text-[#0044AA] font-bold uppercase tracking-wider transition-colors">View All</button>
+            <button
+              type="button"
+              onClick={() => setShowAllHistory((prev) => !prev)}
+              className="text-xs text-[#0066FF] hover:text-[#0044AA] font-bold uppercase tracking-wider transition-colors"
+            >
+              {showAllHistory ? 'Show Recent' : 'View All'}
+            </button>
           </div>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-white/10">
+                <tr className="">
                   <th className="pb-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Period</th>
                   <th className="pb-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Amount</th>
                   <th className="pb-3 text-xs font-bold text-zinc-500 uppercase tracking-wider">Date</th>
@@ -368,37 +433,61 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
               <tbody>
                 <tr 
                   onClick={() => setView('q3-history')}
-                  className="border-b border-white/5 hover:bg-white/[0.02] transition-colors cursor-pointer group"
+                  className="hover:bg-white/[0.02] transition-colors cursor-pointer group"
                 >
-                  <td className="py-4 text-sm text-white font-medium group-hover:text-[#0066FF] transition-colors">Q3</td>
-                  <td className="py-4 text-sm font-bold text-[#00FFB2]">+$320.00</td>
-                  <td className="py-4 text-sm text-zinc-400">Jul 31, 2026</td>
-                  <td className="py-4 text-right">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#00FFB2]/10 text-[#00FFB2] text-[10px] font-bold uppercase tracking-wider">
-                      <CheckCircle2 className="w-3 h-3" /> Completed
-                    </span>
-                  </td>
-                </tr>
-                <tr className="border-b border-white/5 hover:bg-white/[0.02] transition-colors cursor-pointer">
-                  <td className="py-4 text-sm text-white font-medium">Q2</td>
-                  <td className="py-4 text-sm font-bold text-[#00FFB2]">+$290.00</td>
-                  <td className="py-4 text-sm text-zinc-400">Apr 30, 2026</td>
-                  <td className="py-4 text-right">
+                  <td className="py-1.5 text-xs text-white font-medium group-hover:text-[#0066FF] transition-colors">Q3</td>
+                  <td className="py-1.5 text-xs font-bold text-[#00FFB2]">+$320.00</td>
+                  <td className="py-1.5 text-xs text-zinc-400">Jul 31, 2026</td>
+                  <td className="py-1.5 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#00FFB2]/10 text-[#00FFB2] text-[10px] font-bold uppercase tracking-wider">
                       <CheckCircle2 className="w-3 h-3" /> Completed
                     </span>
                   </td>
                 </tr>
                 <tr className="hover:bg-white/[0.02] transition-colors cursor-pointer">
-                  <td className="py-4 text-sm text-white font-medium">Q1</td>
-                  <td className="py-4 text-sm font-bold text-[#00FFB2]">+$250.00</td>
-                  <td className="py-4 text-sm text-zinc-400">Jan 31, 2026</td>
-                  <td className="py-4 text-right">
+                  <td className="py-1.5 text-xs text-white font-medium">Q2</td>
+                  <td className="py-1.5 text-xs font-bold text-[#00FFB2]">+$290.00</td>
+                  <td className="py-1.5 text-xs text-zinc-400">Apr 30, 2026</td>
+                  <td className="py-1.5 text-right">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#00FFB2]/10 text-[#00FFB2] text-[10px] font-bold uppercase tracking-wider">
                       <CheckCircle2 className="w-3 h-3" /> Completed
                     </span>
                   </td>
                 </tr>
+                <tr className="hover:bg-white/[0.02] transition-colors cursor-pointer">
+                  <td className="py-1.5 text-xs text-white font-medium">Q1</td>
+                  <td className="py-1.5 text-xs font-bold text-[#00FFB2]">+$250.00</td>
+                  <td className="py-1.5 text-xs text-zinc-400">Jan 31, 2026</td>
+                  <td className="py-1.5 text-right">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#00FFB2]/10 text-[#00FFB2] text-[10px] font-bold uppercase tracking-wider">
+                      <CheckCircle2 className="w-3 h-3" /> Completed
+                    </span>
+                  </td>
+                </tr>
+                {showAllHistory && (
+                  <>
+                    <tr className="hover:bg-white/[0.02] transition-colors">
+                      <td className="py-1.5 text-xs text-white font-medium">Q4 2025</td>
+                      <td className="py-1.5 text-xs font-bold text-[#00FFB2]">+$235.00</td>
+                      <td className="py-1.5 text-xs text-zinc-400">Oct 31, 2025</td>
+                      <td className="py-1.5 text-right">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#00FFB2]/10 text-[#00FFB2] text-[10px] font-bold uppercase tracking-wider">
+                          <CheckCircle2 className="w-3 h-3" /> Completed
+                        </span>
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-white/[0.02] transition-colors">
+                      <td className="py-1.5 text-xs text-white font-medium">Q3 2025</td>
+                      <td className="py-1.5 text-xs font-bold text-[#00FFB2]">+$210.00</td>
+                      <td className="py-1.5 text-xs text-zinc-400">Jul 31, 2025</td>
+                      <td className="py-1.5 text-right">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#00FFB2]/10 text-[#00FFB2] text-[10px] font-bold uppercase tracking-wider">
+                          <CheckCircle2 className="w-3 h-3" /> Completed
+                        </span>
+                      </td>
+                    </tr>
+                  </>
+                )}
               </tbody>
             </table>
           </div>
@@ -409,22 +498,22 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 md:p-8"
+          className="bg-[#0A0A0A] rounded-xl p-3.5 md:p-4"
         >
-          <h2 className="text-lg font-bold text-white uppercase tracking-wider mb-6">Earnings Analytics</h2>
+          <h2 className="text-lg font-bold text-white uppercase tracking-wider mb-3">Earnings Analytics</h2>
           
-          <div className="grid grid-cols-2 gap-4 mb-8">
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="p-4 rounded-lg bg-white/5">
               <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-1">Total YTD</p>
               <p className="text-2xl font-bold text-white">$860.00</p>
             </div>
-            <div className="p-4 rounded-2xl bg-white/5 border border-white/5">
+            <div className="p-4 rounded-lg bg-white/5">
               <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-1">Avg Yield</p>
               <p className="text-2xl font-bold text-[#00FFB2]">4.6%</p>
             </div>
           </div>
 
-          <div className="h-[200px] w-full mb-6">
+          <div className="h-[200px] w-full mb-3">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={growthData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#ffffff05" vertical={false} />
@@ -432,7 +521,7 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
                 <YAxis stroke="#ffffff40" fontSize={10} tickLine={false} axisLine={false} dx={-10} tickFormatter={(val) => `$${val}`} />
                 <Tooltip 
                   cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                  contentStyle={{ backgroundColor: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(12px)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
+                  contentStyle={{ backgroundColor: 'rgba(10, 10, 10, 0.9)', backdropFilter: 'blur(12px)', borderColor: 'transparent', borderRadius: '12px' }}
                 />
                 <Bar dataKey="amount" radius={[4, 4, 0, 0]}>
                   {growthData.map((entry, index) => (
@@ -443,12 +532,18 @@ export function PayoutsCenter({ setActiveTab, initialView = 'overview' }: Payout
             </ResponsiveContainer>
           </div>
           
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+          <div className="flex items-center justify-between pt-4">
             <div className="flex items-center gap-2">
               <PieChartIcon className="w-4 h-4 text-zinc-400" />
               <span className="text-sm text-zinc-300">Top Contributor: <strong className="text-white">Naspers (45%)</strong></span>
             </div>
-            <button className="text-xs text-[#0066FF] hover:text-[#0044AA] font-bold uppercase tracking-wider transition-colors">Details</button>
+            <button
+              type="button"
+              onClick={() => setView('q4-dividend')}
+              className="text-xs text-[#0066FF] hover:text-[#0044AA] font-bold uppercase tracking-wider transition-colors"
+            >
+              Details
+            </button>
           </div>
         </motion.div>
       </div>

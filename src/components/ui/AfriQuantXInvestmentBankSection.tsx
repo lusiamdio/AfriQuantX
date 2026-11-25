@@ -52,14 +52,14 @@ export function AfriQuantXInvestmentBankSection({
   ];
 
   return (
-    <section className="w-full py-24 px-6 sm:px-12 lg:px-16 xl:px-24 bg-zinc-950 text-white border-y border-zinc-800 relative overflow-hidden">
+    <section className="w-full py-8 px-3.5 sm:px-5 lg:px-16 xl:px-24 bg-zinc-950 text-white relative overflow-hidden">
       {/* Background Decorative Glow */}
       <div className="absolute top-0 right-1/4 w-[600px] h-[350px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-[500px] h-[300px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="w-full space-y-16 relative z-10">
+      <div className="w-full space-y-5 relative z-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 pb-8 border-b border-zinc-800 relative z-10">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-3 pb-4 relative z-10">
           <div className="space-y-3 max-w-3xl">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
               {titleOverride || "Institutional Investment Banking Built for Emerging Economies"}
@@ -72,7 +72,7 @@ export function AfriQuantXInvestmentBankSection({
           {onNavigateToAuth && (
             <button
               onClick={onNavigateToAuth}
-              className="px-8 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm tracking-wide transition-all shadow-lg shadow-blue-600/25 flex items-center gap-2 group whitespace-nowrap shrink-0"
+              className="px-4 py-4 rounded-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm tracking-wide transition-all shadow-lg shadow-blue-600/25 flex items-center gap-2 group whitespace-nowrap shrink-0"
             >
               <span>Engage Advisory Desk</span>
               <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -81,14 +81,14 @@ export function AfriQuantXInvestmentBankSection({
         </div>
 
         {/* 4 Core Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 relative z-10">
           {services.map((s, idx) => {
             const IconComponent = s.icon;
             return (
               <motion.div
                 key={idx}
                 whileHover={{ y: -4 }}
-                className="p-8 rounded-2xl bg-zinc-900/80 border border-zinc-800 hover:border-blue-500/50 transition-all space-y-5 relative group overflow-hidden flex flex-col justify-between"
+                className="p-4 rounded-lg bg-zinc-900/80 transition-all space-y-2.5 relative group overflow-hidden flex flex-col justify-between"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -104,7 +104,7 @@ export function AfriQuantXInvestmentBankSection({
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-zinc-800/80 flex flex-col gap-2 text-xs font-mono">
+                <div className="pt-4 flex flex-col gap-2 text-xs font-mono">
                   <div className="text-emerald-400 font-bold flex items-center gap-1.5">
                     <TrendingUp className="w-4 h-4" />
                     <span>{s.stat}</span>
@@ -120,12 +120,12 @@ export function AfriQuantXInvestmentBankSection({
         </div>
 
         {/* Regulatory & Institutional Credentials Footer */}
-        <div className="pt-6 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+        <div className="pt-6 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-zinc-500">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>Licensed Securities Clearing & Investment Banking Desk</span>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-3">
             <span>SEC Regulated Partner Network</span>
             <span>•</span>
             <span>NDIC / FDIC Custodial Vaults</span>

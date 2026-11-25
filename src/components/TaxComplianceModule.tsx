@@ -167,26 +167,26 @@ export function TaxComplianceModule({
   });
 
   return (
-    <div className="space-y-6 pb-16">
+    <div className="space-y-3 pb-16">
       {/* Hero Header: Tax & Compliance + TaxBit Enterprise Status */}
-      <div className="bg-gradient-to-r from-neutral-950 via-neutral-900 to-black border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-xl relative overflow-hidden shadow-2xl">
+      <div className="bg-gradient-to-r from-neutral-950 via-neutral-900 to-black rounded-xl p-3.5 md:p-4 backdrop-blur-xl relative overflow-hidden shadow-2xl">
         <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 blur-3xl rounded-full pointer-events-none" />
         
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 relative z-10">
           <div className="flex items-start sm:items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-white text-black flex items-center justify-center font-bold shrink-0 shadow-xl">
+            <div className="w-14 h-14 rounded-lg bg-white text-black flex items-center justify-center font-bold shrink-0 shadow-xl">
               <Scale className="w-7 h-7" />
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 bg-emerald-500/10 font-mono text-[10px] uppercase flex items-center gap-1.5">
+                <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 font-mono text-[10px] uppercase flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   TaxBit Enterprise Node Connected
                 </Badge>
-                <Badge variant="outline" className="text-blue-400 border-blue-500/30 bg-blue-500/10 font-mono text-[10px] uppercase">
+                <Badge variant="outline" className="text-blue-400 bg-blue-500/10 font-mono text-[10px] uppercase">
                   IRS Form 8949 & 1099-DA Ready
                 </Badge>
-                <Badge variant="outline" className="text-amber-400 border-amber-500/30 bg-amber-500/10 font-mono text-[10px] uppercase">
+                <Badge variant="outline" className="text-amber-400 bg-amber-500/10 font-mono text-[10px] uppercase">
                   SOC-1 / SOC-2 Type II Certified
                 </Badge>
               </div>
@@ -204,7 +204,7 @@ export function TaxComplianceModule({
               onClick={handleSyncTaxBit}
               disabled={isSyncing}
               variant="outline"
-              className="border-emerald-500/30 bg-emerald-500/10 text-emerald-300 hover:text-white hover:bg-emerald-500/20 font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl flex items-center gap-2 cursor-pointer shadow-lg"
+              className="bg-emerald-500/10 text-emerald-300 hover:text-white hover:bg-emerald-500/20 font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl flex items-center gap-2 cursor-pointer shadow-lg"
               title="Resynchronize transactions with TaxBit Enterprise engine"
             >
               <RefreshCw className={`w-4 h-4 text-emerald-400 ${isSyncing ? 'animate-spin' : ''}`} />
@@ -214,7 +214,7 @@ export function TaxComplianceModule({
             <Button
               onClick={handleDownloadTaxBitJson}
               variant="outline"
-              className="border-white/10 bg-white/5 text-zinc-300 hover:text-white hover:bg-white/10 font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl flex items-center gap-2 cursor-pointer"
+              className="bg-white/5 text-zinc-300 hover:text-white hover:bg-white/10 font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl flex items-center gap-2 cursor-pointer"
               title="Download official TaxBit JSON compliance package"
             >
               <Download className="w-4 h-4 text-zinc-400" />
@@ -234,7 +234,7 @@ export function TaxComplianceModule({
 
         {/* Live Sync Confirmation Toast Banner */}
         {syncFeedback && (
-          <div className="mt-4 p-3.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 flex items-center justify-between text-xs text-emerald-300 animate-in fade-in">
+          <div className="mt-4 p-3.5 rounded-lg bg-emerald-950/60 flex items-center justify-between text-xs text-emerald-300 animate-in fade-in">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>{syncFeedback}</span>
@@ -250,21 +250,17 @@ export function TaxComplianceModule({
       </div>
 
       {/* Interactive Methodology & Jurisdiction Controls Bar */}
-      <div className="p-4 rounded-2xl bg-neutral-950/80 border border-white/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 rounded-lg bg-neutral-950/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-4 flex-wrap">
           {/* Tax Year Selector */}
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Tax Year:</span>
-            <div className="flex bg-black border border-white/10 rounded-xl p-0.5">
+            <div className="flex bg-black rounded-xl p-0.5">
               {(['2026', '2025', '2024'] as TaxYear[]).map((yr) => (
                 <button
                   key={yr}
                   onClick={() => setTaxYear(yr)}
-                  className={`px-3 py-1 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer ${
-                    taxYear === yr 
-                      ? 'bg-white text-black shadow-md' 
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
+                  className={`px-3 py-1 text-xs font-mono font-bold rounded-lg transition-all cursor-pointer ${ taxYear === yr ? 'bg-white text-black shadow-md' : 'text-zinc-400 hover:text-white' }`}
                 >
                   {yr}
                 </button>
@@ -275,16 +271,12 @@ export function TaxComplianceModule({
           {/* Accounting Methodology Selector */}
           <div className="flex items-center gap-2">
             <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">Accounting Method:</span>
-            <div className="flex bg-black border border-white/10 rounded-xl p-0.5">
+            <div className="flex bg-black rounded-xl p-0.5">
               {(['HIFO', 'FIFO', 'LIFO', 'SPEC_ID'] as AccountingMethod[]).map((m) => (
                 <button
                   key={m}
                   onClick={() => setAccountingMethod(m)}
-                  className={`px-2.5 py-1 text-[11px] font-mono font-bold rounded-lg transition-all cursor-pointer ${
-                    accountingMethod === m 
-                      ? 'bg-emerald-500 text-black shadow-md' 
-                      : 'text-zinc-400 hover:text-white'
-                  }`}
+                  className={`px-2.5 py-1 text-[11px] font-mono font-bold rounded-lg transition-all cursor-pointer ${ accountingMethod === m ? 'bg-emerald-500 text-black shadow-md' : 'text-zinc-400 hover:text-white' }`}
                   title={
                     m === 'HIFO' ? 'Highest-In First-Out (Minimizes Capital Gains)' :
                     m === 'FIFO' ? 'First-In First-Out (Default IRS standard)' :
@@ -303,7 +295,7 @@ export function TaxComplianceModule({
             <select
               value={jurisdiction}
               onChange={(e) => setJurisdiction(e.target.value as TaxJurisdiction)}
-              className="bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-white/40 font-mono cursor-pointer"
+              className="bg-black rounded-xl px-3 py-1.5 text-xs text-white outline-none font-mono cursor-pointer"
             >
               <option value="US_IRS">United States (IRS 8949 / 1099-DA)</option>
               <option value="ZA_SARS">South Africa (SARS CGT / ITR12)</option>
@@ -316,10 +308,10 @@ export function TaxComplianceModule({
         </div>
 
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="text-zinc-400 border-white/10 bg-white/5 font-mono text-[10px]">
+          <Badge variant="outline" className="text-zinc-400 bg-white/5 font-mono text-[10px]">
             Method: <strong className="text-emerald-400 ml-1">{accountingMethod}</strong>
           </Badge>
-          <Badge variant="outline" className="text-zinc-400 border-white/10 bg-white/5 font-mono text-[10px]">
+          <Badge variant="outline" className="text-zinc-400 bg-white/5 font-mono text-[10px]">
             Tax Rate: <strong className="text-white ml-1">{metrics.effectiveTaxRatePct}%</strong>
           </Badge>
         </div>
@@ -328,7 +320,7 @@ export function TaxComplianceModule({
       {/* 5-Column Core Tax Telemetry KPI Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Card 1: Net Realized Capital Gains */}
-        <Card className="bg-neutral-950 border-white/10 relative overflow-hidden shadow-xl">
+        <Card className="bg-neutral-950 relative overflow-hidden shadow-xl">
           <CardHeader className="pb-1">
             <CardDescription className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider flex items-center justify-between">
               <span>Net Capital Gain</span>
@@ -339,7 +331,7 @@ export function TaxComplianceModule({
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 border-t border-white/5 pt-2">
+            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2">
               <span>ST: ${Math.round(metrics.shortTermGainsUsd).toLocaleString()}</span>
               <span className="text-emerald-400 font-semibold">LT: ${Math.round(metrics.longTermGainsUsd).toLocaleString()}</span>
             </div>
@@ -347,7 +339,7 @@ export function TaxComplianceModule({
         </Card>
 
         {/* Card 2: Total Proceeds vs Cost Basis */}
-        <Card className="bg-neutral-950 border-white/10 shadow-xl">
+        <Card className="bg-neutral-950 shadow-xl">
           <CardHeader className="pb-1">
             <CardDescription className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider flex items-center justify-between">
               <span>Gross Proceeds</span>
@@ -358,7 +350,7 @@ export function TaxComplianceModule({
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 border-t border-white/5 pt-2">
+            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2">
               <span>Basis: ${Math.round(metrics.totalCostBasisUsd).toLocaleString()}</span>
               <span className="text-sky-400 font-semibold">{accountingMethod} Base</span>
             </div>
@@ -366,7 +358,7 @@ export function TaxComplianceModule({
         </Card>
 
         {/* Card 3: Estimated Tax Liability */}
-        <Card className="bg-neutral-950 border-white/10 shadow-xl">
+        <Card className="bg-neutral-950 shadow-xl">
           <CardHeader className="pb-1">
             <CardDescription className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider flex items-center justify-between">
               <span>Est. Tax Liability</span>
@@ -377,7 +369,7 @@ export function TaxComplianceModule({
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 border-t border-white/5 pt-2">
+            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2">
               <span>WHT Paid: ${Math.round(metrics.withholdingTaxPaidUsd).toLocaleString()}</span>
               <span className="text-zinc-400">{metrics.effectiveTaxRatePct}% Rate</span>
             </div>
@@ -385,7 +377,7 @@ export function TaxComplianceModule({
         </Card>
 
         {/* Card 4: Tax-Loss Harvesting Opportunity */}
-        <Card className="bg-neutral-950 border-white/10 shadow-xl">
+        <Card className="bg-neutral-950 shadow-xl">
           <CardHeader className="pb-1">
             <CardDescription className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider flex items-center justify-between">
               <span>TLH Potential Savings</span>
@@ -396,7 +388,7 @@ export function TaxComplianceModule({
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 border-t border-white/5 pt-2">
+            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2">
               <span>3 Active Assets</span>
               <span className="text-purple-400 font-semibold">Loss Offset</span>
             </div>
@@ -404,7 +396,7 @@ export function TaxComplianceModule({
         </Card>
 
         {/* Card 5: TaxBit Verification Status */}
-        <Card className="bg-neutral-950 border-emerald-500/30 shadow-xl bg-gradient-to-b from-emerald-950/20 to-transparent">
+        <Card className="bg-neutral-950 shadow-xl bg-gradient-to-b from-emerald-950/20 to-transparent">
           <CardHeader className="pb-1">
             <CardDescription className="text-emerald-400 text-[10px] font-bold uppercase tracking-wider flex items-center justify-between">
               <span>TaxBit Audit Proof</span>
@@ -415,7 +407,7 @@ export function TaxComplianceModule({
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-2">
-            <div className="flex items-center justify-between text-[11px] text-zinc-400 border-t border-white/5 pt-2">
+            <div className="flex items-center justify-between text-[11px] text-zinc-400 pt-2">
               <span className="text-emerald-300">0 Unmatched</span>
               <span className="font-mono text-[10px] text-zinc-500 truncate">{syncStatus.auditProofHash.substring(0, 10)}...</span>
             </div>
@@ -425,7 +417,7 @@ export function TaxComplianceModule({
 
       {/* Main Tabbed Interface */}
       <Tabs defaultValue="schedules" className="w-full">
-        <TabsList className="bg-neutral-950 border border-white/10 p-1 rounded-2xl w-full justify-start overflow-x-auto flex-nowrap">
+        <TabsList className="bg-neutral-950 p-1 rounded-lg w-full justify-start overflow-x-auto flex-nowrap">
           <TabsTrigger value="schedules" className="rounded-xl text-xs font-bold py-2 px-4 data-[state=active]:bg-white data-[state=active]:text-black">
             <FileText className="w-3.5 h-3.5 mr-1.5" />
             Tax Readiness & Dispositions
@@ -445,14 +437,14 @@ export function TaxComplianceModule({
         </TabsList>
 
         {/* ================= TAB 1: TAX READINESS & DISPOSITIONS ================= */}
-        <TabsContent value="schedules" className="space-y-6 mt-6">
+        <TabsContent value="schedules" className="space-y-3 mt-6">
           {/* Statutory Tax Schedules Status Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {formList.slice(0, 3).map((form) => (
-              <Card key={form.formId} className="bg-neutral-950/80 border-white/10 shadow-lg">
+              <Card key={form.formId} className="bg-neutral-950/80 shadow-lg">
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
-                    <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 bg-emerald-500/10 text-[9px] font-mono uppercase">
+                    <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 text-[9px] font-mono uppercase">
                       {form.status.replace('_', ' ')}
                     </Badge>
                     <span className="text-[10px] text-zinc-500 font-mono">{form.jurisdiction}</span>
@@ -465,7 +457,7 @@ export function TaxComplianceModule({
                   <p className="text-xs text-zinc-400 mb-3">
                     {form.dispositionCount} settled dispositions reconciled • 0 wash disallowance flags
                   </p>
-                  <div className="flex items-center justify-between border-t border-white/5 pt-2">
+                  <div className="flex items-center justify-between pt-2">
                     <span className="text-[11px] text-zinc-500">Ready for filing</span>
                     <Button 
                       onClick={() => handleLaunchReportViewer('irs_form_8949_schedule_d')}
@@ -482,8 +474,8 @@ export function TaxComplianceModule({
           </div>
 
           {/* Capital Gains Dispositions Table */}
-          <Card className="bg-neutral-950 border-white/10 shadow-xl overflow-hidden">
-            <CardHeader className="pb-4 border-b border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <Card className="bg-neutral-950 shadow-xl overflow-hidden">
+            <CardHeader className="pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <CardTitle className="text-base font-bold text-white flex items-center gap-2">
                   <SlidersHorizontal className="w-4 h-4 text-emerald-400" />
@@ -496,28 +488,22 @@ export function TaxComplianceModule({
 
               <div className="flex items-center gap-2 flex-wrap">
                 {/* Term classification filter */}
-                <div className="flex bg-black border border-white/10 rounded-xl p-0.5 text-xs">
+                <div className="flex bg-black rounded-xl p-0.5 text-xs">
                   <button
                     onClick={() => setDispositionFilter('ALL')}
-                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-                      dispositionFilter === 'ALL' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
-                    }`}
+                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${ dispositionFilter === 'ALL' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white' }`}
                   >
                     All
                   </button>
                   <button
                     onClick={() => setDispositionFilter('SHORT_TERM')}
-                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-                      dispositionFilter === 'SHORT_TERM' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
-                    }`}
+                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${ dispositionFilter === 'SHORT_TERM' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white' }`}
                   >
                     Short-Term
                   </button>
                   <button
                     onClick={() => setDispositionFilter('LONG_TERM')}
-                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-                      dispositionFilter === 'LONG_TERM' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white'
-                    }`}
+                    className={`px-2.5 py-1 rounded-lg font-bold transition-all cursor-pointer ${ dispositionFilter === 'LONG_TERM' ? 'bg-white text-black' : 'text-zinc-400 hover:text-white' }`}
                   >
                     Long-Term
                   </button>
@@ -528,62 +514,58 @@ export function TaxComplianceModule({
                   placeholder="Filter by asset / ticker..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="bg-black border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-white/30 font-mono w-44"
+                  className="bg-black rounded-xl px-3 py-1.5 text-xs text-white outline-none font-mono w-44"
                 />
               </div>
             </CardHeader>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="bg-white/[0.02] border-b border-white/5 text-zinc-400 font-mono uppercase text-[10px]">
+                <thead className="bg-white/[0.02] text-zinc-400 font-mono uppercase text-[10px]">
                   <tr>
-                    <th className="p-3 pl-4">Lot ID</th>
-                    <th className="p-3">Asset & Exchange</th>
-                    <th className="p-3">Acquired / Sold</th>
-                    <th className="p-3 text-right">Proceeds (USD)</th>
-                    <th className="p-3 text-right">Cost Basis ({accountingMethod})</th>
-                    <th className="p-3 text-right">Gain / (Loss)</th>
-                    <th className="p-3 text-center">Classification</th>
-                    <th className="p-3 text-right pr-4">TaxBit Proof</th>
+                    <th className="px-2 py-1.5 pl-4">Lot ID</th>
+                    <th className="px-2 py-1.5">Asset & Exchange</th>
+                    <th className="px-2 py-1.5">Acquired / Sold</th>
+                    <th className="px-2 py-1.5 text-right">Proceeds (USD)</th>
+                    <th className="px-2 py-1.5 text-right">Cost Basis ({accountingMethod})</th>
+                    <th className="px-2 py-1.5 text-right">Gain / (Loss)</th>
+                    <th className="px-2 py-1.5 text-center">Classification</th>
+                    <th className="px-2 py-1.5 text-right pr-4">TaxBit Proof</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 font-mono">
+                <tbody className="font-mono">
                   {filteredDispositions.map((row) => {
                     const isPositive = row.gainLossUsd >= 0;
                     return (
                       <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
-                        <td className="p-3 pl-4 font-bold text-sky-400">{row.id}</td>
-                        <td className="p-3">
+                        <td className="px-2 py-1.5 pl-4 font-bold text-sky-400">{row.id}</td>
+                        <td className="px-2 py-1.5">
                           <div className="font-bold text-white font-sans">{row.asset}</div>
                           <div className="text-[10px] text-zinc-500">{row.ticker} • {row.exchange}</div>
                         </td>
-                        <td className="p-3 text-zinc-400 text-[11px]">
+                        <td className="px-2 py-1.5 text-zinc-400 text-[11px]">
                           <div>Acq: {row.dateAcquired}</div>
                           <div className="text-zinc-500">Sold: {row.dateSold}</div>
                         </td>
-                        <td className="p-3 text-right text-white font-bold">
+                        <td className="px-2 py-1.5 text-right text-white font-bold">
                           ${row.proceedsUsd.toLocaleString()}
                         </td>
-                        <td className="p-3 text-right text-zinc-400">
+                        <td className="px-2 py-1.5 text-right text-zinc-400">
                           ${row.costBasisUsd.toLocaleString()}
                         </td>
                         <td className={`p-3 text-right font-bold ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
                           {isPositive ? '+' : ''}${row.gainLossUsd.toLocaleString()}
                         </td>
-                        <td className="p-3 text-center">
+                        <td className="px-2 py-1.5 text-center">
                           <Badge 
                             variant="outline" 
-                            className={`text-[9px] uppercase font-mono ${
-                              row.term === 'LONG_TERM'
-                                ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-                                : 'text-amber-400 border-amber-500/30 bg-amber-500/10'
-                            }`}
+                            className={`text-[9px] uppercase font-mono ${ row.term === 'LONG_TERM' ? 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10' : 'text-amber-400 border-amber-500/30 bg-amber-500/10' }`}
                           >
                             {row.term.replace('_', ' ')}
                           </Badge>
                         </td>
-                        <td className="p-3 text-right pr-4">
-                          <span className="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
+                        <td className="px-2 py-1.5 text-right pr-4">
+                          <span className="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded-md inline-flex items-center gap-1">
                             <Check className="w-3 h-3 text-emerald-400" />
                             {row.merkleHash.substring(0, 8)}...
                           </span>
@@ -595,7 +577,7 @@ export function TaxComplianceModule({
               </table>
             </div>
 
-            <div className="p-3 border-t border-white/5 bg-neutral-950/60 flex items-center justify-between text-xs text-zinc-500">
+            <div className="p-3 bg-neutral-950/60 flex items-center justify-between text-xs text-zinc-500">
               <span>Showing {filteredDispositions.length} of {dispositions.length} verified dispositions</span>
               <Button
                 onClick={() => handleLaunchReportViewer('irs_form_8949_schedule_d')}
@@ -610,13 +592,13 @@ export function TaxComplianceModule({
         </TabsContent>
 
         {/* ================= TAB 2: TAXBIT CRYPTOGRAPHIC AUDIT PROOF ================= */}
-        <TabsContent value="taxbit_proof" className="space-y-6 mt-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <TabsContent value="taxbit_proof" className="space-y-3 mt-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {/* Left 2 Cols: Cryptographic Proof Dossier */}
-            <Card className="lg:col-span-2 bg-neutral-950 border-white/10 shadow-xl">
-              <CardHeader className="border-b border-white/5 pb-4">
+            <Card className="lg:col-span-2 bg-neutral-950 shadow-xl">
+              <CardHeader className="pb-4">
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 bg-emerald-500/10 font-mono text-[10px] uppercase">
+                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 font-mono text-[10px] uppercase">
                     TAXBIT VERIFIED AUDIT SEAL
                   </Badge>
                   <span className="text-[11px] text-zinc-500 font-mono">SOC-1 Type II / SOC-2 Type II</span>
@@ -631,7 +613,7 @@ export function TaxComplianceModule({
               </CardHeader>
 
               <CardContent className="space-y-4 pt-5">
-                <div className="p-4 rounded-2xl bg-black border border-white/10 font-mono text-xs space-y-3">
+                <div className="p-4 rounded-lg bg-black font-mono text-xs space-y-3">
                   <div>
                     <span className="text-zinc-500 text-[10px] uppercase block font-bold">Merkle Audit Root Hash</span>
                     <span className="text-emerald-400 font-bold break-all">{syncStatus.merkleRoot}</span>
@@ -640,7 +622,7 @@ export function TaxComplianceModule({
                     <span className="text-zinc-500 text-[10px] uppercase block font-bold">TaxBit Verification Signature (SHA-256)</span>
                     <span className="text-white break-all">{syncStatus.auditProofHash}</span>
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-white/5 text-[11px]">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 text-[11px]">
                     <div>
                       <span className="text-zinc-500 block">Verified Transactions</span>
                       <span className="text-white font-bold">{syncStatus.verifiedTransactionsCount} Lots</span>
@@ -656,7 +638,7 @@ export function TaxComplianceModule({
                   </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 flex items-start gap-3">
+                <div className="p-4 rounded-lg bg-emerald-950/20 flex items-start gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
                     <h4 className="text-sm font-bold text-white">Big-4 & Revenue Authority Audit Compliant</h4>
@@ -679,7 +661,7 @@ export function TaxComplianceModule({
                   <Button
                     onClick={handleDownloadTaxBitJson}
                     variant="outline"
-                    className="border-white/10 bg-white/5 text-zinc-300 hover:text-white font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl flex items-center gap-2 cursor-pointer"
+                    className="bg-white/5 text-zinc-300 hover:text-white font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded-xl flex items-center gap-2 cursor-pointer"
                   >
                     <Download className="w-4 h-4" />
                     Export Full Audit Payload
@@ -689,8 +671,8 @@ export function TaxComplianceModule({
             </Card>
 
             {/* Right Col: Integration Node Health */}
-            <Card className="bg-neutral-950 border-white/10 shadow-xl">
-              <CardHeader className="border-b border-white/5 pb-3">
+            <Card className="bg-neutral-950 shadow-xl">
+              <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-bold text-white flex items-center gap-2">
                   <Cpu className="w-4 h-4 text-emerald-400" />
                   TaxBit API Diagnostics
@@ -700,30 +682,30 @@ export function TaxComplianceModule({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 pt-4 text-xs">
-                <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <div className="flex items-center justify-between pb-2">
                   <span className="text-zinc-400">Environment</span>
                   <span className="text-white font-mono font-bold">Production API v2</span>
                 </div>
-                <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <div className="flex items-center justify-between pb-2">
                   <span className="text-zinc-400">Gateway Status</span>
                   <span className="text-emerald-400 font-mono font-bold flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-emerald-400" /> Operational
                   </span>
                 </div>
-                <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <div className="flex items-center justify-between pb-2">
                   <span className="text-zinc-400">Latency</span>
                   <span className="text-white font-mono font-bold">18.4 ms</span>
                 </div>
-                <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <div className="flex items-center justify-between pb-2">
                   <span className="text-zinc-400">Tax Accounting Engine</span>
                   <span className="text-emerald-400 font-mono font-bold">TaxBit Core v2.4</span>
                 </div>
-                <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <div className="flex items-center justify-between pb-2">
                   <span className="text-zinc-400">Webhook Listeners</span>
                   <span className="text-white font-mono font-bold">4 Active (JSE, NGX, NSE, EGX)</span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-white/5 border border-white/5 text-[11px] text-zinc-400 mt-4">
+                <div className="p-3 rounded-xl bg-white/5 text-[11px] text-zinc-400 mt-4">
                   Taxpayer Identity: <strong>{syncStatus.taxpayerIdMasked}</strong>
                   <br />
                   Auditor Signer: <strong>TaxBit Big-4 Compliance Authority</strong>
@@ -734,11 +716,11 @@ export function TaxComplianceModule({
         </TabsContent>
 
         {/* ================= TAB 3: TAX-LOSS HARVESTING RADAR ================= */}
-        <TabsContent value="harvesting" className="space-y-6 mt-6">
-          <Card className="bg-neutral-950 border-purple-500/30 shadow-xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-purple-950/30 via-neutral-950 to-neutral-950 border-b border-white/5 pb-4">
+        <TabsContent value="harvesting" className="space-y-3 mt-6">
+          <Card className="bg-neutral-950 shadow-xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-purple-950/30 via-neutral-950 to-neutral-950 pb-4">
               <div className="flex items-center justify-between">
-                <Badge variant="outline" className="text-purple-400 border-purple-500/30 bg-purple-500/10 font-mono text-[10px] uppercase">
+                <Badge variant="outline" className="text-purple-400 bg-purple-500/10 font-mono text-[10px] uppercase">
                   AUTOMATED TAX-LOSS HARVESTING ENGINE
                 </Badge>
                 <span className="text-xs font-mono text-purple-400 font-bold">
@@ -759,7 +741,7 @@ export function TaxComplianceModule({
                 {harvestOpportunities.map((opp) => (
                   <div 
                     key={opp.id}
-                    className="p-4 rounded-2xl bg-black border border-white/10 hover:border-purple-500/40 transition-all space-y-3 relative overflow-hidden group"
+                    className="p-4 rounded-lg bg-black transition-all space-y-3 relative overflow-hidden group"
                   >
                     <div className="flex items-start justify-between">
                       <div>
@@ -769,11 +751,7 @@ export function TaxComplianceModule({
                       </div>
                       <Badge 
                         variant="outline" 
-                        className={`text-[9px] font-mono ${
-                          opp.washSaleRisk 
-                            ? 'text-amber-400 border-amber-500/30 bg-amber-500/10' 
-                            : 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10'
-                        }`}
+                        className={`text-[9px] font-mono ${ opp.washSaleRisk ? 'text-amber-400 border-amber-500/30 bg-amber-500/10' : 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10' }`}
                       >
                         {opp.washSaleRisk ? `Wash Window (${opp.washSaleDaysRemaining}d)` : 'Safe to Harvest'}
                       </Badge>
@@ -799,7 +777,7 @@ export function TaxComplianceModule({
                       <span className="text-sky-400 font-mono">{opp.suggestedReplacement}</span>
                     </div>
 
-                    <div className="pt-2 border-t border-white/5 flex gap-2">
+                    <div className="pt-2 flex gap-2">
                       <Button
                         onClick={() => {
                           if (setActiveTab) setActiveTab('algo-trading');
@@ -818,13 +796,13 @@ export function TaxComplianceModule({
         </TabsContent>
 
         {/* ================= TAB 4: AUTOMATED REPORTS SUITE (REPORTVIEWER INTEGRATION) ================= */}
-        <TabsContent value="automated_reports" className="space-y-6 mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <TabsContent value="automated_reports" className="space-y-3 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Report 1: TaxBit Master Audit Summary */}
-            <Card className="bg-neutral-950 border-white/10 shadow-xl flex flex-col justify-between">
+            <Card className="bg-neutral-950 shadow-xl flex flex-col justify-between">
               <CardHeader>
                 <div className="flex items-center justify-between mb-1">
-                  <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 bg-emerald-500/10 font-mono text-[9px] uppercase">
+                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 font-mono text-[9px] uppercase">
                     TAXBIT ENTERPRISE COMPLIANT
                   </Badge>
                   <span className="text-xs text-zinc-500 font-mono">PDF / XLSX / CSV</span>
@@ -837,7 +815,7 @@ export function TaxComplianceModule({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 pt-0">
-                <div className="p-3 rounded-xl bg-black border border-white/5 text-xs text-zinc-400 space-y-1 font-mono">
+                <div className="p-3 rounded-xl bg-black text-xs text-zinc-400 space-y-1 font-mono">
                   <div>• Parameters: Tax Year {taxYear} | Method: {accountingMethod}</div>
                   <div>• CSD Clearing Hash: {syncStatus.auditProofHash.substring(0, 16)}...</div>
                   <div>• Output: Formatted multi-page vector PDF with executive KPI strip</div>
@@ -855,7 +833,7 @@ export function TaxComplianceModule({
                     onClick={() => handleQuickExportPdf('taxbit_audit_proof_summary')}
                     disabled={exportingReportId === 'taxbit_audit_proof_summary'}
                     variant="outline"
-                    className="border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
+                    className="text-emerald-400 hover:bg-emerald-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     {exportingReportId === 'taxbit_audit_proof_summary' ? 'Exporting...' : '1-Click PDF'}
@@ -865,10 +843,10 @@ export function TaxComplianceModule({
             </Card>
 
             {/* Report 2: IRS Form 8949 & 1099-DA Schedule */}
-            <Card className="bg-neutral-950 border-white/10 shadow-xl flex flex-col justify-between">
+            <Card className="bg-neutral-950 shadow-xl flex flex-col justify-between">
               <CardHeader>
                 <div className="flex items-center justify-between mb-1">
-                  <Badge variant="outline" className="text-blue-400 border-blue-500/30 bg-blue-500/10 font-mono text-[9px] uppercase">
+                  <Badge variant="outline" className="text-blue-400 bg-blue-500/10 font-mono text-[9px] uppercase">
                     IRS FORM 8949 / 1099-DA
                   </Badge>
                   <span className="text-xs text-zinc-500 font-mono">PDF / CSV</span>
@@ -881,7 +859,7 @@ export function TaxComplianceModule({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 pt-0">
-                <div className="p-3 rounded-xl bg-black border border-white/5 text-xs text-zinc-400 space-y-1 font-mono">
+                <div className="p-3 rounded-xl bg-black text-xs text-zinc-400 space-y-1 font-mono">
                   <div>• Includes Part I (Short-Term) and Part II (Long-Term) tables</div>
                   <div>• Reconciled Proceeds: ${metrics.totalProceedsUsd.toLocaleString()}</div>
                   <div>• 0 Unreported or unmatched transaction lots</div>
@@ -899,7 +877,7 @@ export function TaxComplianceModule({
                     onClick={() => handleQuickExportPdf('irs_form_8949_schedule_d')}
                     disabled={exportingReportId === 'irs_form_8949_schedule_d'}
                     variant="outline"
-                    className="border-blue-500/30 text-blue-400 hover:bg-blue-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
+                    className="text-blue-400 hover:bg-blue-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     {exportingReportId === 'irs_form_8949_schedule_d' ? 'Exporting...' : '1-Click PDF'}
@@ -909,10 +887,10 @@ export function TaxComplianceModule({
             </Card>
 
             {/* Report 3: Pan-African Withholding & Dividend Tax Proof */}
-            <Card className="bg-neutral-950 border-white/10 shadow-xl flex flex-col justify-between">
+            <Card className="bg-neutral-950 shadow-xl flex flex-col justify-between">
               <CardHeader>
                 <div className="flex items-center justify-between mb-1">
-                  <Badge variant="outline" className="text-amber-400 border-amber-500/30 bg-amber-500/10 font-mono text-[9px] uppercase">
+                  <Badge variant="outline" className="text-amber-400 bg-amber-500/10 font-mono text-[9px] uppercase">
                     SARS / FIRS / KRA / OECD
                   </Badge>
                   <span className="text-xs text-zinc-500 font-mono">PDF / XLSX</span>
@@ -925,7 +903,7 @@ export function TaxComplianceModule({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 pt-0">
-                <div className="p-3 rounded-xl bg-black border border-white/5 text-xs text-zinc-400 space-y-1 font-mono">
+                <div className="p-3 rounded-xl bg-black text-xs text-zinc-400 space-y-1 font-mono">
                   <div>• Withholding Tax Reconciled: ${Math.round(metrics.withholdingTaxPaidUsd).toLocaleString()}</div>
                   <div>• Dividend Income: ${Math.round(metrics.dividendIncomeUsd).toLocaleString()}</div>
                   <div>• Dual tax jurisdiction credit compliance certificate</div>
@@ -943,7 +921,7 @@ export function TaxComplianceModule({
                     onClick={() => handleQuickExportPdf('portfolio_tax_compliance')}
                     disabled={exportingReportId === 'portfolio_tax_compliance'}
                     variant="outline"
-                    className="border-amber-500/30 text-amber-400 hover:bg-amber-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
+                    className="text-amber-400 hover:bg-amber-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     {exportingReportId === 'portfolio_tax_compliance' ? 'Exporting...' : '1-Click PDF'}
@@ -953,10 +931,10 @@ export function TaxComplianceModule({
             </Card>
 
             {/* Report 4: Wash-Sale & Harvesting Audit */}
-            <Card className="bg-neutral-950 border-white/10 shadow-xl flex flex-col justify-between">
+            <Card className="bg-neutral-950 shadow-xl flex flex-col justify-between">
               <CardHeader>
                 <div className="flex items-center justify-between mb-1">
-                  <Badge variant="outline" className="text-purple-400 border-purple-500/30 bg-purple-500/10 font-mono text-[9px] uppercase">
+                  <Badge variant="outline" className="text-purple-400 bg-purple-500/10 font-mono text-[9px] uppercase">
                     WASH-SALE AUDIT LEDGER
                   </Badge>
                   <span className="text-xs text-zinc-500 font-mono">PDF / CSV</span>
@@ -969,7 +947,7 @@ export function TaxComplianceModule({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3 pt-0">
-                <div className="p-3 rounded-xl bg-black border border-white/5 text-xs text-zinc-400 space-y-1 font-mono">
+                <div className="p-3 rounded-xl bg-black text-xs text-zinc-400 space-y-1 font-mono">
                   <div>• Wash-Sale Disallowance: ${metrics.washSaleDisallowedUsd.toLocaleString()}</div>
                   <div>• Tax-Loss Harvesting Potential: ${metrics.potentialHarvestingSavingsUsd.toLocaleString()}</div>
                   <div>• Replacement asset correlations verified under 0.85</div>
@@ -987,7 +965,7 @@ export function TaxComplianceModule({
                     onClick={() => handleQuickExportPdf('wash_sale_harvesting_audit')}
                     disabled={exportingReportId === 'wash_sale_harvesting_audit'}
                     variant="outline"
-                    className="border-purple-500/30 text-purple-400 hover:bg-purple-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
+                    className="text-purple-400 hover:bg-purple-500/10 font-bold text-xs uppercase tracking-wider py-2 px-3 rounded-xl flex items-center gap-1.5 cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5" />
                     {exportingReportId === 'wash_sale_harvesting_audit' ? 'Exporting...' : '1-Click PDF'}

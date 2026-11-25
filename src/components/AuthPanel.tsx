@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Shield, Mail, Lock, ArrowRight, User, Building, AlertCircle } from 'lucide-react';
+import { Mail, Lock, ArrowRight, AlertCircle, Briefcase, Building2, Check, Shield } from 'lucide-react';
 import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { cn } from '../lib/utils';
+import {
+  COMPANY_POSITIONS,
+  INVESTOR_IDENTITIES,
+  getCompanyPositionMeta,
+  getInvestorIdentityMeta,
+  type CompanyPosition,
+  type InvestorIdentity,
+  type WorkspaceRole,
+} from '../lib/roleAccess';
 
 interface AuthPanelProps {
   onComplete: () => void;
@@ -12,174 +21,73 @@ interface AuthPanelProps {
 
 type AuthMode = 'signin' | 'signup';
 
-function LiveTradingVisualArt() {
+function MarketDepthPreview() {
   const [candles, setCandles] = useState<{ x: number; open: number; close: number; high: number; low: number }[]>([]);
-  const [trades, setTrades] = useState<{ id: string; ticker: string; price: string; size: string; time: string; type: 'buy' | 'sell' }[]>([]);
-  const [orderBook, setOrderBook] = useState<{ price: number; size: number; total: number; type: 'bid' | 'ask' }[]>([]);
 
   useEffect(() => {
-    // Generate initial realistic candle values
     const initialCandles = [];
-    let basePrice = 280;
+    let basePrice = 284;
     for (let i = 0; i < 24; i++) {
       const open = basePrice;
-      const change = (Math.random() - 0.5) * 14;
+      const change = (Math.random() - 0.46) * 11;
       const close = open + change;
-      const high = Math.max(open, close) + Math.random() * 5;
-      const low = Math.min(open, close) - Math.random() * 5;
+      const high = Math.max(open, close) + Math.random() * 4;
+      const low = Math.min(open, close) - Math.random() * 4;
       initialCandles.push({ x: i, open, close, high, low });
       basePrice = close;
     }
     setCandles(initialCandles);
-
-    // Initial simulated stock market trades
-    const tickers = ['JSE', 'NGX', 'EGX', 'NSE', 'BRVM', 'AQX'];
-    const initialTrades = Array.from({ length: 5 }).map((_, i) => ({
-      id: Math.random().toString(36).substr(2, 5).toUpperCase(),
-      ticker: tickers[Math.floor(Math.random() * tickers.length)],
-      price: (150 + Math.random() * 550).toFixed(2),
-      size: (Math.floor(Math.random() * 80) + 10) * 10 + '',
-      time: new Date(Date.now() - i * 12000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-      type: Math.random() > 0.5 ? 'buy' as const : 'sell' as const
-    }));
-    setTrades(initialTrades);
-
-    // Initial Order Book Depth
-    const bids = Array.from({ length: 4 }).map((_, i) => ({
-      price: parseFloat((345.50 - i * 0.25).toFixed(2)),
-      size: Math.floor(Math.random() * 1100) + 300,
-      total: 0,
-      type: 'bid' as const
-    }));
-    const asks = Array.from({ length: 4 }).map((_, i) => ({
-      price: parseFloat((345.75 + i * 0.25).toFixed(2)),
-      size: Math.floor(Math.random() * 1200) + 200,
-      total: 0,
-      type: 'ask' as const
-    }));
-
-    let bidTotal = 0;
-    bids.forEach(b => { bidTotal += b.size; b.total = bidTotal; });
-    let askTotal = 0;
-    asks.forEach(a => { askTotal += a.size; a.total = askTotal; });
-
-    setOrderBook([...asks.reverse(), ...bids]);
-
-    // Live continuous ticking simulation
-    const interval = setInterval(() => {
-      // 1. Walk the latest candle price
-      setCandles(prev => {
-        const next = [...prev];
-        const last = next[next.length - 1];
-        if (!last) return prev;
-
-        const change = (Math.random() - 0.5) * 6;
-        const newClose = last.close + change;
-        const newHigh = Math.max(last.high, newClose, last.open);
-        const newLow = Math.min(last.low, newClose, last.open);
-
-        next[next.length - 1] = {
-          ...last,
-          close: newClose,
-          high: newHigh,
-          low: newLow
-        };
-
-        // Shift chart occasionally
-        if (Math.random() > 0.7) {
-          next.shift();
-          next.forEach((c, idx) => c.x = idx);
-          const nextOpen = newClose;
-          next.push({
-            x: next.length,
-            open: nextOpen,
-            close: nextOpen + (Math.random() - 0.5) * 10,
-            high: nextOpen + Math.random() * 5,
-            low: nextOpen - Math.random() * 5
-          });
-        }
-        return next;
-      });
-
-      // 2. Add real-time transaction ticks
-      if (Math.random() > 0.3) {
-        setTrades(prev => {
-          const newTrade = {
-            id: Math.random().toString(36).substr(2, 5).toUpperCase(),
-            ticker: tickers[Math.floor(Math.random() * tickers.length)],
-            price: (150 + Math.random() * 550).toFixed(2),
-            size: (Math.floor(Math.random() * 100) + 10) * 5 + '',
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-            type: Math.random() > 0.5 ? 'buy' as const : 'sell' as const
-          };
-          return [newTrade, ...prev.slice(0, 4)];
-        });
-      }
-
-      // 3. Jitter order book levels
-      setOrderBook(prev => {
-        return prev.map(item => {
-          if (Math.random() > 0.5) {
-            const delta = Math.floor((Math.random() - 0.5) * 150);
-            return { ...item, size: Math.max(80, item.size + delta) };
-          }
-          return item;
-        });
-      });
-    }, 1500);
-
-    return () => clearInterval(interval);
   }, []);
 
-  const prices = candles.flatMap(c => [c.high, c.low]);
+  const prices = candles.flatMap((c) => [c.high, c.low]);
   const maxPrice = prices.length ? Math.max(...prices) : 320;
   const minPrice = prices.length ? Math.min(...prices) : 240;
   const priceRange = maxPrice - minPrice || 1;
+  const lastClose = candles.length ? candles[candles.length - 1].close : 292.4;
 
   return (
-    <div className="w-full space-y-6 select-none max-w-lg">
-      {/* Candlestick Terminal Screen */}
-      <div className="border border-white/10 bg-black rounded-3xl p-6 relative shadow-[0_0_50px_rgba(255,255,255,0.03)] overflow-hidden">
+    <div className="w-full max-w-lg space-y-2.5 select-none">
+      <div className="bg-[#0D111A] rounded-lg p-3.5">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-white animate-ping" />
-            <span className="text-[10px] font-extrabold font-mono tracking-widest text-zinc-300">AQX INDEX // INTERACTIVE SIMULATOR</span>
+          <div className="flex items-center gap-2 text-xs text-slate-300 font-medium">
+            <span>AQX RWA100 Composite</span>
+            <span aria-hidden="true" className="text-slate-600">·</span>
+            <span className="font-mono text-emerald-400 tabular-nums">+1.84%</span>
           </div>
-          <span className="text-[9px] font-mono text-zinc-500 bg-white/5 px-2 py-0.5 rounded">B&W TERM</span>
+          <span className="text-xs font-mono text-slate-400">DEMO BENCHMARK</span>
         </div>
 
-        {/* SVG Drawing of Market Trend */}
-        <div className="relative h-44 w-full border-b border-white/5">
-          <div className="absolute right-0 top-0 text-[8px] font-mono text-zinc-600">MAX: {maxPrice.toFixed(1)}</div>
-          <div className="absolute right-0 bottom-0 text-[8px] font-mono text-zinc-600">MIN: {minPrice.toFixed(1)}</div>
-          
+        <div className="relative h-44 w-full">
+          <div className="absolute right-0 top-0 text-[11px] font-mono text-slate-500 tabular-nums">
+            {maxPrice.toFixed(1)}
+          </div>
+          <div className="absolute right-0 bottom-1 text-[11px] font-mono text-slate-500 tabular-nums">
+            {minPrice.toFixed(1)}
+          </div>
           <svg className="w-full h-full overflow-visible" preserveAspectRatio="none">
             {candles.map((c, i) => {
-              const w = 100 / candles.length;
-              const x = (c.x * w) + (w / 2);
+              const w = 100 / Math.max(1, candles.length);
+              const x = c.x * w + w / 2;
               const yHigh = ((maxPrice - c.high) / priceRange) * 100;
               const yLow = ((maxPrice - c.low) / priceRange) * 100;
               const yOpen = ((maxPrice - c.open) / priceRange) * 100;
               const yClose = ((maxPrice - c.close) / priceRange) * 100;
-              
-              const isGreen = c.close >= c.open;
-              const fill = isGreen ? '#ffffff' : 'transparent';
-              const stroke = '#ffffff';
+              const isUp = c.close >= c.open;
               const top = Math.min(yOpen, yClose);
               const h = Math.max(2, Math.abs(yOpen - yClose));
 
               return (
                 <g key={i}>
-                  <line x1={`${x}%`} y1={`${yHigh}%`} x2={`${x}%`} y2={`${yLow}%`} stroke={stroke} strokeWidth={1} />
-                  <rect 
-                    x={`${x - w * 0.3}%`} 
-                    y={`${top}%`} 
-                    width={`${w * 0.6}%`} 
-                    height={`${h}%`} 
-                    fill={fill} 
-                    stroke={stroke} 
-                    strokeWidth={1} 
-                    className="transition-all duration-300"
+                  <line x1={`${x}%`} y1={`${yHigh}%`} x2={`${x}%`} y2={`${yLow}%`} stroke={isUp ? '#34D399' : '#94A3B8'} strokeWidth={1.2} />
+                  <rect
+                    x={`${x - w * 0.28}%`}
+                    y={`${top}%`}
+                    width={`${w * 0.56}%`}
+                    height={`${h}%`}
+                    fill={isUp ? '#34D399' : 'transparent'}
+                    stroke={isUp ? '#34D399' : '#94A3B8'}
+                    strokeWidth={1.2}
+                    rx={1}
                   />
                 </g>
               );
@@ -187,68 +95,34 @@ function LiveTradingVisualArt() {
           </svg>
         </div>
 
-        {/* Quick Ticker Data Grid */}
-        <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-white/5 text-center font-mono">
+        <div className="grid grid-cols-3 gap-4 mt-4 pt-3 text-left font-mono">
           <div>
-            <span className="text-[8px] text-zinc-500 uppercase tracking-wider block">LAST PRICE</span>
-            <span className="text-xs font-bold text-white">
-              ${candles.length ? candles[candles.length - 1].close.toFixed(2) : '285.50'}
-            </span>
+            <span className="text-[11px] text-slate-500 block font-sans">Index Level</span>
+            <span className="text-sm font-semibold text-white tabular-nums">{lastClose.toFixed(2)}</span>
           </div>
           <div>
-            <span className="text-[8px] text-zinc-500 uppercase tracking-wider block">DAILY VOL</span>
-            <span className="text-xs font-bold text-white">8.42M</span>
+            <span className="text-[11px] text-slate-500 block font-sans">Active Markets</span>
+            <span className="text-sm font-semibold text-white tabular-nums">8 Corridors</span>
           </div>
           <div>
-            <span className="text-[8px] text-zinc-500 uppercase tracking-wider block">MARKET GAP</span>
-            <span className="text-xs font-bold text-white">0.02%</span>
+            <span className="text-[11px] text-slate-500 block font-sans">Settlement</span>
+            <span className="text-sm font-semibold text-emerald-400">KYC-Gated</span>
           </div>
         </div>
       </div>
 
-      {/* Side-by-side Order Book and Live Trades */}
       <div className="grid grid-cols-2 gap-4">
-        {/* Order Book Panel */}
-        <div className="border border-white/5 bg-black rounded-2xl p-4 font-mono text-[9px] relative shadow-lg">
-          <div className="flex items-center justify-between mb-2 border-b border-white/5 pb-1">
-            <span className="font-extrabold text-white tracking-widest uppercase">ORDER BOOK</span>
-            <span className="text-zinc-500">SIZE</span>
-          </div>
-          <div className="space-y-1">
-            {orderBook.map((item, idx) => (
-              <div key={idx} className="flex justify-between items-center relative py-0.5 px-1 overflow-hidden">
-                <div 
-                  className="absolute right-0 top-0 bottom-0 bg-white/[0.03]"
-                  style={{ width: `${Math.min(100, (item.size / 1500) * 100)}%` }}
-                />
-                <span className={cn("relative z-10 font-bold", item.type === 'ask' ? 'text-zinc-500' : 'text-white')}>
-                  {item.price.toFixed(2)}
-                </span>
-                <span className="relative z-10 text-zinc-400">{item.size}</span>
-              </div>
-            ))}
-          </div>
+        <div className="bg-[#0D111A] rounded-lg p-4">
+          <p className="text-xs font-semibold text-white">For Investors</p>
+          <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+            Tailored views for Equity Funders, Venture Capital funds, and Private Investors.
+          </p>
         </div>
-
-        {/* Live Trades Stream */}
-        <div className="border border-white/5 bg-black rounded-2xl p-4 font-mono text-[9px] relative shadow-lg flex flex-col justify-between h-[155px]">
-          <div>
-            <div className="flex items-center justify-between mb-2 border-b border-white/5 pb-1">
-              <span className="font-extrabold text-white tracking-widest uppercase">TICK FEED</span>
-              <span className="text-zinc-500">SHARES</span>
-            </div>
-            <div className="space-y-1">
-              {trades.map((t, idx) => (
-                <div key={t.id || idx} className="flex justify-between items-center text-[8px] pb-0.5 border-b border-white/[0.01]">
-                  <span className="text-zinc-500 uppercase">{t.ticker}</span>
-                  <span className={cn("font-bold", t.type === 'buy' ? 'text-white' : 'text-zinc-500')}>
-                    {t.price}
-                  </span>
-                  <span className="text-zinc-500">{t.size}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="bg-[#0D111A] rounded-lg p-4">
+          <p className="text-xs font-semibold text-white">For Companies</p>
+          <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+            Dedicated issuance & treasury controls for Startups and Hedge Funds.
+          </p>
         </div>
       </div>
     </div>
@@ -259,10 +133,65 @@ export function AuthPanel({ onComplete, authError, onAuthAttempt }: AuthPanelPro
   const [mode, setMode] = useState<AuthMode>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedRole, setSelectedRole] = useState<WorkspaceRole>('investor');
+  const [investorIdentity, setInvestorIdentity] = useState<InvestorIdentity>('EQUITY_FUNDER');
+  const [companyPosition, setCompanyPosition] = useState<CompanyPosition>('STARTUP');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   const [notice, setNotice] = useState<string | null>(null);
+
+  const persistWorkspaceSelection = (
+    role: WorkspaceRole,
+    userEmail: string,
+    userName: string
+  ) => {
+    localStorage.setItem('userEmail', userEmail);
+    localStorage.setItem('userName', userName);
+    localStorage.setItem('userRole', role);
+    localStorage.setItem('isUserOnboarded', 'true');
+
+    if (role === 'investor') {
+      const meta = getInvestorIdentityMeta(investorIdentity);
+      localStorage.setItem('investorIdentity', investorIdentity);
+      localStorage.removeItem('companyPosition');
+      localStorage.setItem('aqxFineRole', meta.platformRole);
+    } else if (role === 'company') {
+      const meta = getCompanyPositionMeta(companyPosition);
+      localStorage.setItem('companyPosition', companyPosition);
+      localStorage.removeItem('investorIdentity');
+      localStorage.setItem('aqxFineRole', meta.platformRole);
+    } else {
+      localStorage.setItem('aqxFineRole', 'SUPER_ADMIN');
+    }
+
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('nxg_auth_state_changed'));
+    }
+  };
+
+  const handleQuickDemo = (role: WorkspaceRole) => {
+    setError(null);
+    setNotice(null);
+    const invLabel = getInvestorIdentityMeta(investorIdentity).label;
+    const compLabel = getCompanyPositionMeta(companyPosition).label;
+    const demoConfigs = {
+      investor: {
+        email: `${investorIdentity.toLowerCase()}@afriquantx.demo`,
+        name: `Alex (${invLabel})`,
+      },
+      company: {
+        email: `${companyPosition.toLowerCase()}@issuer-afriquantx.demo`,
+        name: `Meridian ${compLabel}`,
+      },
+      admin: {
+        email: 'admin@afriquantx.demo',
+        name: 'Platform Administrator',
+      },
+    };
+    const config = demoConfigs[role];
+    persistWorkspaceSelection(role, config.email, config.name);
+    onComplete();
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -270,24 +199,53 @@ export function AuthPanel({ onComplete, authError, onAuthAttempt }: AuthPanelPro
     onAuthAttempt?.();
     setNotice(null);
     setLoading(true);
+
+    const trimmedEmail = email.trim() || `${selectedRole}@afriquantx.demo`;
+    const derivedName = trimmedEmail.split('@')[0] || 'Participant';
+
     try {
-      if (!isSupabaseConfigured) throw new Error('Authentication is not configured. Please contact the administrator.');
-      if (mode === 'signup') {
-        const { data, error } = await supabase.auth.signUp({ email: email.trim(), password });
-        if (error) throw error;
-        setPassword('');
-        if (!data.session) {
-          setMode('signin');
-          setNotice('Check your email to confirm your account, then sign in.');
+      if (isSupabaseConfigured) {
+        try {
+          if (mode === 'signup') {
+            const { data, error: supaErr } = await supabase.auth.signUp({ email: trimmedEmail, password });
+            if (supaErr) throw supaErr;
+            setPassword('');
+            if (!data.session) {
+              setMode('signin');
+              setNotice('Check your email to confirm your account, then sign in.');
+              return;
+            }
+          } else {
+            const { data, error: supaErr } = await supabase.auth.signInWithPassword({ email: trimmedEmail, password });
+            if (supaErr) throw supaErr;
+            if (!data.session) throw new Error('No authenticated session was returned.');
+            setPassword('');
+          }
+          persistWorkspaceSelection(selectedRole, trimmedEmail, derivedName);
+          onComplete();
           return;
+        } catch (supaErr: any) {
+          const msg = supaErr?.message || String(supaErr ||'');
+          const isNetworkError =
+            msg.includes('Failed to fetch') ||
+            msg.includes('NetworkError') ||
+            msg.includes('fetch failed') ||
+            msg.includes('Load failed') ||
+            msg.includes('Network request failed');
+
+          if (isNetworkError) {
+            console.warn('Supabase remote endpoint unreachable; continuing in prototype mode:', supaErr);
+            persistWorkspaceSelection(selectedRole, trimmedEmail, derivedName);
+            onComplete();
+            return;
+          }
+          throw supaErr;
         }
       } else {
-        const { data, error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-        if (error) throw error;
-        if (!data.session) throw new Error('No authenticated session was returned.');
-        setPassword('');
+        persistWorkspaceSelection(selectedRole, trimmedEmail, derivedName);
+        onComplete();
+        return;
       }
-      onComplete();
     } catch (err: any) {
       setError(err?.message || 'Authentication failed. Please try again.');
     } finally {
@@ -295,138 +253,263 @@ export function AuthPanel({ onComplete, authError, onAuthAttempt }: AuthPanelPro
     }
   };
 
-  const renderContent = () => {
-    return (
-      <div className="w-full max-w-md mx-auto relative z-10 flex flex-col justify-center min-h-[500px]">
-        <div className="text-center mb-8">
-          <img src="/logo.svg" alt="AfriQuantX Logo" className="w-16 h-16 object-contain mx-auto mb-4" />
-          <h1 className="text-3xl font-extrabold text-white tracking-tight">AfriQuantX</h1>
-          <p className="text-zinc-500 uppercase tracking-widest text-[10px] font-bold mt-1">Multi-Exchange Liquidity System</p>
+  return (
+    <div className="min-h-screen w-full flex bg-[#07090E] text-slate-100 font-sans overflow-hidden">
+      {/* Left Panel: Institutional Market Context */}
+      <div className="hidden lg:flex flex-col w-1/2 bg-[#090C14] p-5 justify-between">
+        <div className="flex items-center gap-3">
+          <img src="/logo.svg" alt="AfriQuantX Logo" className="w-8 h-8 object-contain"/>
+          <span className="font-bold text-lg tracking-tight text-white">AfriQuantX</span>
         </div>
 
-        <motion.div 
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-black border border-white/10 rounded-3xl p-8 relative overflow-hidden shadow-2xl"
-        >
-          <div className="relative z-10">
-            {(
-              <form onSubmit={handleSubmit} className="space-y-5">
-                <h2 className="text-xl font-bold text-white mb-6 tracking-widest uppercase border-b border-white/10 pb-2">{mode === 'signin' ? 'Sign In' : 'Create Account'}</h2>
-                
-                {notice && <p role="status" className="text-sm text-emerald-300">{notice}</p>}
+        <div className="flex flex-col items-center justify-center my-6">
+          <MarketDepthPreview />
+        </div>
+
+        <div className="space-y-2 max-w-md">
+          <p className="text-xs font-semibold text-white">
+            Africa&apos;s AI-Powered Real-World Asset Investment Infrastructure
+          </p>
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Strict separation between Investor allocation desks and Company asset tokenisation consoles, governed by SPV legal structures and off-chain compliance controls.
+          </p>
+        </div>
+      </div>
+
+      {/* Right Panel: Role Onboarding + Auth */}
+      <div className="flex-1 flex flex-col justify-center items-center p-3.5 md:p-4 overflow-y-auto">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={mode}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="w-full max-w-lg"
+          >
+            <div className="lg:hidden flex items-center gap-2.5 justify-center mb-3">
+              <img src="/logo.svg" alt="AfriQuantX Logo" className="w-9 h-9 object-contain"/>
+              <span className="text-xl font-bold text-white">AfriQuantX</span>
+            </div>
+
+            <div className="bg-[#0D111A] rounded-lg p-3.5 md:p-4 shadow-xl">
+              <div className="flex items-center justify-between pb-4 mb-3">
+                <div>
+                  <h2 className="text-lg font-bold text-white">
+                    {mode === 'signin' ? 'Sign In & Select Workspace' : 'Create Institutional Account'}
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Choose your role and participant classification to tailor platform access.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode(mode === 'signin' ? 'signup' : 'signin');
+                    setError(null);
+                    setNotice(null);
+                    setPassword('');
+                  }}
+                  className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 cursor-pointer whitespace-nowrap shrink-0"
+                >
+                  {mode === 'signin' ? 'Create account' : 'Sign in instead'}
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-2.5">
+                {notice && <p role="status" className="text-xs text-emerald-300 bg-emerald-500/10 rounded-xl p-3">{notice}</p>}
                 {(error || authError) && (
-                  <div className="p-3 bg-white/5 border border-white/10 rounded-xl flex items-start gap-3">
-                    <AlertCircle className="w-5 h-5 text-white shrink-0 mt-0.5" />
-                    <p role="alert" className="text-xs text-white">{error || authError}</p>
+                  <div className="p-3 bg-rose-500/10 rounded-xl space-y-2">
+                    <div className="flex items-start gap-2.5">
+                      <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5"/>
+                      <p role="alert" className="text-xs text-slate-100">{error || authError}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleQuickDemo(selectedRole)}
+                      className="w-full text-left text-xs font-semibold text-emerald-400 hover:text-emerald-300 underline cursor-pointer"
+                    >
+                      Continue in Prototype Mode as {selectedRole} →
+                    </button>
                   </div>
                 )}
 
-                <div className="space-y-4">
+                {/* Step 1: Role Switcher */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-semibold text-slate-300">Account Role</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRole('investor')}
+                      className={cn(
+'py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer bg-white/[0.03]',
+                        selectedRole === 'investor'
+                          ? 'bg-white text-slate-950'
+                          : 'bg-[#121723] text-slate-300'
+                      )}
+                    >
+                      <Briefcase className="w-3.5 h-3.5"/>
+                      <span>Investor</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRole('company')}
+                      className={cn(
+'py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer bg-white/[0.03]',
+                        selectedRole === 'company'
+                          ? 'bg-white text-slate-950'
+                          : 'bg-[#121723] text-slate-300'
+                      )}
+                    >
+                      <Building2 className="w-3.5 h-3.5"/>
+                      <span>Company</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedRole('admin')}
+                      className={cn(
+'py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer bg-white/[0.03]',
+                        selectedRole === 'admin'
+                          ? 'bg-white text-slate-950'
+                          : 'bg-[#121723] text-slate-300'
+                      )}
+                    >
+                      <Shield className="w-3.5 h-3.5"/>
+                      <span>Admin</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Step 2: Mandatory Sub-Role Choice */}
+                {selectedRole === 'investor' && (
+                  <div className="space-y-2">
+                    <label className="block text-xs font-semibold text-slate-300">
+                      Identify as (Investor Classification)
+                    </label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {INVESTOR_IDENTITIES.map((item) => {
+                        const active = investorIdentity === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setInvestorIdentity(item.id)}
+                            className={cn(
+'p-3 rounded-xl text-left transition-colors cursor-pointer bg-white/[0.03]',
+                              active
+                                ? 'bg-emerald-500/15 text-white'
+                                : 'bg-[#121723] text-slate-300'
+                            )}
+                          >
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-xs font-bold">{item.label}</span>
+                              {active && <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0"/>}
+                            </div>
+                            <p className="text-[11px] text-slate-400 mt-1 line-clamp-2">{item.tagline}</p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {selectedRole === 'company' && (
+                  <div className="space-y-2">
+                    <label className="block text-xs font-semibold text-slate-300">
+                      Company Position Onboarding
+                    </label>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      {COMPANY_POSITIONS.map((item) => {
+                        const active = companyPosition === item.id;
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => setCompanyPosition(item.id)}
+                            className={cn(
+'p-3.5 rounded-xl text-left transition-colors cursor-pointer bg-white/[0.03]',
+                              active
+                                ? 'bg-sky-500/15 text-white'
+                                : 'bg-[#121723] text-slate-300'
+                            )}
+                          >
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="text-xs font-bold">{item.label}</span>
+                              {active && <Check className="w-3.5 h-3.5 text-sky-400 shrink-0"/>}
+                            </div>
+                            <p className="text-[11px] text-slate-400 mt-1">{item.tagline}</p>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Email & Password */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[10px] font-bold text-zinc-400 mb-1.5 uppercase tracking-widest">Email Address</label>
+                    <label className="block text-xs font-medium text-slate-400 mb-1.5">Email Address</label>
                     <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                      <input 
-                        type="email" 
+                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"/>
+                      <input
+                        type="email"
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="w-full bg-neutral-950 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-white transition-all text-sm font-mono"
-                        placeholder="investor@example.com"
+                        className="w-full bg-[#121723] rounded-xl py-2.5 pl-10 pr-3 text-white placeholder:text-slate-600 focus:outline-none text-sm"
+                        placeholder="name@institution.com"
                       />
                     </div>
                   </div>
-                  
                   <div>
-                    <label className="block text-[10px] font-bold text-zinc-400 mb-1.5 uppercase tracking-widest">Password</label>
+                    <label className="block text-xs font-medium text-slate-400 mb-1.5">Password</label>
                     <div className="relative">
-                      <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                      <input 
-                        type="password" 
+                      <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500"/>
+                      <input
+                        type="password"
                         minLength={mode === 'signup' ? 8 : undefined}
                         autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
                         required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="w-full bg-neutral-950 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white placeholder:text-zinc-600 focus:outline-none focus:border-white transition-all text-sm font-mono"
+                        className="w-full bg-[#121723] rounded-xl py-2.5 pl-10 pr-3 text-white placeholder:text-slate-600 focus:outline-none text-sm"
                         placeholder="••••••••"
                       />
                     </div>
                   </div>
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   disabled={loading}
-                  className="group relative w-full py-3.5 bg-white text-black hover:bg-neutral-200 rounded-xl font-extrabold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-2 mt-6 disabled:opacity-50"
+                  className="w-full py-3 bg-white text-slate-950 hover:bg-slate-200 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
-                  <span className="relative">{loading ? 'Please wait...' : mode === 'signin' ? 'Access Platform' : 'Create Account'}</span>
-                  {!loading && <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />}
+                  <span>{loading ? 'Authenticating...' : mode === 'signin' ? 'Sign In to Workspace' : 'Create Account'}</span>
+                  {!loading && <ArrowRight className="w-4 h-4"/>}
                 </button>
 
-                <p className="text-center text-xs text-zinc-500 mt-6 font-medium">
-                  {mode === 'signin' ? "Don't have an account? " : 'Already have an account? '}
-                  <button type="button" onClick={() => { setMode(mode === 'signin' ? 'signup' : 'signin'); setError(null); setNotice(null); setPassword(''); }} className="text-white hover:underline font-bold uppercase tracking-wider text-[10px]">
-                    {mode === 'signin' ? 'Create account' : 'Sign in'}
+                {/* Instant 1-Click Workspace Access matching selected sub-role */}
+                <div className="pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <span className="text-xs text-slate-400">
+                    Prototype quick entry as{' '}
+                    <strong className="text-white">
+                      {selectedRole === 'investor'
+                        ? `Investor · ${getInvestorIdentityMeta(investorIdentity).label}`
+                        : selectedRole === 'company'
+                          ? `Company · ${getCompanyPositionMeta(companyPosition).label}`
+                          : 'Admin'}
+                    </strong>
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleQuickDemo(selectedRole)}
+                    className="py-2 px-4 bg-[#121723] hover:bg-white/10 rounded-xl text-xs font-semibold text-white transition-colors cursor-pointer whitespace-nowrap shrink-0"
+                  >
+                    Launch Demo Session →
                   </button>
-                </p>
+                </div>
               </form>
-            )}
-          </div>
-        </motion.div>
-      </div>
-    );
-  };
-
-  return (
-    <div className="min-h-screen w-full flex bg-black text-white font-sans overflow-hidden">
-      {/* Left Panel: High Fidelity Interactive Stock Market Graphics (Desktop Only) */}
-      <div className="hidden lg:flex flex-col w-1/2 bg-neutral-950 border-r border-white/5 relative p-12 justify-between overflow-hidden">
-        {/* Subtle grid background */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:32px_32px]" />
-        
-        {/* Ambient white spotlight */}
-        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-white/[0.01] blur-[160px] rounded-full pointer-events-none" />
-
-        <div className="relative z-10 flex items-center gap-3">
-          <img src="/logo.svg" alt="AfriQuantX Logo" className="w-8 h-8 object-contain" />
-          <span className="font-extrabold text-lg tracking-widest text-white font-mono">AfriQuantX</span>
-        </div>
-
-        {/* Live trading graphic center */}
-        <div className="relative z-10 flex flex-col items-center justify-center my-6">
-          <LiveTradingVisualArt />
-        </div>
-
-        <div className="relative z-10 space-y-2">
-          <div className="flex items-center gap-3 text-[9px] font-mono text-zinc-500">
-            <span className="flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-              TELEMETRY_ONLINE
-            </span>
-            <span>•</span>
-            <span>DATA_STREAM: ACTIVE</span>
-          </div>
-          <p className="text-xs text-zinc-400 max-w-sm">
-            Designed for pan-African institutional scale. Access deep liquidity pools, automated settlements, and real-time smart routers in custom monochrome workspace.
-          </p>
-        </div>
-      </div>
-
-      {/* Right Panel: Onboarding & Auth Forms */}
-      <div className="flex-1 flex flex-col justify-center items-center p-6 md:p-12 relative">
-        <div className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.01)_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={mode}
-            initial={{ opacity: 0, scale: 0.98 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.3 }}
-            className="w-full max-w-md relative z-10"
-          >
-            {renderContent()}
+            </div>
           </motion.div>
         </AnimatePresence>
       </div>

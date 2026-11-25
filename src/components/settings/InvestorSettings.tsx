@@ -16,6 +16,16 @@ import { BiometricService } from '../../services/biometricService';
 export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
   const [showBioModal, setShowBioModal] = useState(false);
   const [bioSuccessMsg, setBioSuccessMsg] = useState<string | null>(null);
+  const [statusNotice, setStatusNotice] = useState<string | null>(null);
+  const [sectors, setSectors] = useState<string[]>(['Artificial Intelligence', 'Fintech', 'Biotech']);
+  const [newSectorInput, setNewSectorInput] = useState('');
+  const [showSectorInput, setShowSectorInput] = useState(false);
+  const [idDocVerifiedDate, setIdDocVerifiedDate] = useState('Oct 10, 2025');
+  const [declarationDone, setDeclarationDone] = useState(false);
+  const [linkedBanks, setLinkedBanks] = useState([{ id: 'bank-1', name: 'Chase Checking', last4: '4567', status: 'Active' }]);
+  const [showAddBank, setShowAddBank] = useState(false);
+  const [bankForm, setBankForm] = useState({ name: '', last4: '' });
+  const [twoFactorEnabled, setTwoFactorEnabled] = useState(true);
 
   const [profileData, setProfileData] = useState(() => {
     const saved = localStorage.getItem('investorProfile');
@@ -33,14 +43,15 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
   const handleSave = () => {
     setIsSaving(true);
     localStorage.setItem('investorProfile', JSON.stringify(profileData));
+    setStatusNotice('Investor profile preferences saved.');
     setTimeout(() => setIsSaving(false), 500);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-3">
       {/* AI Insights & Health Dashboard */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-        <Card className="bg-blue-500/10 border-blue-500/20 lg:col-span-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <Card className="bg-blue-500/10 lg:col-span-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-blue-400 flex items-center gap-2">
               <TrendingUp className="w-4 h-4" /> AI Insight
@@ -51,20 +62,20 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
           </CardContent>
         </Card>
         
-        <Card className="bg-zinc-900/50 border-white/10">
+        <Card className="bg-zinc-900/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Profile</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between mb-2">
               <span className="text-2xl font-bold text-white">85%</span>
-              <Badge variant="outline" className="text-emerald-400 border-emerald-400/20 bg-emerald-400/10">Strong</Badge>
+              <Badge variant="outline" className="text-emerald-400 bg-emerald-400/10">Strong</Badge>
             </div>
             <Progress value={85} className="h-2" />
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900/50 border-white/10">
+        <Card className="bg-zinc-900/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Compliance</CardTitle>
           </CardHeader>
@@ -79,20 +90,20 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900/50 border-white/10">
+        <Card className="bg-zinc-900/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Security</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between mb-2">
               <span className="text-2xl font-bold text-white">100%</span>
-              <Badge variant="outline" className="text-emerald-400 border-emerald-400/20 bg-emerald-400/10">Secure</Badge>
+              <Badge variant="outline" className="text-emerald-400 bg-emerald-400/10">Secure</Badge>
             </div>
             <Progress value={100} className="h-2" />
           </CardContent>
         </Card>
 
-        <Card className="bg-zinc-900/50 border-white/10">
+        <Card className="bg-zinc-900/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-zinc-400">Financial Setup</CardTitle>
           </CardHeader>
@@ -109,7 +120,7 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 bg-zinc-900/50 border border-white/10 p-1 rounded-xl h-auto">
+        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6 bg-zinc-900/50 p-1 rounded-xl h-auto">
           <TabsTrigger value="profile" className="data-[state=active]:bg-white/10 data-[state=active]:text-white rounded-lg py-2.5"><User className="w-4 h-4 mr-2 hidden sm:block" /> Profile</TabsTrigger>
           <TabsTrigger value="compliance" className="data-[state=active]:bg-white/10 data-[state=active]:text-white rounded-lg py-2.5"><Shield className="w-4 h-4 mr-2 hidden sm:block" /> Compliance</TabsTrigger>
           <TabsTrigger value="financial" className="data-[state=active]:bg-white/10 data-[state=active]:text-white rounded-lg py-2.5"><CreditCard className="w-4 h-4 mr-2 hidden sm:block" /> Financial</TabsTrigger>
@@ -119,8 +130,8 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
         </TabsList>
 
         {/* Profile Tab */}
-        <TabsContent value="profile" className="mt-6 space-y-6">
-          <Card className="bg-zinc-900/50 border-white/10">
+        <TabsContent value="profile" className="mt-6 space-y-3">
+          <Card className="bg-zinc-900/50">
             <CardHeader>
               <CardTitle className="text-white">Personal Information</CardTitle>
               <CardDescription>Update your personal details and contact information.</CardDescription>
@@ -129,19 +140,19 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-zinc-400">Full Name</Label>
-                  <Input id="name" value={profileData.name} onChange={e => setProfileData({...profileData, name: e.target.value})} className="bg-black/40 border-white/10 text-white" />
+                  <Input id="name" value={profileData.name} onChange={e => setProfileData({...profileData, name: e.target.value})} className="bg-black/40 text-white" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-zinc-400">Email</Label>
-                  <Input id="email" type="email" value={profileData.email} onChange={e => setProfileData({...profileData, email: e.target.value})} className="bg-black/40 border-white/10 text-white" />
+                  <Input id="email" type="email" value={profileData.email} onChange={e => setProfileData({...profileData, email: e.target.value})} className="bg-black/40 text-white" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="phone" className="text-zinc-400">Phone</Label>
-                  <Input id="phone" type="tel" value={profileData.phone} onChange={e => setProfileData({...profileData, phone: e.target.value})} className="bg-black/40 border-white/10 text-white" />
+                  <Input id="phone" type="tel" value={profileData.phone} onChange={e => setProfileData({...profileData, phone: e.target.value})} className="bg-black/40 text-white" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="location" className="text-zinc-400">Location</Label>
-                  <Input id="location" value={profileData.location} onChange={e => setProfileData({...profileData, location: e.target.value})} className="bg-black/40 border-white/10 text-white" />
+                  <Input id="location" value={profileData.location} onChange={e => setProfileData({...profileData, location: e.target.value})} className="bg-black/40 text-white" />
                 </div>
               </div>
             </CardContent>
@@ -152,7 +163,7 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
             </CardFooter>
           </Card>
 
-          <Card className="bg-zinc-900/50 border-white/10">
+          <Card className="bg-zinc-900/50">
             <CardHeader>
               <CardTitle className="text-white">Investment Profile</CardTitle>
               <CardDescription>Help us tailor opportunities to your goals.</CardDescription>
@@ -160,44 +171,88 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label className="text-zinc-400">Investor Type</Label>
-                  <select value={profileData.type} onChange={e => setProfileData({...profileData, type: e.target.value})} className="w-full h-9 rounded-md border border-white/10 bg-black/40 px-3 py-1 text-sm text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
-                    <option value="Retail">Retail</option>
-                    <option value="HNWI">High Net Worth Individual (HNWI)</option>
-                    <option value="Institutional">Institutional</option>
+                  <Label className="text-zinc-400">Investor Identity</Label>
+                  <select
+                    value={profileData.type}
+                    onChange={e => {
+                      const val = e.target.value;
+                      setProfileData({...profileData, type: val});
+                      if (val === 'EQUITY_FUNDER' || val === 'VENTURE_CAPITAL' || val === 'PRIVATE_INVESTOR') {
+                        localStorage.setItem('investorIdentity', val);
+                        window.dispatchEvent(new Event('nxg_auth_state_changed'));
+                      }
+                    }}
+                    className="w-full h-9 rounded-md bg-black/40 px-3 py-1 text-sm text-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  >
+                    <option value="EQUITY_FUNDER">Equity Funder</option>
+                    <option value="VENTURE_CAPITAL">Venture Capital</option>
+                    <option value="PRIVATE_INVESTOR">Private Investor</option>
                   </select>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-zinc-400">Risk Profile (AI Calibrated)</Label>
-                  <div className="flex items-center gap-2 h-9 px-3 rounded-md bg-black/40 border border-white/10 text-sm text-white">
-                    <Badge variant="outline" className="text-orange-400 border-orange-400/20 bg-orange-400/10">Moderate-High</Badge>
+                  <div className="flex items-center gap-2 h-9 px-3 rounded-md bg-black/40 text-sm text-white">
+                    <Badge variant="outline" className="text-orange-400 bg-orange-400/10">Moderate-High</Badge>
                     <span className="text-zinc-500 text-xs ml-auto">Auto-updated based on activity</span>
                   </div>
                 </div>
               </div>
               <div className="space-y-2 mt-4">
                 <Label className="text-zinc-400">Preferred Sectors</Label>
-                <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">Artificial Intelligence</Badge>
-                  <Badge className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">Fintech</Badge>
-                  <Badge className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">Biotech</Badge>
-                  <Badge variant="outline" className="text-zinc-400 border-dashed border-zinc-600 hover:text-white cursor-pointer">+ Add Sector</Badge>
+                <div className="flex flex-wrap gap-2 items-center">
+                  {sectors.map((sector) => (
+                    <Badge key={sector} className="bg-blue-500/20 text-blue-400 hover:bg-blue-500/30">{sector}</Badge>
+                  ))}
+                  {showSectorInput ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        const trimmed = newSectorInput.trim();
+                        if (trimmed && !sectors.includes(trimmed)) {
+                          setSectors((prev) => [...prev, trimmed]);
+                          setStatusNotice(`Added sector focus: ${trimmed}`);
+                        }
+                        setNewSectorInput('');
+                        setShowSectorInput(false);
+                      }}
+                      className="inline-flex items-center gap-1.5"
+                    >
+                      <Input
+                        value={newSectorInput}
+                        onChange={(e) => setNewSectorInput(e.target.value)}
+                        placeholder="Sector name..."
+                        className="h-7 w-36 bg-black/60 text-xs text-white"
+                      />
+                      <Button type="submit" size="sm" className="h-7 px-2.5 text-xs bg-blue-600 hover:bg-blue-500 text-white">Add</Button>
+                    </form>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setShowSectorInput(true)}
+                      className="inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold text-zinc-400 hover:text-white transition-colors cursor-pointer bg-white/[0.03]"
+                    >
+                      + Add Sector
+                    </button>
+                  )}
                 </div>
               </div>
+              {statusNotice && (
+                <p role="status" className="text-xs text-emerald-400 font-medium pt-2">{statusNotice}</p>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* Compliance Tab */}
-        <TabsContent value="compliance" className="mt-6 space-y-6">
-          <Card className="bg-zinc-900/50 border-white/10">
+        <TabsContent value="compliance" className="mt-6 space-y-3">
+          <Card className="bg-zinc-900/50">
             <CardHeader>
               <CardTitle className="text-white">Verification & KYC</CardTitle>
               <CardDescription>Manage your compliance documents and status.</CardDescription>
             </CardHeader>
             <CardContent>
               <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1" className="border-white/10">
+                <AccordionItem value="item-1" className="">
                   <AccordionTrigger className="text-white hover:no-underline hover:text-blue-400">
                     <div className="flex items-center gap-3">
                       <CheckCircle2 className="w-5 h-5 text-emerald-400" />
@@ -206,22 +261,33 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
                   </AccordionTrigger>
                   <AccordionContent className="text-zinc-400">
                     <div className="space-y-4 pt-2">
-                      <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 text-sm text-blue-400">
+                      <div className="bg-blue-500/10 rounded-lg p-3 text-sm text-blue-400">
                         <strong>Why this is required:</strong> Government regulations require us to verify the identity of all investors to prevent fraud and money laundering (AML/KYC).
                       </div>
-                      <p className="text-sm">Your passport was verified on Oct 10, 2025.</p>
-                      <div className="flex items-center gap-4 p-3 rounded-lg bg-black/40 border border-white/5">
+                      <p className="text-sm">Your passport was verified on {idDocVerifiedDate}.</p>
+                      <div className="flex items-center gap-4 p-3 rounded-lg bg-black/40">
                         <FileText className="w-8 h-8 text-zinc-500" />
                         <div className="flex-1">
                           <p className="text-sm text-white font-medium">passport_front.jpg</p>
                           <p className="text-xs text-zinc-500">2.4 MB</p>
                         </div>
-                        <Button variant="outline" size="sm" className="border-white/10 text-white">Update</Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setIdDocVerifiedDate(new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+                            setStatusNotice('Identity document queued for KYC Center re-verification.');
+                            setActiveTab('kyc-kyb');
+                          }}
+                          className="text-white hover:bg-white/10"
+                        >
+                          Update
+                        </Button>
                       </div>
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-2" className="border-white/10">
+                <AccordionItem value="item-2" className="">
                   <AccordionTrigger className="text-white hover:no-underline hover:text-blue-400">
                     <div className="flex items-center gap-3">
                       <CheckCircle2 className="w-5 h-5 text-emerald-400" />
@@ -230,14 +296,14 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
                   </AccordionTrigger>
                   <AccordionContent className="text-zinc-400">
                     <div className="space-y-4 pt-2">
-                      <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 text-sm text-blue-400">
+                      <div className="bg-blue-500/10 rounded-lg p-3 text-sm text-blue-400">
                         <strong>Why this is required:</strong> We need to confirm your residency to ensure compliance with local tax laws and investment regulations.
                       </div>
                       <p className="text-sm pt-2">Utility bill verified on Oct 10, 2025.</p>
                     </div>
                   </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-3" className="border-white/10">
+                <AccordionItem value="item-3" className="">
                   <AccordionTrigger className="text-white hover:no-underline hover:text-blue-400">
                     <div className="flex items-center gap-3">
                       <AlertCircle className="w-5 h-5 text-amber-400" />
@@ -246,13 +312,27 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
                   </AccordionTrigger>
                   <AccordionContent className="text-zinc-400">
                     <div className="space-y-4 pt-2">
-                      <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-3 text-sm text-blue-400">
+                      <div className="bg-blue-500/10 rounded-lg p-3 text-sm text-blue-400">
                         <strong>Why this is required:</strong> To comply with international anti-money laundering (AML) directives, we must verify the legitimate origin of your investment capital.
                       </div>
-                      <div className="p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm">
-                        Action Required: Please update your source of funds declaration for the current fiscal year.
-                      </div>
-                      <Button className="bg-amber-500 text-black hover:bg-amber-600">Complete Declaration</Button>
+                      {declarationDone ? (
+                        <div className="p-3 rounded-lg bg-emerald-500/10 text-emerald-400 text-sm">
+                          Source of funds declaration submitted for the current fiscal year.
+                        </div>
+                      ) : (
+                        <div className="p-3 rounded-lg bg-amber-500/10 text-amber-400 text-sm">
+                          Action Required: Please update your source of funds declaration for the current fiscal year.
+                        </div>
+                      )}
+                      <Button
+                        onClick={() => {
+                          setDeclarationDone(true);
+                          setStatusNotice('Source of funds declaration recorded. Opening KYC/KYB Center...');
+                        }}
+                        className={declarationDone ? "bg-emerald-500 text-black hover:bg-emerald-600" : "bg-amber-500 text-black hover:bg-amber-600"}
+                      >
+                        {declarationDone ? 'Declaration Submitted' : 'Complete Declaration'}
+                      </Button>
                     </div>
                   </AccordionContent>
                 </AccordionItem>
@@ -262,40 +342,84 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
         </TabsContent>
 
         {/* Financial Tab */}
-        <TabsContent value="financial" className="mt-6 space-y-6">
-          <Card className="bg-zinc-900/50 border-white/10">
+        <TabsContent value="financial" className="mt-6 space-y-3">
+          <Card className="bg-zinc-900/50">
             <CardHeader>
               <CardTitle className="text-white">Payment Methods</CardTitle>
               <CardDescription>Manage your linked accounts and wallets.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 rounded-xl border border-white/10 bg-black/40 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-8 bg-zinc-800 rounded flex items-center justify-center border border-white/5">
-                    <span className="text-xs font-bold text-white">BANK</span>
+              {linkedBanks.map((bank) => (
+                <div key={bank.id} className="p-4 rounded-xl bg-black/40 flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-8 bg-zinc-800 rounded flex items-center justify-center">
+                      <span className="text-xs font-bold text-white">BANK</span>
+                    </div>
+                    <div>
+                      <p className="text-white font-medium">{bank.name}</p>
+                      <p className="text-xs text-zinc-500">**** {bank.last4}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-white font-medium">Chase Checking</p>
-                    <p className="text-xs text-zinc-500">**** 4567</p>
-                  </div>
+                  <Badge variant="outline" className="text-emerald-400 bg-emerald-400/10">{bank.status}</Badge>
                 </div>
-                <Badge variant="outline" className="text-emerald-400 border-emerald-400/20 bg-emerald-400/10">Active</Badge>
-              </div>
-              <Button variant="outline" className="w-full border-dashed border-white/20 text-zinc-400 hover:text-white hover:bg-white/5">
-                + Link New Bank Account
-              </Button>
+              ))}
+              {showAddBank ? (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!bankForm.name.trim()) return;
+                    const digits = bankForm.last4.replace(/\D/g, '').slice(-4) || '9012';
+                    setLinkedBanks((prev) => [...prev, { id: `bank-${Date.now()}`, name: bankForm.name.trim(), last4: digits, status: 'Pending Micro-Deposit' }]);
+                    setBankForm({ name: '', last4: '' });
+                    setShowAddBank(false);
+                    setStatusNotice('New settlement bank account linked.');
+                  }}
+                  className="p-4 rounded-xl bg-black/50 space-y-3"
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <Input
+                      placeholder="Institution name (e.g. Standard Bank)"
+                      value={bankForm.name}
+                      onChange={(e) => setBankForm({ ...bankForm, name: e.target.value })}
+                      className="bg-black/40 text-white"
+                      required
+                    />
+                    <Input
+                      placeholder="Last 4 digits (e.g. 8842)"
+                      maxLength={4}
+                      value={bankForm.last4}
+                      onChange={(e) => setBankForm({ ...bankForm, last4: e.target.value })}
+                      className="bg-black/40 text-white"
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-end gap-2">
+                    <Button type="button" variant="outline" onClick={() => setShowAddBank(false)} className="text-zinc-300">Cancel</Button>
+                    <Button type="submit" className="bg-white text-black hover:bg-zinc-200">Link Account</Button>
+                  </div>
+                </form>
+              ) : (
+                <Button
+                  type="button"
+                  onClick={() => setShowAddBank(true)}
+                  variant="outline"
+                  className="w-full text-zinc-400 hover:text-white hover:bg-white/5"
+                >
+                  + Link New Bank Account
+                </Button>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* Notifications Tab */}
-        <TabsContent value="notifications" className="mt-6 space-y-6">
-          <Card className="bg-zinc-900/50 border-white/10">
+        <TabsContent value="notifications" className="mt-6 space-y-3">
+          <Card className="bg-zinc-900/50">
             <CardHeader>
               <CardTitle className="text-white">Notification Preferences</CardTitle>
               <CardDescription>Choose what updates you want to receive.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label className="text-white text-base">Investment Opportunities</Label>
@@ -329,12 +453,12 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
         </TabsContent>
 
         {/* Integrations Tab */}
-        <TabsContent value="integrations" className="mt-6 space-y-6">
-          <Card className="bg-gradient-to-r from-blue-950/40 via-zinc-900/60 to-purple-950/40 border-blue-500/30">
+        <TabsContent value="integrations" className="mt-6 space-y-3">
+          <Card className="bg-gradient-to-r from-blue-950/40 via-zinc-900/60 to-purple-950/40">
             <CardHeader>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <Badge variant="outline" className="text-blue-400 border-blue-500/30 bg-blue-500/10 text-xs font-mono mb-2">
+                  <Badge variant="outline" className="text-blue-400 bg-blue-500/10 text-xs font-mono mb-2">
                     6/6 INSTITUTIONAL PROTOCOLS ACTIVE
                   </Badge>
                   <CardTitle className="text-white text-lg">Institutional Integrations Hub</CardTitle>
@@ -355,20 +479,20 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
         </TabsContent>
 
         {/* Security Tab */}
-        <TabsContent value="security" className="mt-6 space-y-6">
-          <Card className="bg-zinc-900/50 border-white/10">
+        <TabsContent value="security" className="mt-6 space-y-3">
+          <Card className="bg-zinc-900/50">
             <CardHeader>
               <CardTitle className="text-white">Security & Access</CardTitle>
               <CardDescription>Protect your account with Biometrics and 2FA.</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-3">
               {/* Biometric SDK Hardware Integration */}
-              <div className="p-4 rounded-2xl bg-black/40 border border-emerald-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="p-4 rounded-lg bg-black/40 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <ScanFace className="w-5 h-5 text-emerald-400" />
                     <Label className="text-white text-base font-bold">Biometric Hardware Passkey (SDK)</Label>
-                    <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 bg-emerald-500/10 text-[10px] font-mono">
+                    <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 text-[10px] font-mono">
                       WebAuthn FIDO2
                     </Badge>
                   </div>
@@ -393,9 +517,19 @@ export function InvestorSettings({ setActiveTab }: { setActiveTab: (tab: string)
                   <Label className="text-white text-base">Two-Factor Authentication (2FA)</Label>
                   <p className="text-sm text-zinc-500">Secure your account with an authenticator app.</p>
                 </div>
-                <Button variant="outline" className="border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10">Enabled</Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setTwoFactorEnabled((prev) => !prev);
+                    setStatusNotice(!twoFactorEnabled ? '2FA authenticator protection enabled.' : '2FA switched to hardware-passkey fallback.');
+                  }}
+                  className={twoFactorEnabled ? "border-emerald-500/50 text-emerald-400 hover:bg-emerald-500/10" : "border-amber-500/50 text-amber-400 hover:bg-amber-500/10"}
+                >
+                  {twoFactorEnabled ? 'Enabled' : 'Disabled (Enable)'}
+                </Button>
               </div>
-              <div className="space-y-4 pt-4 border-t border-white/10">
+              <div className="space-y-4 pt-4">
                 <Label className="text-white text-base">Recent Login Activity</Label>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between text-sm">

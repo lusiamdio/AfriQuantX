@@ -45,12 +45,12 @@ export function InitialLoader({ onLoaded, minDurationMs = 1800 }: InitialLoaderP
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      style={{ pointerEvents: isPresent ? 'auto' : 'none' }}
-      className="fixed inset-0 z-[9999] bg-black text-white flex flex-col items-center justify-center p-6 overflow-hidden select-none"
+      style={{ pointerEvents: isPresent ?'auto':'none'}}
+      className="fixed inset-0 z-[9999] bg-black text-white flex flex-col items-center justify-center p-3.5 overflow-hidden select-none"
     >
       {/* Background ambient lighting effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none"/>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-amber-500/10 rounded-full blur-[100px] pointer-events-none"/>
 
       {/* Center content block */}
       <div className="relative z-10 flex flex-col items-center max-w-sm text-center">
@@ -59,12 +59,12 @@ export function InitialLoader({ onLoaded, minDurationMs = 1800 }: InitialLoaderP
           initial={{ y: -10, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
-          className="flex items-center gap-3 mb-8"
+          className="flex items-center gap-3 mb-4"
         >
           <img 
             src="/logo.svg" 
             alt="AfriQuantX Logo" 
-            className="w-12 h-12 object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]" 
+            className="w-12 h-12 object-contain filter drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
           />
           <span className="font-extrabold text-2xl tracking-tight text-white font-sans">
             AfriQuantX
@@ -76,9 +76,9 @@ export function InitialLoader({ onLoaded, minDurationMs = 1800 }: InitialLoaderP
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="my-6 py-2 px-6 rounded-2xl bg-white/[0.03] border border-white/10 shadow-[0_0_30px_rgba(0,0,0,0.8)] backdrop-blur-md flex items-center justify-center"
+          className="my-6 py-2 px-3.5 rounded-lg bg-white/[0.03] shadow-[0_0_30px_rgba(0,0,0,0.8)] backdrop-blur-md flex items-center justify-center"
         >
-          <div className="loader" />
+          <div className="loader"/>
         </motion.div>
 
         {/* Dynamic Status Text */}

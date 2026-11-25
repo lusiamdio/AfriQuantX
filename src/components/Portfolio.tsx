@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Briefcase, 
   PieChart as PieChartIcon, 
@@ -74,7 +74,7 @@ const riskData = [
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-black border border-[#FFFFFF]/40 p-3 rounded-xl shadow-2xl">
+      <div className="bg-black p-3 rounded-xl shadow-2xl">
         <p className="text-white font-bold text-sm">{payload[0].name}</p>
         <p className="text-[#FFFFFF] text-xs font-mono mt-1">
           {payload[0].name.includes('Risk') || payload[0].name.includes('Tech') || payload[0].name === 'Manufacturing' 
@@ -88,36 +88,55 @@ const CustomTooltip = ({ active, payload }: any) => {
 };
 
 export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
+  const [downloadedDocNotice, setDownloadedDocNotice] = useState<string | null>(null);
+
+  const handleDownloadDoc = (doc: { id: number; name: string; date: string; type: string; size: string }) => {
+    const content = `AFRIQANTX INSTITUTIONAL LEGAL DOCUMENT\nDocument: ${doc.name}\nIssued: ${doc.date}\nFormat: ${doc.type}\nVerified Size: ${doc.size}\nCustody Hash: AQX-DOC-${doc.id}-VERIFIED\n`;
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${doc.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setDownloadedDocNotice(`Downloaded "${doc.name}".`);
+  };
+
   return (
-    <div className="space-y-8 relative bg-black text-white">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div className="space-y-4 relative bg-black text-white">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white uppercase">Multi-Asset Portfolio</h1>
           <p className="text-zinc-400 mt-1 font-medium">Manage your equity across the African private market network.</p>
         </div>
-        <button className="bg-[#FFFFFF] text-black font-bold uppercase tracking-wider text-xs px-6 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 hover:bg-white shadow-lg">
+        <button
+          onClick={() => setActiveTab('reports')}
+          className="bg-[#FFFFFF] text-black font-bold uppercase tracking-wider text-xs px-3.5 py-2.5 rounded-xl transition-all duration-300 flex items-center gap-2 hover:bg-white shadow-lg cursor-pointer"
+        >
           <Download className="w-4 h-4" />
           Export Report
         </button>
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-black border border-white/10 rounded-3xl p-6 shadow-2xl relative overflow-hidden group hover:border-[#FFFFFF]/40 transition-colors"
+          className="bg-black rounded-xl p-3.5 shadow-2xl relative overflow-hidden group transition-colors"
         >
-          <div className="flex items-center gap-3 mb-6 relative z-10">
-            <div className="p-2.5 bg-[#FFFFFF]/10 border border-[#FFFFFF]/20 rounded-xl">
+          <div className="flex items-center gap-3 mb-3 relative z-10">
+            <div className="p-2.5 bg-[#FFFFFF]/10 rounded-xl">
                <Briefcase className="w-5 h-5 text-[#FFFFFF]" />
             </div>
             <h3 className="text-zinc-400 font-bold tracking-wider text-xs uppercase">Total Portfolio Value</h3>
           </div>
           <p className="text-4xl font-bold font-mono text-white mb-3 tracking-tight relative z-10">$124,500.00</p>
           <div className="flex items-center gap-2 text-sm font-medium relative z-10">
-            <span className="flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 px-2 py-1 rounded-lg border border-[#FFFFFF]/20 text-xs font-bold font-mono">
+            <span className="flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 px-2 py-1 rounded-lg text-xs font-bold font-mono">
               <ArrowUpRight className="w-4 h-4 text-[#FFFFFF]" />
               +12.5%
             </span>
@@ -129,17 +148,17 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-black border border-white/10 rounded-3xl p-6 shadow-2xl relative overflow-hidden group hover:border-[#FFFFFF]/40 transition-colors"
+          className="bg-black rounded-xl p-3.5 shadow-2xl relative overflow-hidden group transition-colors"
         >
-          <div className="flex items-center gap-3 mb-6 relative z-10">
-            <div className="p-2.5 bg-[#FFFFFF]/10 border border-[#FFFFFF]/20 rounded-xl">
+          <div className="flex items-center gap-3 mb-3 relative z-10">
+            <div className="p-2.5 bg-[#FFFFFF]/10 rounded-xl">
               <Activity className="w-5 h-5 text-[#FFFFFF]" />
             </div>
             <h3 className="text-zinc-400 font-bold tracking-wider text-xs uppercase">Active Investments</h3>
           </div>
           <p className="text-4xl font-bold font-mono text-white mb-3 tracking-tight relative z-10">3 Companies</p>
           <div className="flex items-center gap-2 text-sm font-medium relative z-10">
-            <span className="flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 px-2 py-1 rounded-lg border border-[#FFFFFF]/20 text-xs font-bold">
+            <span className="flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 px-2 py-1 rounded-lg text-xs font-bold">
               <TrendingUp className="w-4 h-4" />
               Diversified
             </span>
@@ -151,17 +170,17 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-black border border-white/10 rounded-3xl p-6 shadow-2xl relative overflow-hidden group hover:border-[#FFFFFF]/40 transition-colors"
+          className="bg-black rounded-xl p-3.5 shadow-2xl relative overflow-hidden group transition-colors"
         >
-          <div className="flex items-center gap-3 mb-6 relative z-10">
-            <div className="p-2.5 bg-[#FFFFFF]/10 border border-[#FFFFFF]/20 rounded-xl">
+          <div className="flex items-center gap-3 mb-3 relative z-10">
+            <div className="p-2.5 bg-[#FFFFFF]/10 rounded-xl">
               <ShieldCheck className="w-5 h-5 text-[#FFFFFF]" />
             </div>
             <h3 className="text-zinc-400 font-bold tracking-wider text-xs uppercase">Overall Risk Profile</h3>
           </div>
           <p className="text-2xl font-bold text-white mb-3 tracking-tight relative z-10 uppercase">Low-to-Medium</p>
           <div className="flex items-center gap-2 text-sm font-medium relative z-10">
-            <span className="flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 px-2 py-1 rounded-lg border border-[#FFFFFF]/20 text-xs font-bold">
+            <span className="flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 px-2 py-1 rounded-lg text-xs font-bold">
               <Lock className="w-3.5 h-3.5" />
               Optimized
             </span>
@@ -171,14 +190,14 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
       </div>
 
       {/* Allocation Charts */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 }}
-          className="bg-black border border-white/10 rounded-3xl p-6 shadow-2xl flex flex-col"
+          className="bg-black rounded-xl p-3.5 shadow-2xl flex flex-col"
         >
-          <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">Company Allocation</h3>
+          <h3 className="text-lg font-bold text-white mb-3 uppercase tracking-wider">Company Allocation</h3>
           <div className="h-48 w-full relative">
             <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <PieChart>
@@ -221,9 +240,9 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-black border border-white/10 rounded-3xl p-6 shadow-2xl flex flex-col"
+          className="bg-black rounded-xl p-3.5 shadow-2xl flex flex-col"
         >
-          <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">Sector Exposure</h3>
+          <h3 className="text-lg font-bold text-white mb-3 uppercase tracking-wider">Sector Exposure</h3>
           <div className="h-48 w-full relative">
             <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <PieChart>
@@ -266,9 +285,9 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.45 }}
-          className="bg-black border border-white/10 rounded-3xl p-6 shadow-2xl flex flex-col"
+          className="bg-black rounded-xl p-3.5 shadow-2xl flex flex-col"
         >
-          <h3 className="text-lg font-bold text-white mb-6 uppercase tracking-wider">Risk Profile</h3>
+          <h3 className="text-lg font-bold text-white mb-3 uppercase tracking-wider">Risk Profile</h3>
           <div className="h-48 w-full relative">
             <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <PieChart>
@@ -308,49 +327,49 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
         </motion.div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Holdings Table */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="lg:col-span-2 bg-black border border-white/10 rounded-3xl overflow-hidden flex flex-col shadow-2xl"
+          className="lg:col-span-2 bg-black rounded-xl overflow-hidden flex flex-col shadow-2xl"
         >
-          <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/[0.01]">
+          <div className="p-3.5 flex justify-between items-center bg-white/[0.01]">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider">Asset Breakdown</h2>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left">
               <thead>
-                <tr className="border-b border-white/5 text-xs uppercase tracking-wider text-zinc-400 bg-white/[0.02]">
-                  <th className="p-6 font-bold">Company</th>
-                  <th className="p-6 font-bold">Type</th>
-                  <th className="p-6 font-bold">Shares / %</th>
-                  <th className="p-6 font-bold">Value</th>
-                  <th className="p-6 font-bold text-right">Change</th>
+                <tr className="text-xs uppercase tracking-wider text-zinc-400 bg-white/[0.02]">
+                  <th className="p-3.5 font-bold">Company</th>
+                  <th className="p-3.5 font-bold">Type</th>
+                  <th className="p-3.5 font-bold">Shares / %</th>
+                  <th className="p-3.5 font-bold">Value</th>
+                  <th className="p-3.5 font-bold text-right">Change</th>
                 </tr>
               </thead>
               <tbody className="text-sm">
                 {holdings.map((holding) => (
-                  <tr key={holding.id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group">
-                    <td className="p-6 font-bold text-white flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-[#FFFFFF]/10 border border-[#FFFFFF]/20 flex items-center justify-center text-[#FFFFFF] font-bold text-xs">
+                  <tr key={holding.id} className="hover:bg-white/[0.02] transition-colors group">
+                    <td className="p-3.5 font-bold text-white flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#FFFFFF]/10 flex items-center justify-center text-[#FFFFFF] font-bold text-xs">
                         {holding.asset.charAt(0)}
                       </div>
                       {holding.asset}
                     </td>
-                    <td className="p-6 text-zinc-400">
-                      <span className="bg-white/5 px-2.5 py-1 rounded-lg text-xs border border-white/10 font-medium">
+                    <td className="p-3.5 text-zinc-400">
+                      <span className="bg-white/5 px-2.5 py-1 rounded-lg text-xs font-medium">
                         {holding.type}
                       </span>
                     </td>
-                    <td className="p-6 text-zinc-300 font-mono">
+                    <td className="p-3.5 text-zinc-300 font-mono">
                       {holding.shares !== '-' ? holding.shares : holding.percentage}
                       {holding.shares !== '-' && <span className="text-zinc-500 ml-2">({holding.percentage})</span>}
                     </td>
-                    <td className="p-6 font-bold font-mono text-white tracking-tight">{holding.value}</td>
-                    <td className="p-6 text-right">
-                      <span className="inline-flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 border border-[#FFFFFF]/20 px-2.5 py-1 rounded-lg text-xs font-bold font-mono">
+                    <td className="p-3.5 font-bold font-mono text-white tracking-tight">{holding.value}</td>
+                    <td className="p-3.5 text-right">
+                      <span className="inline-flex items-center gap-1 text-[#FFFFFF] bg-[#FFFFFF]/10 px-2.5 py-1 rounded-lg text-xs font-bold font-mono">
                         <ArrowUpRight className="w-3.5 h-3.5 text-[#FFFFFF]" />
                         {holding.change}
                       </span>
@@ -367,11 +386,11 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-black border border-white/10 rounded-3xl p-6 flex flex-col shadow-2xl relative overflow-hidden"
+          className="bg-black rounded-xl p-3.5 flex flex-col shadow-2xl relative overflow-hidden"
         >
           <div className="absolute top-0 inset-x-0 h-1 bg-[#FFFFFF]" />
           
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-3">
             <h2 className="text-xl font-bold text-white uppercase tracking-wider">Legal Documents</h2>
             <button onClick={() => setActiveTab('company-profile')} className="text-[#FFFFFF] hover:text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-colors">
               View All <ChevronRight className="w-4 h-4" />
@@ -380,9 +399,14 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
           
           <div className="space-y-3">
             {documents.map((doc) => (
-              <div key={doc.id} className="flex items-center justify-between p-4 rounded-2xl border border-white/10 bg-white/[0.01] hover:border-[#FFFFFF]/30 transition-all duration-300 group cursor-pointer">
+              <button
+                type="button"
+                key={doc.id}
+                onClick={() => handleDownloadDoc(doc)}
+                className="w-full text-left flex items-center justify-between p-4 rounded-lg bg-white/[0.01] transition-all duration-300 group cursor-pointer"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="p-2.5 bg-white/5 rounded-xl text-zinc-400 group-hover:text-[#FFFFFF] group-hover:bg-[#FFFFFF]/10 transition-colors border border-white/10 group-hover:border-[#FFFFFF]/20">
+                  <div className="p-2.5 bg-white/5 rounded-xl text-zinc-400 group-hover:text-[#FFFFFF] group-hover:bg-[#FFFFFF]/10 transition-colors">
                     <FileText className="w-5 h-5" />
                   </div>
                   <div>
@@ -393,12 +417,17 @@ export function Portfolio({ setActiveTab }: { setActiveTab: (tab: string) => voi
                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
                   <Download className="w-4 h-4 text-white" />
                 </div>
-              </div>
+              </button>
             ))}
+            {downloadedDocNotice && (
+              <p role="status" className="text-xs text-emerald-400 bg-emerald-500/10 rounded-xl px-3.5 py-2">
+                {downloadedDocNotice}
+              </p>
+            )}
           </div>
           
-          <div className="mt-auto pt-8">
-            <div className="bg-[#FFFFFF]/5 border border-[#FFFFFF]/20 rounded-2xl p-5 flex items-start gap-4 relative overflow-hidden">
+          <div className="mt-auto pt-4">
+            <div className="bg-[#FFFFFF]/5 rounded-lg p-3 flex items-start gap-4 relative overflow-hidden">
               <div className="p-2 bg-[#FFFFFF]/10 rounded-xl shrink-0">
                 <ShieldCheck className="w-5 h-5 text-[#FFFFFF]" />
               </div>

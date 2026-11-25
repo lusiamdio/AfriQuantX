@@ -290,7 +290,7 @@ export function StockPurchaseConfirmation({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#090B10]/95 backdrop-blur-[30px] flex items-center justify-center p-4 sm:p-6 font-sans select-none text-white">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#090B10]/95 backdrop-blur-[30px] flex items-center justify-center p-4 sm:p-3.5 font-sans select-none text-white">
       {/* Dynamic Animated Particle Overlay */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#090B10] to-[#090B10]" />
@@ -324,7 +324,7 @@ export function StockPurchaseConfirmation({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.05 }}
             transition={{ duration: 0.4 }}
-            className="text-center space-y-6 max-w-md w-full relative z-10 p-8"
+            className="text-center space-y-3 max-w-md w-full relative z-10 p-4"
           >
             <div className="relative w-28 h-28 mx-auto">
               {/* Outer rotating intelligence ring */}
@@ -361,7 +361,7 @@ export function StockPurchaseConfirmation({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.1 }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="text-center relative z-10 space-y-6"
+            className="text-center relative z-10 space-y-3"
           >
             {/* Green confirmation pulse expanding */}
             <div className="relative flex items-center justify-center">
@@ -377,12 +377,12 @@ export function StockPurchaseConfirmation({
                 transition={{ duration: 1, delay: 0.3, repeat: Infinity, ease: 'easeOut' }}
                 className="absolute w-20 h-20 rounded-full bg-[#0057FF]/10"
               />
-              <div className="w-24 h-24 rounded-3xl bg-[#090B10] border border-white/10 flex items-center justify-center shadow-2xl relative z-10 group p-4">
+              <div className="w-24 h-24 rounded-xl bg-[#090B10] flex items-center justify-center shadow-2xl relative z-10 group p-4">
                 {/* Glowing AfriQuantX logo mark */}
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-                  className="absolute inset-2 border border-dashed border-[#F9B233]/30 rounded-2xl"
+                  className="absolute inset-2 rounded-lg bg-white/[0.03]"
                 />
                 <img src="/logo.svg" alt="AfriQuantX Logo" className="w-12 h-12 object-contain" />
               </div>
@@ -401,7 +401,7 @@ export function StockPurchaseConfirmation({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="w-full max-w-5xl relative z-10 flex flex-col items-center space-y-8 py-8"
+            className="w-full max-w-5xl relative z-10 flex flex-col items-center space-y-4 py-3.5"
           >
             {/* Top Success Header */}
             <div className="text-center space-y-3">
@@ -409,7 +409,7 @@ export function StockPurchaseConfirmation({
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', damping: 12, stiffness: 100 }}
-                className="w-16 h-16 bg-[#00C853]/10 border border-[#00C853]/30 rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(0,200,83,0.15)]"
+                className="w-16 h-16 bg-[#00C853]/10 rounded-full flex items-center justify-center mx-auto shadow-[0_0_30px_rgba(0,200,83,0.15)]"
               >
                 <Check className="w-8 h-8 text-[#00C853] stroke-[3]" />
               </motion.div>
@@ -430,7 +430,7 @@ export function StockPurchaseConfirmation({
                 {/* Certificate Container with premium light reflecting shimmer effect */}
                 <div 
                   ref={certificateRef}
-                  className="relative bg-[#090B10] border-2 border-[#F9B233]/30 rounded-3xl p-6 sm:p-10 shadow-2xl overflow-hidden group select-none text-left"
+                  className="relative bg-[#090B10] rounded-xl p-3.5 sm:p-4 shadow-2xl overflow-hidden group select-none text-left"
                   style={{
                     backgroundImage: 'radial-gradient(ellipse at top left, rgba(249,178,51,0.06), transparent 70%), radial-gradient(ellipse at bottom right, rgba(0,87,255,0.08), transparent 70%)'
                   }}
@@ -439,9 +439,9 @@ export function StockPurchaseConfirmation({
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-[3s] pointer-events-none" />
 
                   {/* Top Header Row of Certificate */}
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-[#F9B233]/15">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-xl bg-[#F9B233]/15 flex items-center justify-center border border-[#F9B233]/25">
+                      <div className="w-12 h-12 rounded-xl bg-[#F9B233]/15 flex items-center justify-center">
                         <Globe className="w-6 h-6 text-[#F9B233]" />
                       </div>
                       <div>
@@ -450,7 +450,7 @@ export function StockPurchaseConfirmation({
                       </div>
                     </div>
                     
-                    <div className="bg-white/5 border border-white/10 px-4 py-2 rounded-xl flex items-center gap-2">
+                    <div className="bg-white/5 px-4 py-2 rounded-xl flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-[#00C853] animate-pulse" />
                       <span className="text-[10px] font-bold text-zinc-400 font-mono tracking-wider">SEC APPROVED</span>
                     </div>
@@ -465,7 +465,7 @@ export function StockPurchaseConfirmation({
                   </div>
 
                   {/* Body Text Area */}
-                  <div className="text-center max-w-2xl mx-auto space-y-3 py-4 border-y border-white/[0.05]">
+                  <div className="text-center max-w-2xl mx-auto space-y-3 py-4">
                     <p className="text-zinc-500 font-serif italic text-sm">This certifies that</p>
                     <h4 className="text-xl sm:text-2xl font-bold text-white tracking-wide uppercase font-sans">
                       {data.shareholderName}
@@ -482,7 +482,7 @@ export function StockPurchaseConfirmation({
                   </div>
 
                   {/* Dynamic Transaction & Metadata Section */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 my-8">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-3 my-8">
                     <div className="space-y-1">
                       <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-mono">Certificate ID</span>
                       <p className="text-xs font-bold font-mono text-zinc-300">{data.certificateId}</p>
@@ -516,7 +516,7 @@ export function StockPurchaseConfirmation({
                   </div>
 
                   {/* Bottom Verification, Signatures and Stamps */}
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 pt-6 border-t border-white/[0.05]">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 pt-6">
                     {/* Issuer and Dynamic Signature */}
                     <div className="space-y-3">
                       <div>
@@ -525,7 +525,7 @@ export function StockPurchaseConfirmation({
                       </div>
                       
                       {/* Auto-signing animation element */}
-                      <div className="relative h-10 w-44 bg-white/[0.01] border border-white/[0.05] rounded-lg flex items-center justify-center overflow-hidden">
+                      <div className="relative h-10 w-44 bg-white/[0.01] rounded-lg flex items-center justify-center overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: '100%' }}
@@ -544,15 +544,15 @@ export function StockPurchaseConfirmation({
                     </div>
 
                     {/* Gold Embossed Seal (Self stamping) */}
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-3">
                       <div className="relative w-20 h-20">
                         <motion.div
                           initial={{ scale: 2.5, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ delay: 1.6, type: 'spring', damping: 10, stiffness: 100 }}
-                          className="w-full h-full rounded-full border-2 border-dashed border-[#F9B233] bg-gradient-to-tr from-[#8A7322] to-[#F9B233] p-1 shadow-lg flex items-center justify-center text-center relative overflow-hidden"
+                          className="w-full h-full rounded-full bg-gradient-to-tr from-[#8A7322] to-[#F9B233] p-1 shadow-lg flex items-center justify-center text-center relative overflow-hidden"
                         >
-                          <div className="absolute inset-0.5 rounded-full border border-[#F9B233]/40 bg-[#090B10] flex flex-col items-center justify-center">
+                          <div className="absolute inset-0.5 rounded-full bg-[#090B10] flex flex-col items-center justify-center">
                             <span className="text-[6px] text-[#F9B233] font-bold font-mono tracking-tighter">OFFICIAL</span>
                             <Award className="w-5 h-5 text-[#F9B233] my-0.5" />
                             <span className="text-[5px] text-[#F9B233] font-mono leading-none">AQX SEAL</span>
@@ -573,7 +573,7 @@ export function StockPurchaseConfirmation({
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 1.0, duration: 1.2 }}
-                          className="p-2 bg-white rounded-xl flex items-center justify-center border border-zinc-200"
+                          className="p-2 bg-white rounded-xl flex items-center justify-center"
                         >
                           <svg className="w-16 h-16 text-black" viewBox="0 0 100 100">
                             {/* Outer QR frame */}
@@ -606,7 +606,7 @@ export function StockPurchaseConfirmation({
                   </div>
 
                   {/* Tiny powered bottom mark */}
-                  <div className="mt-8 pt-4 border-t border-white/[0.03] flex justify-between items-center text-[9px] text-zinc-500 font-mono">
+                  <div className="mt-8 pt-4 flex justify-between items-center text-[9px] text-zinc-500 font-mono">
                     <span>REGISTRY SEQUENCE: #00054892</span>
                     <span className="text-right">Powered by AfriQuant Xchange</span>
                   </div>
@@ -623,7 +623,7 @@ export function StockPurchaseConfirmation({
             >
               <button
                 onClick={handleDownload}
-                className="w-full sm:flex-1 py-4 bg-[#00C853] hover:bg-[#00C853]/90 text-[#090B10] rounded-2xl font-black uppercase tracking-wider text-sm flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(0,200,83,0.2)] hover:scale-[1.02] transition-all"
+                className="w-full sm:flex-1 py-4 bg-[#00C853] hover:bg-[#00C853]/90 text-[#090B10] rounded-lg font-black uppercase tracking-wider text-sm flex items-center justify-center gap-2 shadow-[0_0_30px_rgba(0,200,83,0.2)] hover:scale-[1.02] transition-all"
               >
                 <Download className="w-5 h-5" />
                 <span>Download Certificate</span>
@@ -631,14 +631,14 @@ export function StockPurchaseConfirmation({
 
               <button
                 onClick={onViewPortfolio}
-                className="w-full sm:flex-1 py-4 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-2xl font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:scale-[1.02] transition-all"
+                className="w-full sm:flex-1 py-4 bg-white/5 hover:bg-white/10 text-white rounded-lg font-bold uppercase tracking-wider text-sm flex items-center justify-center gap-2 hover:scale-[1.02] transition-all"
               >
                 <span>View Portfolio</span>
               </button>
 
               <button
                 onClick={handleShare}
-                className="w-full sm:w-auto p-4 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-400 hover:text-white rounded-2xl transition-all flex items-center justify-center"
+                className="w-full sm:w-auto p-4 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white rounded-lg transition-all flex items-center justify-center"
                 title="Share Certificate"
               >
                 {copied ? <span className="text-xs text-[#00C853] font-bold">COPIED URL!</span> : <Share2 className="w-5 h-5" />}
@@ -646,7 +646,7 @@ export function StockPurchaseConfirmation({
 
               <button
                 onClick={onBuyMore}
-                className="w-full sm:w-auto px-6 py-4 bg-transparent hover:bg-white/5 border border-dashed border-white/20 hover:border-white/40 text-zinc-400 hover:text-white rounded-2xl transition-all font-bold text-sm uppercase tracking-wider"
+                className="w-full sm:w-auto px-3.5 py-4 bg-transparent hover:bg-white/5 text-zinc-400 hover:text-white rounded-lg transition-all font-bold text-sm uppercase tracking-wider"
               >
                 Buy More Shares
               </button>

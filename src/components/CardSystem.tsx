@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from'motion/react';
 import { 
   CreditCard, Smartphone, ShieldCheck, Settings, Eye, EyeOff, 
   Snowflake, ArrowRightLeft, Globe, Lock, Zap, ChevronLeft,
@@ -14,15 +14,15 @@ interface CardSystemProps {
 }
 
 const themes = [
-  { id: 'midnight', name: 'Midnight Black', color: 'from-zinc-800 to-zinc-950', border: 'border-zinc-700/50' },
-  { id: 'ocean', name: 'Ocean Blue', color: 'from-blue-600 to-blue-900', border: 'border-blue-500/50' },
-  { id: 'gold', name: 'Royal Gold', color: 'from-amber-500 to-yellow-700', border: 'border-yellow-500/50' },
-  { id: 'neon', name: 'Neon AI', color: 'from-fuchsia-600 to-purple-900', border: 'border-fuchsia-500/50' },
-  { id: 'afrotech', name: 'AfroTech', color: 'from-emerald-600 to-teal-900', border: 'border-emerald-500/50' },
+  { id:'midnight', name:'Midnight Black', color:'from-zinc-800 to-zinc-950', border:''},
+  { id:'ocean', name:'Ocean Blue', color:'from-blue-600 to-blue-900', border:''},
+  { id:'gold', name:'Royal Gold', color:'from-amber-500 to-yellow-700', border:''},
+  { id:'neon', name:'Neon AI', color:'from-fuchsia-600 to-purple-900', border:'border-fuchsia-500/50'},
+  { id:'afrotech', name:'AfroTech', color:'from-emerald-600 to-teal-900', border:''},
 ];
 
 const renderGraphic = (type: string, opacity: number) => {
-  const opacityClass = `opacity-[${opacity/100}]`;
+  const opacityClass =`opacity-[${opacity/100}]`;
   switch (type) {
     case 'chart':
       return (
@@ -30,7 +30,7 @@ const renderGraphic = (type: string, opacity: number) => {
           <motion.path 
             d="M0,80 L10,70 L20,75 L30,50 L40,60 L50,30 L60,40 L70,10 L80,20 L90,5 L100,15" 
             fill="none" 
-            stroke="currentColor" 
+            stroke="currentColor"
             strokeWidth="2"
             initial={{ pathLength: 0, opacity: 0 }}
             animate={{ pathLength: 1, opacity: 1 }}
@@ -38,7 +38,7 @@ const renderGraphic = (type: string, opacity: number) => {
           />
           <motion.path 
             d="M0,80 L10,70 L20,75 L30,50 L40,60 L50,30 L60,40 L70,10 L80,20 L90,5 L100,15 L100,100 L0,100 Z" 
-            fill="currentColor" 
+            fill="currentColor"
             opacity="0.1"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.1 }}
@@ -57,7 +57,7 @@ const renderGraphic = (type: string, opacity: number) => {
               transition={{ duration: 0.5, delay: i * 0.1 }}
             >
               <line x1={x} y1={20 + (i * 5)} x2={x} y2={80 - (i * 2)} stroke="currentColor" strokeWidth="1" />
-              <rect x={x - 2} y={30 + (i * 5)} width="4" height={30} fill="currentColor" />
+              <rect x={x - 2} y={30 + (i * 5)} width="4" height={30} fill="currentColor"/>
             </motion.g>
           ))}
         </svg>
@@ -68,7 +68,7 @@ const renderGraphic = (type: string, opacity: number) => {
           <motion.path 
             d="M0,50 Q25,20 50,50 T100,50" 
             fill="none" 
-            stroke="currentColor" 
+            stroke="currentColor"
             strokeWidth="1"
             animate={{ d: ["M0,50 Q25,20 50,50 T100,50", "M0,50 Q25,80 50,50 T100,50", "M0,50 Q25,20 50,50 T100,50"] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
@@ -76,7 +76,7 @@ const renderGraphic = (type: string, opacity: number) => {
           <motion.path 
             d="M0,60 Q25,30 50,60 T100,60" 
             fill="none" 
-            stroke="currentColor" 
+            stroke="currentColor"
             strokeWidth="0.5" 
             opacity="0.5"
             animate={{ d: ["M0,60 Q25,30 50,60 T100,60", "M0,60 Q25,90 50,60 T100,60", "M0,60 Q25,30 50,60 T100,60"] }}
@@ -85,7 +85,7 @@ const renderGraphic = (type: string, opacity: number) => {
           <motion.path 
             d="M0,70 Q25,40 50,70 T100,70" 
             fill="none" 
-            stroke="currentColor" 
+            stroke="currentColor"
             strokeWidth="0.25" 
             opacity="0.2"
             animate={{ d: ["M0,70 Q25,40 50,70 T100,70", "M0,70 Q25,100 50,70 T100,70", "M0,70 Q25,40 50,70 T100,70"] }}
@@ -127,17 +127,17 @@ const renderTexture = (type: string) => {
         </svg>
       );
     case 'brushed':
-      return <div className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none" />;
+      return <div className="absolute inset-0 opacity-30 mix-blend-overlay pointer-events-none"/>;
     case 'glass':
-      return <div className="absolute inset-0 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl pointer-events-none" />;
+      return <div className="absolute inset-0 bg-white/10 backdrop-blur-md rounded-lg pointer-events-none"/>;
     case 'carbon':
-      return <div className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none" />;
+      return <div className="absolute inset-0 opacity-20 mix-blend-overlay pointer-events-none"/>;
     case 'afrotech':
       return (
         <svg className="absolute inset-0 w-full h-full opacity-10 mix-blend-overlay pointer-events-none text-white" preserveAspectRatio="none" viewBox="0 0 100 100">
           <pattern id="afrotech" width="20" height="20" patternUnits="userSpaceOnUse">
             <path d="M0,10 L10,0 L20,10 L10,20 Z" fill="none" stroke="currentColor" strokeWidth="1" />
-            <circle cx="10" cy="10" r="2" fill="currentColor" />
+            <circle cx="10" cy="10" r="2" fill="currentColor"/>
           </pattern>
           <rect width="100" height="100" fill="url(#afrotech)" />
         </svg>
@@ -172,6 +172,25 @@ export function CardSystem({ onBack }: CardSystemProps) {
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showWhopFundModal, setShowWhopFundModal] = useState(false);
+  const [selectedFinish, setSelectedFinish] = useState<'Matte' | 'Metallic' | 'Glass'>('Matte');
+  const [reactToPortfolio, setReactToPortfolio] = useState(true);
+  const [biometricCvv, setBiometricCvv] = useState(true);
+  const [nftBackgroundActive, setNftBackgroundActive] = useState(false);
+  const [securityControls, setSecurityControls] = useState({
+    online: true,
+    contactless: true,
+    geo: false,
+    autoConvert: true
+  });
+  const [showConvertPanel, setShowConvertPanel] = useState(false);
+  const [convertAmount, setConvertAmount] = useState('0.5');
+  const [showLinkPanel, setShowLinkPanel] = useState(false);
+  const [linkAccount, setLinkAccount] = useState('Standard Bank Private •••• 4401');
+  const [showDetailedAnalysis, setShowDetailedAnalysis] = useState(false);
+  const [fraudStatus, setFraudStatus] = useState<'pending'|'frozen'|'confirmed'>('pending');
+  const [cardNotice, setCardNotice] = useState<string | null>(null);
+  const [hidePhysicalName, setHidePhysicalName] = useState(false);
+  const [physicalCardName, setPhysicalCardName] = useState('Alex Thompson');
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -179,16 +198,16 @@ export function CardSystem({ onBack }: CardSystemProps) {
   const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
   const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg","-8deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg","8deg"]);
   
   // Combine the flip rotation with the hover rotation
   const combinedRotateY = useTransform(rotateY, (val) => {
     return isFlipped ? `calc(180deg + ${val})` : val;
   });
 
-  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["100%", "-100%"]);
-  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["100%", "-100%"]);
+  const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["100%","-100%"]);
+  const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["100%","-100%"]);
   const parallaxX = useTransform(mouseXSpring, [-0.5, 0.5], [10, -10]);
   const parallaxY = useTransform(mouseYSpring, [-0.5, 0.5], [10, -10]);
 
@@ -210,9 +229,9 @@ export function CardSystem({ onBack }: CardSystemProps) {
   };
 
   const cards = [
-    { id: '1', type: 'Virtual USD', balance: '$12,450.00', last4: '4821', theme: selectedTheme },
-    { id: '2', type: 'Virtual EUR', balance: '€8,200.00', last4: '9021', theme: themes[1] },
-    { id: '3', type: 'Crypto Spend', balance: '2.45 ETH', last4: '4532', theme: themes[3] },
+    { id:'1', type:'Virtual USD', balance:'$12,450.00', last4:'4821', theme: selectedTheme },
+    { id:'2', type:'Virtual EUR', balance:'€8,200.00', last4:'9021', theme: themes[1] },
+    { id:'3', type:'Crypto Spend', balance:'2.45 ETH', last4:'4532', theme: themes[3] },
   ];
 
   const activeCard = cards[currentCardIndex];
@@ -223,7 +242,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
   if (isCreatingCard) {
     if (creationStep === 'customize') {
       return (
-        <div className="flex flex-col lg:flex-row gap-8 animate-in fade-in duration-500">
+        <div className="flex flex-col lg:flex-row gap-4 animate-in fade-in duration-500">
           {/* Left: 3D Preview */}
           <div className="flex-1 flex items-center justify-center">
             <div 
@@ -236,7 +255,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                 style={{ rotateX, rotateY }}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                transition={{ type:"spring", stiffness: 300, damping: 20 }}
                 onClick={handleFlip}
               >
                 <motion.div
@@ -246,13 +265,13 @@ export function CardSystem({ onBack }: CardSystemProps) {
                 >
                   {/* Front */}
                   <div className={cn(
-                    "absolute inset-0 backface-hidden rounded-2xl p-6 flex flex-col justify-between shadow-2xl border overflow-hidden",
-                    "bg-gradient-to-br", newCardColor.color, newCardColor.border
+                    "absolute inset-0 backface-hidden rounded-lg p-3.5 flex flex-col justify-between shadow-2xl overflow-hidden bg-white/[0.03]",
+"bg-gradient-to-br", newCardColor.color, newCardColor.border
                   )}>
                     {renderTexture(newCardTexture)}
                     {renderGraphic(newCardGraphic, newCardGraphicOpacity)}
                     
-                    <div className="absolute inset-0 bg-white/5 backdrop-blur-sm pointer-events-none" />
+                    <div className="absolute inset-0 bg-white/5 backdrop-blur-sm pointer-events-none"/>
                     
                     <motion.div 
                       className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/40 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 mix-blend-overlay pointer-events-none"
@@ -261,14 +280,14 @@ export function CardSystem({ onBack }: CardSystemProps) {
 
                     <motion.div style={{ x: parallaxX, y: parallaxY }} className="relative z-10 flex justify-between items-start">
                       <span className={cn("font-bold tracking-wider text-lg", newCardTextColor)}>NXG Wallet</span>
-                      <div className="w-12 h-8 bg-white/20 rounded-md flex items-center justify-center backdrop-blur-md border border-white/10 shadow-inner">
+                      <div className="w-12 h-8 bg-white/20 rounded-md flex items-center justify-center backdrop-blur-md shadow-inner">
                         <span className="text-white font-bold italic text-xs">VISA</span>
                       </div>
                     </motion.div>
 
                     <motion.div style={{ x: parallaxX, y: parallaxY }} className="relative z-10 space-y-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-10 h-7 bg-gradient-to-br from-yellow-200 to-yellow-500 rounded-md opacity-90 shadow-sm" />
+                        <div className="w-10 h-7 bg-gradient-to-br from-yellow-200 to-yellow-500 rounded-md opacity-90 shadow-sm"/>
                       </div>
                       <div className={cn("h-8 flex items-center", newCardAlign)}>
                         <p className={cn("text-2xl drop-shadow-md w-full", newCardFont, newCardSpacing, newCardTextColor)}>
@@ -290,18 +309,18 @@ export function CardSystem({ onBack }: CardSystemProps) {
                   {/* Back */}
                   <div 
                     className={cn(
-                      "absolute inset-0 backface-hidden rounded-2xl flex flex-col shadow-2xl border overflow-hidden",
-                      "bg-gradient-to-br", newCardColor.color, newCardColor.border
+                      "absolute inset-0 backface-hidden rounded-lg flex flex-col shadow-2xl overflow-hidden bg-white/[0.03]",
+"bg-gradient-to-br", newCardColor.color, newCardColor.border
                     )}
-                    style={{ transform: 'rotateY(180deg)' }}
+                    style={{ transform:'rotateY(180deg)'}}
                   >
                     {renderTexture(newCardTexture)}
                     
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-md pointer-events-none" />
-                    <div className="w-full h-12 bg-black/80 mt-6 relative z-10" />
-                    <div className="p-6 relative z-10 flex-1 flex flex-col justify-between">
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-md pointer-events-none"/>
+                    <div className="w-full h-12 bg-black/80 mt-6 relative z-10"/>
+                    <div className="p-3.5 relative z-10 flex-1 flex flex-col justify-between">
                       <div className="space-y-4">
-                        <div className="bg-white/10 rounded p-3 flex justify-between items-center backdrop-blur-sm border border-white/5">
+                        <div className="bg-white/10 rounded p-3 flex justify-between items-center backdrop-blur-sm">
                           <span className="text-white/50 text-xs uppercase tracking-wider">CVV</span>
                           <span className={cn("text-white tracking-widest", newCardFont)}>***</span>
                         </div>
@@ -317,14 +336,14 @@ export function CardSystem({ onBack }: CardSystemProps) {
           </div>
 
           {/* Right: Customization Controls */}
-          <div className="flex-1 space-y-6">
-            <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
-              <h3 className="text-lg font-semibold text-white mb-6 flex items-center gap-2">
-                <Palette className="w-5 h-5 text-blue-400" />
+          <div className="flex-1 space-y-3">
+            <div className="bg-white/[0.02] rounded-lg p-3.5">
+              <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+                <Palette className="w-5 h-5 text-blue-400"/>
                 Customize Card
               </h3>
               
-              <div className="space-y-6">
+              <div className="space-y-3">
                 {/* Full Name */}
                 <div>
                   <label className="text-sm text-zinc-400 mb-2 block">Full Name</label>
@@ -334,7 +353,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                     onChange={(e) => setNewCardName(e.target.value)}
                     placeholder="YOUR NAME"
                     maxLength={22}
-                    className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors uppercase"
+                    className="w-full bg-black/20 rounded-xl px-4 py-3 text-white focus:outline-none transition-colors uppercase"
                   />
                 </div>
 
@@ -368,8 +387,8 @@ export function CardSystem({ onBack }: CardSystemProps) {
                         key={g.id}
                         onClick={() => setNewCardGraphic(g.id)}
                         className={cn(
-                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all border",
-                          newCardGraphic === g.id ? "bg-white/10 border-white/20 text-white" : "bg-black/20 border-white/5 text-zinc-500 hover:text-zinc-300"
+                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-white/[0.03]",
+                          newCardGraphic === g.id ? "bg-white/10 text-white" : "bg-black/20 text-zinc-500 hover:text-zinc-300"
                         )}
                       >
                         {g.label}
@@ -393,8 +412,8 @@ export function CardSystem({ onBack }: CardSystemProps) {
                         key={tex.id}
                         onClick={() => setNewCardTexture(tex.id)}
                         className={cn(
-                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all border",
-                          newCardTexture === tex.id ? "bg-white/10 border-white/20 text-white" : "bg-black/20 border-white/5 text-zinc-500 hover:text-zinc-300"
+                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-white/[0.03]",
+                          newCardTexture === tex.id ? "bg-white/10 text-white" : "bg-black/20 text-zinc-500 hover:text-zinc-300"
                         )}
                       >
                         {tex.label}
@@ -412,8 +431,8 @@ export function CardSystem({ onBack }: CardSystemProps) {
                         key={theme.id}
                         onClick={() => setNewCardColor(theme)}
                         className={cn(
-                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all border",
-                          newCardColor.id === theme.id ? "bg-white/10 border-white/20 text-white" : "bg-black/20 border-white/5 text-zinc-500 hover:text-zinc-300"
+                          "px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-white/[0.03]",
+                          newCardColor.id === theme.id ?"bg-white/10 text-white" : "bg-black/20 text-zinc-500 hover:text-zinc-300"
                         )}
                       >
                         {theme.name}
@@ -435,8 +454,8 @@ export function CardSystem({ onBack }: CardSystemProps) {
                         key={color.id}
                         onClick={() => setNewCardTextColor(color.id)}
                         className={cn(
-                          "px-4 py-2 rounded-lg text-sm font-medium transition-all border flex-1",
-                          newCardTextColor === color.id ? "bg-white/10 border-white/20 text-white" : "bg-black/20 border-white/5 text-zinc-500 hover:text-zinc-300"
+                          "px-4 py-2 rounded-lg text-sm font-medium transition-all flex-1 bg-white/[0.03]",
+                          newCardTextColor === color.id ?"bg-white/10 text-white" : "bg-black/20 text-zinc-500 hover:text-zinc-300"
                         )}
                       >
                         {color.label}
@@ -458,8 +477,8 @@ export function CardSystem({ onBack }: CardSystemProps) {
                         key={font.id}
                         onClick={() => setNewCardFont(font.id)}
                         className={cn(
-                          "px-4 py-2 rounded-lg text-sm font-medium transition-all border flex-1",
-                          newCardFont === font.id ? "bg-white/10 border-white/20 text-white" : "bg-black/20 border-white/5 text-zinc-500 hover:text-zinc-300",
+                          "px-4 py-2 rounded-lg text-sm font-medium transition-all flex-1 bg-white/[0.03]",
+                          newCardFont === font.id ? "bg-white/10 text-white" : "bg-black/20 text-zinc-500 hover:text-zinc-300",
                           font.id
                         )}
                       >
@@ -471,7 +490,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                   <div className="flex gap-4">
                     <div className="flex-1">
                       <label className="text-xs text-zinc-500 mb-2 block">Alignment</label>
-                      <div className="flex gap-1 bg-black/20 p-1 rounded-lg border border-white/5">
+                      <div className="flex gap-1 bg-black/20 p-1 rounded-lg">
                         {[
                           { id: 'text-left', label: 'Left' },
                           { id: 'text-center', label: 'Center' },
@@ -492,7 +511,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                     </div>
                     <div className="flex-1">
                       <label className="text-xs text-zinc-500 mb-2 block">Spacing</label>
-                      <div className="flex gap-1 bg-black/20 p-1 rounded-lg border border-white/5">
+                      <div className="flex gap-1 bg-black/20 p-1 rounded-lg">
                         {[
                           { id: 'tracking-tight', label: 'Tight' },
                           { id: 'tracking-normal', label: 'Normal' },
@@ -515,7 +534,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                   
                   <div className="mt-3">
                     <label className="text-xs text-zinc-500 mb-2 block">Size</label>
-                    <div className="flex gap-1 bg-black/20 p-1 rounded-lg border border-white/5">
+                    <div className="flex gap-1 bg-black/20 p-1 rounded-lg">
                       {[
                         { id: 'text-xs', label: 'Small' },
                         { id: 'text-sm', label: 'Medium' },
@@ -542,14 +561,14 @@ export function CardSystem({ onBack }: CardSystemProps) {
             <div className="flex gap-4">
               <button 
                 onClick={() => setShowDeleteModal(true)}
-                className="p-4 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors border border-red-500/20"
+                className="p-4 rounded-xl bg-red-500/10 text-red-400 hover:bg-red-500/20 transition-colors"
                 title="Delete/Reset"
               >
-                <Trash2 className="w-5 h-5" />
+                <Trash2 className="w-5 h-5"/>
               </button>
               <button 
                 onClick={() => setShowCancelModal(true)}
-                className="flex-1 py-4 rounded-xl bg-white/5 text-white font-medium hover:bg-white/10 transition-colors border border-white/10"
+                className="flex-1 py-4 rounded-xl bg-white/5 text-white font-medium hover:bg-white/10 transition-colors"
               >
                 Cancel
               </button>
@@ -567,9 +586,9 @@ export function CardSystem({ onBack }: CardSystemProps) {
 
     // Success Step
     return (
-      <div className="flex flex-col items-center justify-center py-20 min-h-[60vh]">
+      <div className="flex flex-col items-center justify-center py-7 min-h-[60vh]">
         <motion.div
-          className="relative perspective-1000 w-full max-w-md aspect-[1.586/1] mb-12"
+          className="relative perspective-1000 w-full max-w-md aspect-[1.586/1] mb-5"
           initial={{ scale: 1.2, y: -50, opacity: 0 }}
           animate={{ scale: 1, y: 0, opacity: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
@@ -580,7 +599,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
             transition={{ duration: 2, ease: "easeInOut", delay: 0.5 }}
           >
             {/* Blank Metal Slab */}
-            <div className="absolute inset-0 backface-hidden rounded-2xl bg-gradient-to-br from-zinc-300 to-zinc-500 shadow-2xl border border-zinc-400 overflow-hidden flex items-center justify-center">
+            <div className="absolute inset-0 backface-hidden rounded-lg bg-gradient-to-br from-zinc-300 to-zinc-500 shadow-2xl overflow-hidden flex items-center justify-center">
               
               {/* Laser Etching Effect */}
               <motion.div 
@@ -588,7 +607,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                 initial={{ x: '-100%' }}
                 animate={{ x: '50%' }}
                 transition={{ duration: 1.5, delay: 0.8, ease: "linear" }}
-                style={{ mixBlendMode: 'overlay' }}
+                style={{ mixBlendMode:'overlay'}}
               />
               
               <motion.div 
@@ -603,11 +622,11 @@ export function CardSystem({ onBack }: CardSystemProps) {
 
             {/* Back of Card */}
             <div 
-              className="absolute inset-0 backface-hidden rounded-2xl bg-gradient-to-br from-zinc-300 to-zinc-500 shadow-2xl border border-zinc-400 overflow-hidden"
-              style={{ transform: 'rotateY(180deg)' }}
+              className="absolute inset-0 backface-hidden rounded-lg bg-gradient-to-br from-zinc-300 to-zinc-500 shadow-2xl overflow-hidden"
+              style={{ transform:'rotateY(180deg)'}}
             >
-              <div className="w-full h-12 bg-black/80 mt-6 relative z-10" />
-              <div className="p-6 relative z-10 flex-1 flex flex-col justify-between mt-4">
+              <div className="w-full h-12 bg-black/80 mt-6 relative z-10"/>
+              <div className="p-3.5 relative z-10 flex-1 flex flex-col justify-between mt-4">
                 <div className="bg-white/50 rounded p-3 flex justify-between items-center">
                   <span className="text-zinc-600 text-xs uppercase tracking-wider">CVV</span>
                   <motion.span 
@@ -631,13 +650,13 @@ export function CardSystem({ onBack }: CardSystemProps) {
           className="text-center"
         >
           <h2 className="text-2xl font-bold text-white mb-2">Card Created Successfully</h2>
-          <p className="text-zinc-400 mb-8">Your new virtual card is ready to use.</p>
+          <p className="text-zinc-400 mb-4">Your new virtual card is ready to use.</p>
           <button 
             onClick={() => {
               setIsCreatingCard(false);
               setCreationStep('customize');
             }}
-            className="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
+            className="px-4 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-xl font-medium transition-colors"
           >
             Go to Wallet
           </button>
@@ -647,9 +666,9 @@ export function CardSystem({ onBack }: CardSystemProps) {
   }
 
   const renderVirtualCard = () => (
-    <div className="flex flex-col lg:flex-row gap-8">
+    <div className="flex flex-col lg:flex-row gap-4">
       {/* Left Column: Card Display & Quick Actions */}
-      <div className="flex-1 space-y-8">
+      <div className="flex-1 space-y-4">
         <div 
           className="relative perspective-1000 w-full max-w-md mx-auto aspect-[1.586/1]"
           onMouseMove={handleMouseMove}
@@ -682,7 +701,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                 }}
                 whileHover={isActive ? { scale: 1.03 } : {}}
                 whileTap={isActive ? { scale: 0.97 } : {}}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                transition={{ type:"spring", stiffness: 300, damping: 30 }}
                 onClick={() => {
                   if (isActive) {
                     handleFlip();
@@ -712,8 +731,8 @@ export function CardSystem({ onBack }: CardSystemProps) {
                 >
                   {/* Front of Card */}
                   <div className={cn(
-                    "absolute inset-0 backface-hidden rounded-2xl p-6 flex flex-col justify-between shadow-2xl border overflow-hidden",
-                    "bg-gradient-to-br", theme.color, theme.border
+                    "absolute inset-0 backface-hidden rounded-lg p-3.5 flex flex-col justify-between shadow-2xl overflow-hidden bg-white/[0.03]",
+"bg-gradient-to-br", theme.color, theme.border
                   )}>
                     {/* Animated Gradient Background */}
                     <motion.div 
@@ -729,7 +748,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                     />
                     
                     {/* Glassmorphism overlays */}
-                    <div className="absolute inset-0 bg-white/5 backdrop-blur-sm" />
+                    <div className="absolute inset-0 bg-white/5 backdrop-blur-sm"/>
                     
                     {/* Light Reflection (Hover) */}
                     <motion.div 
@@ -756,15 +775,15 @@ export function CardSystem({ onBack }: CardSystemProps) {
 
                     <motion.div style={{ x: isActive ? parallaxX : 0, y: isActive ? parallaxY : 0 }} className="relative z-10 flex justify-between items-start">
                       <span className="text-white/90 font-bold tracking-wider text-lg">NXG Wallet</span>
-                      <div className="w-12 h-8 bg-white/20 rounded-md flex items-center justify-center backdrop-blur-md border border-white/10 shadow-inner">
+                      <div className="w-12 h-8 bg-white/20 rounded-md flex items-center justify-center backdrop-blur-md shadow-inner">
                         <span className="text-white font-bold italic text-xs">VISA</span>
                       </div>
                     </motion.div>
 
                     <motion.div style={{ x: isActive ? parallaxX : 0, y: isActive ? parallaxY : 0 }} className="relative z-10 space-y-4">
                       <div className="flex items-center gap-2">
-                        <div className="w-10 h-7 bg-gradient-to-br from-yellow-200 to-yellow-500 rounded-md opacity-90 shadow-sm" /> {/* Chip */}
-                        <Zap className="w-5 h-5 text-white/50" />
+                        <div className="w-10 h-7 bg-gradient-to-br from-yellow-200 to-yellow-500 rounded-md opacity-90 shadow-sm"/> {/* Chip */}
+                        <Zap className="w-5 h-5 text-white/50"/>
                       </div>
                       <div className="h-8 flex items-center">
                         <AnimatePresence mode="wait">
@@ -806,16 +825,16 @@ export function CardSystem({ onBack }: CardSystemProps) {
                   {/* Back of Card */}
                   <div 
                     className={cn(
-                      "absolute inset-0 backface-hidden rounded-2xl flex flex-col shadow-2xl border overflow-hidden",
-                      "bg-gradient-to-br", theme.color, theme.border
+                      "absolute inset-0 backface-hidden rounded-lg flex flex-col shadow-2xl overflow-hidden bg-white/[0.03]",
+"bg-gradient-to-br", theme.color, theme.border
                     )}
-                    style={{ transform: 'rotateY(180deg)' }}
+                    style={{ transform:'rotateY(180deg)'}}
                   >
-                    <div className="absolute inset-0 bg-black/40 backdrop-blur-md" />
-                    <div className="w-full h-12 bg-black/80 mt-6 relative z-10" />
-                    <div className="p-6 relative z-10 flex-1 flex flex-col justify-between">
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-md"/>
+                    <div className="w-full h-12 bg-black/80 mt-6 relative z-10"/>
+                    <div className="p-3.5 relative z-10 flex-1 flex flex-col justify-between">
                       <div className="space-y-4">
-                        <div className="bg-white/10 rounded p-3 flex justify-between items-center backdrop-blur-sm border border-white/5">
+                        <div className="bg-white/10 rounded p-3 flex justify-between items-center backdrop-blur-sm">
                           <span className="text-white/50 text-xs uppercase tracking-wider">CVV</span>
                           <div className="flex items-center gap-3">
                             <AnimatePresence mode="wait">
@@ -845,7 +864,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
                               onClick={(e) => { e.stopPropagation(); setShowDetails(!showDetails); }}
                               className="text-blue-400 hover:text-blue-300 transition-colors"
                             >
-                              {showDetails && isActive ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                              {showDetails && isActive ? <EyeOff className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}
                             </button>
                           </div>
                         </div>
@@ -882,7 +901,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
               onClick={() => setIsCreatingCard(true)}
               className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center ml-2 transition-colors"
             >
-              <Plus className="w-3 h-3 text-white" />
+              <Plus className="w-3 h-3 text-white"/>
             </button>
           </div>
           <div>
@@ -895,9 +914,9 @@ export function CardSystem({ onBack }: CardSystemProps) {
         <div className="space-y-3 max-w-md mx-auto">
           <button
             onClick={() => setShowWhopFundModal(true)}
-            className="w-full py-3 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs uppercase tracking-wider rounded-2xl flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(249,115,22,0.3)] transition-all"
+            className="w-full py-3 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 hover:from-orange-600 hover:to-amber-600 text-black font-extrabold text-xs uppercase tracking-wider rounded-lg flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(249,115,22,0.3)] transition-all"
           >
-            <Zap className="w-4 h-4 fill-current" />
+            <Zap className="w-4 h-4 fill-current"/>
             Fund Card via Whop API (Africa, America, Asia, Europe)
           </button>
 
@@ -905,45 +924,132 @@ export function CardSystem({ onBack }: CardSystemProps) {
             <button 
               onClick={() => setIsFrozen(!isFrozen)}
               className={cn(
-                "flex flex-col items-center justify-center gap-2 p-3 rounded-2xl border transition-all",
-                isFrozen ? "bg-blue-500/20 border-blue-500/50 text-blue-400" : "bg-white/5 border-white/10 hover:bg-white/10 text-zinc-400"
+                "flex flex-col items-center justify-center gap-2 p-3 rounded-lg transition-all bg-white/[0.03]",
+                isFrozen ? "bg-blue-500/20 text-blue-400" : "bg-white/5 hover:bg-white/10 text-zinc-400"
               )}
             >
-              <Snowflake className="w-5 h-5" />
-              <span className="text-xs font-medium text-center">{isFrozen ? 'Unfreeze' : 'Freeze'}</span>
+              <Snowflake className="w-5 h-5"/>
+              <span className="text-xs font-medium text-center">{isFrozen ?'Unfreeze' : 'Freeze'}</span>
             </button>
             <button 
               onClick={() => setShowDetails(!showDetails)}
-              className="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-zinc-400 transition-all"
+              className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg bg-white/5 hover:bg-white/10 text-zinc-400 transition-all"
             >
-              {showDetails ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-              <span className="text-xs font-medium text-center">{showDetails ? 'Hide' : 'Details'}</span>
+              {showDetails ? <EyeOff className="w-5 h-5"/> : <Eye className="w-5 h-5"/>}
+              <span className="text-xs font-medium text-center">{showDetails ?'Hide' : 'Details'}</span>
             </button>
             <button 
               onClick={() => setShowWhopFundModal(true)}
-              className="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-orange-500/10 border border-orange-500/30 hover:bg-orange-500/20 text-orange-400 transition-all"
+              className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 transition-all"
             >
-              <Zap className="w-5 h-5" />
+              <Zap className="w-5 h-5"/>
               <span className="text-xs font-medium text-center">Fund Card</span>
             </button>
-            <button className="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-zinc-400 transition-all">
-              <ArrowRightLeft className="w-5 h-5" />
+            <button
+              type="button"
+              onClick={() => {
+                setShowConvertPanel(prev => !prev);
+                setShowLinkPanel(false);
+              }}
+              className={cn(
+                "flex flex-col items-center justify-center gap-2 p-3 rounded-lg transition-all cursor-pointer bg-white/[0.03]",
+                showConvertPanel ? "bg-blue-500/20 text-blue-300" : "bg-white/5 hover:bg-white/10 text-zinc-400"
+              )}
+            >
+              <ArrowRightLeft className="w-5 h-5"/>
               <span className="text-xs font-medium text-center">Convert</span>
             </button>
-            <button className="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-zinc-400 transition-all">
-              <CreditCard className="w-5 h-5" />
+            <button
+              type="button"
+              onClick={() => {
+                setShowLinkPanel(prev => !prev);
+                setShowConvertPanel(false);
+              }}
+              className={cn(
+                "flex flex-col items-center justify-center gap-2 p-3 rounded-lg transition-all cursor-pointer bg-white/[0.03]",
+                showLinkPanel ? "bg-blue-500/20 text-blue-300" : "bg-white/5 hover:bg-white/10 text-zinc-400"
+              )}
+            >
+              <CreditCard className="w-5 h-5"/>
               <span className="text-xs font-medium text-center">Link</span>
             </button>
           </div>
+
+          {cardNotice && (
+            <div role="status" className="p-3 rounded-xl bg-emerald-500/10 text-emerald-300 text-xs font-mono flex items-center justify-between">
+              <span>{cardNotice}</span>
+              <button type="button" onClick={() => setCardNotice(null)} className="text-zinc-400 hover:text-white">Dismiss</button>
+            </div>
+          )}
+
+          {showConvertPanel && (
+            <div className="p-4 rounded-lg bg-black/40 space-y-3 text-left">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-white uppercase tracking-wider">Instant ETH → USD Card Top-Up</span>
+                <button type="button" onClick={() => setShowConvertPanel(false)} className="text-xs text-zinc-400 hover:text-white">Close</button>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  step="0.1"
+                  min="0.1"
+                  value={convertAmount}
+                  onChange={(e) => setConvertAmount(e.target.value)}
+                  className="flex-1 bg-black/60 rounded-xl px-3 py-2 text-sm text-white font-mono focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const eth = parseFloat(convertAmount) || 0;
+                    if (eth <= 0) return;
+                    const usd = (eth * 3450).toLocaleString('en-US', { maximumFractionDigits: 2 });
+                    setCardNotice(`Converted ${eth} ETH to $${usd} USD on card •••• ${activeCard.last4}.`);
+                    setShowConvertPanel(false);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer"
+                >
+                  Convert
+                </button>
+              </div>
+            </div>
+          )}
+
+          {showLinkPanel && (
+            <div className="p-4 rounded-lg bg-black/40 space-y-3 text-left">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-white uppercase tracking-wider">Link Funding Source</span>
+                <button type="button" onClick={() => setShowLinkPanel(false)} className="text-xs text-zinc-400 hover:text-white">Close</button>
+              </div>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={linkAccount}
+                  onChange={(e) => setLinkAccount(e.target.value)}
+                  className="flex-1 bg-black/60 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!linkAccount.trim()) return;
+                    setCardNotice(`Linked ${linkAccount.trim()} as primary backup funding source.`);
+                    setShowLinkPanel(false);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold cursor-pointer"
+                >
+                  Link Account
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Right Column: Controls & Personalisation */}
-      <div className="flex-1 space-y-6">
+      <div className="flex-1 space-y-3">
         {/* Personalisation Engine */}
-        <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
+        <div className="bg-white/[0.02] rounded-lg p-3.5">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <Palette className="w-5 h-5 text-blue-400" />
+            <Palette className="w-5 h-5 text-blue-400"/>
             Card Identity
           </h3>
           <div className="space-y-4">
@@ -955,10 +1061,10 @@ export function CardSystem({ onBack }: CardSystemProps) {
                     key={theme.id}
                     onClick={() => setSelectedTheme(theme)}
                     className={cn(
-                      "px-3 py-1.5 rounded-lg text-sm font-medium transition-all border",
+                      "px-3 py-1.5 rounded-lg text-sm font-medium transition-all bg-white/[0.03]",
                       selectedTheme.id === theme.id 
-                        ? "bg-white/10 border-white/20 text-white" 
-                        : "bg-transparent border-white/5 text-zinc-500 hover:text-zinc-300"
+                        ? "bg-white/10 text-white" 
+                        : "bg-transparent text-zinc-500 hover:text-zinc-300"
                     )}
                   >
                     {theme.name}
@@ -966,85 +1072,121 @@ export function CardSystem({ onBack }: CardSystemProps) {
                 ))}
               </div>
             </div>
-            <div className="pt-4 border-t border-white/5">
+            <div className="pt-4">
               <label className="text-sm text-zinc-400 mb-2 block">Card Finish</label>
               <div className="flex gap-2">
-                {['Matte', 'Metallic', 'Glass'].map(finish => (
+                {(['Matte', 'Metallic', 'Glass'] as const).map(finish => (
                   <button
+                    type="button"
                     key={finish}
-                    className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all border bg-transparent border-white/5 text-zinc-500 hover:text-zinc-300 focus:bg-white/10 focus:border-white/20 focus:text-white"
+                    onClick={() => {
+                      setSelectedFinish(finish);
+                      setCardNotice(`Applied ${finish} physical/virtual shader finish.`);
+                    }}
+                    className={cn(
+                      "px-3 py-1.5 rounded-lg text-sm font-medium transition-all cursor-pointer bg-white/[0.03]",
+                      selectedFinish === finish
+                        ? "bg-white/10 text-white"
+                        : "bg-transparent text-zinc-500 hover:text-zinc-300"
+                    )}
                   >
                     {finish}
                   </button>
                 ))}
               </div>
             </div>
-            <div className="pt-4 border-t border-white/5">
+            <div className="pt-4">
               <label className="text-sm text-zinc-400 mb-2 block">Dynamic Features</label>
               <div className="space-y-2">
-                <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                <button
+                  type="button"
+                  onClick={() => setReactToPortfolio(prev => !prev)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors"
+                >
                   <div className="flex items-center gap-3">
-                    <Sparkles className="w-4 h-4 text-purple-400" />
+                    <Sparkles className="w-4 h-4 text-purple-400"/>
                     <span className="text-sm text-zinc-300">React to Portfolio Performance</span>
                   </div>
-                  <div className="w-10 h-5 bg-blue-500 rounded-full relative">
-                    <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full" />
+                  <div className={cn("w-10 h-5 rounded-full relative transition-colors", reactToPortfolio ?"bg-blue-500" : "bg-zinc-700")}>
+                    <div className={cn("absolute top-1 w-3 h-3 bg-white rounded-full transition-all", reactToPortfolio ?"right-1" : "left-1")} />
                   </div>
-                </label>
-                <label className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setBiometricCvv(prev => !prev)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors"
+                >
                   <div className="flex items-center gap-3">
-                    <Fingerprint className="w-4 h-4 text-emerald-400" />
+                    <Fingerprint className="w-4 h-4 text-emerald-400"/>
                     <span className="text-sm text-zinc-300">Biometric CVV Reveal</span>
                   </div>
-                  <div className="w-10 h-5 bg-blue-500 rounded-full relative">
-                    <div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full" />
+                  <div className={cn("w-10 h-5 rounded-full relative transition-colors", biometricCvv ?"bg-blue-500" : "bg-zinc-700")}>
+                    <div className={cn("absolute top-1 w-3 h-3 bg-white rounded-full transition-all", biometricCvv ?"right-1" : "left-1")} />
                   </div>
-                </label>
+                </button>
               </div>
             </div>
-            <div className="pt-4 border-t border-white/5">
+            <div className="pt-4">
               <label className="text-sm text-zinc-400 mb-2 block">NFT Integration</label>
-              <button className="w-full p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors flex items-center justify-center gap-2 text-sm text-zinc-300">
-                <ImageIcon className="w-4 h-4" />
-                Use Owned NFT as Background
+              <button
+                type="button"
+                onClick={() => {
+                  const next = !nftBackgroundActive;
+                  setNftBackgroundActive(next);
+                  setCardNotice(next ? 'Applied owned AfriQuantX RWA NFT #042 backdrop to active card.' : 'Removed custom NFT backdrop.');
+                }}
+                className={cn(
+"w-full p-3 rounded-xl transition-colors flex items-center justify-center gap-2 text-sm cursor-pointer bg-white/[0.03]",
+                  nftBackgroundActive
+                    ? "bg-purple-500/20 text-purple-200"
+                    : "bg-white/5 hover:bg-white/10 text-zinc-300"
+                )}
+              >
+                <ImageIcon className="w-4 h-4"/>
+                {nftBackgroundActive ? 'NFT Background Active (Click to Reset)' : 'Use Owned NFT as Background'}
               </button>
             </div>
           </div>
         </div>
 
         {/* Card Controls */}
-        <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-6">
+        <div className="bg-white/[0.02] rounded-lg p-3.5">
           <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-emerald-400" />
+            <ShieldCheck className="w-5 h-5 text-emerald-400"/>
             Security & Controls
           </h3>
           <div className="space-y-4">
             <div className="space-y-2">
               {[
-                { icon: Globe, label: 'Online Transactions', active: true },
-                { icon: Smartphone, label: 'Contactless Payments', active: true },
-                { icon: Lock, label: 'Geo-Restrictions', active: false },
-                { icon: ArrowRightLeft, label: 'Auto Crypto-to-Fiat Conversion', active: true },
-              ].map((control, idx) => (
-                <label key={idx} className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                { key: 'online' as const, icon: Globe, label: 'Online Transactions', active: securityControls.online },
+                { key: 'contactless' as const, icon: Smartphone, label: 'Contactless Payments', active: securityControls.contactless },
+                { key: 'geo' as const, icon: Lock, label: 'Geo-Restrictions', active: securityControls.geo },
+                { key: 'autoConvert' as const, icon: ArrowRightLeft, label: 'Auto Crypto-to-Fiat Conversion', active: securityControls.autoConvert },
+              ].map((control) => (
+                <button
+                  type="button"
+                  key={control.key}
+                  onClick={() => setSecurityControls(prev => ({ ...prev, [control.key]: !prev[control.key] }))}
+                  className="w-full flex items-center justify-between p-3 rounded-xl bg-white/5 cursor-pointer hover:bg-white/10 transition-colors"
+                >
                   <div className="flex items-center gap-3">
-                    <control.icon className="w-4 h-4 text-zinc-400" />
+                    <control.icon className="w-4 h-4 text-zinc-400"/>
                     <span className="text-sm text-zinc-300">{control.label}</span>
                   </div>
-                  <div className={cn("w-10 h-5 rounded-full relative transition-colors", control.active ? "bg-blue-500" : "bg-zinc-700")}>
-                    <div className={cn("absolute top-1 w-3 h-3 bg-white rounded-full transition-all", control.active ? "right-1" : "left-1")} />
+                  <div className={cn("w-10 h-5 rounded-full relative transition-colors", control.active ?"bg-blue-500" : "bg-zinc-700")}>
+                    <div className={cn("absolute top-1 w-3 h-3 bg-white rounded-full transition-all", control.active ?"right-1" : "left-1")} />
                   </div>
-                </label>
+                </button>
               ))}
             </div>
             
-            <div className="pt-4 border-t border-white/5">
+            <div className="pt-4">
               <div className="flex justify-between items-center mb-2">
                 <label className="text-sm text-zinc-400">Monthly Spending Limit</label>
                 <span className="text-sm text-white font-medium">$5,000 / $10,000</span>
               </div>
               <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
-                <div className="h-full bg-blue-500 w-1/2 rounded-full" />
+                <div className="h-full bg-blue-500 w-1/2 rounded-full"/>
               </div>
             </div>
           </div>
@@ -1052,35 +1194,80 @@ export function CardSystem({ onBack }: CardSystemProps) {
 
         {/* Smart Insights */}
         <div className="space-y-4">
-          <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-6">
+          <div className="bg-blue-500/10 rounded-lg p-3.5">
             <h3 className="text-sm font-semibold text-blue-400 mb-2 flex items-center gap-2">
-              <Sparkles className="w-4 h-4" />
+              <Sparkles className="w-4 h-4"/>
               AI Spending Insights
             </h3>
             <p className="text-sm text-zinc-300 mb-3">
               "You spent 12% more this week. Optimize your spending by converting 0.5 ETH to Fiat now to capture the current premium."
             </p>
-            <button className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors">
-              View Detailed Analysis &rarr;
+            <button
+              type="button"
+              onClick={() => setShowDetailedAnalysis(prev => !prev)}
+              className="text-xs font-medium text-blue-400 hover:text-blue-300 transition-colors cursor-pointer"
+            >
+              {showDetailedAnalysis ? 'Hide Detailed Analysis' : 'View Detailed Analysis →'}
             </button>
+            {showDetailedAnalysis && (
+              <div className="mt-4 pt-3 grid grid-cols-3 gap-2 text-xs font-mono">
+                <div className="p-2 rounded-lg bg-black/30">
+                  <div className="text-zinc-400">Travel & FX</div>
+                  <div className="text-white font-bold">$2,140</div>
+                </div>
+                <div className="p-2 rounded-lg bg-black/30">
+                  <div className="text-zinc-400">SaaS & Cloud</div>
+                  <div className="text-white font-bold">$1,680</div>
+                </div>
+                <div className="p-2 rounded-lg bg-black/30">
+                  <div className="text-zinc-400">FX Fee Saved</div>
+                  <div className="text-emerald-400 font-bold">$142.50</div>
+                </div>
+              </div>
+            )}
           </div>
 
-          <div className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6">
+          <div className="bg-red-500/10 rounded-lg p-3.5">
             <h3 className="text-sm font-semibold text-red-400 mb-2 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4" />
+              <ShieldCheck className="w-4 h-4"/>
               Fraud Alert
             </h3>
-            <p className="text-sm text-zinc-300 mb-3">
-              Suspicious transaction detected: $450.00 at BestBuy, NY. Was this you?
-            </p>
-            <div className="flex gap-3">
-              <button className="px-4 py-2 bg-red-500/20 text-red-400 text-xs font-medium rounded-lg hover:bg-red-500/30 transition-colors">
-                No, Freeze Card
-              </button>
-              <button className="px-4 py-2 bg-white/5 text-zinc-300 text-xs font-medium rounded-lg hover:bg-white/10 transition-colors">
-                Yes, It Was Me
-              </button>
-            </div>
+            {fraudStatus ==='pending'? (
+              <>
+                <p className="text-sm text-zinc-300 mb-3">
+                  Suspicious transaction detected: $450.00 at BestBuy, NY. Was this you?
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsFrozen(true);
+                      setFraudStatus('frozen');
+                      setCardNotice('Card frozen immediately and $450.00 BestBuy NY charge blocked.');
+                    }}
+                    className="px-4 py-2 bg-red-500/20 text-red-400 text-xs font-medium rounded-lg hover:bg-red-500/30 transition-colors cursor-pointer"
+                  >
+                    No, Freeze Card
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFraudStatus('confirmed');
+                      setCardNotice('Transaction marked as authorized by cardholder.');
+                    }}
+                    className="px-4 py-2 bg-white/5 text-zinc-300 text-xs font-medium rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
+                  >
+                    Yes, It Was Me
+                  </button>
+                </div>
+              </>
+            ) : (
+              <p className="text-xs font-mono text-zinc-300">
+                {fraudStatus ==='frozen'
+                  ? 'Card frozen & fraud dispute opened (Ref #FRD-8821).'
+                  : 'Authorized by cardholder — merchant whitelisted.'}
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -1090,41 +1277,41 @@ export function CardSystem({ onBack }: CardSystemProps) {
   const renderPhysicalCardOrder = () => {
     if (orderStep === 0) {
       return (
-        <div className="flex flex-col items-center justify-center py-12 text-center max-w-2xl mx-auto">
-          <div className="w-64 h-40 perspective-1000 mx-auto mb-8">
+        <div className="flex flex-col items-center justify-center py-4 text-center max-w-2xl mx-auto">
+          <div className="w-64 h-40 perspective-1000 mx-auto mb-4">
             <motion.div 
               className="w-full h-full relative preserve-3d"
               animate={{ rotateY: [0, 360] }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             >
-              <div className="absolute inset-0 backface-hidden rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-950 border border-zinc-700 shadow-2xl flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-50" />
-                <div className="w-8 h-6 bg-zinc-700 rounded-sm absolute left-6 top-1/2 -translate-y-1/2 opacity-50" />
+              <div className="absolute inset-0 backface-hidden rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-950 shadow-2xl flex items-center justify-center overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent opacity-50"/>
+                <div className="w-8 h-6 bg-zinc-700 rounded-sm absolute left-6 top-1/2 -translate-y-1/2 opacity-50"/>
                 <span className="text-zinc-500 font-bold tracking-widest absolute bottom-4 right-4 text-xs">NXG</span>
               </div>
-              <div className="absolute inset-0 backface-hidden rounded-xl bg-zinc-900 border border-zinc-800 shadow-2xl" style={{ transform: 'rotateY(180deg)' }}>
-                <div className="w-full h-8 bg-black mt-4" />
+              <div className="absolute inset-0 backface-hidden rounded-xl bg-zinc-900 shadow-2xl" style={{ transform:'rotateY(180deg)'}}>
+                <div className="w-full h-8 bg-black mt-4"/>
               </div>
             </motion.div>
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">Get the NXG Physical Card</h2>
-          <p className="text-zinc-400 mb-8 text-lg">
+          <p className="text-zinc-400 mb-4 text-lg">
             A premium, minimalist matte black card. NFC-enabled, no visible numbers on the front. Connects directly to your multi-asset wallet.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-12">
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <ShieldCheck className="w-8 h-8 text-emerald-400 mx-auto mb-3" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full mb-5">
+            <div className="bg-white/5 rounded-lg p-3.5">
+              <ShieldCheck className="w-8 h-8 text-emerald-400 mx-auto mb-3"/>
               <h4 className="text-white font-medium mb-1">Secure</h4>
               <p className="text-xs text-zinc-500">Numberless design, manage via app</p>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <Globe className="w-8 h-8 text-blue-400 mx-auto mb-3" />
+            <div className="bg-white/5 rounded-lg p-3.5">
+              <Globe className="w-8 h-8 text-blue-400 mx-auto mb-3"/>
               <h4 className="text-white font-medium mb-1">Global</h4>
               <p className="text-xs text-zinc-500">Accepted worldwide via VISA network</p>
             </div>
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <Zap className="w-8 h-8 text-amber-400 mx-auto mb-3" />
+            <div className="bg-white/5 rounded-lg p-3.5">
+              <Zap className="w-8 h-8 text-amber-400 mx-auto mb-3"/>
               <h4 className="text-white font-medium mb-1">Smart</h4>
               <p className="text-xs text-zinc-500">Auto-converts crypto at point of sale</p>
             </div>
@@ -1132,7 +1319,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
 
           <button 
             onClick={() => setOrderStep(1)}
-            className="px-8 py-4 bg-white text-black rounded-xl font-semibold hover:bg-zinc-200 transition-colors flex items-center gap-2 text-lg"
+            className="px-4 py-4 bg-white text-black rounded-xl font-semibold hover:bg-zinc-200 transition-colors flex items-center gap-2 text-lg"
           >
             Order Now for $2.00
           </button>
@@ -1143,58 +1330,74 @@ export function CardSystem({ onBack }: CardSystemProps) {
     if (orderStep === 1) {
       return (
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-6">Select Card Design</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="space-y-6">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-blue-500 transition-colors relative overflow-hidden">
+          <h2 className="text-2xl font-bold text-white mb-3">Select Card Design</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div className="bg-white/5 rounded-lg p-3.5 cursor-pointer transition-colors relative overflow-hidden">
                 <div className="absolute top-4 right-4 w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
-                  <CheckCircle2 className="w-4 h-4 text-white" />
+                  <CheckCircle2 className="w-4 h-4 text-white"/>
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">Matte Black (Standard)</h3>
                 <p className="text-zinc-400 text-sm mb-4">Premium PVC with a sleek matte finish. Included in the $2.00 order fee.</p>
-                <div className="w-full h-32 bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-950 opacity-50" />
+                <div className="w-full h-32 bg-zinc-900 rounded-xl flex items-center justify-center relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-950 opacity-50"/>
                   <span className="text-zinc-600 font-bold tracking-widest text-xl relative z-10">NXG</span>
                 </div>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 cursor-pointer hover:border-amber-500 transition-colors relative overflow-hidden opacity-50">
+              <div className="bg-white/5 rounded-lg p-3.5 cursor-pointer transition-colors relative overflow-hidden opacity-50">
                 <div className="absolute top-4 right-4 bg-amber-500/20 text-amber-500 text-xs font-bold px-2 py-1 rounded">
                   COMING SOON
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">Brushed Titanium</h3>
                 <p className="text-zinc-400 text-sm mb-4">Heavyweight metal card with laser-engraved details. +$49.00</p>
-                <div className="w-full h-32 bg-gradient-to-br from-zinc-400 to-zinc-600 rounded-xl border border-zinc-400 flex items-center justify-center relative overflow-hidden">
+                <div className="w-full h-32 bg-gradient-to-br from-zinc-400 to-zinc-600 rounded-xl flex items-center justify-center relative overflow-hidden">
                   <span className="text-zinc-800 font-bold tracking-widest text-xl relative z-10">NXG</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col justify-between">
+            <div className="bg-white/5 rounded-lg p-3.5 flex flex-col justify-between">
               <div>
                 <h3 className="text-lg font-bold text-white mb-4">Personalisation</h3>
                 <div className="space-y-4">
                   <div>
                     <label className="text-sm text-zinc-400 mb-2 block">Name on Card</label>
-                    <input type="text" defaultValue="Alex Thompson" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-blue-500" />
+                    <input
+                      type="text"
+                      value={physicalCardName}
+                      onChange={(e) => setPhysicalCardName(e.target.value)}
+                      className="w-full bg-black/50 rounded-lg px-4 py-3 text-white focus:outline-none"
+                    />
+                    {hidePhysicalName && (
+                      <p className="text-[11px] text-blue-400 mt-1.5 font-mono">
+                        Printed on card: {physicalCardName.split(' ').filter(Boolean).map(w => `${w[0]?.toUpperCase()}.`).join(' ') || 'A. T.'}
+                      </p>
+                    )}
                   </div>
-                  <div className="pt-4 border-t border-white/10">
-                    <label className="flex items-center justify-between cursor-pointer">
+                  <div className="pt-4">
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={hidePhysicalName}
+                      onClick={() => setHidePhysicalName(prev => !prev)}
+                      className="w-full flex items-center justify-between cursor-pointer text-left"
+                    >
                       <div>
                         <p className="text-white font-medium">Hide Name</p>
                         <p className="text-xs text-zinc-500">Print only your initials for maximum privacy</p>
                       </div>
-                      <div className="w-10 h-5 bg-zinc-700 rounded-full relative">
-                        <div className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full" />
+                      <div className={cn("w-10 h-5 rounded-full relative transition-colors", hidePhysicalName ?"bg-blue-500" : "bg-zinc-700")}>
+                        <div className={cn("absolute top-1 w-3 h-3 bg-white rounded-full transition-all", hidePhysicalName ?"right-1" : "left-1")} />
                       </div>
-                    </label>
+                    </button>
                   </div>
                 </div>
               </div>
               
-              <div className="pt-6 mt-6 border-t border-white/10 flex justify-between items-center">
+              <div className="pt-6 mt-6 flex justify-between items-center">
                 <button onClick={() => setOrderStep(0)} className="px-4 py-2 rounded-lg text-zinc-400 hover:text-white transition-colors">Back</button>
-                <button onClick={() => setOrderStep(2)} className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors">Continue</button>
+                <button onClick={() => setOrderStep(2)} className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors">Continue</button>
               </div>
             </div>
           </div>
@@ -1205,45 +1408,45 @@ export function CardSystem({ onBack }: CardSystemProps) {
     if (orderStep === 2) {
       return (
         <div className="max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold text-white mb-6">Confirm Shipping Details</h2>
-          <div className="space-y-6 bg-white/5 border border-white/10 rounded-2xl p-6">
+          <h2 className="text-2xl font-bold text-white mb-3">Confirm Shipping Details</h2>
+          <div className="space-y-3 bg-white/5 rounded-lg p-3.5">
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-xs text-zinc-500 mb-1 block">First Name</label>
-                <input type="text" defaultValue="Alex" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" />
+                <input type="text" defaultValue="Alex" className="w-full bg-black/50 rounded-lg px-4 py-2 text-white focus:outline-none"/>
               </div>
               <div>
                 <label className="text-xs text-zinc-500 mb-1 block">Last Name</label>
-                <input type="text" defaultValue="Thompson" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" />
+                <input type="text" defaultValue="Thompson" className="w-full bg-black/50 rounded-lg px-4 py-2 text-white focus:outline-none"/>
               </div>
             </div>
             <div>
               <label className="text-xs text-zinc-500 mb-1 block">Street Address</label>
-              <input type="text" defaultValue="123 Tech Lane, Apt 4B" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" />
+              <input type="text" defaultValue="123 Tech Lane, Apt 4B" className="w-full bg-black/50 rounded-lg px-4 py-2 text-white focus:outline-none"/>
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div className="col-span-1">
                 <label className="text-xs text-zinc-500 mb-1 block">City</label>
-                <input type="text" defaultValue="San Francisco" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" />
+                <input type="text" defaultValue="San Francisco" className="w-full bg-black/50 rounded-lg px-4 py-2 text-white focus:outline-none"/>
               </div>
               <div className="col-span-1">
                 <label className="text-xs text-zinc-500 mb-1 block">State</label>
-                <input type="text" defaultValue="CA" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" />
+                <input type="text" defaultValue="CA" className="w-full bg-black/50 rounded-lg px-4 py-2 text-white focus:outline-none"/>
               </div>
               <div className="col-span-1">
                 <label className="text-xs text-zinc-500 mb-1 block">ZIP Code</label>
-                <input type="text" defaultValue="94105" className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500" />
+                <input type="text" defaultValue="94105" className="w-full bg-black/50 rounded-lg px-4 py-2 text-white focus:outline-none"/>
               </div>
             </div>
             
-            <div className="pt-6 border-t border-white/10 flex justify-between items-center">
+            <div className="pt-6 flex justify-between items-center">
               <div>
                 <p className="text-white font-medium">Total: $2.00</p>
                 <p className="text-xs text-zinc-500">Will be deducted from your USD Wallet</p>
               </div>
               <div className="flex gap-3">
                 <button onClick={() => setOrderStep(1)} className="px-4 py-2 rounded-lg text-zinc-400 hover:text-white transition-colors">Back</button>
-                <button onClick={() => setOrderStep(3)} className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors">Confirm & Pay</button>
+                <button onClick={() => setOrderStep(3)} className="px-3.5 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-colors">Confirm & Pay</button>
               </div>
             </div>
           </div>
@@ -1253,7 +1456,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
 
     if (orderStep === 3) {
       return (
-        <div className="flex flex-col items-center justify-center py-20 text-center relative">
+        <div className="flex flex-col items-center justify-center py-7 text-center relative">
           {/* Confetti Particles */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             {[...Array(20)].map((_, i) => (
@@ -1282,16 +1485,16 @@ export function CardSystem({ onBack }: CardSystemProps) {
           </div>
 
           <motion.div 
-            className="relative mb-12"
+            className="relative mb-5"
             initial={{ y: 50, scale: 0.9, rotateX: 20 }}
             animate={{ y: 0, scale: 1, rotateX: 0 }}
-            transition={{ type: "spring", stiffness: 200, damping: 20 }}
+            transition={{ type:"spring", stiffness: 200, damping: 20 }}
           >
             
             {/* Card Mockup */}
-            <div className="w-64 h-40 rounded-xl bg-zinc-900 border border-zinc-800 shadow-2xl flex items-center justify-center relative z-10 overflow-hidden">
-               <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-950 opacity-50" />
-               <div className="w-8 h-6 bg-zinc-700 rounded-sm absolute left-6 top-1/2 -translate-y-1/2 opacity-50" />
+            <div className="w-64 h-40 rounded-xl bg-zinc-900 shadow-2xl flex items-center justify-center relative z-10 overflow-hidden">
+               <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 to-zinc-950 opacity-50"/>
+               <div className="w-8 h-6 bg-zinc-700 rounded-sm absolute left-6 top-1/2 -translate-y-1/2 opacity-50"/>
                <span className="text-zinc-500 font-bold tracking-widest absolute bottom-4 right-4 text-xs">NXG</span>
             </div>
           </motion.div>
@@ -1302,10 +1505,10 @@ export function CardSystem({ onBack }: CardSystemProps) {
             transition={{ delay: 0.3 }}
           >
             <h2 className="text-3xl font-bold text-white mb-2">Order Confirmed!</h2>
-            <p className="text-zinc-400 mb-8 max-w-md mx-auto">
+            <p className="text-zinc-400 mb-4 max-w-md mx-auto">
               Your premium NXG Physical Card is being prepared. You will receive it within 3-5 business days.
             </p>
-            <button onClick={() => setOrderStep(0)} className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors">
+            <button onClick={() => setOrderStep(0)} className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg font-medium transition-colors">
               Back to Card Settings
             </button>
           </motion.div>
@@ -1315,7 +1518,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 relative min-h-screen">
+    <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500 relative min-h-screen">
       {/* Dynamic Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
         <motion.div 
@@ -1344,7 +1547,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
           onClick={onBack}
           className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-5 h-5"/>
         </button>
         <div>
           <h1 className="text-2xl font-bold text-white">Card Management</h1>
@@ -1357,7 +1560,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
         <button
           onClick={() => setActiveTab('virtual')}
           className={cn(
-            "px-6 py-2 rounded-lg text-sm font-medium transition-all",
+            "px-3.5 py-2 rounded-lg text-sm font-medium transition-all",
             activeTab === 'virtual' ? "bg-white/10 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-300"
           )}
         >
@@ -1366,7 +1569,7 @@ export function CardSystem({ onBack }: CardSystemProps) {
         <button
           onClick={() => setActiveTab('physical')}
           className={cn(
-            "px-6 py-2 rounded-lg text-sm font-medium transition-all",
+            "px-3.5 py-2 rounded-lg text-sm font-medium transition-all",
             activeTab === 'physical' ? "bg-white/10 text-white shadow-sm" : "text-zinc-400 hover:text-zinc-300"
           )}
         >
@@ -1392,10 +1595,10 @@ export function CardSystem({ onBack }: CardSystemProps) {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-zinc-900 border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl"
+              className="bg-zinc-900 rounded-lg p-3.5 max-w-sm w-full shadow-2xl"
             >
               <h3 className="text-xl font-bold text-white mb-2">Cancel Customization?</h3>
-              <p className="text-zinc-400 mb-6">Are you sure you want to cancel? Your current design will be lost.</p>
+              <p className="text-zinc-400 mb-3">Are you sure you want to cancel? Your current design will be lost.</p>
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowCancelModal(false)}
@@ -1429,10 +1632,10 @@ export function CardSystem({ onBack }: CardSystemProps) {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-zinc-900 border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl"
+              className="bg-zinc-900 rounded-lg p-3.5 max-w-sm w-full shadow-2xl"
             >
               <h3 className="text-xl font-bold text-white mb-2">Reset Design?</h3>
-              <p className="text-zinc-400 mb-6">This will reset all your customizations back to the default style.</p>
+              <p className="text-zinc-400 mb-3">This will reset all your customizations back to the default style.</p>
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowDeleteModal(false)}

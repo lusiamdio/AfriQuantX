@@ -80,7 +80,7 @@ export function InvestPage({ onNavigatePage, onNavigateToAuth }: InvestPageProps
     <div className="min-h-screen bg-white text-[#1A1A1A] font-sans selection:bg-[#D5FF2F]">
       
       {/* 1. HERO SECTION WITH YOUTUBE VIDEO BACKGROUND */}
-      <section className="relative pt-32 pb-20 px-6 lg:px-12 max-w-[1280px] mx-auto text-center space-y-8 overflow-hidden">
+      <section className="relative pt-32 pb-20 px-3.5 lg:px-5 max-w-[1280px] mx-auto text-center space-y-4 overflow-hidden">
         <HeroVideoBackground videoId="LXb3EKWsInQ" overlayOpacity={0.88} />
 
         <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-semibold tracking-tight leading-[1.04]">
@@ -118,20 +118,20 @@ export function InvestPage({ onNavigatePage, onNavigateToAuth }: InvestPageProps
       </section>
 
       {/* 2. INVESTMENT JOURNEY TIMELINE */}
-      <section className="py-24 bg-[#F5F5F7] border-y border-gray-200/80 px-6 lg:px-12">
-        <div className="max-w-[1280px] mx-auto space-y-16">
+      <section className="py-8 bg-[#F5F5F7] px-3.5 lg:px-5">
+        <div className="max-w-[1280px] mx-auto space-y-5">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">FIVE SIMPLE STEPS</span>
             <h2 className="text-3xl lg:text-4xl font-semibold text-black">Your journey from registration to yield.</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
             {JOURNEY_STEPS.map((step, idx) => {
               const Icon = step.icon;
               return (
                 <div 
                   key={idx} 
-                  className="bg-white rounded-[24px] p-6 border border-gray-200/80 shadow-[0_12px_30px_rgba(0,0,0,0.04)] hover:-translate-y-2 transition-all duration-300 space-y-4 relative"
+                  className="bg-white rounded-lg p-3.5 shadow-[0_12px_30px_rgba(0,0,0,0.04)] hover:-translate-y-2 transition-all duration-300 space-y-4 relative"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-mono font-bold text-[#00C805] bg-[#00C805]/10 px-2.5 py-1 rounded-full">
@@ -149,17 +149,17 @@ export function InvestPage({ onNavigatePage, onNavigateToAuth }: InvestPageProps
       </section>
 
       {/* 3. INVESTMENT TYPES CARDS */}
-      <section className="py-28 px-6 lg:px-12 max-w-[1280px] mx-auto space-y-14">
+      <section className="py-28 px-3.5 lg:px-5 max-w-[1280px] mx-auto space-y-14">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">DIVERSIFIED STRATEGIES</span>
           <h2 className="text-3xl lg:text-4xl font-semibold text-black">Choose your wealth creation model.</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {INVESTMENT_TYPES.map((inv, idx) => (
             <div 
               key={idx} 
-              className={`bg-white rounded-[28px] p-8 border-2 ${inv.color} shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-5`}
+              className={`bg-white rounded-xl p-4 ${inv.color} shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-2.5`}
             >
               <div className="flex items-center justify-between">
                 <span className="px-3 py-1 rounded-full bg-black text-white font-mono font-bold text-xs uppercase tracking-wider">
@@ -183,10 +183,10 @@ export function InvestPage({ onNavigatePage, onNavigateToAuth }: InvestPageProps
       </section>
 
       {/* 4. PORTFOLIO COMPOUNDING CALCULATOR */}
-      <section className="py-24 bg-black text-white border-y border-gray-800 px-6 lg:px-12">
-        <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="py-8 bg-black text-white px-3.5 lg:px-5">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
           
-          <div className="lg:col-span-6 space-y-6">
+          <div className="lg:col-span-6 space-y-3">
             <span className="text-xs font-mono font-bold text-[#D5FF2F] uppercase tracking-widest">COMPOUND CALCULATOR</span>
             <h2 className="text-4xl lg:text-5xl font-semibold tracking-tight text-white leading-tight">
               See how regular deposits multiply over time.
@@ -195,7 +195,7 @@ export function InvestPage({ onNavigatePage, onNavigateToAuth }: InvestPageProps
               Consistently investing small amounts into high-yielding African markets accelerates wealth building through exponential compounding.
             </p>
 
-            <div className="space-y-6 pt-4 font-mono text-sm">
+            <div className="space-y-3 pt-4 font-mono text-sm">
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-gray-400">MONTHLY CONTRIBUTION</span>
@@ -237,7 +237,7 @@ export function InvestPage({ onNavigatePage, onNavigateToAuth }: InvestPageProps
             </div>
           </div>
 
-          <div className="lg:col-span-6 bg-zinc-900 rounded-[32px] p-10 border border-zinc-800 text-center space-y-6 shadow-2xl">
+          <div className="lg:col-span-6 bg-zinc-900 rounded-xl p-4 text-center space-y-3 shadow-2xl">
             <span className="text-xs font-mono text-gray-400 uppercase tracking-widest">PROJECTED FUTURE PORTFOLIO</span>
             <div className="text-5xl lg:text-6xl font-extrabold text-[#D5FF2F] font-mono tracking-tight">
               ${calculateTotal().toLocaleString()}

@@ -221,11 +221,7 @@ export function AnimatedQuoteCarousel({
   const current = quotes[activeIdx];
 
   return (
-    <div className={`rounded-[32px] p-8 lg:p-12 border relative overflow-hidden transition-all duration-300 ${
-      darkTheme 
-        ? 'bg-zinc-900 border-zinc-800 text-white shadow-2xl' 
-        : 'bg-[#F9F9FB] border-gray-200/90 text-black shadow-xl'
-    }`}>
+    <div className={`rounded-xl p-4 lg:p-5 relative overflow-hidden transition-all duration-300 bg-white/[0.03] ${ darkTheme ? 'bg-zinc-900 border-zinc-800 text-white shadow-2xl' : 'bg-[#F9F9FB] border-gray-200/90 text-black shadow-xl' }`}>
       {/* Background Subtle Accent */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-[#00C805]/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -241,13 +237,13 @@ export function AnimatedQuoteCarousel({
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, y: -15, filter: 'blur(8px)' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="space-y-6 w-full"
+            className="space-y-3 w-full"
           >
             <p className="text-xl lg:text-2xl font-medium leading-relaxed tracking-tight">
               {current.quote}
             </p>
 
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-200/40">
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
               <div className="flex items-center gap-3">
                 <div>
                   <div className="font-bold text-base">{current.author}</div>
@@ -258,7 +254,7 @@ export function AnimatedQuoteCarousel({
               </div>
 
               {current.roi && (
-                <span className="px-3.5 py-1.5 rounded-full bg-[#00C805]/15 text-[#00C805] border border-[#00C805]/30 font-mono font-bold text-xs">
+                <span className="px-3.5 py-1.5 rounded-full bg-[#00C805]/15 text-[#00C805] font-mono font-bold text-xs">
                   {current.roi}
                 </span>
               )}
@@ -273,11 +269,7 @@ export function AnimatedQuoteCarousel({
           <button
             key={idx}
             onClick={() => setActiveIdx(idx)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              activeIdx === idx 
-                ? 'w-8 bg-[#00C805]' 
-                : darkTheme ? 'w-2 bg-zinc-700 hover:bg-zinc-500' : 'w-2 bg-gray-300 hover:bg-gray-400'
-            }`}
+            className={`h-2 rounded-full transition-all duration-300 ${ activeIdx === idx ? 'w-8 bg-[#00C805]' : darkTheme ? 'w-2 bg-zinc-700 hover:bg-zinc-500' : 'w-2 bg-gray-300 hover:bg-gray-400' }`}
           />
         ))}
       </div>

@@ -24,7 +24,7 @@ const STRATEGIES: AlgoStrategy[] = [
   {
     id: 'twap',
     name: 'TWAP (Time-Weighted Average Price)',
-    badge: 'Linear Slice & Randomizer',
+    badge:'Linear Slice & Randomizer',
     description: 'Evenly distributes large parent orders across customized time horizons with stochastic jitter to obscure algorithmic footprint.',
     defaultDurationMin: 60,
     slippageLimitBps: 15
@@ -32,7 +32,7 @@ const STRATEGIES: AlgoStrategy[] = [
   {
     id: 'vwap',
     name: 'VWAP (Volume-Weighted Average Price)',
-    badge: 'Intraday Curve Matching',
+    badge:'Intraday Curve Matching',
     description: 'Dynamically scales child slices according to historical intraday volume profile to minimize market price impact.',
     defaultDurationMin: 120,
     slippageLimitBps: 20
@@ -40,7 +40,7 @@ const STRATEGIES: AlgoStrategy[] = [
   {
     id: 'iceberg',
     name: 'Iceberg (Synthetic Hidden Reserve)',
-    badge: 'Dark / Lit Split',
+    badge:'Dark / Lit Split',
     description: 'Displays only a fraction (e.g. 5%) of the total order size in the public order book while refreshing automatically as filled.',
     defaultDurationMin: 45,
     slippageLimitBps: 10
@@ -48,7 +48,7 @@ const STRATEGIES: AlgoStrategy[] = [
   {
     id: 'pov',
     name: 'POV (Percentage of Volume)',
-    badge: '10% - 25% Inline Participation',
+    badge:'10% - 25% Inline Participation',
     description: 'Chases real-time tape volume directly by matching 15% of printed prints in the public market until parent size is filled.',
     defaultDurationMin: 90,
     participationRate: 15,
@@ -57,7 +57,7 @@ const STRATEGIES: AlgoStrategy[] = [
   {
     id: 'sniper',
     name: 'Sniper (Dark Liquidity Seeker)',
-    badge: 'Zero Lit Footprint',
+    badge:'Zero Lit Footprint',
     description: 'Resting non-displayed orders across OTC dark liquidity pools; opportunistically attacks aggressive crossing prices.',
     defaultDurationMin: 30,
     slippageLimitBps: 8
@@ -99,7 +99,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
       filledQty: 18400,
       avgFillPrice: 3420.50,
       progress: 73.6,
-      status: 'RUNNING',
+      status:'RUNNING',
       latencyMicrosec: 142,
       startedAt: '10:14:02'
     },
@@ -112,7 +112,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
       filledQty: 45000,
       avgFillPrice: 680.00,
       progress: 45.0,
-      status: 'RUNNING',
+      status:'RUNNING',
       latencyMicrosec: 210,
       startedAt: '10:30:15'
     }
@@ -161,7 +161,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
       if (e.detail?.alert) {
         setActiveBannerAlert(e.detail.alert);
         // Log to FIX audit stream
-        const timeStr = new Date().toTimeString().split(' ')[0];
+        const timeStr = new Date().toTimeString().split('')[0];
         setFixMessages(prev => [
           {
             time: timeStr,
@@ -199,7 +199,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
       });
 
       // 2. FIX message simulation
-      const timeStr = new Date().toTimeString().split(' ')[0] + '.' + Math.floor(Math.random() * 900 + 100);
+      const timeStr = new Date().toTimeString().split('')[0] +'.'+ Math.floor(Math.random() * 900 + 100);
       const isFill = Math.random() > 0.4;
       const newMsg = isFill
         ? { time: timeStr, tag: '35=8 (ExecutionReport)', detail: `ExecType=F (Fill) CumQty=+${Math.floor(Math.random() * 500 + 100)} SubNode=StrateTape Latency=112μs` }
@@ -209,14 +209,14 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
 
       // 3. Increment progress of active algos
       setActiveAlgos(prev => prev.map(algo => {
-        if (algo.status === 'RUNNING' && algo.filledQty < algo.totalQty) {
+        if (algo.status ==='RUNNING'&& algo.filledQty < algo.totalQty) {
           const addFill = Math.min(algo.totalQty - algo.filledQty, Math.floor(Math.random() * 150 + 20));
           const newFilled = algo.filledQty + addFill;
           return {
             ...algo,
             filledQty: newFilled,
             progress: parseFloat(((newFilled / algo.totalQty) * 100).toFixed(1)),
-            status: newFilled >= algo.totalQty ? 'COMPLETED' : 'RUNNING'
+            status: newFilled >= algo.totalQty ?'COMPLETED' : 'RUNNING'
           };
         }
         return algo;
@@ -242,7 +242,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
       filledQty: 0,
       avgFillPrice: limitPrice,
       progress: 0,
-      status: 'RUNNING',
+      status:'RUNNING',
       latencyMicrosec: Math.floor(Math.random() * 120 + 80),
       startedAt: new Date().toLocaleTimeString()
     };
@@ -251,12 +251,12 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
   };
 
   const handleCancelAlgo = (algoId: string) => {
-    setActiveAlgos(prev => prev.map(a => a.id === algoId ? { ...a, status: 'CANCELLED' } : a));
-    const timeStr = new Date().toTimeString().split(' ')[0];
+    setActiveAlgos(prev => prev.map(a => a.id === algoId ? { ...a, status:'CANCELLED'} : a));
+    const timeStr = new Date().toTimeString().split('')[0];
     setFixMessages(prev => [{
       time: timeStr,
       tag: '35=F (OrderCancelRequest)',
-      detail: `ClOrdID=${algoId} Status=CANCELLED_BY_DESK`
+      detail:`ClOrdID=${algoId} Status=CANCELLED_BY_DESK`
     }, ...prev]);
   };
 
@@ -321,7 +321,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
   };
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-3 pb-5">
       {/* Top Banner Alert (Shown when any price threshold is breached) */}
       <AnimatePresence>
         {activeBannerAlert && (
@@ -329,16 +329,16 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="p-4 rounded-2xl bg-[#0F1420] bg-gradient-to-r from-amber-950/80 via-[#0F1420] to-amber-950/60 border-2 border-amber-500/70 shadow-[0_15px_45px_rgba(0,0,0,0.85)] flex flex-col md:flex-row items-center justify-between gap-4 relative z-30"
-            style={{ backgroundColor: '#0F1420' }}
+            className="p-4 rounded-lg bg-[#0F1420] bg-gradient-to-r from-amber-950/80 via-[#0F1420] to-amber-950/60 shadow-[0_15px_45px_rgba(0,0,0,0.85)] flex flex-col md:flex-row items-center justify-between gap-4 relative z-30"
+            style={{ backgroundColor:'#0F1420'}}
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center shrink-0 animate-bounce">
-                <BellRing className="w-5 h-5 text-amber-400" />
+              <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center shrink-0 animate-bounce">
+                <BellRing className="w-5 h-5 text-amber-400"/>
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono font-black uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                  <span className="text-[10px] font-mono font-black uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">
                     REAL-TIME PRICE THRESHOLD HIT
                   </span>
                   <span className="text-xs font-mono text-zinc-400">
@@ -362,7 +362,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                 }}
                 className="py-2 px-3 bg-amber-500 hover:bg-amber-400 text-black font-extrabold rounded-xl text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)] cursor-pointer"
               >
-                <Zap className="w-3.5 h-3.5 fill-black" />
+                <Zap className="w-3.5 h-3.5 fill-black"/>
                 <span>Auto-Configure Order</span>
               </button>
 
@@ -374,7 +374,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                   }}
                   className="py-2 px-3 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl text-xs transition-colors cursor-pointer flex items-center gap-1"
                 >
-                  <ExternalLink className="w-3.5 h-3.5 text-blue-400" />
+                  <ExternalLink className="w-3.5 h-3.5 text-blue-400"/>
                   <span>Activity Center →</span>
                 </button>
               )}
@@ -391,10 +391,10 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
       </AnimatePresence>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 border border-white/10 p-6 rounded-3xl relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 p-3.5 rounded-xl relative overflow-hidden">
         <div className="space-y-2 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF]/10 border border-[#FFFFFF]/30 rounded-full text-xs font-mono text-[#FFFFFF]">
-            <Cpu className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF]/10 rounded-full text-xs font-mono text-[#FFFFFF]">
+            <Cpu className="w-3.5 h-3.5"/>
             <span>Smart Order Routing & Real-Time Telemetry Radar</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">
@@ -409,17 +409,17 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
         <div className="flex items-center gap-3 relative z-10 flex-wrap">
           {/* Browser Notification Permission Badge / Button */}
           {notificationPermission === 'granted' ? (
-            <div className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+            <div className="inline-flex items-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400"/>
               <span>Browser Alerts Active</span>
             </div>
           ) : (
             <button
               onClick={handleEnableNotifications}
-              className="py-2 px-3 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+              className="py-2 px-3 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
               title="Click to enable native desktop browser alerts when price limits are triggered"
             >
-              <Bell className="w-3.5 h-3.5 text-amber-400" />
+              <Bell className="w-3.5 h-3.5 text-amber-400"/>
               <span>Enable Browser Alerts</span>
             </button>
           )}
@@ -427,18 +427,18 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
           {/* Sound Toggle */}
           <button
             onClick={() => setSoundEnabled(!soundEnabled)}
-            className="p-2.5 rounded-xl bg-black/60 border border-white/10 text-zinc-300 hover:text-white transition-colors cursor-pointer"
+            className="p-2.5 rounded-xl bg-black/60 text-zinc-300 hover:text-white transition-colors cursor-pointer"
             title={soundEnabled ? 'Chime sound is active' : 'Sound is muted'}
           >
-            {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4 text-zinc-500" />}
+            {soundEnabled ? <Volume2 className="w-4 h-4 text-emerald-400"/> : <VolumeX className="w-4 h-4 text-zinc-500"/>}
           </button>
 
           {setActiveTab && (
             <button
               onClick={() => setActiveTab('activity')}
-              className="py-2.5 px-3.5 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+              className="py-2.5 px-3.5 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Activity className="w-3.5 h-3.5 text-blue-400" />
+              <Activity className="w-3.5 h-3.5 text-blue-400"/>
               <span>Activity Center</span>
             </button>
           )}
@@ -446,14 +446,14 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
           {setActiveTab && (
             <button
               onClick={() => setActiveTab('integrations')}
-              className="py-2.5 px-3.5 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-300 rounded-2xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+              className="py-2.5 px-3.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
             >
-              <Layers className="w-3.5 h-3.5 text-blue-400" />
+              <Layers className="w-3.5 h-3.5 text-blue-400"/>
               <span>FIX & SOR Hub →</span>
             </button>
           )}
 
-          <div className="bg-black/60 border border-white/10 rounded-2xl p-3 text-center min-w-[110px]">
+          <div className="bg-black/60 rounded-lg p-3 text-center min-w-[110px]">
             <span className="text-[10px] font-mono text-zinc-500 uppercase block">Engine Latency</span>
             <span className="text-base font-mono font-black text-emerald-400">114 μs</span>
           </div>
@@ -461,12 +461,12 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
       </div>
 
       {/* Main Grid: Left Setup Form, Right Interactive Desk Tabs */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* Left Col: Strategy Configurator */}
-        <div className="lg:col-span-1 space-y-6">
-          <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-5">
+        <div className="lg:col-span-1 space-y-3">
+          <div className="bg-neutral-950 rounded-lg p-3.5 space-y-2.5">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-[#FFFFFF]" /> Strategy Configurator
+              <Sliders className="w-4 h-4 text-[#FFFFFF]"/> Strategy Configurator
             </h3>
 
             {/* Strategy Selector Pills */}
@@ -479,15 +479,11 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     <button
                       key={strat.id}
                       onClick={() => setSelectedStrategy(strat)}
-                      className={`text-left p-3 rounded-xl border transition-all text-xs cursor-pointer ${
-                        isSelected 
-                          ? 'bg-[#FFFFFF]/10 border-[#FFFFFF] text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' 
-                          : 'bg-black border-white/10 text-zinc-400 hover:border-white/20'
-                      }`}
+                      className={`text-left p-3 rounded-xl transition-all text-xs cursor-pointer bg-white/[0.03] ${ isSelected ?'bg-[#FFFFFF]/10 text-white shadow-[0_0_15px_rgba(255,255,255,0.1)]' : 'bg-black text-zinc-400'}`}
                     >
                       <div className="flex justify-between items-center mb-1">
                         <span className="font-bold text-white">{strat.name}</span>
-                        <span className="text-[9px] font-mono text-[#FFFFFF] bg-black px-1.5 py-0.5 rounded border border-[#FFFFFF]/30">{strat.badge}</span>
+                        <span className="text-[9px] font-mono text-[#FFFFFF] bg-black px-1.5 py-0.5 rounded">{strat.badge}</span>
                       </div>
                       <p className="text-[11px] text-zinc-400 leading-relaxed">{strat.description}</p>
                     </button>
@@ -497,7 +493,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
             </div>
 
             {/* Asset & Order Parameters */}
-            <div className="space-y-4 pt-2 border-t border-white/5">
+            <div className="space-y-4 pt-2">
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <label className="text-[10px] font-mono text-zinc-400 uppercase">Ticker / Asset</label>
@@ -514,7 +510,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                       setLimitPrice(livePrices[nextSym]);
                     }
                   }}
-                  className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-[#FFFFFF] focus:outline-none font-mono"
+                  className="w-full bg-black rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono"
                 >
                   {AVAILABLE_TICKERS.map(t => (
                     <option key={t.symbol} value={t.symbol}>{t.symbol} ({t.currency})</option>
@@ -526,17 +522,13 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
               <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => setSide('BUY')}
-                  className={`py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all cursor-pointer ${
-                    side === 'BUY' ? 'bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-black border border-white/10 text-zinc-400'
-                  }`}
+                  className={`py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all cursor-pointer ${ side ==='BUY'?'bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-black text-zinc-400'}`}
                 >
                   BUY
                 </button>
                 <button
                   onClick={() => setSide('SELL')}
-                  className={`py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all cursor-pointer ${
-                    side === 'SELL' ? 'bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)]' : 'bg-black border border-white/10 text-zinc-400'
-                  }`}
+                  className={`py-2 rounded-xl text-xs font-mono font-bold uppercase transition-all cursor-pointer ${ side ==='SELL'?'bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)]' : 'bg-black text-zinc-400'}`}
                 >
                   SELL
                 </button>
@@ -551,7 +543,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     step="1000"
                     value={totalQuantity}
                     onChange={(e) => setTotalQuantity(parseInt(e.target.value) || 1000)}
-                    className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white focus:border-[#FFFFFF] focus:outline-none"
+                    className="w-full bg-black rounded-xl px-3 py-2 text-xs font-mono font-bold text-white focus:outline-none"
                   />
                 </div>
                 <div>
@@ -561,7 +553,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     step="0.50"
                     value={limitPrice}
                     onChange={(e) => setLimitPrice(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs font-mono font-bold text-white focus:border-[#FFFFFF] focus:outline-none"
+                    className="w-full bg-black rounded-xl px-3 py-2 text-xs font-mono font-bold text-white focus:outline-none"
                   />
                 </div>
               </div>
@@ -575,7 +567,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     step="500"
                     value={sliceDisplayQty}
                     onChange={(e) => setSliceDisplayQty(parseInt(e.target.value) || 500)}
-                    className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs font-mono text-white focus:border-[#FFFFFF] focus:outline-none"
+                    className="w-full bg-black rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none"
                   />
                 </div>
               )}
@@ -589,13 +581,13 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     max="30"
                     value={maxParticipationRate}
                     onChange={(e) => setMaxParticipationRate(parseInt(e.target.value) || 10)}
-                    className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs font-mono text-white focus:border-[#FFFFFF] focus:outline-none"
+                    className="w-full bg-black rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none"
                   />
                 </div>
               )}
 
               {/* Pre-Trade Risk Gate Check */}
-              <div className="bg-black/60 border border-white/10 rounded-xl p-3.5 space-y-2 text-xs font-mono">
+              <div className="bg-black/60 rounded-xl p-3.5 space-y-2 text-xs font-mono">
                 <div className="flex justify-between text-zinc-400">
                   <span>Gross Notional:</span>
                   <span className="text-white font-bold">ZAR {totalNotional.toLocaleString()}</span>
@@ -615,7 +607,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                 onClick={handleLaunchAlgo}
                 className="w-full py-3.5 bg-[#FFFFFF] text-black font-extrabold text-xs uppercase tracking-widest rounded-xl hover:bg-[#E4E4E7] transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer"
               >
-                <Play className="w-4 h-4 fill-black" />
+                <Play className="w-4 h-4 fill-black"/>
                 <span>Launch Algorithmic Execution</span>
               </button>
             </div>
@@ -623,49 +615,37 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
         </div>
 
         {/* Right 2 Cols: Tabs for [Price Alert Radar] | [Active Orders] | [FIX Stream] */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-3">
           {/* Section Navigation Tabs */}
-          <div className="flex items-center justify-between border-b border-white/10 pb-3">
-            <div className="flex items-center gap-2 bg-black/50 p-1 rounded-2xl border border-white/10">
+          <div className="flex items-center justify-between pb-3">
+            <div className="flex items-center gap-2 bg-black/50 p-1 rounded-lg">
               <button
                 onClick={() => setDeskTab('radar')}
-                className={`py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                  deskTab === 'radar'
-                    ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.3)]'
-                    : 'text-zinc-400 hover:text-white'
-                }`}
+                className={`py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${ deskTab ==='radar'?'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.3)]' : 'text-zinc-400 hover:text-white'}`}
               >
-                <BellRing className="w-3.5 h-3.5" />
+                <BellRing className="w-3.5 h-3.5"/>
                 <span>Price Alert Radar</span>
-                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${deskTab === 'radar' ? 'bg-black/30 text-black' : 'bg-white/10 text-amber-400'}`}>
-                  {alerts.filter(a => a.status === 'ARMED').length} Armed
+                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${deskTab ==='radar'?'bg-black/30 text-black' : 'bg-white/10 text-amber-400'}`}>
+                  {alerts.filter(a => a.status ==='ARMED').length} Armed
                 </span>
               </button>
 
               <button
                 onClick={() => setDeskTab('orders')}
-                className={`py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                  deskTab === 'orders'
-                    ? 'bg-white text-black'
-                    : 'text-zinc-400 hover:text-white'
-                }`}
+                className={`py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${ deskTab ==='orders'?'bg-white text-black' : 'text-zinc-400 hover:text-white'}`}
               >
-                <Activity className="w-3.5 h-3.5" />
+                <Activity className="w-3.5 h-3.5"/>
                 <span>Active Algos</span>
-                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${deskTab === 'orders' ? 'bg-black/30 text-black' : 'bg-white/10 text-white'}`}>
-                  {activeAlgos.filter(a => a.status === 'RUNNING').length}
+                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${deskTab ==='orders'?'bg-black/30 text-black' : 'bg-white/10 text-white'}`}>
+                  {activeAlgos.filter(a => a.status ==='RUNNING').length}
                 </span>
               </button>
 
               <button
                 onClick={() => setDeskTab('fix')}
-                className={`py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
-                  deskTab === 'fix'
-                    ? 'bg-emerald-500 text-black'
-                    : 'text-zinc-400 hover:text-white'
-                }`}
+                className={`py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${ deskTab ==='fix'?'bg-emerald-500 text-black' : 'text-zinc-400 hover:text-white'}`}
               >
-                <Terminal className="w-3.5 h-3.5" />
+                <Terminal className="w-3.5 h-3.5"/>
                 <span>FIX 4.4/5.0 Stream</span>
               </button>
             </div>
@@ -673,9 +653,9 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
             {deskTab === 'radar' && (
               <button
                 onClick={() => setIsNewAlertModalOpen(true)}
-                className="py-2 px-3.5 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                className="py-2 px-3.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
               >
-                <Plus className="w-3.5 h-3.5" />
+                <Plus className="w-3.5 h-3.5"/>
                 <span>Arm New Alert</span>
               </button>
             )}
@@ -685,10 +665,10 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
           {deskTab === 'radar' && (
             <div className="space-y-4">
               {/* Radar Live Banner */}
-              <div className="bg-gradient-to-r from-amber-950/30 via-neutral-950 to-neutral-950 border border-amber-500/30 rounded-2xl p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="bg-gradient-to-r from-amber-950/30 via-neutral-950 to-neutral-950 rounded-lg p-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"/>
                     <span className="text-xs font-mono font-bold text-amber-400 uppercase">
                       Sub-Second Multi-Venue Price Monitor
                     </span>
@@ -705,12 +685,12 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                   <button
                     onClick={() => {
                       // Trigger first armed alert as test
-                      const armed = alerts.find(a => a.status === 'ARMED') || alerts[0];
+                      const armed = alerts.find(a => a.status ==='ARMED') || alerts[0];
                       if (armed) handleSimulateAlertTrigger(armed);
                     }}
                     className="py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(245,158,11,0.3)] cursor-pointer"
                   >
-                    <Zap className="w-3.5 h-3.5 fill-black" />
+                    <Zap className="w-3.5 h-3.5 fill-black"/>
                     <span>⚡ Test Quick Trigger</span>
                   </button>
                 </div>
@@ -719,8 +699,8 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
               {/* Alert Cards List */}
               <div className="space-y-3">
                 {alerts.length === 0 ? (
-                  <div className="bg-black border border-white/10 rounded-2xl p-8 text-center space-y-3">
-                    <Bell className="w-8 h-8 text-zinc-500 mx-auto" />
+                  <div className="bg-black rounded-lg p-4 text-center space-y-3">
+                    <Bell className="w-8 h-8 text-zinc-500 mx-auto"/>
                     <p className="text-sm text-zinc-400">No price alerts armed yet.</p>
                     <button
                       onClick={() => setIsNewAlertModalOpen(true)}
@@ -734,49 +714,31 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     const currentLive = livePrices[alert.symbol] || alert.currentPrice;
                     const diffPct = (((currentLive - alert.targetPrice) / alert.targetPrice) * 100);
                     const distanceToTarget = Math.abs(diffPct).toFixed(2);
-                    const isBreached = alert.status === 'TRIGGERED' ||
+                    const isBreached = alert.status ==='TRIGGERED'||
                       (alert.condition === 'GREATER_EQUAL' && currentLive >= alert.targetPrice) ||
                       (alert.condition === 'LESS_EQUAL' && currentLive <= alert.targetPrice);
 
                     return (
                       <div
                         key={alert.id}
-                        className={`bg-black border rounded-2xl p-4 transition-all space-y-3 ${
-                          alert.status === 'TRIGGERED'
-                            ? 'border-amber-500/50 bg-amber-950/10'
-                            : alert.status === 'PAUSED'
-                            ? 'border-white/5 opacity-60'
-                            : 'border-white/10 hover:border-white/20'
-                        }`}
+                        className={`bg-black rounded-lg p-4 transition-all space-y-3 ${ alert.status ==='TRIGGERED'?'bg-amber-950/10': alert.status ==='PAUSED'?'opacity-60' : ''}`}
                       >
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                           <div>
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-xs font-mono font-black text-white">{alert.symbol}</span>
-                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-zinc-300 border border-white/10">
+                              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-zinc-300">
                                 {alert.exchange} Venue
                               </span>
-                              <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold ${
-                                alert.priority === 'CRITICAL'
-                                  ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30'
-                                  : alert.priority === 'HIGH'
-                                  ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30'
-                                  : 'bg-blue-500/10 text-blue-400'
-                              }`}>
+                              <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold ${ alert.priority ==='CRITICAL'?'bg-rose-500/10 text-rose-400 ': alert.priority ==='HIGH'?'bg-amber-500/10 text-amber-400 ' : 'bg-blue-500/10 text-blue-400'}`}>
                                 {alert.priority} Priority
                               </span>
-                              <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold ${
-                                alert.status === 'TRIGGERED'
-                                  ? 'bg-amber-500 text-black animate-pulse'
-                                  : alert.status === 'ARMED'
-                                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                                  : 'bg-zinc-800 text-zinc-400'
-                              }`}>
+                              <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold ${ alert.status ==='TRIGGERED'?'bg-amber-500 text-black animate-pulse': alert.status ==='ARMED'?'bg-emerald-500/10 text-emerald-400 ' : 'bg-zinc-800 text-zinc-400'}`}>
                                 {alert.status}
                               </span>
                             </div>
                             <div className="text-xs text-zinc-400 mt-1">
-                              {alert.assetName} • Action: <span className="text-white font-mono">{alert.triggerAction.replace(/_/g, ' ')}</span>
+                              {alert.assetName} • Action: <span className="text-white font-mono">{alert.triggerAction.replace(/_/g,'')}</span>
                             </div>
                           </div>
 
@@ -784,33 +746,33 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                           <div className="flex items-center gap-2 flex-wrap">
                             <button
                               onClick={() => handleSimulateAlertTrigger(alert)}
-                              className="py-1.5 px-2.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-300 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                              className="py-1.5 px-2.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
                               title="Simulate immediate price trigger to test notifications and Activity Center update"
                             >
-                              <Zap className="w-3 h-3 text-amber-400" />
+                              <Zap className="w-3 h-3 text-amber-400"/>
                               <span>⚡ Test Trigger</span>
                             </button>
 
                             <button
                               onClick={() => handleLoadAlertIntoDesk(alert)}
-                              className="py-1.5 px-2.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
+                              className="py-1.5 px-2.5 rounded-lg bg-white/5 hover:bg-white/10 text-white text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
                               title="Populate strategy configurator with this asset and target limit"
                             >
-                              <Play className="w-3 h-3 text-emerald-400" />
+                              <Play className="w-3 h-3 text-emerald-400"/>
                               <span>Load into Desk</span>
                             </button>
 
                             <button
                               onClick={() => priceAlertService.togglePauseAlert(alert.id)}
-                              className="py-1.5 px-2.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 border border-white/10 text-zinc-300 text-xs transition-colors cursor-pointer"
+                              className="py-1.5 px-2.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 text-zinc-300 text-xs transition-colors cursor-pointer"
                             >
-                              {alert.status === 'PAUSED' ? 'Resume' : 'Pause'}
+                              {alert.status ==='PAUSED'?'Resume' : 'Pause'}
                             </button>
 
-                            {alert.status === 'TRIGGERED' && (
+                            {alert.status ==='TRIGGERED'&& (
                               <button
                                 onClick={() => priceAlertService.resetAlert(alert.id)}
-                                className="py-1.5 px-2.5 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/30 text-blue-300 text-xs font-bold transition-colors cursor-pointer"
+                                className="py-1.5 px-2.5 rounded-lg bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-xs font-bold transition-colors cursor-pointer"
                               >
                                 Re-Arm
                               </button>
@@ -821,24 +783,24 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                               className="p-1.5 rounded-lg bg-neutral-900 hover:bg-rose-950/40 text-zinc-500 hover:text-rose-400 transition-colors cursor-pointer"
                               title="Delete Alert"
                             >
-                              <Trash2 className="w-3.5 h-3.5" />
+                              <Trash2 className="w-3.5 h-3.5"/>
                             </button>
                           </div>
                         </div>
 
                         {/* Price Gauges & Threshold Details */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-neutral-950/80 p-3 rounded-xl border border-white/5 text-xs font-mono">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-neutral-950/80 p-3 rounded-xl text-xs font-mono">
                           <div>
                             <span className="text-zinc-500 text-[10px] uppercase block">Condition</span>
                             <span className="text-white font-bold flex items-center gap-1 mt-0.5">
                               {alert.condition === 'GREATER_EQUAL' ? (
                                 <>
-                                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400" />
+                                  <ArrowUpRight className="w-3.5 h-3.5 text-emerald-400"/>
                                   <span>&gt;= Resistance</span>
                                 </>
                               ) : (
                                 <>
-                                  <ArrowDownRight className="w-3.5 h-3.5 text-rose-400" />
+                                  <ArrowDownRight className="w-3.5 h-3.5 text-rose-400"/>
                                   <span>&lt;= Support Dip</span>
                                 </>
                               )}
@@ -855,16 +817,14 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                           <div>
                             <span className="text-zinc-500 text-[10px] uppercase block">Streaming Price</span>
                             <span className="text-white font-black mt-0.5 flex items-center gap-1.5">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"/>
                               {alert.currency} {currentLive.toFixed(2)}
                             </span>
                           </div>
 
                           <div>
                             <span className="text-zinc-500 text-[10px] uppercase block">Delta to Target</span>
-                            <span className={`font-bold mt-0.5 block ${
-                              isBreached ? 'text-amber-400' : 'text-zinc-400'
-                            }`}>
+                            <span className={`font-bold mt-0.5 block ${ isBreached ?'text-amber-400' : 'text-zinc-400'}`}>
                               {isBreached ? '🎯 THRESHOLD HIT' : `${distanceToTarget}% away`}
                             </span>
                           </div>
@@ -885,42 +845,36 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
 
           {/* TAB 2: ACTIVE RUNNING ALGORITHMS */}
           {deskTab === 'orders' && (
-            <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-[#FFFFFF]" /> Active Algorithmic Parent Orders
+                  <Activity className="w-4 h-4 text-[#FFFFFF]"/> Active Algorithmic Parent Orders
                 </h3>
                 <span className="text-xs font-mono text-zinc-400">Real-time Slicing Telemetry</span>
               </div>
 
               <div className="space-y-3">
                 {activeAlgos.map((algo) => (
-                  <div key={algo.id} className="bg-black border border-white/10 rounded-xl p-4 space-y-3">
+                  <div key={algo.id} className="bg-black rounded-xl p-4 space-y-3">
                     <div className="flex items-start justify-between">
                       <div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-mono font-black text-[#FFFFFF]">{algo.id}</span>
                           <span className="text-xs font-bold text-white">{algo.strategy} Strategy</span>
-                          <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${
-                            algo.side === 'BUY' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'
-                          }`}>
+                          <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${ algo.side ==='BUY'?'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
                             {algo.side}
                           </span>
                         </div>
                         <div className="text-xs font-mono text-zinc-300 mt-1">{algo.symbol}</div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold ${
-                          algo.status === 'RUNNING' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 animate-pulse' :
-                          algo.status === 'COMPLETED' ? 'bg-blue-500/10 text-blue-400' :
-                          'bg-zinc-800 text-zinc-400'
-                        }`}>
+                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase font-bold ${ algo.status ==='RUNNING'?'bg-emerald-500/10 text-emerald-400 animate-pulse': algo.status ==='COMPLETED'?'bg-blue-500/10 text-blue-400' : 'bg-zinc-800 text-zinc-400'}`}>
                           {algo.status}
                         </span>
-                        {algo.status === 'RUNNING' && (
+                        {algo.status ==='RUNNING'&& (
                           <button
                             onClick={() => handleCancelAlgo(algo.id)}
-                            className="px-2.5 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded text-[10px] font-mono font-bold uppercase transition-colors cursor-pointer"
+                            className="px-2.5 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 rounded text-[10px] font-mono font-bold uppercase transition-colors cursor-pointer"
                           >
                             Cancel Order
                           </button>
@@ -937,7 +891,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                       <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
                         <div 
                           className="bg-[#FFFFFF] h-full rounded-full transition-all duration-300"
-                          style={{ width: `${algo.progress}%` }}
+                          style={{ width:`${algo.progress}%`}}
                         />
                       </div>
                       <div className="flex justify-between text-[10px] font-mono text-zinc-500">
@@ -954,20 +908,20 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
 
           {/* TAB 3: FIX PROTOCOL STREAM */}
           {deskTab === 'fix' && (
-            <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-emerald-400" /> FIX Protocol 4.4 / 5.0 Audit Stream
+                  <Terminal className="w-4 h-4 text-emerald-400"/> FIX Protocol 4.4 / 5.0 Audit Stream
                 </h3>
-                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"/>
                   Live Session Active
                 </span>
               </div>
 
-              <div className="bg-black border border-white/10 rounded-xl p-4 font-mono text-xs space-y-2 overflow-x-auto max-h-[480px]">
+              <div className="bg-black rounded-xl p-4 font-mono text-xs space-y-2 overflow-x-auto max-h-[480px]">
                 {fixMessages.map((msg, idx) => (
-                  <div key={idx} className="flex items-start gap-3 border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                  <div key={idx} className="flex items-start gap-3 pb-2 last:pb-0">
                     <span className="text-zinc-500 text-[10px] shrink-0">{msg.time}</span>
                     <span className="text-[#FFFFFF] font-bold text-[11px] shrink-0">{msg.tag}</span>
                     <span className="text-zinc-300 text-[11px] truncate">{msg.detail}</span>
@@ -987,13 +941,13 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-[#0B0F19] border-2 border-amber-500/50 rounded-3xl p-6 max-w-lg w-full space-y-5 shadow-[0_20px_70px_rgba(0,0,0,0.95)]"
-              style={{ backgroundColor: '#0B0F19' }}
+              className="bg-[#0B0F19] rounded-xl p-3.5 max-w-lg w-full space-y-2.5 shadow-[0_20px_70px_rgba(0,0,0,0.95)]"
+              style={{ backgroundColor:'#0B0F19'}}
             >
-              <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <div className="flex items-center justify-between pb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center">
-                    <BellRing className="w-4 h-4 text-amber-400" />
+                    <BellRing className="w-4 h-4 text-amber-400"/>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-white uppercase">Arm Real-Time Price Alert</h3>
@@ -1019,7 +973,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                       const base = livePrices[selected] || AVAILABLE_TICKERS.find(t => t.symbol === selected)?.basePrice || 100;
                       setNewAlertTargetPrice(parseFloat((base * 1.03).toFixed(2)));
                     }}
-                    className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none font-mono"
+                    className="w-full bg-black rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono"
                   >
                     {AVAILABLE_TICKERS.map(t => (
                       <option key={t.symbol} value={t.symbol}>
@@ -1036,26 +990,18 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     <button
                       type="button"
                       onClick={() => setNewAlertCondition('GREATER_EQUAL')}
-                      className={`py-2 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                        newAlertCondition === 'GREATER_EQUAL'
-                          ? 'bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.3)]'
-                          : 'bg-black border border-white/10 text-zinc-400'
-                      }`}
+                      className={`py-2 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${ newAlertCondition ==='GREATER_EQUAL'?'bg-emerald-500 text-black shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-black text-zinc-400'}`}
                     >
-                      <ArrowUpRight className="w-3.5 h-3.5" />
+                      <ArrowUpRight className="w-3.5 h-3.5"/>
                       <span>&gt;= Resistance Breakout</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setNewAlertCondition('LESS_EQUAL')}
-                      className={`py-2 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
-                        newAlertCondition === 'LESS_EQUAL'
-                          ? 'bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)]'
-                          : 'bg-black border border-white/10 text-zinc-400'
-                      }`}
+                      className={`py-2 px-3 rounded-xl text-xs font-mono font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer ${ newAlertCondition ==='LESS_EQUAL'?'bg-rose-500 text-white shadow-[0_0_15px_rgba(244,63,94,0.3)]' : 'bg-black text-zinc-400'}`}
                     >
-                      <ArrowDownRight className="w-3.5 h-3.5" />
+                      <ArrowDownRight className="w-3.5 h-3.5"/>
                       <span>&lt;= Support Pullback</span>
                     </button>
                   </div>
@@ -1074,7 +1020,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     step="0.10"
                     value={newAlertTargetPrice}
                     onChange={(e) => setNewAlertTargetPrice(parseFloat(e.target.value) || 0)}
-                    className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-sm font-mono font-bold text-amber-400 focus:border-amber-400 focus:outline-none"
+                    className="w-full bg-black rounded-xl px-3 py-2 text-sm font-mono font-bold text-amber-400 focus:outline-none"
                     required
                   />
 
@@ -1103,7 +1049,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     <select
                       value={newAlertPriority}
                       onChange={(e) => setNewAlertPriority(e.target.value as any)}
-                      className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono"
+                      className="w-full bg-black rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono"
                     >
                       <option value="NORMAL">NORMAL</option>
                       <option value="HIGH">HIGH (Priority Chime)</option>
@@ -1116,7 +1062,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     <select
                       value={newAlertAction}
                       onChange={(e) => setNewAlertAction(e.target.value as any)}
-                      className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono"
+                      className="w-full bg-black rounded-xl px-3 py-2 text-xs text-white focus:outline-none font-mono"
                     >
                       <option value="AUTO_ALGO_TWAP">Auto-Launch TWAP Algo</option>
                       <option value="AUTO_ALGO_VWAP">Auto-Launch VWAP Algo</option>
@@ -1133,7 +1079,7 @@ export function AlgorithmicTradingDesk({ setActiveTab }: { setActiveTab?: (tab: 
                     placeholder="e.g. Breakout collar trigger for Q2 equity position"
                     value={newAlertNotes}
                     onChange={(e) => setNewAlertNotes(e.target.value)}
-                    className="w-full bg-black border border-white/10 rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none"
+                    className="w-full bg-black rounded-xl px-3 py-2 text-xs text-zinc-200 focus:outline-none"
                   />
                 </div>
 

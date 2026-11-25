@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import marketRoutes from './market.routes.js';
+import v1Routes from './v1.routes.js';
 
 const router = Router();
 
 // API Modules
+router.use('/v1', v1Routes);
 router.use('/ai', (_req, res) => res.status(503).json({ error: 'AI integration is unavailable.' }));
 router.use('/market', marketRoutes);
 // These operations require authenticated, atomic accounting before they can be enabled.

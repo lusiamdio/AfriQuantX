@@ -34,7 +34,7 @@ export function CinematicShowcase() {
         <div className="relative w-full h-full flex items-center justify-center">
           {/* Animated Orbital Radar Nodes */}
           <div className="relative w-64 h-64 rounded-full border border-emerald-500/30 flex items-center justify-center animate-spin" style={{ animationDuration: '24s' }}>
-            <div className="absolute inset-4 rounded-full border border-dashed border-[#D5FF2F]/40" />
+            <div className="absolute inset-4 rounded-full bg-white/[0.03]" />
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#D5FF2F] rounded-full shadow-[0_0_15px_#D5FF2F]" />
             <div className="absolute bottom-4 right-8 w-3 h-3 bg-emerald-400 rounded-full shadow-[0_0_10px_#10B981]" />
           </div>
@@ -57,8 +57,8 @@ export function CinematicShowcase() {
       icon: <Zap className="w-5 h-5 text-[#00C805]" />,
       bgGradient: 'from-black via-zinc-900 to-emerald-950/60',
       graphicContent: (
-        <div className="w-full h-full flex flex-col justify-center space-y-4 px-6">
-          <div className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 backdrop-blur-md">
+        <div className="w-full h-full flex flex-col justify-center space-y-4 px-3.5">
+          <div className="flex items-center justify-between p-4 rounded-lg bg-zinc-900/80 backdrop-blur-md">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-[#00C805]/20 flex items-center justify-center font-bold text-[#00C805]">
                 FLW
@@ -73,7 +73,7 @@ export function CinematicShowcase() {
             </span>
           </div>
 
-          <div className="flex items-center justify-between p-4 rounded-2xl bg-zinc-900/80 border border-zinc-800 backdrop-blur-md">
+          <div className="flex items-center justify-between p-4 rounded-lg bg-zinc-900/80 backdrop-blur-md">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-[#D5FF2F]/20 flex items-center justify-center font-bold text-[#D5FF2F]">
                 MNP
@@ -140,10 +140,10 @@ export function CinematicShowcase() {
   const currentScene = scenes[activeSceneIdx];
 
   return (
-    <div className="w-full relative rounded-[32px] overflow-hidden bg-black text-white border border-zinc-800 shadow-[0_25px_70px_rgba(0,0,0,0.8)]">
+    <div className="w-full relative rounded-xl overflow-hidden bg-black text-white shadow-[0_25px_70px_rgba(0,0,0,0.8)]">
       
       {/* Film Aspect Ratio Header Bar */}
-      <div className="h-12 bg-zinc-900/90 border-b border-zinc-800 px-6 flex items-center justify-between text-xs font-mono text-zinc-400">
+      <div className="h-12 bg-zinc-900/90 px-3.5 flex items-center justify-between text-xs font-mono text-zinc-400">
         <div className="flex items-center gap-3">
           <Film className="w-4 h-4 text-[#D5FF2F] animate-pulse" />
           <span className="tracking-widest uppercase font-bold text-white">CINEMATIC PRODUCT TRAILER</span>
@@ -162,7 +162,7 @@ export function CinematicShowcase() {
       </div>
 
       {/* Main Film Stage Viewport */}
-      <div className="relative min-h-[460px] lg:min-h-[500px] flex flex-col justify-between p-8 lg:p-14">
+      <div className="relative min-h-[460px] lg:min-h-[500px] flex flex-col justify-between p-4 lg:p-14">
         
         {/* Dynamic Background Motion */}
         <AnimatePresence mode="wait">
@@ -191,14 +191,14 @@ export function CinematicShowcase() {
             <span>{currentScene.tag}</span>
           </motion.div>
 
-          <span className="px-3 py-1 rounded-full bg-zinc-800/80 border border-zinc-700 text-xs font-mono font-bold text-emerald-400">
+          <span className="px-3 py-1 rounded-full bg-zinc-800/80 text-xs font-mono font-bold text-emerald-400">
             {currentScene.badge}
           </span>
         </div>
 
         {/* Center Grid: Story Content Left + Interactive Graphics Right */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center my-6">
-          <div className="lg:col-span-7 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center my-6">
+          <div className="lg:col-span-7 space-y-3">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`text-${currentScene.id}`}
@@ -217,7 +217,7 @@ export function CinematicShowcase() {
               </motion.div>
             </AnimatePresence>
 
-            <div className="pt-2 flex items-center gap-6">
+            <div className="pt-2 flex items-center gap-3">
               <div>
                 <div className="text-3xl lg:text-4xl font-extrabold font-mono text-[#D5FF2F]">
                   {currentScene.stat}
@@ -229,7 +229,7 @@ export function CinematicShowcase() {
             </div>
           </div>
 
-          <div className="lg:col-span-5 h-[240px] lg:h-[280px] rounded-2xl bg-zinc-950/70 border border-zinc-800/80 backdrop-blur-md p-4 flex items-center justify-center overflow-hidden relative">
+          <div className="lg:col-span-5 h-[240px] lg:h-[280px] rounded-lg bg-zinc-950/70 backdrop-blur-md p-4 flex items-center justify-center overflow-hidden relative">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`graphic-${currentScene.id}`}
@@ -246,7 +246,7 @@ export function CinematicShowcase() {
         </div>
 
         {/* Bottom Timeline Scene Switcher Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-zinc-800/80">
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-6">
           <div className="flex items-center gap-2">
             {scenes.map((scene, idx) => (
               <button
@@ -255,11 +255,7 @@ export function CinematicShowcase() {
                   setActiveSceneIdx(idx);
                   setIsPlaying(false);
                 }}
-                className={`h-2.5 rounded-full transition-all duration-300 ${
-                  activeSceneIdx === idx
-                    ? 'w-12 bg-[#D5FF2F]'
-                    : 'w-3 bg-zinc-700 hover:bg-zinc-500'
-                }`}
+                className={`h-2.5 rounded-full transition-all duration-300 ${ activeSceneIdx === idx ? 'w-12 bg-[#D5FF2F]' : 'w-3 bg-zinc-700 hover:bg-zinc-500' }`}
               />
             ))}
           </div>

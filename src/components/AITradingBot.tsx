@@ -116,17 +116,17 @@ export function AITradingBot({ setActiveTab }: { setActiveTab: (tab: string) => 
   }
 
   return (
-    <div className="space-y-6 mt-12 bg-white/[0.02] border border-white/10 rounded-3xl p-6 relative overflow-hidden">
+    <div className="space-y-3 mt-12 bg-white/[0.02] rounded-xl p-3.5 relative overflow-hidden">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-            <BrainCircuit className="w-8 h-8 text-blue-500" />
+            <BrainCircuit className="w-8 h-8 text-blue-500"/>
             AI Trading Bot
           </h2>
           <p className="text-zinc-400 mt-1">Automate your trades using OpenRouter AI and real-time market signals.</p>
           {errorMsg && (
-            <div className="mt-4 bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-2 rounded-xl text-sm flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4" />
+            <div className="mt-4 bg-red-500/10 text-red-400 px-4 py-2 rounded-xl text-sm flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4"/>
               {errorMsg}
             </div>
           )}
@@ -134,39 +134,35 @@ export function AITradingBot({ setActiveTab }: { setActiveTab: (tab: string) => 
         
         <div className="flex items-center gap-3">
           {status.isRunning ? (
-            <div className="px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-medium flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="px-4 py-2 rounded-xl bg-emerald-500/10 text-emerald-400 font-medium flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
               Bot is Running
             </div>
           ) : (
-            <div className="px-4 py-2 rounded-xl bg-zinc-500/10 border border-zinc-500/20 text-zinc-400 font-medium flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-zinc-500" />
+            <div className="px-4 py-2 rounded-xl bg-zinc-500/10 text-zinc-400 font-medium flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-zinc-500"/>
               Bot is Stopped
             </div>
           )}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="lg:col-span-2 space-y-3">
           <h2 className="text-xl font-bold text-white">Available Strategies</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {strategies.map(strategy => (
-              <div key={strategy.id} className={`p-6 rounded-2xl border transition-all ${status.isRunning && status.strategy?.id === strategy.id ? 'bg-blue-500/10 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'bg-white/5 border-white/10 hover:border-white/20'}`}>
+              <div key={strategy.id} className={`p-3.5 rounded-lg transition-all bg-white/[0.03] ${status.isRunning && status.strategy?.id === strategy.id ?'bg-blue-500/10 shadow-[0_0_30px_rgba(59,130,246,0.15)]' : 'bg-white/5'}`}>
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-lg font-bold text-white">{strategy.name}</h3>
-                  <span className={`px-2 py-1 rounded-lg text-xs font-medium uppercase tracking-wider ${
-                    strategy.riskLevel === 'high' ? 'bg-red-500/10 text-red-400' :
-                    strategy.riskLevel === 'medium' ? 'bg-amber-500/10 text-amber-400' :
-                    'bg-emerald-500/10 text-emerald-400'
-                  }`}>
+                  <span className={`px-2 py-1 rounded-lg text-xs font-medium uppercase tracking-wider ${ strategy.riskLevel ==='high'?'bg-red-500/10 text-red-400': strategy.riskLevel ==='medium'?'bg-amber-500/10 text-amber-400' : 'bg-emerald-500/10 text-emerald-400'}`}>
                     {strategy.riskLevel} Risk
                   </span>
                 </div>
-                <p className="text-sm text-zinc-400 mb-6">{strategy.description}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
+                <p className="text-sm text-zinc-400 mb-3">{strategy.description}</p>
+                <div className="flex flex-wrap gap-2 mb-3">
                   {strategy.assets.map(asset => (
-                    <span key={asset} className="px-2 py-1 rounded-md bg-black/40 border border-white/5 text-xs text-zinc-300">
+                    <span key={asset} className="px-2 py-1 rounded-md bg-black/40 text-xs text-zinc-300">
                       {asset}
                     </span>
                   ))}
@@ -196,10 +192,10 @@ export function AITradingBot({ setActiveTab }: { setActiveTab: (tab: string) => 
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+        <div className="space-y-3">
+          <div className="p-3.5 rounded-lg bg-white/5">
             <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
-              <Activity className="w-5 h-5 text-blue-400" />
+              <Activity className="w-5 h-5 text-blue-400"/>
               Live Execution Log
             </h3>
             <div className="space-y-4">
@@ -209,16 +205,16 @@ export function AITradingBot({ setActiveTab }: { setActiveTab: (tab: string) => 
                   <p>Check the <button onClick={() => setActiveTab('activity')} className="text-blue-400 hover:underline">Activity Center</button> to see live trades as they happen.</p>
                 </div>
               ) : (
-                <div className="text-sm text-zinc-500 text-center py-8">
+                <div className="text-sm text-zinc-500 text-center py-3.5">
                   Bot is currently inactive. Select a strategy and click Start to begin automated trading.
                 </div>
               )}
             </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+          <div className="p-3.5 rounded-lg bg-amber-500/10">
             <h3 className="text-lg font-bold text-amber-400 mb-2 flex items-center gap-2">
-              <AlertTriangle className="w-5 h-5" />
+              <AlertTriangle className="w-5 h-5"/>
               Risk Warning
             </h3>
             <p className="text-sm text-amber-200/70">

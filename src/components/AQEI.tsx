@@ -314,11 +314,11 @@ export function AQEI() {
       let valB: any = b[sortColumn as keyof Company];
 
       if (sortColumn === 'trend') {
-        valA = parseFloat((valA as string).replace('%', ''));
-        valB = parseFloat((valB as string).replace('%', ''));
+        valA = parseFloat((valA as string).replace('%',''));
+        valB = parseFloat((valB as string).replace('%',''));
       } else if (sortColumn === 'marketCap') {
-        valA = parseFloat((valA as string).replace('$', '').replace('B', ''));
-        valB = parseFloat((valB as string).replace('$', '').replace('B', ''));
+        valA = parseFloat((valA as string).replace('$','').replace('B',''));
+        valB = parseFloat((valB as string).replace('$','').replace('B',''));
       }
 
       if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
@@ -333,14 +333,14 @@ export function AQEI() {
   }, [signalFilter]);
 
   return (
-    <div className="w-full h-full flex flex-col space-y-6">
+    <div className="w-full h-full flex flex-col space-y-3">
       
       {/* 1. TOP EXECUTIVE HEADER - STRETCHED & BORDERLESS */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2">
         <div>
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center font-bold">
-              <BrainCircuit className="w-5 h-5 text-black" />
+              <BrainCircuit className="w-5 h-5 text-black"/>
             </div>
             <div>
               <div className="flex items-center gap-2.5">
@@ -359,19 +359,19 @@ export function AQEI() {
         {/* Live Telemetry Matrix */}
         <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-900/60 text-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
             <span className="text-zinc-400 font-medium">Bourses Connected:</span>
             <span className="font-bold text-white font-mono">38 Exchanges</span>
           </div>
 
           <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-900/60 text-xs">
-            <Activity className="w-3.5 h-3.5 text-blue-400" />
+            <Activity className="w-3.5 h-3.5 text-blue-400"/>
             <span className="text-zinc-400 font-medium">Latency:</span>
             <span className="font-bold text-white font-mono">4.2ms FIX</span>
           </div>
 
           <div className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-neutral-900/60 text-xs">
-            <ShieldCheck className="w-3.5 h-3.5 text-white" />
+            <ShieldCheck className="w-3.5 h-3.5 text-white"/>
             <span className="text-zinc-400 font-medium">Confidence:</span>
             <span className="font-bold text-emerald-400 font-mono">94.8%</span>
           </div>
@@ -379,7 +379,7 @@ export function AQEI() {
       </div>
 
       {/* 2. MAIN WORKSPACE WITH COLLAPSIBLE LEFT SUB-MENU */}
-      <div className="w-full flex-1 flex flex-col lg:flex-row gap-6 items-start">
+      <div className="w-full flex-1 flex flex-col lg:flex-row gap-3 items-start">
         
         {/* LEFT SUB-MENU - COLLAPSIBLE */}
         <AnimatePresence initial={false} mode="wait">
@@ -392,10 +392,10 @@ export function AQEI() {
               transition={{ duration: 0.2 }}
               className="w-full lg:w-64 shrink-0 overflow-hidden"
             >
-              <div className="bg-neutral-900/80 border border-white/10 rounded-2xl p-3 space-y-3 shadow-xl backdrop-blur-md">
-                <div className="flex items-center justify-between px-2 py-1.5 border-b border-white/5 pb-2.5">
+              <div className="bg-neutral-900/80 rounded-lg p-3 space-y-3 shadow-xl backdrop-blur-md">
+                <div className="flex items-center justify-between px-2 py-1.5 pb-2.5 bg-white/[0.03]">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
                     <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
                       AQEI Navigation
                     </span>
@@ -406,7 +406,7 @@ export function AQEI() {
                     title="Hide Sub-Menu"
                     aria-label="Hide Sub-Menu"
                   >
-                    <PanelLeftClose className="w-4 h-4" />
+                    <PanelLeftClose className="w-4 h-4"/>
                   </button>
                 </div>
 
@@ -424,18 +424,14 @@ export function AQEI() {
                       <button
                         key={tab.id}
                         onClick={() => setActiveTab(tab.id as any)}
-                        className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${
-                          isActive
-                            ? 'bg-white text-black shadow-lg shadow-white/10'
-                            : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                        }`}
+                        className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${ isActive ?'bg-white text-black shadow-lg shadow-white/10' : 'text-zinc-400 hover:text-white hover:bg-white/5'}`}
                       >
-                        <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${isActive ? 'text-black' : 'text-zinc-400'}`} />
+                        <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${isActive ?'text-black' : 'text-zinc-400'}`} />
                         <div className="min-w-0 flex-1">
-                          <div className={`text-xs font-bold uppercase tracking-wider truncate ${isActive ? 'text-black font-extrabold' : 'text-zinc-200'}`}>
+                          <div className={`text-xs font-bold uppercase tracking-wider truncate ${isActive ?'text-black font-extrabold' : 'text-zinc-200'}`}>
                             {tab.label}
                           </div>
-                          <div className={`text-[10px] truncate ${isActive ? 'text-zinc-700' : 'text-zinc-500'}`}>
+                          <div className={`text-[10px] truncate ${isActive ?'text-zinc-700' : 'text-zinc-500'}`}>
                             {tab.description}
                           </div>
                         </div>
@@ -444,7 +440,7 @@ export function AQEI() {
                   })}
                 </nav>
 
-                <div className="pt-2.5 border-t border-white/5 px-2">
+                <div className="pt-2.5 px-2 bg-white/[0.03]">
                   <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400">
                     <span className="flex items-center gap-1.5">
                       <RefreshCw className="w-3 h-3 text-emerald-400 animate-spin" style={{ animationDuration: '6s' }} />
@@ -465,10 +461,10 @@ export function AQEI() {
             >
               <button
                 onClick={() => setIsSubMenuOpen(true)}
-                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-neutral-900/80 border border-white/10 text-zinc-300 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all shadow-xl cursor-pointer group"
+                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-neutral-900/80 text-zinc-300 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all shadow-xl cursor-pointer group"
                 title="Show Sub-Menu"
               >
-                <PanelLeftOpen className="w-4 h-4 text-emerald-400 group-hover:text-white transition-colors" />
+                <PanelLeftOpen className="w-4 h-4 text-emerald-400 group-hover:text-white transition-colors"/>
                 <span>Show Sub-Menu</span>
               </button>
             </motion.div>
@@ -482,13 +478,13 @@ export function AQEI() {
             TAB 1: QUANT MATRIX DASHBOARD (STRETCHED, FLUID, BORDERLESS)
             ========================================================================= */}
         {activeTab === 'dashboard' && (
-          <div className="space-y-6 w-full">
+          <div className="space-y-3 w-full">
             
             {/* Live Pan-African Market Indices - Fluid Grid */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-white" />
+                  <Globe className="w-4 h-4 text-white"/>
                   <h2 className="text-sm font-bold uppercase tracking-wider text-white">Pan-African Bourse Index Grid</h2>
                 </div>
                 <span className="text-xs text-zinc-400 font-mono">Direct API Feeds: JSE • NGX • NSE • EGX • CSE • BRVM</span>
@@ -505,7 +501,7 @@ export function AQEI() {
                 ].map((idx, i) => (
                   <div 
                     key={i}
-                    className="p-4 rounded-2xl bg-neutral-900/50 hover:bg-neutral-900/80 transition-all duration-200 flex flex-col justify-between"
+                    className="p-4 rounded-lg bg-neutral-900/50 hover:bg-neutral-900/80 transition-all duration-200 flex flex-col justify-between"
                   >
                     <div className="flex items-center justify-between">
                       <div>
@@ -521,16 +517,16 @@ export function AQEI() {
                       <div>
                         <p className="text-base font-bold font-mono text-white tracking-tight">{idx.val}</p>
                       </div>
-                      <span className={`text-xs font-bold font-mono flex items-center ${idx.pos ? 'text-emerald-400' : 'text-rose-400'}`}>
-                        {idx.pos ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                      <span className={`text-xs font-bold font-mono flex items-center ${idx.pos ?'text-emerald-400' : 'text-rose-400'}`}>
+                        {idx.pos ? <ArrowUpRight className="w-3.5 h-3.5"/> : <ArrowDownRight className="w-3.5 h-3.5"/>}
                         {idx.change}
                       </span>
                     </div>
 
                     <div className="w-full bg-white/5 h-1 rounded-full mt-2.5 overflow-hidden">
                       <div 
-                        className={`h-full rounded-full ${idx.pos ? 'bg-emerald-400' : 'bg-rose-400'}`}
-                        style={{ width: `${65 + (i * 5)}%` }}
+                        className={`h-full rounded-full ${idx.pos ?'bg-emerald-400' : 'bg-rose-400'}`}
+                        style={{ width:`${65 + (i * 5)}%`}}
                       />
                     </div>
                   </div>
@@ -541,11 +537,11 @@ export function AQEI() {
             {/* 4 Core Quantitative AI Modules */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               
-              <div className="p-5 rounded-2xl bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
+              <div className="p-3 rounded-lg bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
-                      <Activity className="w-4 h-4" />
+                      <Activity className="w-4 h-4"/>
                     </div>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">
                       Active
@@ -556,7 +552,7 @@ export function AQEI() {
                     Continuous cross-listing spread scanner across dual-listed shares (e.g. Airtel Africa NGX/LSE, Seplat).
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/5 space-y-1.5 text-xs">
+                <div className="mt-4 pt-3 space-y-1.5 text-xs">
                   <div className="flex justify-between">
                     <span className="text-zinc-400">NGX / LSE Spread:</span>
                     <span className="text-emerald-400 font-mono font-bold">0.42% Arbitrage</span>
@@ -568,11 +564,11 @@ export function AQEI() {
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
+              <div className="p-3 rounded-lg bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div className="w-8 h-8 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
-                      <Cpu className="w-4 h-4" />
+                      <Cpu className="w-4 h-4"/>
                     </div>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 font-bold">
                       NLP v5
@@ -583,7 +579,7 @@ export function AQEI() {
                     Deep semantic parsing of central bank transcripts, SENS/NSE regulatory filings, and executive earnings calls.
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/5 space-y-1.5 text-xs">
+                <div className="mt-4 pt-3 space-y-1.5 text-xs">
                   <div className="flex justify-between">
                     <span className="text-zinc-400">Disclosures Scanned:</span>
                     <span className="text-white font-mono font-bold">148 Filings (24h)</span>
@@ -595,11 +591,11 @@ export function AQEI() {
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
+              <div className="p-3 rounded-lg bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div className="w-8 h-8 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold">
-                      <Globe className="w-4 h-4" />
+                      <Globe className="w-4 h-4"/>
                     </div>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 font-bold">
                       Macro
@@ -610,7 +606,7 @@ export function AQEI() {
                     Multivariate sovereign yield spreads, foreign currency reserves tracking, and regional intra-African trade models.
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/5 space-y-1.5 text-xs">
+                <div className="mt-4 pt-3 space-y-1.5 text-xs">
                   <div className="flex justify-between">
                     <span className="text-zinc-400">USD/ZAR Volatility:</span>
                     <span className="text-white font-mono font-bold">11.8% (Compressed)</span>
@@ -622,11 +618,11 @@ export function AQEI() {
                 </div>
               </div>
 
-              <div className="p-5 rounded-2xl bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
+              <div className="p-3 rounded-lg bg-neutral-900/50 flex flex-col justify-between hover:bg-neutral-900/70 transition-colors">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div className="w-8 h-8 rounded-xl bg-amber-500/10 text-white flex items-center justify-center font-bold">
-                      <Scale className="w-4 h-4" />
+                      <Scale className="w-4 h-4"/>
                     </div>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">
                       ESG 94/100
@@ -637,7 +633,7 @@ export function AQEI() {
                     Carbon transition intensity, executive board composition, and regulatory compliance scoring across bourses.
                   </p>
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/5 space-y-1.5 text-xs">
+                <div className="mt-4 pt-3 space-y-1.5 text-xs">
                   <div className="flex justify-between">
                     <span className="text-zinc-400">Leader Rank:</span>
                     <span className="text-white font-mono font-bold">Safaricom (ESG 94)</span>
@@ -652,10 +648,10 @@ export function AQEI() {
             </div>
 
             {/* Sector Capital Flows & Real-time Alpha Feed - 2 Column Stretched */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
               
               {/* Sector Capital Allocation */}
-              <div className="lg:col-span-2 p-6 rounded-2xl bg-neutral-900/50 space-y-4">
+              <div className="lg:col-span-2 p-3.5 rounded-lg bg-neutral-900/50 space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-sm font-bold uppercase tracking-wider text-white">Sector Capital Inflows & Outflows</h3>
@@ -681,12 +677,12 @@ export function AQEI() {
                         </div>
                         <div className="flex items-center gap-3 font-mono">
                           <span className="text-zinc-400">{s.flow}</span>
-                          <span className={`font-bold ${s.pos ? 'text-emerald-400' : 'text-rose-400'}`}>{s.pct}</span>
+                          <span className={`font-bold ${s.pos ?'text-emerald-400' : 'text-rose-400'}`}>{s.pct}</span>
                         </div>
                       </div>
                       <div className="w-full bg-white/5 h-2 rounded-full overflow-hidden">
                         <div 
-                          className={`h-full rounded-full ${s.pos ? 'bg-white' : 'bg-rose-400'}`}
+                          className={`h-full rounded-full ${s.pos ?'bg-white' : 'bg-rose-400'}`}
                           style={{ width: s.weight }}
                         />
                       </div>
@@ -696,11 +692,11 @@ export function AQEI() {
               </div>
 
               {/* High Conviction Alpha Alerts */}
-              <div className="p-6 rounded-2xl bg-neutral-900/50 space-y-4 flex flex-col justify-between">
+              <div className="p-3.5 rounded-lg bg-neutral-900/50 space-y-4 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <h3 className="text-sm font-bold uppercase tracking-wider text-white">Live Alpha Stream</h3>
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
                   </div>
 
                   <div className="space-y-3">
@@ -711,11 +707,7 @@ export function AQEI() {
                         className="p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] transition-colors cursor-pointer space-y-1.5"
                       >
                         <div className="flex items-center justify-between">
-                          <span className={`text-[10px] font-mono font-extrabold px-2 py-0.5 rounded ${
-                            sig.type === 'STRONG_BUY' || sig.type === 'BUY'
-                              ? 'bg-emerald-500/10 text-emerald-400'
-                              : 'bg-white/10 text-white'
-                          }`}>
+                          <span className={`text-[10px] font-mono font-extrabold px-2 py-0.5 rounded ${ sig.type ==='STRONG_BUY'|| sig.type ==='BUY'?'bg-emerald-500/10 text-emerald-400' : 'bg-white/10 text-white'}`}>
                             {sig.type}
                           </span>
                           <span className="text-[10px] font-mono text-zinc-500">{sig.time}</span>
@@ -735,7 +727,7 @@ export function AQEI() {
                   className="w-full py-2.5 bg-white text-black font-bold text-xs uppercase tracking-wider rounded-xl hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 cursor-pointer mt-4"
                 >
                   <span>Open Signal Matrix</span>
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4"/>
                 </button>
               </div>
 
@@ -748,10 +740,10 @@ export function AQEI() {
             TAB 2: TOP 100 PAN-AFRICAN AI INDEX (STRETCHED, HIGH DATA DENSITY)
             ========================================================================= */}
         {activeTab === 'top100' && (
-          <div className="space-y-5 w-full">
+          <div className="space-y-2.5 w-full">
             
             {/* Filter & Search Bar */}
-            <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-4 rounded-2xl bg-neutral-900/50">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3 p-4 rounded-lg bg-neutral-900/50">
               
               {/* Bourse Filter Pills */}
               <div className="flex items-center gap-1.5 overflow-x-auto pb-1 lg:pb-0 scrollbar-none">
@@ -760,11 +752,7 @@ export function AQEI() {
                   <button
                     key={b}
                     onClick={() => setSelectedBourse(b)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono transition-colors shrink-0 cursor-pointer ${
-                      selectedBourse === b 
-                        ? 'bg-white text-black' 
-                        : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
-                    }`}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono transition-colors shrink-0 cursor-pointer ${ selectedBourse === b ?'bg-white text-black' : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'}`}
                   >
                     {b}
                   </button>
@@ -784,7 +772,7 @@ export function AQEI() {
                 </select>
 
                 <div className="relative flex-1 sm:w-64">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500"/>
                   <input
                     type="text"
                     value={filterText}
@@ -798,39 +786,39 @@ export function AQEI() {
             </div>
 
             {/* Stretched Borderless Data Table */}
-            <div className="w-full overflow-x-auto rounded-2xl bg-neutral-900/50">
-              <table className="w-full text-left border-collapse">
+            <div className="w-full overflow-x-auto rounded-lg bg-neutral-900/50">
+              <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-white/5 text-[11px] uppercase tracking-widest text-zinc-400 bg-white/[0.02]">
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('rank')}>
+                  <tr className="text-[11px] uppercase tracking-widest text-zinc-400 bg-white/[0.02]">
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('rank')}>
                       Rank {sortColumn === 'rank' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('name')}>
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('name')}>
                       Company & Country {sortColumn === 'name' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('exchange')}>
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('exchange')}>
                       Exchange {sortColumn === 'exchange' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('sector')}>
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('sector')}>
                       Sector {sortColumn === 'sector' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('marketCap')}>
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('marketCap')}>
                       Market Cap {sortColumn === 'marketCap' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('peRatio')}>
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('peRatio')}>
                       P/E {sortColumn === 'peRatio' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('score')}>
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('score')}>
                       AI Quant Score {sortColumn === 'score' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('trend')}>
+                    <th className="px-2.5 py-1.5 font-bold cursor-pointer hover:text-white" onClick={() => handleSort('trend')}>
                       24h Delta {sortColumn === 'trend' && (sortDirection === 'asc' ? '↑' : '↓')}
                     </th>
-                    <th className="p-4 font-bold text-center">AI Rating</th>
-                    <th className="p-4 font-bold text-right">Action</th>
+                    <th className="px-2.5 py-1.5 font-bold text-center">AI Rating</th>
+                    <th className="px-2.5 py-1.5 font-bold text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 text-xs">
+                <tbody className="text-xs">
                   {filteredAndSortedCompanies.map((c) => {
                     const isExpanded = expandedCompany === c.rank;
                     return (
@@ -839,50 +827,52 @@ export function AQEI() {
                           onClick={() => setExpandedCompany(isExpanded ? null : c.rank)}
                           className="hover:bg-white/[0.03] transition-colors cursor-pointer group"
                         >
-                          <td className="p-4 font-mono text-zinc-400 font-bold">#{c.rank}</td>
-                          <td className="p-4">
+                          <td className="px-2.5 py-1.5 font-mono text-zinc-400 font-bold">#{c.rank}</td>
+                          <td className="px-2.5 py-1.5">
                             <div className="font-bold text-white">{c.name}</div>
                             <div className="text-[10px] text-zinc-400 uppercase tracking-wider">{c.country}</div>
                           </td>
-                          <td className="p-4">
+                          <td className="px-2.5 py-1.5">
                             <span className="px-2 py-0.5 rounded bg-white/10 text-white font-mono font-bold text-[10px]">
                               {c.exchange}
                             </span>
                           </td>
-                          <td className="p-4 text-zinc-300">{c.sector}</td>
-                          <td className="p-4 font-mono text-white font-bold">{c.marketCap}</td>
-                          <td className="p-4 font-mono text-zinc-300">{c.peRatio}x</td>
-                          <td className="p-4">
+                          <td className="px-2.5 py-1.5 text-zinc-300">{c.sector}</td>
+                          <td className="px-2.5 py-1.5 font-mono text-white font-bold">{c.marketCap}</td>
+                          <td className="px-2.5 py-1.5 font-mono text-zinc-300">{c.peRatio}x</td>
+                          <td className="px-2.5 py-1.5">
                             <div className="flex items-center gap-2">
                               <div className="w-16 h-1.5 bg-white/10 rounded-full overflow-hidden">
                                 <div 
                                   className="h-full bg-white rounded-full"
-                                  style={{ width: `${c.score}%` }}
+                                  style={{ width:`${c.score}%`}}
                                 />
                               </div>
                               <span className="font-mono font-bold text-white">{c.score}</span>
                             </div>
                           </td>
-                          <td className="p-4">
-                            <span className={`font-mono font-bold flex items-center gap-0.5 ${c.isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
-                              {c.isPositive ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
+                          <td className="px-2.5 py-1.5">
+                            <span className={`font-mono font-bold flex items-center gap-0.5 ${c.isPositive ?'text-emerald-400' : 'text-rose-400'}`}>
+                              {c.isPositive ? <ArrowUpRight className="w-3.5 h-3.5"/> : <ArrowDownRight className="w-3.5 h-3.5"/>}
                               {c.trend}
                             </span>
                           </td>
-                          <td className="p-4 text-center">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                              c.aiSignal === 'STRONG_BUY' || c.aiSignal === 'BUY'
-                                ? 'bg-emerald-500/10 text-emerald-400'
-                                : c.aiSignal === 'ACCUMULATE'
-                                ? 'bg-blue-500/10 text-blue-400'
-                                : 'bg-white/10 text-zinc-300'
-                            }`}>
+                          <td className="px-2.5 py-1.5 text-center">
+                            <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${ c.aiSignal ==='STRONG_BUY'|| c.aiSignal ==='BUY'?'bg-emerald-500/10 text-emerald-400': c.aiSignal ==='ACCUMULATE'?'bg-blue-500/10 text-blue-400' : 'bg-white/10 text-zinc-300'}`}>
                               {c.aiSignal}
                             </span>
                           </td>
-                          <td className="p-4 text-right">
-                            <button className="p-1.5 rounded-lg text-zinc-400 group-hover:text-white group-hover:bg-white/10 transition-all">
-                              {isExpanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                          <td className="px-2.5 py-1.5 text-right">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setExpandedCompany(isExpanded ? null : c.rank);
+                              }}
+                              aria-label={isExpanded ? `Collapse ${c.name} details` : `Expand ${c.name} details`}
+                              className="p-1.5 rounded-lg text-zinc-400 group-hover:text-white group-hover:bg-white/10 transition-all"
+                            >
+                              {isExpanded ? <ChevronDown className="w-4 h-4"/> : <ChevronRight className="w-4 h-4"/>}
                             </button>
                           </td>
                         </tr>
@@ -890,7 +880,7 @@ export function AQEI() {
                         {/* Expandable Company Deep-Dive Row */}
                         {isExpanded && (
                           <tr className="bg-white/[0.02]">
-                            <td colSpan={10} className="p-6 space-y-4">
+                            <td colSpan={10} className="p-3.5 space-y-4">
                               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 p-4 rounded-xl bg-neutral-900/60">
                                 <div>
                                   <p className="text-[10px] font-mono uppercase text-zinc-400">Dividend Yield</p>
@@ -926,12 +916,12 @@ export function AQEI() {
             TAB 3: PREDICTIVE ALPHA SIGNALS (STRETCHED, HIGH IMPACT, BORDERLESS)
             ========================================================================= */}
         {activeTab === 'signals' && (
-          <div className="space-y-6 w-full">
+          <div className="space-y-3 w-full">
             
             {/* Filter Bar */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-2xl bg-neutral-900/50">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-lg bg-neutral-900/50">
               <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-white" />
+                <Zap className="w-4 h-4 text-white"/>
                 <h3 className="text-sm font-bold uppercase tracking-wider text-white">Algorithmic Trade Recommendations</h3>
               </div>
 
@@ -940,11 +930,7 @@ export function AQEI() {
                   <button
                     key={t}
                     onClick={() => setSignalFilter(t)}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold font-mono transition-colors shrink-0 cursor-pointer ${
-                      signalFilter === t 
-                        ? 'bg-white text-black' 
-                        : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'
-                    }`}
+                    className={`px-3 py-1 rounded-xl text-xs font-bold font-mono transition-colors shrink-0 cursor-pointer ${ signalFilter === t ?'bg-white text-black' : 'bg-white/5 text-zinc-400 hover:text-white hover:bg-white/10'}`}
                   >
                     {t}
                   </button>
@@ -957,17 +943,9 @@ export function AQEI() {
               {filteredSignals.map((signal) => (
                 <div 
                   key={signal.id}
-                  className="p-6 rounded-2xl bg-neutral-900/50 hover:bg-neutral-900/70 transition-all duration-200 flex flex-col lg:flex-row items-start gap-6"
+                  className="p-3.5 rounded-lg bg-neutral-900/50 hover:bg-neutral-900/70 transition-all duration-200 flex flex-col lg:flex-row items-start gap-3"
                 >
-                  <div className={`px-5 py-3 rounded-xl font-bold font-mono text-sm uppercase tracking-widest shrink-0 ${
-                    signal.type === 'STRONG_BUY' || signal.type === 'BUY'
-                      ? 'bg-emerald-500/10 text-emerald-400'
-                      : signal.type === 'ACCUMULATE'
-                      ? 'bg-blue-500/10 text-blue-400'
-                      : signal.type === 'REDUCE'
-                      ? 'bg-rose-500/10 text-rose-400'
-                      : 'bg-white/10 text-white'
-                  }`}>
+                  <div className={`px-5 py-3 rounded-xl font-bold font-mono text-sm uppercase tracking-widest shrink-0 ${ signal.type ==='STRONG_BUY'|| signal.type ==='BUY'?'bg-emerald-500/10 text-emerald-400': signal.type ==='ACCUMULATE'?'bg-blue-500/10 text-blue-400': signal.type ==='REDUCE'?'bg-rose-500/10 text-rose-400' : 'bg-white/10 text-white'}`}>
                     {signal.type}
                   </div>
 

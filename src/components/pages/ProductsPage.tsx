@@ -98,7 +98,7 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
     <div className="min-h-screen bg-white text-[#1A1A1A] font-sans selection:bg-[#D5FF2F]">
       
       {/* 1. HERO SECTION WITH YOUTUBE VIDEO BACKGROUND */}
-      <section className="relative pt-32 pb-24 px-6 lg:px-12 max-w-[1280px] mx-auto text-center space-y-8 overflow-hidden">
+      <section className="relative pt-32 pb-24 px-3.5 lg:px-5 max-w-[1280px] mx-auto text-center space-y-4 overflow-hidden">
         <HeroVideoBackground videoId="LXb3EKWsInQ" overlayOpacity={0.88} />
 
         <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-semibold tracking-tight leading-[1.04]">
@@ -125,10 +125,10 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
         </motion.p>
 
         {/* 3D Floating Investment Cards Hero Mockup */}
-        <div className="pt-10 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="pt-4 grid grid-cols-1 md:grid-cols-3 gap-3 max-w-4xl mx-auto">
           <motion.div 
             whileHover={{ y: -6 }}
-            className="p-6 rounded-[24px] bg-white border border-gray-200/90 shadow-[0_12px_40px_rgba(0,0,0,0.06)] space-y-3 text-left"
+            className="p-3.5 rounded-lg bg-white shadow-[0_12px_40px_rgba(0,0,0,0.06)] space-y-3 text-left"
           >
             <div className="w-10 h-10 rounded-xl bg-emerald-100 text-[#00C805] flex items-center justify-center">
               <TrendingUp className="w-5 h-5" />
@@ -139,7 +139,7 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
 
           <motion.div 
             whileHover={{ y: -6 }}
-            className="p-6 rounded-[24px] bg-black text-white border border-gray-800 shadow-xl space-y-3 text-left"
+            className="p-3.5 rounded-lg bg-black text-white shadow-xl space-y-3 text-left"
           >
             <div className="w-10 h-10 rounded-xl bg-[#D5FF2F] text-black flex items-center justify-center font-bold">
               IPO
@@ -150,7 +150,7 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
 
           <motion.div 
             whileHover={{ y: -6 }}
-            className="p-6 rounded-[24px] bg-white border border-gray-200/90 shadow-[0_12px_40px_rgba(0,0,0,0.06)] space-y-3 text-left"
+            className="p-3.5 rounded-lg bg-white shadow-[0_12px_40px_rgba(0,0,0,0.06)] space-y-3 text-left"
           >
             <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
               <Cpu className="w-5 h-5" />
@@ -162,27 +162,27 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
       </section>
 
       {/* 2. PRODUCT CATEGORIES GRID */}
-      <section className="py-20 bg-[#F5F5F7] border-y border-gray-200/80 px-6 lg:px-12">
-        <div className="max-w-[1280px] mx-auto space-y-16">
+      <section className="py-7 bg-[#F5F5F7] px-3.5 lg:px-5">
+        <div className="max-w-[1280px] mx-auto space-y-5">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">SIX ASSET CLASSES</span>
             <h2 className="text-3xl lg:text-4xl font-semibold text-black">Structured for every investor tier.</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {PRODUCT_CATEGORIES.map((prod) => {
               const Icon = prod.icon;
               return (
                 <div 
                   key={prod.id} 
-                  className="bg-white rounded-[24px] p-8 border border-gray-200/80 shadow-[0_12px_36px_rgba(0,0,0,0.04)] hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 space-y-5 flex flex-col justify-between"
+                  className="bg-white rounded-lg p-4 shadow-[0_12px_36px_rgba(0,0,0,0.04)] hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 space-y-2.5 flex flex-col justify-between"
                 >
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <div className="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center p-3">
+                      <div className="w-12 h-12 rounded-lg bg-black text-white flex items-center justify-center p-3">
                         <Icon className="w-6 h-6 text-[#D5FF2F]" />
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-[11px] font-mono font-bold border ${prod.color}`}>
+                      <span className={`px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-white/[0.03] ${prod.color}`}>
                         {prod.badge}
                       </span>
                     </div>
@@ -192,7 +192,7 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
                     <p className="text-sm text-gray-500 leading-relaxed">{prod.desc}</p>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-100 space-y-2 font-mono text-xs text-gray-600">
+                  <div className="pt-4 space-y-2 font-mono text-xs text-gray-600">
                     {prod.metrics.map((m, i) => (
                       <div key={i} className="flex items-center gap-2">
                         <CheckCircle2 className="w-3.5 h-3.5 text-[#00C805]" />
@@ -208,16 +208,16 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
       </section>
 
       {/* 3. INTERACTIVE PORTFOLIO BUILDER SLIDER */}
-      <section className="py-28 px-6 lg:px-12 max-w-[1280px] mx-auto space-y-12">
+      <section className="py-28 px-3.5 lg:px-5 max-w-[1280px] mx-auto space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">INTERACTIVE SIMULATOR</span>
           <h2 className="text-3xl lg:text-4xl font-semibold text-black">Customize your portfolio strategy.</h2>
         </div>
 
-        <div className="bg-black text-white rounded-[32px] p-8 lg:p-14 border border-gray-800 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="bg-black text-white rounded-xl p-4 lg:p-14 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
           
           {/* Controls Left */}
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-4">
             
             {/* Initial Investment Slider */}
             <div className="space-y-3">
@@ -279,7 +279,7 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
           </div>
 
           {/* Results Display Right */}
-          <div className="lg:col-span-5 bg-zinc-900 rounded-[24px] p-8 border border-zinc-800 text-center space-y-6">
+          <div className="lg:col-span-5 bg-zinc-900 rounded-lg p-4 text-center space-y-3">
             <span className="text-xs font-mono text-gray-400 uppercase tracking-widest block">ESTIMATED PROJECTED VALUE</span>
             <div className="text-4xl lg:text-5xl font-extrabold text-[#D5FF2F] tracking-tight font-mono">
               ${estimatedReturn.toLocaleString()}
@@ -304,13 +304,13 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
       <MaterializeCardSection onNavigateToAuth={onNavigateToAuth} />
 
       {/* FINTECH PROCESS VISUALS */}
-      <section className="py-12 px-6 lg:px-12 max-w-[1280px] mx-auto space-y-8">
+      <section className="py-4 px-3.5 lg:px-5 max-w-[1280px] mx-auto space-y-4">
         <CustomerJourneyFlow />
       </section>
 
       {/* 4. TRANSPARENT PRICING COMPARISON TABLE */}
-      <section className="py-20 bg-white border-t border-gray-100 px-6 lg:px-12">
-        <div className="max-w-[1280px] mx-auto space-y-12">
+      <section className="py-7 bg-white px-3.5 lg:px-5">
+        <div className="max-w-[1280px] mx-auto space-y-5">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">TRANSPARENT PRICING</span>
             <h2 className="text-3xl lg:text-4xl font-semibold text-black">Zero hidden management fees.</h2>
@@ -319,43 +319,43 @@ export function ProductsPage({ onNavigatePage, onNavigateToAuth }: ProductsPageP
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm font-mono">
               <thead>
-                <tr className="border-b border-gray-200 text-xs text-gray-400 uppercase">
-                  <th className="py-4 px-6">FEATURE / PRICING TIER</th>
-                  <th className="py-4 px-6 text-black">STARTER</th>
-                  <th className="py-4 px-6 text-[#00C805]">PRO INVESTOR</th>
-                  <th className="py-4 px-6 text-purple-600">INSTITUTIONAL</th>
+                <tr className="text-xs text-gray-400 uppercase">
+                  <th className="py-1.5 px-3">FEATURE / PRICING TIER</th>
+                  <th className="py-1.5 px-3 text-black">STARTER</th>
+                  <th className="py-1.5 px-3 text-[#00C805]">PRO INVESTOR</th>
+                  <th className="py-1.5 px-3 text-purple-600">INSTITUTIONAL</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="">
                 <tr>
-                  <td className="py-4 px-6 font-sans font-semibold text-black">Account Minimum</td>
-                  <td className="py-4 px-6">$0</td>
-                  <td className="py-4 px-6">$1,000</td>
-                  <td className="py-4 px-6">$50,000</td>
+                  <td className="py-1.5 px-3 font-sans font-semibold text-black">Account Minimum</td>
+                  <td className="py-1.5 px-3">$0</td>
+                  <td className="py-1.5 px-3">$1,000</td>
+                  <td className="py-1.5 px-3">$50,000</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-sans font-semibold text-black">Stock & ETF Trades</td>
-                  <td className="py-4 px-6 text-[#00C805] font-bold">$0 Commission</td>
-                  <td className="py-4 px-6 text-[#00C805] font-bold">$0 Commission</td>
-                  <td className="py-4 px-6 text-[#00C805] font-bold">$0 Commission</td>
+                  <td className="py-1.5 px-3 font-sans font-semibold text-black">Stock & ETF Trades</td>
+                  <td className="py-1.5 px-3 text-[#00C805] font-bold">$0 Commission</td>
+                  <td className="py-1.5 px-3 text-[#00C805] font-bold">$0 Commission</td>
+                  <td className="py-1.5 px-3 text-[#00C805] font-bold">$0 Commission</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-sans font-semibold text-black">Pre-IPO Secondary Access</td>
-                  <td className="py-4 px-6 text-gray-400">Standard Tier</td>
-                  <td className="py-4 px-6 text-black font-bold">Priority Allocation</td>
-                  <td className="py-4 px-6 text-purple-600 font-bold">Guaranteed Direct Share</td>
+                  <td className="py-1.5 px-3 font-sans font-semibold text-black">Pre-IPO Secondary Access</td>
+                  <td className="py-1.5 px-3 text-gray-400">Standard Tier</td>
+                  <td className="py-1.5 px-3 text-black font-bold">Priority Allocation</td>
+                  <td className="py-1.5 px-3 text-purple-600 font-bold">Guaranteed Direct Share</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-sans font-semibold text-black">AQEI AI Bot Execution</td>
-                  <td className="py-4 px-6 text-gray-400">Basic Signals</td>
-                  <td className="py-4 px-6 text-[#00C805] font-bold">Full Autonomous Bot</td>
-                  <td className="py-4 px-6 text-purple-600 font-bold">Custom Neural Weights</td>
+                  <td className="py-1.5 px-3 font-sans font-semibold text-black">AQEI AI Bot Execution</td>
+                  <td className="py-1.5 px-3 text-gray-400">Basic Signals</td>
+                  <td className="py-1.5 px-3 text-[#00C805] font-bold">Full Autonomous Bot</td>
+                  <td className="py-1.5 px-3 text-purple-600 font-bold">Custom Neural Weights</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-6 font-sans font-semibold text-black">FX Settlement Fee</td>
-                  <td className="py-4 px-6">0.15%</td>
-                  <td className="py-4 px-6 font-bold text-[#00C805]">0.05%</td>
-                  <td className="py-4 px-6 font-bold text-purple-600">0.00% Zero-Spread</td>
+                  <td className="py-1.5 px-3 font-sans font-semibold text-black">FX Settlement Fee</td>
+                  <td className="py-1.5 px-3">0.15%</td>
+                  <td className="py-1.5 px-3 font-bold text-[#00C805]">0.05%</td>
+                  <td className="py-1.5 px-3 font-bold text-purple-600">0.00% Zero-Spread</td>
                 </tr>
               </tbody>
             </table>

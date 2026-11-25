@@ -45,7 +45,7 @@ const PRE_IPO_COMPANIES = [
     risk: 'Medium',
     gainTarget: '+62%',
     logo: '⚡',
-    desc: 'Cross-border payment rail processing over 200M transactions annually across 34 countries.'
+    desc:'Cross-border payment rail processing over 200M transactions annually across 34 countries.'
   },
   {
     id: 'moniepoint',
@@ -76,16 +76,16 @@ const PRE_IPO_COMPANIES = [
 ];
 
 const TIMELINE_STAGES = [
-  { stage: '1. Seed/Series A', desc: 'Venture Capital & Founders', status: 'Completed' },
-  { stage: '2. Growth Scale', desc: 'Institutional Private Rounds', status: 'Completed' },
-  { stage: '3. Pre-IPO Secondary', desc: 'AfriQuantX Liquidity Access Window', status: 'ACTIVE NOW', active: true },
-  { stage: '4. Public Listing (IPO)', desc: 'NYSE / LSE / JSE Ring Bell', status: 'Upcoming' }
+  { stage:'1. Seed/Series A', desc:'Venture Capital & Founders', status:'Completed'},
+  { stage:'2. Growth Scale', desc:'Institutional Private Rounds', status:'Completed'},
+  { stage:'3. Pre-IPO Secondary', desc:'AfriQuantX Liquidity Access Window', status:'ACTIVE NOW', active: true },
+  { stage:'4. Public Listing (IPO)', desc:'NYSE / LSE / JSE Ring Bell', status:'Upcoming'}
 ];
 
 const FAQS = [
   {
     q: 'How does AfriQuantX source Pre-IPO secondary shares?',
-    a: 'We partner directly with verified early employees, angel investors, and venture funds seeking secondary liquidity prior to public listing, acquiring non-dilutive equity transfers audited by tier-1 law firms.'
+    a:'We partner directly with verified early employees, angel investors, and venture funds seeking secondary liquidity prior to public listing, acquiring non-dilutive equity transfers audited by tier-1 law firms.'
   },
   {
     q: 'What is the minimum holding period for Pre-IPO investments?',
@@ -113,7 +113,7 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
     <div className="min-h-screen bg-white text-[#1A1A1A] font-sans selection:bg-[#D5FF2F]">
       
       {/* 1. HERO SECTION WITH YOUTUBE VIDEO BACKGROUND */}
-      <section className="relative pt-32 pb-24 px-6 lg:px-12 max-w-[1280px] mx-auto text-center space-y-8 overflow-hidden">
+      <section className="relative pt-32 pb-24 px-3.5 lg:px-5 max-w-[1280px] mx-auto text-center space-y-4 overflow-hidden">
         <HeroVideoBackground videoId="LXb3EKWsInQ" overlayOpacity={0.88} />
 
         <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-semibold tracking-tight leading-[1.04]">
@@ -140,30 +140,30 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
             className="h-[52px] px-9 rounded-full bg-black text-white hover:bg-[#D5FF2F] hover:text-black font-semibold text-base transition-all shadow-lg flex items-center gap-2"
           >
             <span>Apply for Access</span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4"/>
           </button>
         </div>
       </section>
 
       {/* 2. WHY PRE-IPO TIMELINE */}
-      <section className="py-20 bg-[#F5F5F7] border-y border-gray-200/80 px-6 lg:px-12">
-        <div className="max-w-[1280px] mx-auto space-y-16">
+      <section className="py-7 bg-[#F5F5F7] px-3.5 lg:px-5">
+        <div className="max-w-[1280px] mx-auto space-y-5">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">THE VENTURE CYCLE</span>
             <h2 className="text-3xl lg:text-4xl font-semibold text-black">Capture the highest upside before the IPO.</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-3 relative">
             {TIMELINE_STAGES.map((t, idx) => (
               <div 
                 key={idx}
-                className={`p-6 rounded-[24px] border transition-all ${t.active ? 'bg-black text-white border-gray-800 shadow-xl scale-105' : 'bg-white border-gray-200/80 text-black'}`}
+                className={`p-3.5 rounded-lg transition-all bg-white/[0.03] ${t.active ?'bg-black text-white shadow-xl scale-105' : 'bg-white text-black'}`}
               >
-                <span className={`text-xs font-mono font-bold px-3 py-1 rounded-full ${t.active ? 'bg-[#D5FF2F] text-black' : 'bg-gray-100 text-gray-600'}`}>
+                <span className={`text-xs font-mono font-bold px-3 py-1 rounded-full ${t.active ?'bg-[#D5FF2F] text-black' : 'bg-gray-100 text-gray-600'}`}>
                   {t.status}
                 </span>
                 <h4 className="text-lg font-bold mt-4 mb-1">{t.stage}</h4>
-                <p className={`text-xs ${t.active ? 'text-gray-400' : 'text-gray-500'}`}>{t.desc}</p>
+                <p className={`text-xs ${t.active ?'text-gray-400' : 'text-gray-500'}`}>{t.desc}</p>
               </div>
             ))}
           </div>
@@ -171,17 +171,17 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
       </section>
 
       {/* 3. AVAILABLE OPPORTUNITIES GRID */}
-      <section className="py-24 px-6 lg:px-12 max-w-[1280px] mx-auto space-y-12">
+      <section className="py-8 px-3.5 lg:px-5 max-w-[1280px] mx-auto space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">VERIFIED SECONDARY OFFERINGS</span>
           <h2 className="text-3xl lg:text-4xl font-semibold text-black">Live Pre-IPO Unicorn Equities.</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {PRE_IPO_COMPANIES.map((company) => (
             <div 
               key={company.id}
-              className="bg-white rounded-[28px] p-8 border border-gray-200/80 shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-6 flex flex-col justify-between"
+              className="bg-white rounded-xl p-4 shadow-[0_12px_40px_rgba(0,0,0,0.06)] hover:shadow-2xl transition-all duration-300 space-y-3 flex flex-col justify-between"
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
@@ -200,7 +200,7 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
                 <p className="text-sm text-gray-500 leading-relaxed">{company.desc}</p>
               </div>
 
-              <div className="grid grid-cols-3 gap-4 pt-4 border-t border-gray-100 text-center font-mono text-xs">
+              <div className="grid grid-cols-3 gap-4 pt-4 text-center font-mono text-xs">
                 <div className="bg-[#F5F5F7] p-3 rounded-xl">
                   <span className="text-gray-400 block text-[10px]">VALUATION</span>
                   <span className="font-bold text-black">{company.valuation}</span>
@@ -229,10 +229,10 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
 
 
       {/* 4. DUE DILIGENCE CHECKLIST */}
-      <section className="py-20 bg-black text-white border-y border-gray-800 px-6 lg:px-12">
-        <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="py-7 bg-black text-white px-3.5 lg:px-5">
+        <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
           
-          <div className="lg:col-span-6 space-y-6">
+          <div className="lg:col-span-6 space-y-3">
             <span className="text-xs font-mono font-bold text-[#D5FF2F] uppercase tracking-widest">INSTITUTIONAL GRADE SECURITY</span>
             <h2 className="text-3xl lg:text-4xl font-semibold text-white">Interactive Due Diligence Checklist.</h2>
             <p className="text-gray-400 text-sm leading-relaxed">
@@ -240,11 +240,11 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
             </p>
           </div>
 
-          <div className="lg:col-span-6 bg-zinc-900 rounded-[28px] p-8 border border-zinc-800 space-y-4">
+          <div className="lg:col-span-6 bg-zinc-900 rounded-xl p-4 space-y-4">
             {[
               'Independent Tier-1 Law Firm Cap Table Verification',
               'Audited Financial Statements & 3-Year Revenue Verification',
-              'SEC & FINRA Compliant Special Purpose Vehicle (SPV) Structuring',
+'SEC & FINRA Compliant Special Purpose Vehicle (SPV) Structuring',
               'AQEI AI Sentiment Analysis & Volatility Stress Testing'
             ].map((item, idx) => {
               const isChecked = checkedDiligence.includes(idx);
@@ -252,9 +252,9 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
                 <div 
                   key={idx} 
                   onClick={() => toggleCheck(idx)}
-                  className={`p-4 rounded-xl border cursor-pointer transition-all flex items-center gap-4 ${isChecked ? 'bg-zinc-800/80 border-[#00C805] text-white' : 'bg-zinc-950 border-zinc-800 text-gray-500'}`}
+                  className={`p-4 rounded-xl cursor-pointer transition-all flex items-center gap-4 bg-white/[0.03] ${isChecked ?'bg-zinc-800/80 text-white' : 'bg-zinc-950 text-gray-500'}`}
                 >
-                  <div className={`w-5 h-5 rounded flex items-center justify-center font-bold text-xs ${isChecked ? 'bg-[#00C805] text-black' : 'border border-gray-600'}`}>
+                  <div className={`w-5 h-5 rounded flex items-center justify-center font-bold text-xs ${isChecked ?'bg-[#00C805] text-black' : ''}`}>
                     {isChecked && '✓'}
                   </div>
                   <span className="text-sm font-medium">{item}</span>
@@ -267,7 +267,7 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
       </section>
 
       {/* 4.5 VENTURE CAPITAL & FOUNDER ANIMATED QUOTES */}
-      <section className="py-20 px-6 lg:px-12 max-w-[1280px] mx-auto space-y-10">
+      <section className="py-7 px-3.5 lg:px-5 max-w-[1280px] mx-auto space-y-4">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">FOUNDER & INVESTOR INSIGHTS</span>
           <h2 className="text-3xl lg:text-4xl font-semibold text-black">
@@ -307,7 +307,7 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
       </section>
 
       {/* 5. FAQ ACCORDION */}
-      <section className="py-24 px-6 lg:px-12 max-w-[960px] mx-auto space-y-10">
+      <section className="py-8 px-3.5 lg:px-5 max-w-[960px] mx-auto space-y-4">
         <div className="text-center space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-gray-400">FREQUENTLY ASKED QUESTIONS</span>
           <h2 className="text-3xl font-semibold text-black">Everything you need to know about Pre-IPOs.</h2>
@@ -320,14 +320,14 @@ export function PreIPOsPage({ onNavigatePage, onNavigateToAuth }: PreIPOsPagePro
               <div 
                 key={idx}
                 onClick={() => setOpenFaq(isOpen ? null : idx)}
-                className="bg-white rounded-2xl p-6 border border-gray-200 cursor-pointer shadow-sm hover:border-gray-400 transition-colors space-y-3"
+                className="bg-white rounded-lg p-3.5 cursor-pointer shadow-sm transition-colors space-y-3"
               >
                 <div className="flex items-center justify-between font-bold text-base text-black">
                   <span>{faq.q}</span>
-                  {isOpen ? <ChevronUp className="w-5 h-5 text-[#00C805]" /> : <ChevronDown className="w-5 h-5 text-gray-400" />}
+                  {isOpen ? <ChevronUp className="w-5 h-5 text-[#00C805]"/> : <ChevronDown className="w-5 h-5 text-gray-400"/>}
                 </div>
                 {isOpen && (
-                  <p className="text-xs text-gray-500 leading-relaxed pt-2 border-t border-gray-100">
+                  <p className="text-xs text-gray-500 leading-relaxed pt-2">
                     {faq.a}
                   </p>
                 )}

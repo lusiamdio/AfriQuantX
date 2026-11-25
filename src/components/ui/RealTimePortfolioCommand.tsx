@@ -159,7 +159,7 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
   const activeFeedList = activeTab === 'investors' ? investorFeed : companyFeed;
 
   return (
-    <section className="relative py-28 lg:py-36 bg-[#0D0F13] text-[#F4F1E8] border-y border-white/[0.08] overflow-hidden selection:bg-[#D9A94E] selection:text-[#0D0F13]">
+    <section className="relative py-28 lg:py-36 bg-[#0D0F13] text-[#F4F1E8] overflow-hidden selection:bg-[#D9A94E] selection:text-[#0D0F13]">
       
       {/* Background Dot Texture */}
       <div 
@@ -175,7 +175,7 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
       {/* Ambient Gradient Backlight */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[360px] bg-gradient-to-r from-[#D9A94E]/10 via-[#34A87E]/10 to-[#0666EB]/10 rounded-full blur-[150px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 sm:px-10 space-y-10">
+      <div className="relative z-10 max-w-6xl mx-auto px-3.5 sm:px-4 space-y-4">
         
         {/* Header Section */}
         <motion.div 
@@ -201,24 +201,16 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
           transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           className="flex justify-center"
         >
-          <div className="inline-flex bg-[#191D27] border border-[#F4F1E8]/10 p-1.5 rounded-full shadow-inner">
+          <div className="inline-flex bg-[#191D27] p-1.5 rounded-full shadow-inner">
             <button
               onClick={() => setActiveTab('investors')}
-              className={`px-6 py-2 rounded-full font-mono text-xs tracking-wider uppercase font-semibold transition-all duration-300 ${
-                activeTab === 'investors'
-                  ? 'bg-[#D9A94E] text-[#0D0F13] shadow-md'
-                  : 'text-[#F4F1E8]/60 hover:text-[#F4F1E8]'
-              }`}
+              className={`px-3.5 py-2 rounded-full font-mono text-xs tracking-wider uppercase font-semibold transition-all duration-300 ${ activeTab === 'investors' ? 'bg-[#D9A94E] text-[#0D0F13] shadow-md' : 'text-[#F4F1E8]/60 hover:text-[#F4F1E8]' }`}
             >
               For Investors
             </button>
             <button
               onClick={() => setActiveTab('companies')}
-              className={`px-6 py-2 rounded-full font-mono text-xs tracking-wider uppercase font-semibold transition-all duration-300 ${
-                activeTab === 'companies'
-                  ? 'bg-[#D9A94E] text-[#0D0F13] shadow-md'
-                  : 'text-[#F4F1E8]/60 hover:text-[#F4F1E8]'
-              }`}
+              className={`px-3.5 py-2 rounded-full font-mono text-xs tracking-wider uppercase font-semibold transition-all duration-300 ${ activeTab === 'companies' ? 'bg-[#D9A94E] text-[#0D0F13] shadow-md' : 'text-[#F4F1E8]/60 hover:text-[#F4F1E8]' }`}
             >
               For Companies
             </button>
@@ -243,10 +235,10 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
               transition: 'transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)',
               transformStyle: 'preserve-3d',
             }}
-            className="relative rounded-3xl bg-gradient-to-br from-[#14171F] to-[#191D27] border border-[#F4F1E8]/10 p-6 sm:p-10 shadow-[0_40px_100px_rgba(0,0,0,0.65),0_0_0_1px_rgba(217,169,78,0.06)]"
+            className="relative rounded-xl bg-gradient-to-br from-[#14171F] to-[#191D27] p-3.5 sm:p-4 shadow-[0_40px_100px_rgba(0,0,0,0.65),0_0_0_1px_rgba(217,169,78,0.06)]"
           >
             {/* Top Bar: Live Status + UTC Clock */}
-            <div className="flex items-center justify-between border-b border-[#F4F1E8]/[0.08] pb-5 mb-7">
+            <div className="flex items-center justify-between pb-5 mb-7">
               <div className="flex items-center gap-2.5 font-mono text-xs tracking-widest text-[#34A87E] font-bold">
                 <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#34A87E] opacity-75" />
@@ -260,16 +252,14 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
             </div>
 
             {/* KPI Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#F4F1E8]/10 rounded-2xl overflow-hidden mb-7 border border-[#F4F1E8]/10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#F4F1E8]/10 rounded-lg overflow-hidden mb-7">
               {activeKPIList.map((item) => {
                 const currentVal = kpis[item.id] !== undefined ? kpis[item.id] : item.value;
                 const isFlashing = flashingKey === item.id;
                 return (
                   <div
                     key={item.id}
-                    className={`bg-[#14171F] p-5 transition-colors duration-500 ${
-                      isFlashing ? 'bg-[#D9A94E]/15' : ''
-                    }`}
+                    className={`bg-[#14171F] p-3 transition-colors duration-500 ${ isFlashing ? 'bg-[#D9A94E]/15' : '' }`}
                   >
                     <div className="font-mono text-[10px] uppercase tracking-wider text-[#F4F1E8]/50 mb-2">
                       {item.label}
@@ -290,7 +280,7 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
             </div>
 
             {/* Sparkline Chart */}
-            <div className="p-2 mb-6">
+            <div className="p-2 mb-3">
               <svg viewBox="0 0 600 100" className="w-full h-24 sm:h-28 overflow-visible" preserveAspectRatio="none">
                 <defs>
                   <linearGradient id="chartGlow" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -339,7 +329,7 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
             </div>
 
             {/* Rolling Activity Feed */}
-            <div className="border-t border-[#F4F1E8]/[0.08] pt-4">
+            <div className="pt-4">
               <div className="font-mono text-[10px] uppercase tracking-wider text-[#F4F1E8]/50 mb-3">
                 Live Clearing Activity
               </div>
@@ -352,7 +342,7 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 6 }}
                       transition={{ duration: 0.35 }}
-                      className="flex items-center justify-between py-2 border-b border-[#F4F1E8]/[0.04] text-xs sm:text-sm text-[#F4F1E8]/75"
+                      className="flex items-center justify-between py-2 text-xs sm:text-sm text-[#F4F1E8]/75"
                     >
                       <div className="flex items-center gap-3">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#34A87E] shrink-0 shadow-[0_0_6px_rgba(52,168,126,0.8)]" />
@@ -368,13 +358,13 @@ export function RealTimePortfolioCommand({ onNavigateToAuth }: RealTimePortfolio
             </div>
 
             {/* Live Demo Action Bar */}
-            <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#F4F1E8]/[0.08] mt-6">
+            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
               <div className="text-xs text-[#F4F1E8]/60 font-mono">
                 Real-time FIX 4.4 &amp; REST protocol feeds active across 14 sovereign exchanges.
               </div>
               <button
                 onClick={onNavigateToAuth}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#F4F1E8] text-[#0D0F13] font-bold text-xs uppercase tracking-wider hover:bg-[#D9A94E] transition-all duration-200 hover:scale-[1.02] shadow-xl shrink-0"
+                className="inline-flex items-center gap-2 px-3.5 py-3 rounded-full bg-[#F4F1E8] text-[#0D0F13] font-bold text-xs uppercase tracking-wider hover:bg-[#D9A94E] transition-all duration-200 hover:scale-[1.02] shadow-xl shrink-0"
               >
                 <span>Open live demo</span>
                 <ArrowUpRight className="w-4 h-4" />

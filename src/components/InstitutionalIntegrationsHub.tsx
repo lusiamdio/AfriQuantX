@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from'@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -20,10 +20,12 @@ import {
 } from '../services/institutionalIntegrationsService';
 
 export function InstitutionalIntegrationsHub({ setActiveTab }: { setActiveTab?: (tab: string) => void }) {
-  const [activePillar, setActivePillar] = useState<'market' | 'alerts' | 'custody' | 'oms' | 'compliance' | 'membership'>('market');
+  const [activePillar, setActivePillar] = useState<'market'|'alerts'|'custody'|'oms'|'compliance'|'membership'>('market');
   const [telemetry, setTelemetry] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [activeWeb3Connector, setActiveWeb3Connector] = useState<string | null>(null);
+  const [whopNotice, setWhopNotice] = useState<string | null>(null);
 
   // Pillar 1: Market Feeds & Charting
   const [venues, setVenues] = useState<MarketVenueFeed[]>([]);
@@ -39,9 +41,9 @@ export function InstitutionalIntegrationsHub({ setActiveTab }: { setActiveTab?: 
   const [pineScriptCode, setPineScriptCode] = useState(`//@version=5
 indicator("AQEI Momentum & Microstructure Alpha", overlay=true)
 vwapVal = ta.vwap(close)
-plot(vwapVal, "Institutional VWAP", color=color.purple, linewidth=2)
+plot(vwapVal,"Institutional VWAP", color=color.purple, linewidth=2)
 twapVal = ta.sma(close, 20)
-plot(twapVal, "Execution TWAP", color=color.aqua, linewidth=1)
+plot(twapVal,"Execution TWAP", color=color.aqua, linewidth=1)
 alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP collar")`);
   const [pineScriptStatus, setPineScriptStatus] = useState<string>('COMPILED_AND_ACTIVE');
 
@@ -142,13 +144,13 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
 
     // Background gradient
     const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-    bgGrad.addColorStop(0, '#090d16');
-    bgGrad.addColorStop(1, '#05070c');
+    bgGrad.addColorStop(0,'#090d16');
+    bgGrad.addColorStop(1,'#05070c');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, width, height);
 
     // Grid lines
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+    ctx.strokeStyle ='rgba(255, 255, 255, 0.05)';
     ctx.lineWidth = 1;
     for (let x = 60; x < width; x += 70) {
       ctx.beginPath();
@@ -195,7 +197,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
     candles.forEach((c, i) => {
       const x = 30 + i * candleWidth;
       const vHeight = (c.volume / maxVol) * 35;
-      ctx.fillStyle = c.close >= c.open ? 'rgba(34, 197, 94, 0.25)' : 'rgba(239, 68, 68, 0.25)';
+      ctx.fillStyle = c.close >= c.open ?'rgba(34, 197, 94, 0.25)':'rgba(239, 68, 68, 0.25)';
       ctx.fillRect(x + 2, height - 35 - vHeight, candleWidth - 4, vHeight);
     });
 
@@ -209,7 +211,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       const yLow = getY(c.low);
 
       // Wick
-      ctx.strokeStyle = isUp ? '#22c55e' : '#ef4444';
+      ctx.strokeStyle = isUp ?'#22c55e':'#ef4444';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       ctx.moveTo(x + candleWidth / 2, yHigh);
@@ -217,7 +219,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       ctx.stroke();
 
       // Body
-      ctx.fillStyle = isUp ? '#22c55e' : '#ef4444';
+      ctx.fillStyle = isUp ?'#22c55e':'#ef4444';
       const bodyTop = Math.min(yOpen, yClose);
       const bodyHeight = Math.max(Math.abs(yClose - yOpen), 2);
       ctx.fillRect(x + 2, bodyTop, candleWidth - 4, bodyHeight);
@@ -225,7 +227,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
 
     // Draw VWAP line if enabled
     if (chartIndicators.vwap) {
-      ctx.strokeStyle = '#a855f7';
+      ctx.strokeStyle ='#a855f7';
       ctx.lineWidth = 2;
       ctx.beginPath();
       candles.forEach((c, i) => {
@@ -240,7 +242,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
 
     // Draw TWAP line if enabled
     if (chartIndicators.twap) {
-      ctx.strokeStyle = '#06b6d4';
+      ctx.strokeStyle ='#06b6d4';
       ctx.lineWidth = 1.5;
       ctx.setLineDash([4, 4]);
       ctx.beginPath();
@@ -257,7 +259,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
 
     // Draw EMA 20 if enabled
     if (chartIndicators.ema) {
-      ctx.strokeStyle = '#f59e0b';
+      ctx.strokeStyle ='#f59e0b';
       ctx.lineWidth = 1.5;
       ctx.beginPath();
       candles.forEach((c, i) => {
@@ -271,7 +273,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
     }
 
     // Price axis labels on right side
-    ctx.fillStyle = '#94a3b8';
+    ctx.fillStyle ='#94a3b8';
     ctx.font = '10px monospace';
     ctx.textAlign = 'right';
     for (let p = minPrice; p <= maxPrice; p += priceRange / 4) {
@@ -376,18 +378,18 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
   const currentVenueData = venues.find(v => v.code === selectedVenue) || venues[0];
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 pb-20">
+    <div className="max-w-6xl mx-auto space-y-3 pb-20">
       {/* Institutional Header & Status Strip */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-900/60 p-6 rounded-2xl border border-white/10 backdrop-blur-xl">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-900/60 p-3.5 rounded-lg backdrop-blur-xl">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <Layers className="w-5 h-5 text-white" />
+              <Layers className="w-5 h-5 text-white"/>
             </div>
             <div>
               <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
                 Institutional Integrations Hub
-                <Badge variant="outline" className="bg-emerald-500/10 text-emerald-400 border-emerald-500/30 font-mono text-xs">
+                <Badge variant="outline"className="bg-emerald-500/10 text-emerald-400 font-mono text-xs">
                   6/6 PROTOCOLS ACTIVE
                 </Badge>
               </h1>
@@ -399,19 +401,19 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/40 border border-white/5 text-xs text-zinc-300 font-mono">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Uptime: <strong className="text-white">{telemetry?.uptime || '99.99%'}</strong>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/40 text-xs text-zinc-300 font-mono">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
+            Uptime: <strong className="text-white">{telemetry?.uptime ||'99.99%'}</strong>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/40 border border-white/5 text-xs text-zinc-300 font-mono">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/40 text-xs text-zinc-300 font-mono">
             Throughput: <strong className="text-cyan-400">18,450 msgs/s</strong>
           </div>
           <Button 
-            variant="outline" 
+            variant="outline"
             size="sm" 
             onClick={refreshAll} 
             disabled={loading} 
-            className="border-white/10 hover:bg-white/5 text-white"
+            className="hover:bg-white/5 text-white"
           >
             <RefreshCw className={`w-3.5 h-3.5 mr-1.5 ${loading ? 'animate-spin' : ''}`} />
             Refresh Telemetry
@@ -423,108 +425,80 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       <div className="grid grid-cols-2 md:grid-cols-6 gap-2">
         <button
           onClick={() => setActivePillar('market')}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-            activePillar === 'market' 
-              ? 'bg-blue-600/15 border-blue-500 text-white shadow-lg shadow-blue-500/10' 
-              : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
-          }`}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl text-center transition-all bg-white/[0.03] ${ activePillar ==='market'?'bg-blue-600/15 text-white shadow-lg shadow-blue-500/10':'bg-zinc-900/40 text-zinc-400 hover:text-white hover:bg-white/5'}`}
         >
-          <TrendingUp className="w-5 h-5 mb-1.5 text-blue-400" />
+          <TrendingUp className="w-5 h-5 mb-1.5 text-blue-400"/>
           <span className="text-xs font-semibold">1. Market Feeds</span>
           <span className="text-[10px] text-zinc-500">TradingView & L2/L3</span>
         </button>
 
         <button
           onClick={() => setActivePillar('alerts')}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-            activePillar === 'alerts' 
-              ? 'bg-purple-600/15 border-purple-500 text-white shadow-lg shadow-purple-500/10' 
-              : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
-          }`}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl text-center transition-all bg-white/[0.03] ${ activePillar ==='alerts'?'bg-purple-600/15 text-white shadow-lg shadow-purple-500/10':'bg-zinc-900/40 text-zinc-400 hover:text-white hover:bg-white/5'}`}
         >
-          <Bell className="w-5 h-5 mb-1.5 text-purple-400" />
+          <Bell className="w-5 h-5 mb-1.5 text-purple-400"/>
           <span className="text-xs font-semibold">2. Multi-Alerts</span>
           <span className="text-[10px] text-zinc-500">Telegram / Discord</span>
         </button>
 
         <button
           onClick={() => setActivePillar('custody')}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-            activePillar === 'custody' 
-              ? 'bg-emerald-600/15 border-emerald-500 text-white shadow-lg shadow-emerald-500/10' 
-              : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
-          }`}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl text-center transition-all bg-white/[0.03] ${ activePillar ==='custody'?'bg-emerald-600/15 text-white shadow-lg shadow-emerald-500/10':'bg-zinc-900/40 text-zinc-400 hover:text-white hover:bg-white/5'}`}
         >
-          <Wallet className="w-5 h-5 mb-1.5 text-emerald-400" />
+          <Wallet className="w-5 h-5 mb-1.5 text-emerald-400"/>
           <span className="text-xs font-semibold">3. Custody & Rails</span>
           <span className="text-[10px] text-zinc-500">Fireblocks & M-Pesa</span>
         </button>
 
         <button
           onClick={() => setActivePillar('oms')}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-            activePillar === 'oms' 
-              ? 'bg-amber-600/15 border-amber-500 text-white shadow-lg shadow-amber-500/10' 
-              : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
-          }`}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl text-center transition-all bg-white/[0.03] ${ activePillar ==='oms'?'bg-amber-600/15 text-white shadow-lg shadow-amber-500/10':'bg-zinc-900/40 text-zinc-400 hover:text-white hover:bg-white/5'}`}
         >
-          <Cpu className="w-5 h-5 mb-1.5 text-amber-400" />
+          <Cpu className="w-5 h-5 mb-1.5 text-amber-400"/>
           <span className="text-xs font-semibold">4. Brokerage & OMS</span>
           <span className="text-[10px] text-zinc-500">FIX 4.4 & SOR Algo</span>
         </button>
 
         <button
           onClick={() => setActivePillar('compliance')}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-            activePillar === 'compliance' 
-              ? 'bg-cyan-600/15 border-cyan-500 text-white shadow-lg shadow-cyan-500/10' 
-              : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
-          }`}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl text-center transition-all bg-white/[0.03] ${ activePillar ==='compliance'?'bg-cyan-600/15 text-white shadow-lg shadow-cyan-500/10':'bg-zinc-900/40 text-zinc-400 hover:text-white hover:bg-white/5'}`}
         >
-          <ShieldCheck className="w-5 h-5 mb-1.5 text-cyan-400" />
+          <ShieldCheck className="w-5 h-5 mb-1.5 text-cyan-400"/>
           <span className="text-xs font-semibold">5. Compliance & Sync</span>
           <span className="text-[10px] text-zinc-500">KYT & Cloud Vault</span>
         </button>
 
         <button
           onClick={() => setActivePillar('membership')}
-          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center transition-all ${
-            activePillar === 'membership' 
-              ? 'bg-orange-600/15 border-orange-500 text-white shadow-lg shadow-orange-500/10' 
-              : 'bg-zinc-900/40 border-white/5 text-zinc-400 hover:text-white hover:bg-white/5'
-          }`}
+          className={`flex flex-col items-center justify-center p-3 rounded-xl text-center transition-all bg-white/[0.03] ${ activePillar ==='membership'?'bg-orange-600/15 text-white shadow-lg shadow-orange-500/10':'bg-zinc-900/40 text-zinc-400 hover:text-white hover:bg-white/5'}`}
         >
-          <Key className="w-5 h-5 mb-1.5 text-orange-400" />
+          <Key className="w-5 h-5 mb-1.5 text-orange-400"/>
           <span className="text-xs font-semibold">6. Membership</span>
           <span className="text-[10px] text-zinc-500">Whop v5 & Stripe</span>
         </button>
       </div>
 
       {/* PILLAR 1: MARKET DATA FEEDS & TRADINGVIEW CHARTING */}
-      {activePillar === 'market' && (
-        <div className="space-y-6">
+      {activePillar ==='market'&& (
+        <div className="space-y-3">
           {/* Regional Venue Gateways Strip */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
             {venues.map(v => (
               <div
                 key={v.code}
                 onClick={() => setSelectedVenue(v.code)}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
-                  selectedVenue === v.code
-                    ? 'bg-blue-600/20 border-blue-500 shadow-md shadow-blue-500/10'
-                    : 'bg-zinc-900/50 border-white/10 hover:border-white/20'
-                }`}
+                className={`p-3.5 rounded-xl cursor-pointer transition-all bg-white/[0.03] ${ selectedVenue === v.code ?'bg-blue-600/20 shadow-md shadow-blue-500/10':'bg-zinc-900/50'}`}
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-bold text-white text-sm">{v.code}</span>
-                  <Badge variant="outline" className="text-[10px] bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
+                  <Badge variant="outline"className="text-[10px] bg-emerald-500/10 text-emerald-400">
                     {v.latencyMs}ms
                   </Badge>
                 </div>
                 <div className="text-xs text-zinc-400 truncate">{v.name}</div>
-                <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
+                <div className="flex items-center justify-between mt-2 pt-2">
                   <span className="text-xs font-mono text-zinc-300">{v.activeTicker}</span>
-                  <span className={`text-xs font-mono font-semibold ${v.changePct >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  <span className={`text-xs font-mono font-semibold ${v.changePct >= 0 ?'text-emerald-400':'text-rose-400'}`}>
                     {v.changePct >= 0 ? '+' : ''}{v.changePct}%
                   </span>
                 </div>
@@ -533,15 +507,15 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
           </div>
 
           {/* Interactive TradingView & Depth Viewport */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <Card className="lg:col-span-2 bg-zinc-900/50 border-white/10 overflow-hidden">
-              <CardHeader className="pb-3 border-b border-white/5">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+            <Card className="lg:col-span-2 bg-zinc-900/50 overflow-hidden">
+              <CardHeader className="pb-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
                     <CardTitle className="text-white flex items-center gap-2">
                       <span>{currentVenueData?.activeTicker || 'JSE:NPN'}</span>
                       <span className="text-xs font-normal text-zinc-400">({currentVenueData?.assetName})</span>
-                      <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 text-[10px]">
+                      <Badge className="bg-blue-500/10 text-blue-400 text-[10px]">
                         TradingView Canvas Engine
                       </Badge>
                     </CardTitle>
@@ -556,43 +530,27 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       <button
                         key={tf}
                         onClick={() => setChartTimeframe(tf)}
-                        className={`px-2 py-1 text-xs rounded font-mono ${
-                          chartTimeframe === tf 
-                            ? 'bg-blue-600 text-white font-semibold' 
-                            : 'bg-black/40 text-zinc-400 hover:text-white'
-                        }`}
+                        className={`px-2 py-1 text-xs rounded font-mono ${ chartTimeframe === tf ?'bg-blue-600 text-white font-semibold':'bg-black/40 text-zinc-400 hover:text-white'}`}
                       >
                         {tf}
                       </button>
                     ))}
-                    <div className="h-4 w-px bg-white/10 mx-1" />
+                    <div className="h-4 w-px bg-white/10 mx-1"/>
                     <button
                       onClick={() => setChartIndicators(prev => ({ ...prev, vwap: !prev.vwap }))}
-                      className={`px-2 py-1 text-xs rounded font-mono border ${
-                        chartIndicators.vwap 
-                          ? 'border-purple-500 bg-purple-500/20 text-purple-300' 
-                          : 'border-white/10 text-zinc-500'
-                      }`}
+                      className={`px-2 py-1 text-xs rounded font-mono bg-white/[0.03] ${ chartIndicators.vwap ?'bg-purple-500/20 text-purple-300':'text-zinc-500'}`}
                     >
                       VWAP
                     </button>
                     <button
                       onClick={() => setChartIndicators(prev => ({ ...prev, twap: !prev.twap }))}
-                      className={`px-2 py-1 text-xs rounded font-mono border ${
-                        chartIndicators.twap 
-                          ? 'border-cyan-500 bg-cyan-500/20 text-cyan-300' 
-                          : 'border-white/10 text-zinc-500'
-                      }`}
+                      className={`px-2 py-1 text-xs rounded font-mono bg-white/[0.03] ${ chartIndicators.twap ?'bg-cyan-500/20 text-cyan-300':'text-zinc-500'}`}
                     >
                       TWAP
                     </button>
                     <button
                       onClick={() => setChartIndicators(prev => ({ ...prev, ema: !prev.ema }))}
-                      className={`px-2 py-1 text-xs rounded font-mono border ${
-                        chartIndicators.ema 
-                          ? 'border-amber-500 bg-amber-500/20 text-amber-300' 
-                          : 'border-white/10 text-zinc-500'
-                      }`}
+                      className={`px-2 py-1 text-xs rounded font-mono bg-white/[0.03] ${ chartIndicators.ema ?'bg-amber-500/20 text-amber-300':'text-zinc-500'}`}
                     >
                       EMA
                     </button>
@@ -606,20 +564,20 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   height={340} 
                   className="w-full h-[340px] block"
                 />
-                <div className="p-3 bg-black/40 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400">
+                <div className="p-3 bg-black/40 flex items-center justify-between text-xs text-zinc-400">
                   <div className="flex items-center gap-4">
                     <span className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-0.5 bg-purple-500 inline-block" /> VWAP: {(currentVenueData?.last * 0.9992).toFixed(2)}
+                      <span className="w-2.5 h-0.5 bg-purple-500 inline-block"/> VWAP: {(currentVenueData?.last * 0.9992).toFixed(2)}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-0.5 bg-cyan-400 inline-block" /> TWAP: {(currentVenueData?.last * 0.9985).toFixed(2)}
+                      <span className="w-2.5 h-0.5 bg-cyan-400 inline-block"/> TWAP: {(currentVenueData?.last * 0.9985).toFixed(2)}
                     </span>
                     <span className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-0.5 bg-amber-400 inline-block" /> EMA(20): {(currentVenueData?.last * 0.9978).toFixed(2)}
+                      <span className="w-2.5 h-0.5 bg-amber-400 inline-block"/> EMA(20): {(currentVenueData?.last * 0.9978).toFixed(2)}
                     </span>
                   </div>
                   <span className="font-mono text-emerald-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"/>
                     LIVE FIX TICK: 0.00% Packet Loss
                   </span>
                 </div>
@@ -627,14 +585,14 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Sub-Second Order Book Depth (L2/L3) */}
-            <Card className="bg-zinc-900/50 border-white/10 flex flex-col justify-between">
-              <CardHeader className="pb-3 border-b border-white/5">
+            <Card className="bg-zinc-900/50 flex flex-col justify-between">
+              <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-white text-sm font-semibold flex items-center gap-2">
-                    <Activity className="w-4 h-4 text-blue-400" />
+                    <Activity className="w-4 h-4 text-blue-400"/>
                     L2/L3 Order Book Depth
                   </CardTitle>
-                  <Badge variant="outline" className="text-[10px] font-mono text-zinc-400 border-white/10">
+                  <Badge variant="outline"className="text-[10px] font-mono text-zinc-400">
                     Spread: {((currentVenueData?.ask || 1) - (currentVenueData?.bid || 1)).toFixed(2)}
                   </Badge>
                 </div>
@@ -650,8 +608,8 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   {currentVenueData?.depthL2?.filter(d => d.side === 'ask').map((lvl, idx) => (
                     <div key={`ask-${idx}`} className="relative flex justify-between text-xs font-mono py-0.5 px-1 rounded overflow-hidden">
                       <div 
-                        className="absolute right-0 top-0 bottom-0 bg-rose-500/15" 
-                        style={{ width: `${Math.min(100, (lvl.size / 6400) * 100)}%` }} 
+                        className="absolute right-0 top-0 bottom-0 bg-rose-500/15"
+                        style={{ width:`${Math.min(100, (lvl.size / 6400) * 100)}%`}} 
                       />
                       <span className="relative z-10 text-rose-400 font-semibold">{lvl.price.toFixed(2)}</span>
                       <span className="relative z-10 text-zinc-300">{lvl.size.toLocaleString()}</span>
@@ -676,8 +634,8 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   {currentVenueData?.depthL2?.filter(d => d.side === 'bid').map((lvl, idx) => (
                     <div key={`bid-${idx}`} className="relative flex justify-between text-xs font-mono py-0.5 px-1 rounded overflow-hidden">
                       <div 
-                        className="absolute right-0 top-0 bottom-0 bg-emerald-500/15" 
-                        style={{ width: `${Math.min(100, (lvl.size / 6400) * 100)}%` }} 
+                        className="absolute right-0 top-0 bottom-0 bg-emerald-500/15"
+                        style={{ width:`${Math.min(100, (lvl.size / 6400) * 100)}%`}} 
                       />
                       <span className="relative z-10 text-emerald-400 font-semibold">{lvl.price.toFixed(2)}</span>
                       <span className="relative z-10 text-zinc-300">{lvl.size.toLocaleString()}</span>
@@ -690,19 +648,19 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
           </div>
 
           {/* Custom Pine Script Studio & Multi-Asset Correlation Heatmap */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {/* Custom Pine Script Studio */}
-            <Card className="bg-zinc-900/50 border-white/10">
-              <CardHeader className="pb-3 border-b border-white/5">
+            <Card className="bg-zinc-900/50">
+              <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-white text-sm font-semibold flex items-center gap-2">
-                      <Sliders className="w-4 h-4 text-purple-400" />
+                      <Sliders className="w-4 h-4 text-purple-400"/>
                       Custom Pine Script IDE & Algorithm Hooks
                     </CardTitle>
                     <CardDescription>Compile proprietary indicators and order book alpha models</CardDescription>
                   </div>
-                  <Badge variant="outline" className="text-purple-400 bg-purple-500/10 border-purple-500/30 text-[10px] font-mono">
+                  <Badge variant="outline"className="text-purple-400 bg-purple-500/10 text-[10px] font-mono">
                     {pineScriptStatus}
                   </Badge>
                 </div>
@@ -711,7 +669,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                 <textarea
                   value={pineScriptCode}
                   onChange={e => setPineScriptCode(e.target.value)}
-                  className="w-full h-40 bg-black/60 border border-white/10 rounded-xl p-3 text-xs font-mono text-zinc-200 focus:outline-none focus:border-purple-500 leading-relaxed"
+                  className="w-full h-40 bg-black/60 rounded-xl p-3 text-xs font-mono text-zinc-200 focus:outline-none leading-relaxed"
                   spellCheck={false}
                 />
                 <div className="flex items-center justify-between">
@@ -726,17 +684,17 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     }}
                     className="bg-purple-600 hover:bg-purple-500 text-white text-xs"
                   >
-                    <Play className="w-3.5 h-3.5 mr-1" /> Compile & Plot Overlay
+                    <Play className="w-3.5 h-3.5 mr-1"/> Compile & Plot Overlay
                   </Button>
                 </div>
               </CardContent>
             </Card>
 
             {/* Multi-Asset Correlation Heatmap */}
-            <Card className="bg-zinc-900/50 border-white/10">
-              <CardHeader className="pb-3 border-b border-white/5">
+            <Card className="bg-zinc-900/50">
+              <CardHeader className="pb-3">
                 <CardTitle className="text-white text-sm font-semibold flex items-center gap-2">
-                  <Globe className="w-4 h-4 text-emerald-400" />
+                  <Globe className="w-4 h-4 text-emerald-400"/>
                   Pan-African Multi-Asset Correlation Matrix
                 </CardTitle>
                 <CardDescription>Rolling 30-day Pearson correlation across African venues and FX rates</CardDescription>
@@ -754,7 +712,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     </thead>
                     <tbody>
                       {correlationData.assets.map((asset, rowIdx) => (
-                        <tr key={asset} className="border-t border-white/5">
+                        <tr key={asset} className="">
                           <td className="p-1.5 text-left text-zinc-300 font-semibold">{asset.split(':')[1] || asset}</td>
                           {correlationData.matrix[rowIdx].map((val, colIdx) => {
                             let cellBg = 'rgba(255, 255, 255, 0.05)';
@@ -794,17 +752,17 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       )}
 
       {/* PILLAR 2: MULTI-CHANNEL ALERTING & SIGNAL DISPATCH */}
-      {activePillar === 'alerts' && (
-        <div className="space-y-6">
+      {activePillar ==='alerts'&& (
+        <div className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Telegram Channel */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Send className="w-4 h-4 text-sky-400" /> Telegram Bot API
+                    <Send className="w-4 h-4 text-sky-400"/> Telegram Bot API
                   </CardTitle>
-                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 border-emerald-500/20 text-[10px]">
+                  <Badge variant="outline"className="text-emerald-400 bg-emerald-500/10 text-[10px]">
                     ONLINE
                   </Badge>
                 </div>
@@ -817,13 +775,13 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Discord Webhook */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                    <MessageSquare className="w-4 h-4 text-indigo-400" /> Discord Webhook
+                    <MessageSquare className="w-4 h-4 text-indigo-400"/> Discord Webhook
                   </CardTitle>
-                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 border-emerald-500/20 text-[10px]">
+                  <Badge variant="outline"className="text-emerald-400 bg-emerald-500/10 text-[10px]">
                     CONNECTED
                   </Badge>
                 </div>
@@ -836,13 +794,13 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Slack Enterprise */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Layers className="w-4 h-4 text-emerald-400" /> Slack Enterprise
+                    <Layers className="w-4 h-4 text-emerald-400"/> Slack Enterprise
                   </CardTitle>
-                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 border-emerald-500/20 text-[10px]">
+                  <Badge variant="outline"className="text-emerald-400 bg-emerald-500/10 text-[10px]">
                     SYNCED
                   </Badge>
                 </div>
@@ -855,13 +813,13 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Twilio SMS / WhatsApp */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-rose-400" /> Twilio WhatsApp / SMS
+                    <Zap className="w-4 h-4 text-rose-400"/> Twilio WhatsApp / SMS
                   </CardTitle>
-                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 border-emerald-500/20 text-[10px]">
+                  <Badge variant="outline"className="text-emerald-400 bg-emerald-500/10 text-[10px]">
                     READY
                   </Badge>
                 </div>
@@ -875,11 +833,11 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
           </div>
 
           {/* Interactive Dispatch Test Bench */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-zinc-900/50 border-white/10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <Card className="bg-zinc-900/50">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <Send className="w-5 h-5 text-purple-400" />
+                  <Send className="w-5 h-5 text-purple-400"/>
                   Dispatch Test Bench (Live Gateway Trigger)
                 </CardTitle>
                 <CardDescription>
@@ -893,7 +851,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={alertForm.channel}
                       onChange={e => setAlertForm({ ...alertForm, channel: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="telegram">Telegram Bot API</option>
                       <option value="discord">Discord Webhook</option>
@@ -907,7 +865,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={alertForm.alertType}
                       onChange={e => setAlertForm({ ...alertForm, alertType: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="AQEI_ALPHA_SIGNAL">AQEI Alpha Signal</option>
                       <option value="LIQUIDATION_WARNING">Liquidation / VaR Warning</option>
@@ -922,7 +880,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   <Input
                     value={alertForm.title}
                     onChange={e => setAlertForm({ ...alertForm, title: e.target.value })}
-                    className="bg-black/50 border-white/10 text-white text-xs"
+                    className="bg-black/50 text-white text-xs"
                   />
                 </div>
 
@@ -932,7 +890,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     value={alertForm.message}
                     onChange={e => setAlertForm({ ...alertForm, message: e.target.value })}
                     rows={3}
-                    className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                    className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                   />
                 </div>
 
@@ -942,7 +900,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     placeholder="https://discord.com/api/webhooks/... or https://hooks.slack.com/..."
                     value={alertForm.targetWebhookUrl}
                     onChange={e => setAlertForm({ ...alertForm, targetWebhookUrl: e.target.value })}
-                    className="bg-black/50 border-white/10 text-white text-xs font-mono"
+                    className="bg-black/50 text-white text-xs font-mono"
                   />
                 </div>
 
@@ -951,27 +909,27 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   disabled={dispatching}
                   className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white"
                 >
-                  <Send className={`w-4 h-4 mr-2 ${dispatching ? 'animate-pulse' : ''}`} />
+                  <Send className={`w-4 h-4 mr-2 ${dispatching ?'animate-pulse':''}`} />
                   {dispatching ? 'Dispatching via Gateway...' : 'Dispatch Signal Now'}
                 </Button>
               </CardContent>
             </Card>
 
             {/* Live Dispatch Receipt & Audit Trail */}
-            <Card className="bg-zinc-900/50 border-white/10 flex flex-col justify-between">
+            <Card className="bg-zinc-900/50 flex flex-col justify-between">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-400"/>
                   Dispatch Verification & Proof
                 </CardTitle>
                 <CardDescription>Zero-friction delivery telemetry with cryptographic SHA-256 receipt</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 flex-1">
                 {dispatchResult ? (
-                  <div className="p-4 rounded-xl bg-black/60 border border-emerald-500/30 space-y-3">
+                  <div className="p-4 rounded-xl bg-black/60 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-emerald-400 font-bold text-sm flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4" /> Delivered (HTTP 200 OK)
+                        <CheckCircle2 className="w-4 h-4"/> Delivered (HTTP 200 OK)
                       </span>
                       <Badge className="bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">
                         {dispatchResult.latencyMs} ms Latency
@@ -983,15 +941,15 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       <div>Type: <strong className="text-zinc-200">{dispatchResult.alertType}</strong></div>
                       <div>Proof: <strong className="text-zinc-400 font-mono text-[10px]">{dispatchResult.deliveryProof}</strong></div>
                     </div>
-                    <p className="text-xs text-zinc-400 border-t border-white/10 pt-2">
+                    <p className="text-xs text-zinc-400 pt-2">
                       Payload successfully serialized and pushed to remote channel socket.
                     </p>
                   </div>
                 ) : (
-                  <div className="p-8 rounded-xl bg-black/30 border border-dashed border-white/10 text-center text-zinc-500 space-y-2">
-                    <Send className="w-8 h-8 mx-auto text-zinc-600" />
+                  <div className="p-4 rounded-xl bg-black/30 text-center text-zinc-500 space-y-2">
+                    <Send className="w-8 h-8 mx-auto text-zinc-600"/>
                     <p className="text-xs">No dispatch triggered yet this session.</p>
-                    <p className="text-[11px] text-zinc-600">Click "Dispatch Signal Now" to send an institutional test payload.</p>
+                    <p className="text-[11px] text-zinc-600">Click"Dispatch Signal Now"to send an institutional test payload.</p>
                   </div>
                 )}
 
@@ -1000,12 +958,12 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   <div className="text-xs font-semibold text-zinc-300">Live Telemetry Queue</div>
                   <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
                     {(telemetry?.auditLogs || []).filter((l: any) => l.category.includes('Alert')).slice(0, 4).map((log: any) => (
-                      <div key={log.id} className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between text-xs">
+                      <div key={log.id} className="p-2 rounded bg-black/40 flex items-center justify-between text-xs">
                         <div className="truncate pr-2">
                           <span className="text-white font-mono text-[11px]">{log.id}</span>
                           <span className="text-zinc-400 text-[11px] ml-2 truncate">{log.payloadSummary}</span>
                         </div>
-                        <Badge variant="outline" className="text-[9px] bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
+                        <Badge variant="outline"className="text-[9px] bg-emerald-500/10 text-emerald-400">
                           {log.latencyMs}ms
                         </Badge>
                       </div>
@@ -1019,17 +977,17 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       )}
 
       {/* PILLAR 3: INSTITUTIONAL CUSTODY & SOVEREIGN CLEARING */}
-      {activePillar === 'custody' && (
-        <div className="space-y-6">
+      {activePillar ==='custody'&& (
+        <div className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Fireblocks MPC */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400" /> Fireblocks MPC Vault
+                    <ShieldCheck className="w-4 h-4 text-emerald-400"/> Fireblocks MPC Vault
                   </CardTitle>
-                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 border-emerald-500/20 text-[10px]">
+                  <Badge variant="outline"className="text-emerald-400 bg-emerald-500/10 text-[10px]">
                     QUORUM 3/4
                   </Badge>
                 </div>
@@ -1042,13 +1000,13 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Strate & NIBSS Sovereign Rails */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Globe className="w-4 h-4 text-blue-400" /> Strate & NIBSS Clearing
+                    <Globe className="w-4 h-4 text-blue-400"/> Strate & NIBSS Clearing
                   </CardTitle>
-                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 border-emerald-500/20 text-[10px]">
+                  <Badge variant="outline"className="text-emerald-400 bg-emerald-500/10 text-[10px]">
                     RTGS / DvP
                   </Badge>
                 </div>
@@ -1061,13 +1019,13 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Pan-African Sovereign Rails */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                    <Wallet className="w-4 h-4 text-amber-400" /> M-Pesa & Paystack Rails
+                    <Wallet className="w-4 h-4 text-amber-400"/> M-Pesa & Paystack Rails
                   </CardTitle>
-                  <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 border-emerald-500/20 text-[10px]">
+                  <Badge variant="outline"className="text-emerald-400 bg-emerald-500/10 text-[10px]">
                     INSTANT FIAT
                   </Badge>
                 </div>
@@ -1081,11 +1039,11 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
           </div>
 
           {/* Interactive Settlement & DvP Simulator */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-zinc-900/50 border-white/10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <Card className="bg-zinc-900/50">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <ArrowRightLeft className="w-5 h-5 text-emerald-400" />
+                  <ArrowRightLeft className="w-5 h-5 text-emerald-400"/>
                   Programmatic Settlement & Clearing Engine
                 </CardTitle>
                 <CardDescription>
@@ -1099,7 +1057,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={settleForm.provider}
                       onChange={e => setSettleForm({ ...settleForm, provider: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="Fireblocks MPC">Fireblocks MPC Vault</option>
                       <option value="Copper ClearLoop">Copper ClearLoop</option>
@@ -1111,7 +1069,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={settleForm.rail}
                       onChange={e => setSettleForm({ ...settleForm, rail: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="Strate CSD (South Africa)">Strate CSD (South Africa - ZAR)</option>
                       <option value="NIBSS (Nigeria)">NIBSS (Nigeria - NGN)</option>
@@ -1128,7 +1086,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={settleForm.asset}
                       onChange={e => setSettleForm({ ...settleForm, asset: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="ZAR">ZAR (South African Rand)</option>
                       <option value="NGN">NGN (Nigerian Naira)</option>
@@ -1142,7 +1100,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <Input
                       value={settleForm.amount}
                       onChange={e => setSettleForm({ ...settleForm, amount: e.target.value })}
-                      className="bg-black/50 border-white/10 text-white text-xs font-mono"
+                      className="bg-black/50 text-white text-xs font-mono"
                     />
                   </div>
                 </div>
@@ -1152,7 +1110,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   <Input
                     value={settleForm.counterparty}
                     onChange={e => setSettleForm({ ...settleForm, counterparty: e.target.value })}
-                    className="bg-black/50 border-white/10 text-white text-xs"
+                    className="bg-black/50 text-white text-xs"
                   />
                 </div>
 
@@ -1168,17 +1126,17 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Settlement Verification Ticket */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-teal-400" />
+                  <CheckCircle2 className="w-5 h-5 text-teal-400"/>
                   CSD Settlement Verification Ticket
                 </CardTitle>
                 <CardDescription>Immutable custody receipt and cryptographic quorum proof</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {settleResult ? (
-                  <div className="p-4 rounded-xl bg-black/60 border border-emerald-500/30 space-y-3">
+                  <div className="p-4 rounded-xl bg-black/60 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-emerald-400 font-bold text-sm">
                         STATUS: {settleResult.state}
@@ -1193,32 +1151,52 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       <div>Amount: <strong className="text-emerald-300 font-mono">{settleResult.amount} {settleResult.asset}</strong></div>
                       <div>CSD Proof: <strong className="text-zinc-400 font-mono text-[10px]">{settleResult.csdMatchingProof}</strong></div>
                     </div>
-                    <div className="p-2.5 rounded bg-white/5 border border-white/5 text-[11px] text-zinc-300 space-y-1">
+                    <div className="p-2.5 rounded bg-white/5 text-[11px] text-zinc-300 space-y-1">
                       <div>Quorum: <span className="text-emerald-400">{settleResult.mpcSignatureQuorum}</span></div>
                       <div>Counterparty: {settleResult.counterparty}</div>
                       <div>Cleared Timestamp: <span className="font-mono text-zinc-400">{settleResult.clearedAt}</span></div>
                     </div>
                   </div>
                 ) : (
-                  <div className="p-8 rounded-xl bg-black/30 border border-dashed border-white/10 text-center text-zinc-500 space-y-2">
-                    <Wallet className="w-8 h-8 mx-auto text-zinc-600" />
+                  <div className="p-4 rounded-xl bg-black/30 text-center text-zinc-500 space-y-2">
+                    <Wallet className="w-8 h-8 mx-auto text-zinc-600"/>
                     <p className="text-xs">No active settlement transaction in progress.</p>
-                    <p className="text-[11px] text-zinc-600">Select parameters and click "Execute Settlement" to initiate.</p>
+                    <p className="text-[11px] text-zinc-600">Select parameters and click"Execute Settlement"to initiate.</p>
                   </div>
                 )}
 
                 {/* Non-Custodial Connectors */}
-                <div className="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-2">
-                  <div className="text-xs font-semibold text-zinc-300">Non-Custodial Web3 Connectors</div>
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" className="text-xs border-white/10 text-zinc-300 hover:text-white">
-                      <Zap className="w-3.5 h-3.5 mr-1 text-cyan-400" /> WalletConnect v2
+                <div className="p-3.5 rounded-xl bg-black/40 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="text-xs font-semibold text-zinc-300">Non-Custodial Web3 Connectors</div>
+                    {activeWeb3Connector && (
+                      <span className="text-[11px] font-mono text-emerald-400">{activeWeb3Connector} Connected</span>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setActiveWeb3Connector('WalletConnect v2')}
+                      className={`text-xs ${activeWeb3Connector ==='WalletConnect v2'?'bg-cyan-500/20 text-cyan-300':'text-zinc-300 hover:text-white'}`}
+                    >
+                      <Zap className="w-3.5 h-3.5 mr-1 text-cyan-400"/> WalletConnect v2
                     </Button>
-                    <Button variant="outline" size="sm" className="text-xs border-white/10 text-zinc-300 hover:text-white">
-                      <Key className="w-3.5 h-3.5 mr-1 text-purple-400" /> Turnkey Embedded MPC
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setActiveWeb3Connector('Turnkey Embedded MPC')}
+                      className={`text-xs ${activeWeb3Connector ==='Turnkey Embedded MPC'?'bg-purple-500/20 text-purple-300':'text-zinc-300 hover:text-white'}`}
+                    >
+                      <Key className="w-3.5 h-3.5 mr-1 text-purple-400"/> Turnkey Embedded MPC
                     </Button>
-                    <Button variant="outline" size="sm" className="text-xs border-white/10 text-zinc-300 hover:text-white">
-                      <ShieldCheck className="w-3.5 h-3.5 mr-1 text-emerald-400" /> Coinbase SDK
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setActiveWeb3Connector('Coinbase SDK')}
+                      className={`text-xs ${activeWeb3Connector ==='Coinbase SDK'?'bg-emerald-500/20 text-emerald-300':'text-zinc-300 hover:text-white'}`}
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5 mr-1 text-emerald-400"/> Coinbase SDK
                     </Button>
                   </div>
                 </div>
@@ -1229,13 +1207,13 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       )}
 
       {/* PILLAR 4: DIRECT BROKERAGE & OMS / EMS EXECUTION */}
-      {activePillar === 'oms' && (
-        <div className="space-y-6">
+      {activePillar ==='oms'&& (
+        <div className="space-y-3">
           {/* QuickFIX Engine Telemetry Banner */}
-          <div className="p-4 rounded-xl bg-zinc-900/60 border border-amber-500/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="p-4 rounded-xl bg-zinc-900/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-amber-500/20 border border-amber-500/40 flex items-center justify-center">
-                <Cpu className="w-5 h-5 text-amber-400" />
+              <div className="w-9 h-9 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                <Cpu className="w-5 h-5 text-amber-400"/>
               </div>
               <div>
                 <div className="text-sm font-bold text-white flex items-center gap-2">
@@ -1258,11 +1236,11 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
           </div>
 
           {/* FIX Tag Inspector & SOR Order Dispatch */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="bg-zinc-900/50 border-white/10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <Card className="bg-zinc-900/50">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <Play className="w-5 h-5 text-amber-400" />
+                  <Play className="w-5 h-5 text-amber-400"/>
                   Smart Order Router (SOR) Algorithmic Dispatch
                 </CardTitle>
                 <CardDescription>
@@ -1276,7 +1254,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={omsForm.symbol}
                       onChange={e => setOmsForm({ ...omsForm, symbol: e.target.value })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white font-mono"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white font-mono"
                     >
                       <option value="JSE:SBK">JSE:SBK (Standard Bank Group)</option>
                       <option value="JSE:NPN">JSE:NPN (Naspers Ltd)</option>
@@ -1292,7 +1270,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                         type="button"
                         size="sm"
                         onClick={() => setOmsForm({ ...omsForm, side: 'BUY' })}
-                        className={`text-xs ${omsForm.side === 'BUY' ? 'bg-emerald-600 text-white' : 'bg-black/40 text-zinc-400'}`}
+                        className={`text-xs ${omsForm.side ==='BUY'?'bg-emerald-600 text-white':'bg-black/40 text-zinc-400'}`}
                       >
                         BUY (Side=1)
                       </Button>
@@ -1300,7 +1278,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                         type="button"
                         size="sm"
                         onClick={() => setOmsForm({ ...omsForm, side: 'SELL' })}
-                        className={`text-xs ${omsForm.side === 'SELL' ? 'bg-rose-600 text-white' : 'bg-black/40 text-zinc-400'}`}
+                        className={`text-xs ${omsForm.side ==='SELL'?'bg-rose-600 text-white':'bg-black/40 text-zinc-400'}`}
                       >
                         SELL (Side=2)
                       </Button>
@@ -1315,7 +1293,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       type="number"
                       value={omsForm.quantity}
                       onChange={e => setOmsForm({ ...omsForm, quantity: Number(e.target.value) })}
-                      className="bg-black/50 border-white/10 text-white text-xs font-mono"
+                      className="bg-black/50 text-white text-xs font-mono"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -1323,7 +1301,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={omsForm.algoType}
                       onChange={e => setOmsForm({ ...omsForm, algoType: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="TWAP">TWAP (Time-Weighted Slices)</option>
                       <option value="VWAP">VWAP (Volume Benchmark)</option>
@@ -1339,7 +1317,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={omsForm.urgency}
                       onChange={e => setOmsForm({ ...omsForm, urgency: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="LOW">Passive / Low Slippage</option>
                       <option value="NORMAL">Normal Market Pace</option>
@@ -1352,7 +1330,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       type="number"
                       value={omsForm.maxSlippageBps}
                       onChange={e => setOmsForm({ ...omsForm, maxSlippageBps: Number(e.target.value) })}
-                      className="bg-black/50 border-white/10 text-white text-xs font-mono"
+                      className="bg-black/50 text-white text-xs font-mono"
                     />
                   </div>
                 </div>
@@ -1369,10 +1347,10 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Execution Report & Child Slices */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-amber-400" />
+                  <Activity className="w-5 h-5 text-amber-400"/>
                   Execution Report (Tag 35=8) & Fill Slices
                 </CardTitle>
                 <CardDescription>Sub-millisecond venue routing and price improvement telemetry</CardDescription>
@@ -1380,7 +1358,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
               <CardContent className="space-y-4">
                 {omsResult ? (
                   <div className="space-y-3">
-                    <div className="p-3.5 rounded-xl bg-black/60 border border-amber-500/30 space-y-2">
+                    <div className="p-3.5 rounded-xl bg-black/60 space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-amber-400 font-bold text-xs font-mono">
                           ClOrdID: {omsResult.clOrdId}
@@ -1399,14 +1377,14 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <div className="space-y-1.5">
                       <div className="text-xs font-semibold text-zinc-300">SOR Venue Slices:</div>
                       {omsResult.slices.map((slice: any, idx: number) => (
-                        <div key={idx} className="p-2 rounded bg-black/40 border border-white/5 flex items-center justify-between text-xs font-mono">
+                        <div key={idx} className="p-2 rounded bg-black/40 flex items-center justify-between text-xs font-mono">
                           <div>
                             <span className="text-white font-semibold">{slice.venue}</span>
                             <span className="text-zinc-400 ml-2">({slice.shares.toLocaleString()} shares)</span>
                           </div>
                           <div className="flex items-center gap-3">
                             <span className="text-zinc-300">@{slice.fillPrice.toFixed(2)}</span>
-                            <Badge variant="outline" className="text-[9px] border-white/10 text-cyan-400">
+                            <Badge variant="outline"className="text-[9px] text-cyan-400">
                               {slice.latencyMs}ms
                             </Badge>
                           </div>
@@ -1414,14 +1392,14 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       ))}
                     </div>
 
-                    <div className="p-2.5 rounded bg-black/50 border border-white/5 text-[11px] font-mono text-zinc-400 space-y-0.5">
+                    <div className="p-2.5 rounded bg-black/50 text-[11px] font-mono text-zinc-400 space-y-0.5">
                       <div className="text-zinc-500 uppercase text-[9px] mb-1">FIX Tags Verified</div>
                       <div>Tag 35=8 | Tag 39=2 (Filled) | Tag 55={omsResult.symbol} | Tag 54={omsResult.side === 'BUY' ? '1' : '2'}</div>
                     </div>
                   </div>
                 ) : (
-                  <div className="p-8 rounded-xl bg-black/30 border border-dashed border-white/10 text-center text-zinc-500 space-y-2">
-                    <Cpu className="w-8 h-8 mx-auto text-zinc-600" />
+                  <div className="p-4 rounded-xl bg-black/30 text-center text-zinc-500 space-y-2">
+                    <Cpu className="w-8 h-8 mx-auto text-zinc-600"/>
                     <p className="text-xs">No active execution dispatch.</p>
                     <p className="text-[11px] text-zinc-600">Select symbol and algo strategy to trigger execution.</p>
                   </div>
@@ -1433,14 +1411,14 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       )}
 
       {/* PILLAR 5: AUTOMATED ACCOUNTING, TAX & COMPLIANCE */}
-      {activePillar === 'compliance' && (
-        <div className="space-y-6">
+      {activePillar ==='compliance'&& (
+        <div className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Tax & Portfolio Accounting */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                  <FileSpreadsheet className="w-4 h-4 text-emerald-400" /> Tax & Ledger Connectors
+                  <FileSpreadsheet className="w-4 h-4 text-emerald-400"/> Tax & Ledger Connectors
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-xs text-zinc-400">
@@ -1451,10 +1429,10 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* KYC / AML & Sanctions */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-cyan-400" /> KYC / AML & KYT Engines
+                  <ShieldCheck className="w-4 h-4 text-cyan-400"/> KYC / AML & KYT Engines
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-xs text-zinc-400">
@@ -1465,10 +1443,10 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Cloud Storage Data Room */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm font-semibold text-white flex items-center gap-2">
-                  <Cloud className="w-4 h-4 text-blue-400" /> Cloud Storage Sync
+                  <Cloud className="w-4 h-4 text-blue-400"/> Cloud Storage Sync
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-xs text-zinc-400">
@@ -1479,12 +1457,12 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {/* Live KYC / AML & Sanctions Screener */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-cyan-400" />
+                  <ShieldCheck className="w-5 h-5 text-cyan-400"/>
                   Instant Sanctions & Chainalysis KYT Screener
                 </CardTitle>
                 <CardDescription>
@@ -1497,7 +1475,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   <Input
                     value={screenForm.entityName}
                     onChange={e => setScreenForm({ ...screenForm, entityName: e.target.value })}
-                    className="bg-black/50 border-white/10 text-white text-xs"
+                    className="bg-black/50 text-white text-xs"
                   />
                 </div>
 
@@ -1507,7 +1485,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <Input
                       value={screenForm.jurisdiction}
                       onChange={e => setScreenForm({ ...screenForm, jurisdiction: e.target.value })}
-                      className="bg-black/50 border-white/10 text-white text-xs"
+                      className="bg-black/50 text-white text-xs"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -1515,7 +1493,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={screenForm.screeningEngine}
                       onChange={e => setScreenForm({ ...screenForm, screeningEngine: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="All Integrated">Sumsub + Chainalysis Combined</option>
                       <option value="Chainalysis KYT">Chainalysis KYT Only</option>
@@ -1530,7 +1508,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   <Input
                     value={screenForm.walletAddress}
                     onChange={e => setScreenForm({ ...screenForm, walletAddress: e.target.value })}
-                    className="bg-black/50 border-white/10 text-white text-xs font-mono"
+                    className="bg-black/50 text-white text-xs font-mono"
                   />
                 </div>
 
@@ -1544,7 +1522,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                 </Button>
 
                 {screenResult && (
-                  <div className="p-3.5 rounded-xl bg-black/60 border border-cyan-500/30 space-y-2 text-xs">
+                  <div className="p-3.5 rounded-xl bg-black/60 space-y-2 text-xs">
                     <div className="flex items-center justify-between">
                       <span className="text-cyan-400 font-bold">STATUS: {screenResult.overallStatus}</span>
                       <Badge className="bg-emerald-500/20 text-emerald-300 font-mono text-[10px]">
@@ -1563,10 +1541,10 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Cloud Storage Auto-Sync Console */}
-            <Card className="bg-zinc-900/50 border-white/10">
+            <Card className="bg-zinc-900/50">
               <CardHeader>
                 <CardTitle className="text-white text-base flex items-center gap-2">
-                  <Cloud className="w-5 h-5 text-blue-400" />
+                  <Cloud className="w-5 h-5 text-blue-400"/>
                   Cloud Storage Data Room Sync
                 </CardTitle>
                 <CardDescription>
@@ -1579,7 +1557,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                   <Input
                     value={cloudForm.documentTitle}
                     onChange={e => setCloudForm({ ...cloudForm, documentTitle: e.target.value })}
-                    className="bg-black/50 border-white/10 text-white text-xs"
+                    className="bg-black/50 text-white text-xs"
                   />
                 </div>
 
@@ -1589,7 +1567,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={cloudForm.destination}
                       onChange={e => setCloudForm({ ...cloudForm, destination: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="google_drive">Google Drive Enterprise</option>
                       <option value="onedrive">Microsoft OneDrive Vault</option>
@@ -1602,7 +1580,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <select
                       value={cloudForm.documentType}
                       onChange={e => setCloudForm({ ...cloudForm, documentType: e.target.value as any })}
-                      className="w-full bg-black/50 border border-white/10 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-black/50 rounded-lg p-2 text-xs text-white"
                     >
                       <option value="pdf">PDF (Audited Vector)</option>
                       <option value="xlsx">Excel (XLSX Ledger)</option>
@@ -1621,7 +1599,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                 </Button>
 
                 {cloudSyncResult && (
-                  <div className="p-3.5 rounded-xl bg-black/60 border border-blue-500/30 space-y-2 text-xs">
+                  <div className="p-3.5 rounded-xl bg-black/60 space-y-2 text-xs">
                     <div className="flex items-center justify-between">
                       <span className="text-blue-400 font-bold">ARCHIVE CONFIRMED</span>
                       <Badge className="bg-blue-500/20 text-blue-300 font-mono text-[10px]">
@@ -1634,7 +1612,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                     <div className="text-[11px] text-zinc-400 font-mono break-all">
                       URI: {cloudSyncResult.storageUri}
                     </div>
-                    <div className="text-[10px] text-zinc-500 font-mono border-t border-white/5 pt-1">
+                    <div className="text-[10px] text-zinc-500 font-mono pt-1">
                       SHA-256 Checksum: {cloudSyncResult.sha256Checksum}
                     </div>
                   </div>
@@ -1646,23 +1624,23 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
       )}
 
       {/* PILLAR 6: MEMBERSHIP & ENTITLEMENTS (WHOP V5 & STRIPE) */}
-      {activePillar === 'membership' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {activePillar ==='membership'&& (
+        <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
             {/* Whop v5 License Key Management */}
-            <Card className="lg:col-span-2 bg-zinc-900/50 border-white/10">
+            <Card className="lg:col-span-2 bg-zinc-900/50">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-white text-base flex items-center gap-2">
-                      <Key className="w-5 h-5 text-orange-400" />
+                      <Key className="w-5 h-5 text-orange-400"/>
                       Whop API v5 & Stripe Entitlement Engine
                     </CardTitle>
                     <CardDescription>
                       Dynamic tier verification, license key provisioning, and instant tool unlock
                     </CardDescription>
                   </div>
-                  <Badge className="bg-orange-500/20 text-orange-300 border-orange-500/40 text-xs font-mono">
+                  <Badge className="bg-orange-500/20 text-orange-300 text-xs font-mono">
                     API v5 ACTIVE
                   </Badge>
                 </div>
@@ -1675,7 +1653,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       value={licenseInput}
                       onChange={e => setLicenseInput(e.target.value)}
                       placeholder="WHOP-..."
-                      className="bg-black/50 border-white/10 text-white font-mono text-xs flex-1"
+                      className="bg-black/50 text-white font-mono text-xs flex-1"
                     />
                     <Button 
                       onClick={handleVerifyLicense} 
@@ -1688,12 +1666,12 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                 </div>
 
                 {/* Tier Features & Capabilities unlocked */}
-                <div className="p-4 rounded-xl bg-black/40 border border-white/5 space-y-3">
+                <div className="p-4 rounded-xl bg-black/40 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-white uppercase tracking-wider">
                       Active Entitlements: {membershipData?.membershipTier || 'Institutional Prime Tier'}
                     </span>
-                    <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 text-[10px]">
+                    <Badge variant="outline"className="text-emerald-400 text-[10px]">
                       75% Fee Discount Applied
                     </Badge>
                   </div>
@@ -1705,17 +1683,17 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                       'Telegram, Discord & Slack instant signal dispatch',
                       'One-click Google Drive & S3 cloud sync',
                       'Chainalysis KYT & Sumsub real-time screening',
-                      'Pan-African multi-sovereign clearing (ZAR, NGN, KES, EGP)'
+'Pan-African multi-sovereign clearing (ZAR, NGN, KES, EGP)'
                     ].map((feature, i) => (
                       <div key={i} className="flex items-center gap-2">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0"/>
                         <span>{feature}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs text-zinc-400 border-t border-white/5 pt-3">
+                <div className="flex items-center justify-between text-xs text-zinc-400 pt-3">
                   <span>Billing Provider: <strong className="text-white">Whop v5 + Stripe Merchant</strong></span>
                   <span>License Expiry: <strong className="text-zinc-200 font-mono">Dec 31, 2027</strong></span>
                 </div>
@@ -1723,7 +1701,7 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
             </Card>
 
             {/* Tier Comparison & Upgrade Flow */}
-            <Card className="bg-gradient-to-br from-orange-950/30 via-zinc-900/60 to-black border-orange-500/20 flex flex-col justify-between">
+            <Card className="bg-gradient-to-br from-orange-950/30 via-zinc-900/60 to-black flex flex-col justify-between">
               <CardHeader>
                 <Badge className="w-fit bg-orange-500 text-black font-bold text-[10px] mb-1">
                   CURRENT TIER
@@ -1739,26 +1717,29 @@ alertcondition(close > vwapVal, "AQEI_BULLISH_CONVERGENCE", "Price above VWAP co
                 </div>
                 <div className="space-y-2 text-xs text-zinc-300">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+                    <Sparkles className="w-3.5 h-3.5 text-orange-400"/>
                     <span>0.00% execution markup</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+                    <Sparkles className="w-3.5 h-3.5 text-orange-400"/>
                     <span>Unlimited multi-channel alerts</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+                    <Sparkles className="w-3.5 h-3.5 text-orange-400"/>
                     <span>Direct phone/WhatsApp priority desk</span>
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="pt-2">
+              <CardFooter className="pt-2 flex flex-col gap-2">
                 <Button 
-                  onClick={() => alert('Whop Checkout Portal initialized: Your tier is already verified as Prime.')}
+                  onClick={() => setWhopNotice('Whop Checkout Portal initialized: Your institutional tier is verified as Prime.')}
                   className="w-full bg-orange-500 hover:bg-orange-400 text-black font-bold text-xs"
                 >
                   Manage Subscription in Whop
                 </Button>
+                {whopNotice && (
+                  <p role="status"className="text-[11px] text-emerald-400 text-center">{whopNotice}</p>
+                )}
               </CardFooter>
             </Card>
           </div>

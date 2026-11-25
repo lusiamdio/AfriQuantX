@@ -63,11 +63,11 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
   const totalFees = dealSizeMillions * (grossSpreadPct / 100);
 
   return (
-    <div className="space-y-6 pb-12">
+    <div className="space-y-3 pb-5">
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 border border-white/10 p-6 rounded-3xl relative overflow-hidden">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-neutral-950 via-neutral-900 to-neutral-950 p-3.5 rounded-xl relative overflow-hidden">
         <div className="space-y-2 relative z-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF]/10 border border-[#FFFFFF]/30 rounded-full text-xs font-mono text-[#FFFFFF]">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFFFFF]/10 rounded-full text-xs font-mono text-[#FFFFFF]">
             <Briefcase className="w-3.5 h-3.5" />
             <span>Investment Banking & Corporate Finance Advisory</span>
           </div>
@@ -81,11 +81,11 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
 
         {/* Global Implied Target KPI */}
         <div className="flex items-center gap-3 relative z-10">
-          <div className="bg-black/60 border border-white/10 rounded-2xl p-3.5 text-center min-w-[140px]">
+          <div className="bg-black/60 rounded-lg p-3.5 text-center min-w-[140px]">
             <span className="text-[10px] font-mono text-zinc-500 uppercase block">Implied Share Price</span>
             <span className="text-lg font-mono font-black text-[#FFFFFF]">ZAR {impliedSharePrice.toFixed(2)}</span>
           </div>
-          <div className="bg-black/60 border border-white/10 rounded-2xl p-3.5 text-center min-w-[130px]">
+          <div className="bg-black/60 rounded-lg p-3.5 text-center min-w-[130px]">
             <span className="text-[10px] font-mono text-zinc-500 uppercase block">Enterprise Value</span>
             <span className="text-lg font-mono font-black text-white">ZAR {(enterpriseValue / 1000).toFixed(2)}B</span>
           </div>
@@ -93,7 +93,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
       </div>
 
       {/* Main Workspace Layout with Collapsible Left Sub-Menu */}
-      <div className="w-full flex-1 flex flex-col lg:flex-row gap-6 items-start">
+      <div className="w-full flex-1 flex flex-col lg:flex-row gap-3 items-start">
         
         {/* LEFT SUB-MENU - COLLAPSIBLE */}
         <AnimatePresence initial={false} mode="wait">
@@ -106,8 +106,8 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
               transition={{ duration: 0.2 }}
               className="w-full lg:w-64 shrink-0 overflow-hidden"
             >
-              <div className="bg-neutral-900/80 border border-white/10 rounded-2xl p-3 space-y-3 shadow-xl backdrop-blur-md">
-                <div className="flex items-center justify-between px-2 py-1.5 border-b border-white/5 pb-2.5">
+              <div className="bg-neutral-900/80 rounded-lg p-3 space-y-3 shadow-xl backdrop-blur-md">
+                <div className="flex items-center justify-between px-2 py-1.5 pb-2.5 bg-white/[0.03]">
                   <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-300">
@@ -137,11 +137,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
                       <button
                         key={tab.id}
                         onClick={() => setActiveSubTab(tab.id as any)}
-                        className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${
-                          isActive
-                            ? 'bg-white text-black shadow-lg shadow-white/10'
-                            : 'text-zinc-400 hover:text-white hover:bg-white/5'
-                        }`}
+                        className={`w-full flex items-start gap-3 p-2.5 rounded-xl text-left transition-all duration-200 cursor-pointer ${ isActive ? 'bg-white text-black shadow-lg shadow-white/10' : 'text-zinc-400 hover:text-white hover:bg-white/5' }`}
                       >
                         <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${isActive ? 'text-black' : 'text-zinc-400'}`} />
                         <div className="min-w-0 flex-1">
@@ -157,7 +153,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
                   })}
                 </nav>
 
-                <div className="pt-2.5 border-t border-white/5 px-2">
+                <div className="pt-2.5 px-2 bg-white/[0.03]">
                   <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400">
                     <span className="flex items-center gap-1.5 text-emerald-400">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
@@ -177,7 +173,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
             >
               <button
                 onClick={() => setIsSubMenuOpen(true)}
-                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-neutral-900/80 border border-white/10 text-zinc-300 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all shadow-xl cursor-pointer group"
+                className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-neutral-900/80 text-zinc-300 hover:text-white hover:bg-white/10 text-xs font-bold uppercase tracking-wider transition-all shadow-xl cursor-pointer group"
                 title="Show Sub-Menu"
               >
                 <PanelLeftOpen className="w-4 h-4 text-emerald-400 group-hover:text-white transition-colors" />
@@ -191,9 +187,9 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
         <div className="flex-1 min-w-0 w-full">
           {/* Tab 1: DCF Valuation */}
           {activeSubTab === 'dcf' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
           {/* Left Col: Parameter Sliders */}
-          <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-5">
+          <div className="bg-neutral-950 rounded-lg p-3.5 space-y-2.5">
             <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
               <Calculator className="w-4 h-4 text-[#FFFFFF]" /> Core Financial Drivers
             </h3>
@@ -281,7 +277,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
             </div>
 
             {/* Bridge Summary */}
-            <div className="bg-black border border-white/10 rounded-xl p-4 space-y-2 text-xs font-mono">
+            <div className="bg-black rounded-xl p-4 space-y-2 text-xs font-mono">
               <div className="flex justify-between text-zinc-400">
                 <span>PV of 5-Yr Cash Flows:</span>
                 <span className="text-white font-bold">ZAR {cumulativePvFcf.toFixed(1)}M</span>
@@ -294,7 +290,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
                 <span>Net Debt Deduction:</span>
                 <span className="text-rose-400 font-bold">- ZAR {netDebt}M</span>
               </div>
-              <div className="pt-2 border-t border-white/10 flex justify-between text-sm">
+              <div className="pt-2 flex justify-between text-sm">
                 <span className="text-[#FFFFFF] font-bold">Implied Target Price:</span>
                 <span className="text-[#FFFFFF] font-black">ZAR {impliedSharePrice.toFixed(2)}</span>
               </div>
@@ -302,9 +298,9 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
           </div>
 
           {/* Right 2 Cols: 5-Year Cash Flow Schedule & 2D Sensitivity Matrix */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-3">
             {/* 5-Year Unlevered Free Cash Flow Schedule */}
-            <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
               <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
                 <FileSpreadsheet className="w-4 h-4 text-[#FFFFFF]" /> 5-Year Pro-Forma Unlevered FCF Forecast
               </h3>
@@ -312,14 +308,14 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-mono">
                   <thead>
-                    <tr className="border-b border-white/10 text-zinc-500 uppercase text-[10px]">
+                    <tr className="text-zinc-500 uppercase text-[10px]">
                       <th className="py-2.5 px-3">Line Item (ZAR M)</th>
                       {fcfYears.map(f => (
                         <th key={f.year} className="py-2.5 px-3 text-right">FY+{f.year}</th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="">
                     <tr>
                       <td className="py-2.5 px-3 font-bold text-white">Revenue</td>
                       {fcfYears.map(f => (
@@ -350,7 +346,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
             </div>
 
             {/* 2D Sensitivity Matrix: WACC vs. Terminal Growth */}
-            <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-4">
+            <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
               <div className="flex justify-between items-center">
                 <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
                   <BarChart3 className="w-4 h-4 text-[#FFFFFF]" /> Valuation Sensitivity Matrix (Implied Share Price)
@@ -361,14 +357,14 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
               <div className="overflow-x-auto">
                 <table className="w-full text-center text-xs font-mono">
                   <thead>
-                    <tr className="border-b border-white/10 text-zinc-500 text-[10px]">
+                    <tr className="text-zinc-500 text-[10px]">
                       <th className="py-2 px-3 text-left">WACC \ g</th>
                       {[2.0, 2.5, 3.0, 3.5, 4.0].map(g => (
                         <th key={g} className="py-2 px-3">{g.toFixed(1)}%</th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="">
                     {[10.0, 11.0, 11.5, 12.5, 13.5].map(w => (
                       <tr key={w}>
                         <td className="py-2.5 px-3 text-left font-bold text-zinc-400">{w.toFixed(1)}%</td>
@@ -382,11 +378,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
                           return (
                             <td 
                               key={g} 
-                              className={`py-2.5 px-3 font-bold transition-all ${
-                                isCurrent 
-                                  ? 'bg-[#FFFFFF] text-black font-black rounded-lg shadow-lg' 
-                                  : 'text-zinc-200 hover:bg-white/5'
-                              }`}
+                              className={`py-2.5 px-3 font-bold transition-all ${ isCurrent ? 'bg-[#FFFFFF] text-black font-black rounded-lg shadow-lg' : 'text-zinc-200 hover:bg-white/5' }`}
                             >
                               R {sp > 0 ? sp.toFixed(2) : '-'}
                             </td>
@@ -404,7 +396,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
 
       {/* Tab 2: LBO Returns & IRR Matrix */}
       {activeSubTab === 'lbo' && (
-        <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-6">
+        <div className="bg-neutral-950 rounded-lg p-3.5 space-y-3">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -418,25 +410,25 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-black p-4 rounded-xl border border-white/10">
+            <div className="bg-black p-4 rounded-xl">
               <span className="text-[10px] font-mono text-zinc-500 uppercase">Sponsor Equity Check</span>
               <div className="text-lg font-mono font-bold text-white mt-1">
                 ZAR {lboSponsorEquity.toFixed(0)}M ({(100 - lboDebtPercent)}%)
               </div>
             </div>
-            <div className="bg-black p-4 rounded-xl border border-white/10">
+            <div className="bg-black p-4 rounded-xl">
               <span className="text-[10px] font-mono text-zinc-500 uppercase">Exit Equity Value</span>
               <div className="text-lg font-mono font-bold text-white mt-1">
                 ZAR {lboExitEquity.toFixed(0)}M
               </div>
             </div>
-            <div className="bg-black p-4 rounded-xl border border-white/10">
+            <div className="bg-black p-4 rounded-xl">
               <span className="text-[10px] font-mono text-zinc-500 uppercase">5-Yr Sponsor MoIC</span>
               <div className="text-lg font-mono font-bold text-[#FFFFFF] mt-1">
                 {lboMoic.toFixed(2)}x Return
               </div>
             </div>
-            <div className="bg-black p-4 rounded-xl border border-white/10">
+            <div className="bg-black p-4 rounded-xl">
               <span className="text-[10px] font-mono text-zinc-500 uppercase">Projected Net IRR</span>
               <div className="text-lg font-mono font-bold text-emerald-400 mt-1">
                 {lboIrr.toFixed(1)}% p.a.
@@ -448,7 +440,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
 
       {/* Tab 3: Trading Comps Benchmarking */}
       {activeSubTab === 'comps' && (
-        <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-4">
+        <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
           <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-[#FFFFFF]" />
             Pan-African Peer Trading Multiples (Comps)
@@ -457,20 +449,20 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
             Real-time market valuation multiples across JSE, NGX, and international emerging market comps.
           </p>
 
-          <div className="border border-white/10 rounded-xl overflow-hidden">
+          <div className="rounded-xl overflow-hidden bg-white/[0.03]">
             <table className="w-full text-left text-xs font-mono">
-              <thead className="bg-black border-b border-white/10 text-zinc-400 uppercase text-[10px]">
+              <thead className="bg-black text-zinc-400 uppercase text-[10px]">
                 <tr>
-                  <th className="p-3">Company & Ticker</th>
-                  <th className="p-3">Exchange</th>
-                  <th className="p-3">Market Cap (USD)</th>
-                  <th className="p-3">EV / EBITDA</th>
-                  <th className="p-3">P / E Ratio</th>
-                  <th className="p-3">P / Book</th>
-                  <th className="p-3 text-right">Dividend Yield</th>
+                  <th className="px-2 py-1.5">Company & Ticker</th>
+                  <th className="px-2 py-1.5">Exchange</th>
+                  <th className="px-2 py-1.5">Market Cap (USD)</th>
+                  <th className="px-2 py-1.5">EV / EBITDA</th>
+                  <th className="px-2 py-1.5">P / E Ratio</th>
+                  <th className="px-2 py-1.5">P / Book</th>
+                  <th className="px-2 py-1.5 text-right">Dividend Yield</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 bg-neutral-950">
+              <tbody className="bg-neutral-950">
                 {[
                   { name: 'Standard Bank Group (SBK)', ex: 'JSE', cap: '$17.8B', evEbitda: '6.4x', pe: '7.8x', pb: '1.2x', div: '8.4%' },
                   { name: 'Naspers Ltd (NPN)', ex: 'JSE', cap: '$42.1B', evEbitda: '14.2x', pe: '18.5x', pb: '2.1x', div: '1.8%' },
@@ -479,13 +471,13 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
                   { name: 'AfriQuantX Peer Average', ex: 'Consensus', cap: '$18.1B', evEbitda: '8.6x', pe: '12.6x', pb: '2.4x', div: '6.0%' }
                 ].map((peer, idx) => (
                   <tr key={idx} className={idx === 4 ? 'bg-[#FFFFFF]/10 font-bold' : ''}>
-                    <td className="p-3 text-white font-bold">{peer.name}</td>
-                    <td className="p-3 text-zinc-400">{peer.ex}</td>
-                    <td className="p-3 text-zinc-200">{peer.cap}</td>
-                    <td className="p-3 text-[#FFFFFF]">{peer.evEbitda}</td>
-                    <td className="p-3 text-white">{peer.pe}</td>
-                    <td className="p-3 text-zinc-300">{peer.pb}</td>
-                    <td className="p-3 text-right text-emerald-400">{peer.div}</td>
+                    <td className="px-2 py-1.5 text-white font-bold">{peer.name}</td>
+                    <td className="px-2 py-1.5 text-zinc-400">{peer.ex}</td>
+                    <td className="px-2 py-1.5 text-zinc-200">{peer.cap}</td>
+                    <td className="px-2 py-1.5 text-[#FFFFFF]">{peer.evEbitda}</td>
+                    <td className="px-2 py-1.5 text-white">{peer.pe}</td>
+                    <td className="px-2 py-1.5 text-zinc-300">{peer.pb}</td>
+                    <td className="px-2 py-1.5 text-right text-emerald-400">{peer.div}</td>
                   </tr>
                 ))}
               </tbody>
@@ -496,7 +488,7 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
 
       {/* Tab 4: Syndicate Underwriting Waterfall */}
       {activeSubTab === 'syndicate' && (
-        <div className="bg-neutral-950 border border-white/10 rounded-2xl p-6 space-y-6">
+        <div className="bg-neutral-950 rounded-lg p-3.5 space-y-3">
           <div>
             <h3 className="text-base font-bold text-white uppercase tracking-wider flex items-center gap-2">
               <Landmark className="w-5 h-5 text-[#FFFFFF]" />
@@ -508,19 +500,19 @@ export function ValuationWorkbench({ setActiveTab }: { setActiveTab?: (tab: stri
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-black p-4 rounded-xl border border-white/10">
+            <div className="bg-black p-4 rounded-xl">
               <span className="text-[10px] font-mono text-zinc-500 uppercase">Gross Deal Size</span>
               <div className="text-lg font-mono font-bold text-white mt-1">
                 ZAR {dealSizeMillions} Million
               </div>
             </div>
-            <div className="bg-black p-4 rounded-xl border border-white/10">
+            <div className="bg-black p-4 rounded-xl">
               <span className="text-[10px] font-mono text-zinc-500 uppercase">Gross Underwriting Spread</span>
               <div className="text-lg font-mono font-bold text-[#FFFFFF] mt-1">
                 {grossSpreadPct}% (ZAR {totalFees.toFixed(2)}M)
               </div>
             </div>
-            <div className="bg-black p-4 rounded-xl border border-white/10">
+            <div className="bg-black p-4 rounded-xl">
               <span className="text-[10px] font-mono text-zinc-500 uppercase">Lead Left Praecipium</span>
               <div className="text-lg font-mono font-bold text-emerald-400 mt-1">
                 20% Fee Skim (ZAR {(totalFees * 0.20).toFixed(2)}M)

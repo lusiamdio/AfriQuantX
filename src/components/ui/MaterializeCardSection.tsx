@@ -101,7 +101,7 @@ export function MaterializeCardSection({
   const particleCount = 32;
 
   return (
-    <section id="cards-experience" className="py-24 sm:py-28 px-6 sm:px-12 lg:px-16 xl:px-24 w-full space-y-16 relative overflow-hidden selection:bg-[#D9A94E] selection:text-[#0D0F13] border-b border-black/[0.06]">
+    <section id="cards-experience" className="py-8 sm:py-28 px-3.5 sm:px-5 lg:px-16 xl:px-24 w-full space-y-5 relative overflow-hidden selection:bg-[#D9A94E] selection:text-[#0D0F13]">
       
       {/* Background ambient lighting */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-gradient-to-r from-[#D9A94E]/10 via-[#0666EB]/10 to-[#34A87E]/10 rounded-full blur-[160px] pointer-events-none" />
@@ -121,16 +121,12 @@ export function MaterializeCardSection({
 
         {/* Master 3-Way Mode Switcher */}
         <div className="pt-4 flex justify-center">
-          <div className="inline-flex p-1.5 rounded-full bg-[#F4F1E8] border border-black/[0.08] shadow-inner relative max-w-full overflow-x-auto">
+          <div className="inline-flex p-1.5 rounded-full bg-[#F4F1E8] shadow-inner relative max-w-full overflow-x-auto">
             
             {/* 1. Physical Mode */}
             <button
               onClick={() => triggerAssembly('physical')}
-              className={`relative z-10 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 flex items-center gap-2 shrink-0 ${
-                cardMode === 'physical' 
-                  ? 'text-white' 
-                  : 'text-[#6E737B] hover:text-[#0D0F13]'
-              }`}
+              className={`relative z-10 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 flex items-center gap-2 shrink-0 ${ cardMode === 'physical' ? 'text-white' : 'text-[#6E737B] hover:text-[#0D0F13]' }`}
             >
               <CreditCard className="w-4 h-4" />
               <span>Physical 18g Metal</span>
@@ -139,11 +135,7 @@ export function MaterializeCardSection({
             {/* 2. Virtual Holographic Mode */}
             <button
               onClick={() => triggerAssembly('virtual')}
-              className={`relative z-10 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 flex items-center gap-2 shrink-0 ${
-                cardMode === 'virtual' 
-                  ? 'text-white' 
-                  : 'text-[#6E737B] hover:text-[#0D0F13]'
-              }`}
+              className={`relative z-10 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 flex items-center gap-2 shrink-0 ${ cardMode === 'virtual' ? 'text-white' : 'text-[#6E737B] hover:text-[#0D0F13]' }`}
             >
               <Zap className="w-4 h-4" />
               <span>Virtual Holographic</span>
@@ -152,11 +144,7 @@ export function MaterializeCardSection({
             {/* 3. AfriQuantX Crypto Card */}
             <button
               onClick={() => triggerAssembly('crypto')}
-              className={`relative z-10 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 flex items-center gap-2 shrink-0 ${
-                cardMode === 'crypto' 
-                  ? 'text-white' 
-                  : 'text-[#6E737B] hover:text-[#0D0F13]'
-              }`}
+              className={`relative z-10 px-5 sm:px-7 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-tight transition-all duration-300 flex items-center gap-2 shrink-0 ${ cardMode === 'crypto' ? 'text-white' : 'text-[#6E737B] hover:text-[#0D0F13]' }`}
             >
               <Coins className="w-4 h-4 text-[#D9A94E]" />
               <span>AfriQuantX Crypto Card</span>
@@ -177,7 +165,7 @@ export function MaterializeCardSection({
       </div>
 
       {/* 2. Interactive Showcase Arena (3D Canvas + Technical Specs) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center relative z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-16 items-center relative z-10">
         
         {/* LEFT: 3D Interactive Card Stage */}
         <div className="lg:col-span-7 flex flex-col items-center justify-center">
@@ -221,17 +209,7 @@ export function MaterializeCardSection({
               {cardMode === 'physical' && (
                 <div 
                   key={`physical-${assemblyKey}-${finish}`}
-                  className={`
-                    w-full h-full rounded-[24px] p-6 sm:p-7 relative overflow-hidden 
-                    shadow-[0_24px_60px_rgba(13,15,19,0.35)] border transition-colors duration-500
-                    flex flex-col justify-between
-                    ${finish === 'obsidian' 
-                      ? 'bg-gradient-to-tr from-[#0D0F13] via-[#1A1D24] to-[#0A0C0E] border-white/15 text-white' 
-                      : finish === 'platinum'
-                      ? 'bg-gradient-to-tr from-[#D1D5DB] via-[#F3F4F6] to-[#9CA3AF] border-white/60 text-[#111827]'
-                      : 'bg-gradient-to-tr from-[#2A1F0D] via-[#4A3818] to-[#1F170A] border-[#D9A94E]/40 text-amber-100'
-                    }
-                  `}
+                  className={`w-full h-full rounded-lg p-3.5 sm:p-3.5 relative overflow-hidden shadow-[0_24px_60px_rgba(13,15,19,0.35)] transition-colors duration-500 flex flex-col justify-between bg-white/[0.03] ${finish === 'obsidian' ? 'bg-gradient-to-tr from-[#0D0F13] via-[#1A1D24] to-[#0A0C0E] border-white/15 text-white' : finish === 'platinum' ? 'bg-gradient-to-tr from-[#D1D5DB] via-[#F3F4F6] to-[#9CA3AF] border-white/60 text-[#111827]' : 'bg-gradient-to-tr from-[#2A1F0D] via-[#4A3818] to-[#1F170A] border-[#D9A94E]/40 text-amber-100' }`}
                 >
                   
                   {/* Subtle Brushed Metal Texture Lines */}
@@ -249,7 +227,7 @@ export function MaterializeCardSection({
                         initial={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.35 }}
-                        className="absolute inset-0 grid grid-cols-8 grid-rows-5 gap-1 p-2 bg-[#0D0F13] z-40 rounded-[24px] overflow-hidden"
+                        className="absolute inset-0 grid grid-cols-8 grid-rows-5 gap-1 p-2 bg-[#0D0F13] z-40 rounded-lg overflow-hidden"
                       >
                         {Array.from({ length: totalTiles }).map((_, idx) => {
                           const col = idx % gridCols;
@@ -277,13 +255,7 @@ export function MaterializeCardSection({
                                 delay: distFromCenter * 0.035,
                                 ease: [0.22, 1, 0.36, 1], // Custom overshoot bezier
                               }}
-                              className={`rounded-sm border ${
-                                finish === 'platinum'
-                                  ? 'bg-zinc-300 border-zinc-200'
-                                  : finish === 'gold'
-                                  ? 'bg-[#8B6B2B] border-[#D9A94E]/60'
-                                  : 'bg-zinc-800 border-zinc-700/80'
-                              }`}
+                              className={`rounded-sm bg-white/[0.03] ${ finish === 'platinum' ? 'bg-zinc-300 border-zinc-200' : finish === 'gold' ? 'bg-[#8B6B2B] border-[#D9A94E]/60' : 'bg-zinc-800 border-zinc-700/80' }`}
                             />
                           );
                         })}
@@ -321,11 +293,11 @@ export function MaterializeCardSection({
                       {/* Laser-Etched EMV Gold Chip */}
                       <div className="w-11 h-9 rounded-lg bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 p-[1.5px] shadow-sm relative overflow-hidden">
                         <div className="w-full h-full bg-gradient-to-tr from-amber-300 to-amber-100 rounded-[6px] grid grid-cols-2 grid-rows-3 gap-[1px] p-[2px]">
-                          <div className="border border-amber-600/40 rounded-sm" />
-                          <div className="border border-amber-600/40 rounded-sm" />
-                          <div className="border border-amber-600/40 rounded-sm col-span-2" />
-                          <div className="border border-amber-600/40 rounded-sm" />
-                          <div className="border border-amber-600/40 rounded-sm" />
+                          <div className="rounded-sm bg-white/[0.03]" />
+                          <div className="rounded-sm bg-white/[0.03]" />
+                          <div className="rounded-sm col-span-2 bg-white/[0.03]" />
+                          <div className="rounded-sm bg-white/[0.03]" />
+                          <div className="rounded-sm bg-white/[0.03]" />
                         </div>
                       </div>
 
@@ -370,13 +342,7 @@ export function MaterializeCardSection({
 
                     {/* Tier Badge */}
                     <div className="shrink-0">
-                      <span className={`px-2.5 py-1 rounded-md text-[10px] font-mono font-extrabold tracking-wider border ${
-                        finish === 'platinum'
-                          ? 'bg-black text-white border-black'
-                          : finish === 'gold'
-                          ? 'bg-[#D9A94E] text-[#0D0F13] border-[#D9A94E]'
-                          : 'bg-white/10 text-white border-white/20'
-                      }`}>
+                      <span className={`px-2.5 py-1 rounded-md text-[10px] font-mono font-extrabold tracking-wider bg-white/[0.03] ${ finish === 'platinum' ? 'bg-black text-white border-black' : finish === 'gold' ? 'bg-[#D9A94E] text-[#0D0F13] border-[#D9A94E]' : 'bg-white/10 text-white border-white/20' }`}>
                         {finish === 'gold' ? 'ROYAL GOLD' : finish === 'platinum' ? 'PLATINUM' : 'OBSIDIAN METAL'}
                       </span>
                     </div>
@@ -391,7 +357,7 @@ export function MaterializeCardSection({
               {cardMode === 'virtual' && (
                 <div 
                   key={`virtual-${assemblyKey}`}
-                  className="w-full h-full rounded-[24px] p-6 sm:p-7 relative overflow-hidden backdrop-blur-2xl bg-gradient-to-br from-white/[0.12] via-[#0666EB]/[0.14] to-[#7C4DFF]/[0.20] border border-cyan-400/40 shadow-[0_0_50px_rgba(6,102,235,0.25)] text-white flex flex-col justify-between transition-all duration-700"
+                  className="w-full h-full rounded-lg p-3.5 sm:p-3.5 relative overflow-hidden backdrop-blur-2xl bg-gradient-to-br from-white/[0.12] via-[#0666EB]/[0.14] to-[#7C4DFF]/[0.20] shadow-[0_0_50px_rgba(6,102,235,0.25)] text-white flex flex-col justify-between transition-all duration-700"
                 >
                   
                   {/* Upward Floating Particles upon Dematerialization */}
@@ -425,7 +391,7 @@ export function MaterializeCardSection({
                   </AnimatePresence>
 
                   {/* Holographic Glowing Border Pulse */}
-                  <div className="absolute inset-0 rounded-[24px] border border-cyan-400/35 shadow-[inset_0_0_22px_rgba(56,189,248,0.18)] pointer-events-none" />
+                  <div className="absolute inset-0 rounded-lg shadow-[inset_0_0_22px_rgba(56,189,248,0.18)] pointer-events-none bg-white/[0.03]" />
 
                   {/* Thin Light Reflection Band (Continuous 5s loop) */}
                   <motion.div
@@ -442,7 +408,7 @@ export function MaterializeCardSection({
                   {/* Virtual Card Header */}
                   <div className="flex items-center justify-between relative z-10">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-xl bg-cyan-400/20 border border-cyan-300/40 flex items-center justify-center text-cyan-300 shadow-sm">
+                      <div className="w-8 h-8 rounded-xl bg-cyan-400/20 flex items-center justify-center text-cyan-300 shadow-sm">
                         <Zap className="w-4 h-4" />
                       </div>
                       <div>
@@ -475,7 +441,7 @@ export function MaterializeCardSection({
                     <div className="flex items-center gap-4 text-xs font-mono">
                       <div className="flex items-center gap-1.5 text-cyan-200">
                         <span className="opacity-60 text-[10px]">DYNAMIC CVV:</span>
-                        <span className="font-bold bg-cyan-500/20 px-2 py-0.5 rounded border border-cyan-400/30 text-cyan-300">
+                        <span className="font-bold bg-cyan-500/20 px-2 py-0.5 rounded text-cyan-300">
                           {showSensitive ? dynamicCvv : '•••'}
                         </span>
                         <span className="text-[10px] text-cyan-400/80">({cvvCountdown}s)</span>
@@ -493,7 +459,7 @@ export function MaterializeCardSection({
                     </div>
 
                     {/* Apple Pay / Google Pay Instant Badge */}
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-[10px] font-mono font-bold">
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[10px] font-mono font-bold">
                       <Smartphone className="w-3.5 h-3.5 text-cyan-300" />
                       <span>APPLE / GOOGLE PAY</span>
                     </div>
@@ -508,7 +474,7 @@ export function MaterializeCardSection({
               {cardMode === 'crypto' && (
                 <div 
                   key={`crypto-${assemblyKey}`}
-                  className="w-full h-full rounded-[24px] p-6 sm:p-7 relative overflow-hidden backdrop-blur-2xl bg-gradient-to-br from-[#0D0F13] via-[#12231A] to-[#1F2B14] border border-[#34A87E]/50 shadow-[0_0_50px_rgba(52,168,126,0.30)] text-white flex flex-col justify-between transition-all duration-700"
+                  className="w-full h-full rounded-lg p-3.5 sm:p-3.5 relative overflow-hidden backdrop-blur-2xl bg-gradient-to-br from-[#0D0F13] via-[#12231A] to-[#1F2B14] shadow-[0_0_50px_rgba(52,168,126,0.30)] text-white flex flex-col justify-between transition-all duration-700"
                 >
                   
                   {/* Cyber Grid Matrix Background */}
@@ -564,7 +530,7 @@ export function MaterializeCardSection({
                   {/* Crypto Card Header */}
                   <div className="flex items-center justify-between relative z-10">
                     <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-xl bg-[#34A87E]/20 border border-[#34A87E]/40 flex items-center justify-center text-[#34A87E] shadow-sm">
+                      <div className="w-8 h-8 rounded-xl bg-[#34A87E]/20 flex items-center justify-center text-[#34A87E] shadow-sm">
                         <Coins className="w-4 h-4" />
                       </div>
                       <div>
@@ -578,7 +544,7 @@ export function MaterializeCardSection({
                       </div>
                     </div>
 
-                    <div className="px-2.5 py-1 rounded-full bg-[#34A87E]/20 border border-[#34A87E]/40 text-[#34A87E] text-[10px] font-mono font-bold flex items-center gap-1">
+                    <div className="px-2.5 py-1 rounded-full bg-[#34A87E]/20 text-[#34A87E] text-[10px] font-mono font-bold flex items-center gap-1">
                       <Cpu className="w-3 h-3" />
                       <span>EVM & SOLANA</span>
                     </div>
@@ -607,11 +573,7 @@ export function MaterializeCardSection({
                         <button
                           key={tok}
                           onClick={() => setSelectedCryptoToken(tok)}
-                          className={`px-2 py-0.5 rounded text-[10px] transition-all ${
-                            selectedCryptoToken === tok
-                              ? 'bg-[#D9A94E] text-[#0D0F13] font-bold shadow-sm'
-                              : 'bg-white/10 text-white/70 hover:text-white'
-                          }`}
+                          className={`px-2 py-0.5 rounded text-[10px] transition-all ${ selectedCryptoToken === tok ? 'bg-[#D9A94E] text-[#0D0F13] font-bold shadow-sm' : 'bg-white/10 text-white/70 hover:text-white' }`}
                         >
                           {tok}
                         </button>
@@ -628,7 +590,7 @@ export function MaterializeCardSection({
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D9A94E]/20 border border-[#D9A94E]/40 text-[10px] font-mono font-bold text-[#D9A94E]">
+                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D9A94E]/20 text-[10px] font-mono font-bold text-[#D9A94E]">
                       <Sparkles className="w-3.5 h-3.5" />
                       <span>2.5% CRYPTO CASHBACK</span>
                     </div>
@@ -644,7 +606,7 @@ export function MaterializeCardSection({
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => triggerAssembly(cardMode)}
-              className="px-4 py-2 rounded-full bg-[#F4F1E8] hover:bg-[#EAE6D8] text-[#0D0F13] text-xs font-mono font-bold transition-all flex items-center gap-2 border border-black/[0.08] hover:scale-105"
+              className="px-4 py-2 rounded-full bg-[#F4F1E8] hover:bg-[#EAE6D8] text-[#0D0F13] text-xs font-mono font-bold transition-all flex items-center gap-2 hover:scale-105"
             >
               <RefreshCw className={`w-3.5 h-3.5 text-[#D9A94E] ${isAssembling ? 'animate-spin' : ''}`} />
               <span>
@@ -657,16 +619,12 @@ export function MaterializeCardSection({
             </button>
 
             {cardMode === 'physical' && (
-              <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#F4F1E8] border border-black/[0.08]">
+              <div className="flex items-center gap-1.5 p-1 rounded-full bg-[#F4F1E8]">
                 {(['obsidian', 'platinum', 'gold'] as FinishOption[]).map((f) => (
                   <button
                     key={f}
                     onClick={() => setFinish(f)}
-                    className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase transition-all ${
-                      finish === f 
-                        ? 'bg-[#0D0F13] text-white shadow-sm' 
-                        : 'text-[#6E737B] hover:text-[#0D0F13]'
-                    }`}
+                    className={`px-3 py-1 rounded-full text-[10px] font-mono font-bold uppercase transition-all ${ finish === f ? 'bg-[#0D0F13] text-white shadow-sm' : 'text-[#6E737B] hover:text-[#0D0F13]' }`}
                   >
                     {f}
                   </button>
@@ -677,18 +635,14 @@ export function MaterializeCardSection({
             {cardMode === 'virtual' && (
               <button
                 onClick={() => setIsDisposable(!isDisposable)}
-                className={`px-3 py-1.5 rounded-full text-[10px] font-mono font-bold transition-all border ${
-                  isDisposable 
-                    ? 'bg-[#0666EB] text-white border-[#0666EB]' 
-                    : 'bg-[#F4F1E8] text-[#6E737B] border-black/[0.08] hover:text-[#0D0F13]'
-                }`}
+                className={`px-3 py-1.5 rounded-full text-[10px] font-mono font-bold transition-all bg-white/[0.03] ${ isDisposable ? 'bg-[#0666EB] text-white border-[#0666EB]' : 'bg-[#F4F1E8] text-[#6E737B] border-black/[0.08] hover:text-[#0D0F13]' }`}
               >
                 {isDisposable ? 'Disposable Burner Active' : 'Enable Disposable Mode'}
               </button>
             )}
 
             {cardMode === 'crypto' && (
-              <div className="px-3 py-1.5 rounded-full bg-[#34A87E]/10 border border-[#34A87E]/30 text-[#34A87E] text-[10px] font-mono font-bold flex items-center gap-1.5">
+              <div className="px-3 py-1.5 rounded-full bg-[#34A87E]/10 text-[#34A87E] text-[10px] font-mono font-bold flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5" />
                 <span>Auto-Converts to NGN / KES / ZAR at POS</span>
               </div>
@@ -697,7 +651,7 @@ export function MaterializeCardSection({
         </div>
 
         {/* RIGHT: Technical Specifications & Capability Matrix */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className="lg:col-span-5 space-y-3">
           
           <div className="space-y-2">
             <div className="inline-flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[#D9A94E]">
@@ -737,18 +691,18 @@ export function MaterializeCardSection({
           </div>
 
           {/* Technical Specs Matrix */}
-          <div className="p-6 rounded-2xl bg-[#F4F1E8] border border-black/[0.06] space-y-3.5 font-mono text-xs">
+          <div className="p-3.5 rounded-lg bg-[#F4F1E8] space-y-3.5 font-mono text-xs">
             {cardMode === 'physical' ? (
               <>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">CARD WEIGHT & BUILD</span>
                   <span className="font-bold text-[#0D0F13]">18.0 Grams (Solid Steel)</span>
                 </div>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">FX CLEARING SPREAD</span>
                   <span className="font-bold text-[#34A87E]">0.0% Interbank Spot Rate</span>
                 </div>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">ATM WITHDRAWAL LIMIT</span>
                   <span className="font-bold text-[#0D0F13]">$10,000 / Day Worldwide</span>
                 </div>
@@ -759,15 +713,15 @@ export function MaterializeCardSection({
               </>
             ) : cardMode === 'virtual' ? (
               <>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">ISSUANCE TIME</span>
                   <span className="font-bold text-[#34A87E]">0.05 Seconds (Instant)</span>
                 </div>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">DYNAMIC SECURITY</span>
                   <span className="font-bold text-[#0666EB]">60s Rotating 3D CVV</span>
                 </div>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">BURNER PROTECTION</span>
                   <span className="font-bold text-[#7C4DFF]">Auto-Destruct on Merchant Charge</span>
                 </div>
@@ -778,15 +732,15 @@ export function MaterializeCardSection({
               </>
             ) : (
               <>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">SUPPORTED ASSETS</span>
                   <span className="font-bold text-[#0D0F13]">USDC, USDT, SOL, ETH, BTC</span>
                 </div>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">STAKING CASHBACK</span>
                   <span className="font-bold text-[#D9A94E]">2.5% Paid in AQX / USDC</span>
                 </div>
-                <div className="flex items-center justify-between pb-2.5 border-b border-black/[0.06]">
+                <div className="flex items-center justify-between pb-2.5">
                   <span className="text-[#6E737B]">GAS FEES AT POS</span>
                   <span className="font-bold text-[#34A87E]">$0.00 (Gasless Relayer)</span>
                 </div>
@@ -802,7 +756,7 @@ export function MaterializeCardSection({
           <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <button
               onClick={onNavigateToAuth}
-              className="h-[50px] px-8 rounded-full bg-[#0D0F13] text-white hover:bg-black font-bold text-sm tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(13,15,19,0.18)] hover:scale-[1.02] flex items-center justify-center gap-2 group"
+              className="h-[50px] px-4 rounded-full bg-[#0D0F13] text-white hover:bg-black font-bold text-sm tracking-tight transition-all duration-200 shadow-[0_4px_20px_rgba(13,15,19,0.18)] hover:scale-[1.02] flex items-center justify-center gap-2 group"
             >
               <span>
                 {cardMode === 'physical' 
@@ -816,7 +770,7 @@ export function MaterializeCardSection({
 
             <button
               onClick={() => triggerAssembly(cardMode === 'physical' ? 'virtual' : cardMode === 'virtual' ? 'crypto' : 'physical')}
-              className="h-[50px] px-6 rounded-full bg-[#F4F1E8] hover:bg-[#EAE6D8] text-[#0D0F13] font-bold text-xs tracking-tight transition-all"
+              className="h-[50px] px-3.5 rounded-full bg-[#F4F1E8] hover:bg-[#EAE6D8] text-[#0D0F13] font-bold text-xs tracking-tight transition-all"
             >
               <span>Switch Card Type</span>
             </button>

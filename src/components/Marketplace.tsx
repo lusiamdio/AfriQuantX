@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { ShoppingBag, TrendingUp, TrendingDown, ShieldCheck, Star, Zap, X, ChevronRight, BrainCircuit, Building2, ArrowRight, Coins, Globe, BarChart3, Activity, ArrowRightLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
+import type { RwaAsset } from '../types/rwa';
+import { INITIAL_DEMO_ASSETS } from '../services/rwaPlatformService';
+import { formatCurrencyFromMinorUnits } from '../lib/financialMath';
+import { rwaFetch } from '../lib/rwaApi';
+import { AssetDetailModal } from './AssetDetailModal';
 
 interface MarketplaceProps {
   onNavigateToCompany?: (id: string) => void;
@@ -9,9 +14,9 @@ interface MarketplaceProps {
   setActiveTab?: (tab: string) => void;
 }
 
-const products = [];
-const equities = [];
-const commodities = [];
+const products: any[] = [];
+const equities: any[] = [];
+const commodities: any[] = [];
 
 const forexPairs = [
   {
@@ -173,7 +178,7 @@ const generateProducts = () => {
       price: 100 + (i % 5000) + (Math.random() * 50),
       equity: (i % 10) / 100,
       estReturn: 50 + (i % 500),
-      image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+      image: '',
       category: prod.category,
       rating: 4.0 + ((i % 10) / 10),
     });
@@ -199,7 +204,7 @@ const generateProducts = () => {
           price: 50 + ((i * j * k) % 1000) + (Math.random() * 20),
           equity: ((i + j + k) % 15) / 100,
           estReturn: 30 + ((i * j * k) % 200),
-          image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800',
+          image: '',
           category: category,
           rating: 3.5 + (((i + j + k) % 15) / 10),
         });
@@ -285,11 +290,50 @@ const allProducts = [...products, ...generateProducts()];
 const allCommodities = [...commodities, ...generateCommodities()];
 
 export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setActiveTab: setAppActiveTab }: MarketplaceProps) {
-  const [activeTab, setActiveTab] = useState<'equities' | 'commodities' | 'forex' | 'products'>('equities');
+  const [activeTab, setActiveTab] = useState<'rwa' | 'equities' | 'commodities' | 'forex' | 'products'>('rwa');
   const [selectedProduct, setSelectedProduct] = useState<typeof products[0] | null>(null);
+  const [selectedRwaAsset, setSelectedRwaAsset] = useState<RwaAsset | null>(null);
+  const [rwaAssets, setRwaAssets] = useState<RwaAsset[]>(INITIAL_DEMO_ASSETS);
+  const [rwaClassFilter, setRwaClassFilter] = useState('ALL');
+  const [rwaCountryFilter, setRwaCountryFilter] = useState('ALL');
+  const [rwaRiskFilter, setRwaRiskFilter] = useState('ALL');
+  const [rwaSearch, setRwaSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [liveCompanies, setLiveCompanies] = useState<any[]>([]);
+  const [commodityOrder, setCommodityOrder] = useState<{ item: any; side: 'BUY' | 'SELL' } | null>(null);
+  const [marketNotice, setMarketNotice] = useState<string | null>(null);
+  const [productConfirmed, setProductConfirmed] = useState(false);
   const itemsPerPage = 12;
+
+  useEffect(() => {
+    const loadRwa = async () => {
+      try {
+        const res = await rwaFetch<{ assets: RwaAsset[] }>('/assets');
+        if (res.assets?.length) setRwaAssets(res.assets);
+      } catch {
+        // Retain initial seed assets if server unavailable
+      }
+    };
+    void loadRwa();
+  }, []);
+
+  const filteredRwaAssets = useMemo(() => {
+    return rwaAssets.filter((asset) => {
+      if (rwaClassFilter !== 'ALL' && asset.passport.assetClass !== rwaClassFilter) return false;
+      if (rwaCountryFilter !== 'ALL' && asset.passport.country !== rwaCountryFilter) return false;
+      if (rwaRiskFilter !== 'ALL' && asset.passport.riskRating !== rwaRiskFilter) return false;
+      if (rwaSearch.trim()) {
+        const q = rwaSearch.toLowerCase();
+        const hit =
+          asset.name.toLowerCase().includes(q) ||
+          asset.passport.passportId.toLowerCase().includes(q) ||
+          asset.passport.sector.toLowerCase().includes(q) ||
+          asset.passport.country.toLowerCase().includes(q);
+        if (!hit) return false;
+      }
+      return true;
+    });
+  }, [rwaAssets, rwaClassFilter, rwaCountryFilter, rwaRiskFilter, rwaSearch]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -337,7 +381,7 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
   const renderPagination = (totalItems: number) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     return (
-      <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
+      <div className="flex items-center justify-between mt-8 pt-6">
         <span className="text-sm text-zinc-400">
           Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} entries
         </span>
@@ -362,43 +406,37 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
   };
 
   return (
-    <div className="space-y-8 relative bg-black text-white">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+    <div className="space-y-4 relative bg-black text-white">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white uppercase">AQX Exchange</h1>
-          <p className="text-zinc-400 mt-1 font-medium">Africa's Wall Street: Equities, Commodities & Forex</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white uppercase">AQX Marketplace</h1>
+          <p className="text-zinc-400 mt-1 font-medium">Real-World Asset Offerings, Digital Asset Passports & African Capital Markets</p>
           <div className="flex items-center gap-3 mt-3">
-            <span className="text-2xl font-mono text-white font-bold">1,485.20</span>
-            <span className="flex items-center px-2.5 py-1 rounded-md bg-[#FFFFFF]/10 text-[#FFFFFF] text-xs font-bold border border-[#FFFFFF]/20">
+            <span className="text-2xl font-mono tabular-nums text-white font-bold">1,485.20</span>
+            <span className="flex items-center px-2.5 py-1 rounded-md bg-[#FFFFFF]/10 text-[#FFFFFF] text-xs font-bold">
               <TrendingUp className="w-3 h-3 mr-1 text-[#FFFFFF]" />
-              +2.4%
-            </span>
-            <span className="flex items-center px-2.5 py-1 rounded-md bg-[#FFFFFF]/10 text-[#FFFFFF] text-xs font-bold border border-[#FFFFFF]/20">
-              <BrainCircuit className="w-3 h-3 mr-1 text-[#FFFFFF]" />
-              Bullish Trend
+              RWA100 (DEMO)
             </span>
           </div>
         </div>
         
         <div className="flex items-center gap-4 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
-          <div className="flex bg-black p-1 rounded-2xl border border-white/10 whitespace-nowrap">
+          <div className="flex bg-black p-1 rounded-lg whitespace-nowrap">
+            <button
+              onClick={() => setActiveTab('rwa')}
+              className={`px-4 md:px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 cursor-pointer ${ activeTab === 'rwa' ? 'bg-[#FFFFFF] text-black shadow-lg' : 'text-zinc-400 hover:text-white hover:bg-white/5' }`}
+            >
+              <Building2 className="w-4 h-4" /> Real-World Assets
+            </button>
             <button
               onClick={() => setActiveTab('equities')}
-              className={`px-4 md:px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
-                activeTab === 'equities' 
-                  ? 'bg-[#FFFFFF] text-black shadow-lg' 
-                  : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-4 md:px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 cursor-pointer ${ activeTab === 'equities' ? 'bg-[#FFFFFF] text-black shadow-lg' : 'text-zinc-400 hover:text-white hover:bg-white/5' }`}
             >
               <BarChart3 className="w-4 h-4" /> Equities
             </button>
             <button
               onClick={() => setActiveTab('commodities')}
-              className={`px-4 md:px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
-                activeTab === 'commodities' 
-                  ? 'bg-[#FFFFFF] text-black shadow-lg' 
-                  : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-4 md:px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 cursor-pointer ${ activeTab === 'commodities' ? 'bg-[#FFFFFF] text-black shadow-lg' : 'text-zinc-400 hover:text-white hover:bg-white/5' }`}
             >
               <Coins className="w-4 h-4" /> Commodities
             </button>
@@ -406,17 +444,13 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
               onClick={() => {
                 if (setAppActiveTab) setAppActiveTab('market-forex');
               }}
-              className={`px-4 md:px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 text-zinc-400 hover:text-white hover:bg-white/5`}
+              className={`px-4 md:px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 text-zinc-400 hover:text-white hover:bg-white/5 cursor-pointer`}
             >
               <Globe className="w-4 h-4" /> Forex
             </button>
             <button
               onClick={() => setActiveTab('products')}
-              className={`px-4 md:px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
-                activeTab === 'products' 
-                  ? 'bg-[#FFFFFF] text-black shadow-lg' 
-                  : 'text-zinc-400 hover:text-white hover:bg-white/5'
-              }`}
+              className={`px-4 md:px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-2 cursor-pointer ${ activeTab === 'products' ? 'bg-[#FFFFFF] text-black shadow-lg' : 'text-zinc-400 hover:text-white hover:bg-white/5' }`}
             >
               <ShoppingBag className="w-4 h-4" /> Products
             </button>
@@ -426,40 +460,187 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
               onClick={() => {
                 if (setAppActiveTab) setAppActiveTab('market-secondary');
               }}
-              className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FFFFFF]/10 text-[#FFFFFF] border border-[#FFFFFF]/20 hover:bg-[#FFFFFF] hover:text-black transition-colors text-sm font-bold uppercase tracking-wider whitespace-nowrap"
+              className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FFFFFF]/10 text-[#FFFFFF] hover:bg-[#FFFFFF] hover:text-black transition-colors text-xs font-bold uppercase tracking-wider whitespace-nowrap cursor-pointer"
             >
               <ArrowRightLeft className="w-4 h-4" />
               Secondary Market
             </button>
             <button 
-              onClick={onNavigateToOnboarding}
-              className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FFFFFF] text-black border border-[#FFFFFF] hover:bg-white hover:text-black transition-colors text-sm font-bold uppercase tracking-wider whitespace-nowrap"
+              onClick={() => {
+                if (setAppActiveTab) setAppActiveTab('tokenisation-hub');
+                else onNavigateToOnboarding?.();
+              }}
+              className="hidden lg:flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#FFFFFF] text-black hover:bg-white hover:text-black transition-colors text-xs font-bold uppercase tracking-wider whitespace-nowrap cursor-pointer"
             >
               <Building2 className="w-4 h-4" />
-              List Company
+              Tokenise Asset
             </button>
           </div>
         </div>
       </div>
 
+      {activeTab === 'rwa' && (
+        <div className="space-y-3">
+          {/* Multi-dimensional RWA Filters */}
+          <div className="bg-neutral-950 rounded-lg p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+            <input
+              type="text"
+              value={rwaSearch}
+              onChange={(e) => setRwaSearch(e.target.value)}
+              placeholder="Search passport ID, asset, sector..."
+              className="bg-neutral-900 rounded-lg px-3 py-2 text-white"
+            />
+            <select
+              value={rwaClassFilter}
+              onChange={(e) => setRwaClassFilter(e.target.value)}
+              className="bg-neutral-900 rounded-lg px-3 py-2 text-white"
+            >
+              <option value="ALL">All Asset Classes</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Energy">Renewable Energy</option>
+              <option value="Infrastructure">Infrastructure</option>
+              <option value="Technology">Technology</option>
+              <option value="Healthcare">Healthcare</option>
+            </select>
+            <select
+              value={rwaCountryFilter}
+              onChange={(e) => setRwaCountryFilter(e.target.value)}
+              className="bg-neutral-900 rounded-lg px-3 py-2 text-white"
+            >
+              <option value="ALL">All Countries</option>
+              <option value="South Africa">South Africa</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Ghana">Ghana</option>
+              <option value="Angola">Angola</option>
+              <option value="Rwanda">Rwanda</option>
+            </select>
+            <select
+              value={rwaRiskFilter}
+              onChange={(e) => setRwaRiskFilter(e.target.value)}
+              className="bg-neutral-900 rounded-lg px-3 py-2 text-white"
+            >
+              <option value="ALL">All Risk Bands</option>
+              <option value="LOW">Low Risk</option>
+              <option value="MEDIUM">Medium Risk</option>
+              <option value="HIGH">High Risk</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {filteredRwaAssets.map((asset) => {
+              const fundedPct = Math.min(
+                100,
+                Math.round((asset.passport.fundedAmountMinorUnits / Math.max(1, asset.passport.targetRaiseMinorUnits)) * 100)
+              );
+              return (
+                <div
+                  key={asset.id}
+                  onClick={() => setSelectedRwaAsset(asset)}
+                  className="bg-neutral-950 rounded-lg p-3.5 transition-colors cursor-pointer flex flex-col justify-between space-y-2.5"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-xs text-zinc-400 font-mono">
+                      <span>{asset.passport.passportId} · DEMO</span>
+                      <span>{asset.passport.offeringStatus}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-bold text-white">{asset.name}</h3>
+                      <p className="text-xs text-zinc-400 mt-0.5">
+                        {asset.passport.assetClass} · {asset.passport.country} · {asset.passport.issuer}
+                      </p>
+                    </div>
+                    <p className="text-xs text-zinc-300 leading-relaxed line-clamp-2">{asset.shortSummary}</p>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="grid grid-cols-2 gap-3 text-xs">
+                      <div className="p-2.5 rounded-lg bg-neutral-900/70">
+                        <span className="text-zinc-400 block">Unit Value</span>
+                        <span className="font-mono tabular-nums font-bold text-white">
+                          {formatCurrencyFromMinorUnits(asset.token.unitValueMinorUnits, asset.passport.currency)}
+                        </span>
+                      </div>
+                      <div className="p-2.5 rounded-lg bg-neutral-900/70">
+                        <span className="text-zinc-400 block">Min Investment</span>
+                        <span className="font-mono tabular-nums font-bold text-white">
+                          {formatCurrencyFromMinorUnits(asset.token.minInvestmentMinorUnits, asset.passport.currency)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between font-mono tabular-nums">
+                        <span className="text-zinc-400 font-sans">Capital Funded</span>
+                        <span className="text-white">{fundedPct}%</span>
+                      </div>
+                      <div className="h-1.5 rounded-full bg-neutral-800 overflow-hidden">
+                        <div className="h-full bg-emerald-400" style={{ width: `${fundedPct}%` }} />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-3 text-xs">
+                      <div className="font-mono tabular-nums text-zinc-300">
+                        AQX Score: <strong className="text-white">{asset.aqxScore.overall}/100</strong> · {asset.passport.riskRating} Risk
+                      </div>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedRwaAsset(asset);
+                        }}
+                        className="px-3.5 py-1.5 rounded-lg bg-white text-black font-bold hover:bg-zinc-200 cursor-pointer"
+                      >
+                        Inspect & Invest
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {selectedRwaAsset && (
+        <AssetDetailModal
+          asset={selectedRwaAsset}
+          onClose={() => setSelectedRwaAsset(null)}
+          onInvestmentSuccess={(order) => {
+            setRwaAssets((prev) =>
+              prev.map((a) =>
+                a.id === order.assetId
+                  ? {
+                      ...a,
+                      passport: {
+                        ...a.passport,
+                        fundedAmountMinorUnits: a.passport.fundedAmountMinorUnits + order.grossAmountMinorUnits,
+                      },
+                    }
+                  : a
+              )
+            );
+          }}
+        />
+      )}
+
       {activeTab === 'equities' && (
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-8"
+          className="space-y-4"
         >
           {/* Top Performing Companies */}
           <div>
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-2 mb-3">
               <TrendingUp className="w-5 h-5 text-[#FFFFFF]" />
               <h2 className="text-xl font-bold text-white uppercase tracking-wider">Top African Equities</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {getPaginatedData(displayEquities).map((company: any) => (
                 <div 
                   key={company.id}
                   onClick={() => onNavigateToCompany?.(company.id)}
-                  className="bg-black border border-white/10 rounded-2xl p-6 hover:border-[#FFFFFF]/50 transition-all duration-300 cursor-pointer group relative overflow-hidden shadow-2xl"
+                  className="bg-black rounded-lg p-3.5 transition-all duration-300 cursor-pointer group relative overflow-hidden shadow-2xl"
                 >
                   <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                     <BrainCircuit className="w-24 h-24 text-[#FFFFFF]" />
@@ -478,30 +659,40 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
                         <span className="text-xs text-zinc-400">{company.name} • {company.sector}</span>
                       </div>
                     </div>
-                    <span className="px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-zinc-400 font-bold uppercase tracking-wider">
+                    <span className="px-2.5 py-1 rounded-md bg-white/5 text-xs text-zinc-400 font-bold uppercase tracking-wider">
                       {company.risk} Risk
                     </span>
                   </div>
                   
-                  <p className="text-sm text-zinc-300 mb-6 relative z-10 line-clamp-2 font-medium">{company.description}</p>
+                  <p className="text-sm text-zinc-300 mb-3 relative z-10 line-clamp-2 font-medium">{company.description}</p>
                   
-                  <div className="grid grid-cols-2 gap-4 mb-6 relative z-10">
-                    <div className="bg-white/[0.02] rounded-xl p-3 border border-white/10">
+                  <div className="grid grid-cols-2 gap-4 mb-3 relative z-10">
+                    <div className="bg-white/[0.02] rounded-xl p-3">
                       <p className="text-xs text-zinc-400 mb-1 uppercase tracking-wider font-bold">Price</p>
                       <p className="text-sm font-mono font-bold text-white">${company.price.toFixed(2)}</p>
                     </div>
-                    <div className="bg-white/[0.02] rounded-xl p-3 border border-white/10">
+                    <div className="bg-white/[0.02] rounded-xl p-3">
                       <p className="text-xs text-zinc-400 mb-1 uppercase tracking-wider font-bold">Growth</p>
                       <p className="text-sm font-mono font-bold text-[#FFFFFF]">{company.revGrowth}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-white/10 relative z-10">
+                  <div className="flex items-center justify-between pt-4 relative z-10">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-zinc-400 uppercase tracking-wider font-bold">AI Score:</span>
                       <span className="text-sm font-bold text-[#FFFFFF] font-mono">{company.growthScore}/100</span>
                     </div>
-                    <button className="bg-[#FFFFFF] text-black px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-white transition-all shadow-md">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (onNavigateToCompany) {
+                          onNavigateToCompany(company.id);
+                        } else if (setAppActiveTab) {
+                          setAppActiveTab('trade');
+                        }
+                      }}
+                      className="bg-[#FFFFFF] text-black px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-white transition-all shadow-md cursor-pointer"
+                    >
                       Trade
                     </button>
                   </div>
@@ -517,18 +708,18 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-8"
+          className="space-y-4"
         >
-          <div className="flex items-center gap-2 mb-6">
+          <div className="flex items-center gap-2 mb-3">
             <Coins className="w-5 h-5 text-[#FFFFFF]" />
             <h2 className="text-xl font-bold text-white uppercase tracking-wider">African Commodities Market</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {getPaginatedData(allCommodities).map((cmd: any) => (
-              <div key={cmd.id} className="bg-black border border-white/10 rounded-2xl p-6 hover:border-[#FFFFFF]/50 transition-all group shadow-2xl">
+              <div key={cmd.id} className="bg-black rounded-lg p-3.5 transition-all group shadow-2xl">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-xl">
+                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-xl">
                       {cmd.icon}
                     </div>
                     <div>
@@ -544,18 +735,66 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
                     </p>
                   </div>
                 </div>
-                <p className="text-sm text-zinc-300 mb-6 font-medium">{cmd.description}</p>
+                <p className="text-sm text-zinc-300 mb-3 font-medium">{cmd.description}</p>
+                {marketNotice && (
+                  <div className="mb-4 p-3 rounded-xl bg-emerald-500/10 text-xs text-emerald-300 flex items-center justify-between">
+                    <span>{marketNotice}</span>
+                    {setAppActiveTab && (
+                      <button onClick={() => setAppActiveTab('trade')} className="underline font-bold ml-3">Open Trade Desk →</button>
+                    )}
+                  </div>
+                )}
                 <div className="flex gap-3">
-                  <button className="flex-1 bg-[#FFFFFF] text-black border border-[#FFFFFF] py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors">
+                  <button
+                    onClick={() => {
+                      setCommodityOrder({ item: cmd, side: 'BUY' });
+                      setMarketNotice(`Prepared BUY allocation ticket for ${cmd.name} at $${cmd.price.toFixed(2)}.`);
+                    }}
+                    className="flex-1 bg-[#FFFFFF] text-black py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-white transition-colors cursor-pointer"
+                  >
                     Buy
                   </button>
-                  <button className="flex-1 bg-white/5 text-white border border-white/10 py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors">
+                  <button
+                    onClick={() => {
+                      setCommodityOrder({ item: cmd, side: 'SELL' });
+                      setMarketNotice(`Prepared SELL ticket for ${cmd.name} at $${cmd.price.toFixed(2)}.`);
+                    }}
+                    className="flex-1 bg-white/5 text-white py-2 rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-white/10 transition-colors cursor-pointer"
+                  >
                     Sell
                   </button>
                 </div>
               </div>
             ))}
           </div>
+          {commodityOrder && (
+            <div className="p-4 rounded-lg bg-neutral-900 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <p className="text-xs font-mono uppercase text-zinc-400">Active Commodity Ticket</p>
+                <p className="text-sm font-bold text-white">
+                  {commodityOrder.side} {commodityOrder.item.name} — Spot ${commodityOrder.item.price.toFixed(2)}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setCommodityOrder(null)}
+                  className="px-3 py-2 rounded-xl bg-white/5 text-zinc-300 text-xs font-bold hover:bg-white/10"
+                >
+                  Dismiss
+                </button>
+                <button
+                  onClick={() => {
+                    setMarketNotice(`${commodityOrder.side} order routed for ${commodityOrder.item.name}.`);
+                    setCommodityOrder(null);
+                    if (setAppActiveTab) setAppActiveTab('trade');
+                  }}
+                  className="px-4 py-2 rounded-xl bg-white text-black text-xs font-bold hover:bg-zinc-200"
+                >
+                  Route to Desk →
+                </button>
+              </div>
+            </div>
+          )}
           {renderPagination(allCommodities.length)}
         </motion.div>
       )}
@@ -564,26 +803,21 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="space-y-8"
+          className="space-y-4"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
             {getPaginatedData(allProducts).map((product: any) => (
               <motion.div 
                 key={product.id}
                 whileHover={{ y: -6 }}
-                className="bg-black border border-white/10 rounded-3xl overflow-hidden flex flex-col group shadow-2xl relative hover:border-[#FFFFFF]/50 transition-colors"
+                className="bg-black rounded-xl overflow-hidden flex flex-col group shadow-2xl relative transition-colors"
               >
-              <div className="relative h-56 overflow-hidden p-2">
-                <div className="w-full h-full rounded-2xl overflow-hidden relative">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+              <div className="relative h-44 overflow-hidden p-2">
+                <div className="w-full h-full rounded-lg overflow-hidden relative bg-gradient-to-br from-neutral-900 via-neutral-950 to-black flex items-center justify-center">
+                  <ShoppingBag className="w-10 h-10 text-zinc-600" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-70" />
                 </div>
-                <div className="absolute top-4 left-4 bg-black px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-white border border-white/10">
+                <div className="absolute top-4 left-4 bg-black px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-white">
                   {product.category}
                 </div>
                 <div className="absolute top-4 right-4 bg-[#FFFFFF] px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-black flex items-center gap-1 shadow-lg">
@@ -592,23 +826,26 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
                 </div>
               </div>
               
-              <div className="p-6 flex flex-col flex-1 relative z-10">
+              <div className="p-3.5 flex flex-col flex-1 relative z-10">
                 <div className="flex justify-between items-start mb-3">
                   <h3 className="text-xl font-bold text-white group-hover:text-[#FFFFFF] transition-colors leading-tight">{product.name}</h3>
-                  <div className="flex items-center gap-1 text-[#FFFFFF] text-sm bg-[#FFFFFF]/10 px-2 py-1 rounded-lg border border-[#FFFFFF]/20">
+                  <div className="flex items-center gap-1 text-[#FFFFFF] text-sm bg-[#FFFFFF]/10 px-2 py-1 rounded-lg">
                     <Star className="w-3.5 h-3.5 fill-current text-[#FFFFFF]" />
                     <span className="font-bold text-[#FFFFFF] font-mono">{product.rating}</span>
                   </div>
                 </div>
-                <p className="text-zinc-300 text-sm mb-6 flex-1 leading-relaxed font-medium">{product.description}</p>
+                <p className="text-zinc-300 text-sm mb-3 flex-1 leading-relaxed font-medium">{product.description}</p>
                 
-                <div className="flex items-center justify-between mt-auto pt-6 border-t border-white/10">
+                <div className="flex items-center justify-between mt-auto pt-6">
                   <div>
                     <p className="text-xs text-zinc-400 mb-1 uppercase tracking-wider font-bold">Price</p>
                     <p className="text-2xl font-bold font-mono text-white tracking-tight">${product.price.toLocaleString()}</p>
                   </div>
                   <button 
-                    onClick={() => setSelectedProduct(product)}
+                    onClick={() => {
+                      setProductConfirmed(false);
+                      setSelectedProduct(product);
+                    }}
                     className="bg-[#FFFFFF] text-black px-5 py-2.5 rounded-xl font-bold uppercase tracking-wider text-xs transition-all duration-300 flex items-center gap-2 hover:bg-white hover:text-black shadow-lg"
                   >
                     <ShoppingBag className="w-4 h-4" />
@@ -631,7 +868,7 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-3.5"
           >
             <div 
               onClick={() => setSelectedProduct(null)}
@@ -641,13 +878,13 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-black border border-white/10 rounded-3xl shadow-2xl overflow-hidden"
+              className="relative w-full max-w-md bg-black rounded-xl shadow-2xl overflow-hidden"
             >
               <div className="absolute top-0 inset-x-0 h-1 bg-[#FFFFFF]" />
               
-              <div className="p-6 sm:p-8">
-                <div className="flex justify-between items-start mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-[#FFFFFF]/10 border border-[#FFFFFF]/20 flex items-center justify-center text-[#FFFFFF]">
+              <div className="p-3.5 sm:p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <div className="w-12 h-12 rounded-lg bg-[#FFFFFF]/10 flex items-center justify-center text-[#FFFFFF]">
                     <BrainCircuit className="w-6 h-6" />
                   </div>
                   <button 
@@ -659,33 +896,53 @@ export function Marketplace({ onNavigateToCompany, onNavigateToOnboarding, setAc
                 </div>
 
                 <h2 className="text-2xl font-bold text-white mb-2 tracking-tight uppercase">Investment Summary</h2>
-                <p className="text-zinc-400 text-sm mb-8 font-medium">Review your product purchase and equity allocation.</p>
+                <p className="text-zinc-400 text-sm mb-4 font-medium">Review your product purchase and equity allocation.</p>
 
-                <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center p-4 rounded-2xl bg-white/[0.02] border border-white/10">
+                <div className="space-y-4 mb-4">
+                  <div className="flex justify-between items-center p-4 rounded-lg bg-white/[0.02]">
                     <span className="text-zinc-400 text-sm">You are purchasing:</span>
                     <span className="font-bold text-white">{selectedProduct.name}</span>
                   </div>
                   
-                  <div className="flex justify-between items-center p-4 rounded-2xl bg-white/[0.02] border border-white/10">
+                  <div className="flex justify-between items-center p-4 rounded-lg bg-white/[0.02]">
                     <span className="text-zinc-400 text-sm">Value:</span>
                     <span className="font-bold font-mono text-white">${selectedProduct.price.toLocaleString()}</span>
                   </div>
 
-                  <div className="flex justify-between items-center p-4 rounded-2xl bg-[#FFFFFF]/10 border border-[#FFFFFF]/20">
+                  <div className="flex justify-between items-center p-4 rounded-lg bg-[#FFFFFF]/10">
                     <span className="text-[#FFFFFF] text-sm font-bold uppercase tracking-wider">Equity Earned:</span>
                     <span className="font-bold text-[#FFFFFF] text-lg font-mono">+{selectedProduct.equity}%</span>
                   </div>
 
-                  <div className="flex justify-between items-center p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+                  <div className="flex justify-between items-center p-4 rounded-lg bg-white/[0.03]">
                     <span className="text-zinc-300 text-sm font-bold uppercase tracking-wider">Quarterly Return (Est.):</span>
                     <span className="font-bold text-white text-lg font-mono">${selectedProduct.estReturn}</span>
                   </div>
                 </div>
 
-                <button className="w-full bg-[#FFFFFF] text-black py-4 rounded-2xl font-bold uppercase tracking-wider text-sm transition-all duration-300 flex items-center justify-center gap-2 hover:bg-white hover:text-black shadow-2xl">
-                  Confirm Investment <ChevronRight className="w-5 h-5" />
-                </button>
+                {productConfirmed ? (
+                  <div className="p-4 rounded-lg bg-emerald-500/15 text-center space-y-3">
+                    <p className="text-sm font-bold text-emerald-300">Allocation Confirmed & Logged</p>
+                    <p className="text-xs text-zinc-300">+{selectedProduct.equity}% equity voucher linked to your AQX portfolio.</p>
+                    <button
+                      onClick={() => {
+                        setSelectedProduct(null);
+                        setProductConfirmed(false);
+                        if (setAppActiveTab) setAppActiveTab('portfolio');
+                      }}
+                      className="w-full bg-white text-black py-3 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-zinc-200 transition-colors"
+                    >
+                      View in Portfolio
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setProductConfirmed(true)}
+                    className="w-full bg-[#FFFFFF] text-black py-4 rounded-lg font-bold uppercase tracking-wider text-sm transition-all duration-300 flex items-center justify-center gap-2 hover:bg-white hover:text-black shadow-2xl cursor-pointer"
+                  >
+                    Confirm Investment <ChevronRight className="w-5 h-5" />
+                  </button>
+                )}
                 <p className="text-center text-xs text-zinc-500 mt-4">
                   By confirming, you agree to the AQX Equity Terms of Service.
                 </p>

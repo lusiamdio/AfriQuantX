@@ -97,9 +97,9 @@ export function PanAfricanHeatmap() {
   const selectedData = selectedCountry ? exchangeData[selectedCountry] : null;
 
   return (
-    <div className="w-full h-full flex flex-col lg:flex-row gap-6">
+    <div className="w-full h-full flex flex-col lg:flex-row gap-3">
       {/* Map Container */}
-      <div className="flex-1 bg-[#0A0A0A] border border-white/[0.08] rounded-2xl p-4 relative overflow-hidden min-h-[400px] lg:min-h-[600px] shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+      <div className="flex-1 bg-[#0A0A0A] rounded-lg p-4 relative overflow-hidden min-h-[400px] lg:min-h-[600px] shadow-[0_0_30px_rgba(0,0,0,0.5)]">
         <div className="absolute top-4 left-4 z-10">
           <h3 className="text-lg font-bold text-white flex items-center gap-2">
             <Globe className="w-5 h-5 text-[#FFFFFF]" />
@@ -114,9 +114,9 @@ export function PanAfricanHeatmap() {
 
         <div className="absolute top-4 right-4 z-10 flex items-center gap-2 text-xs">
           <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-[#FF3B3B]"></div> Bearish</div>
-          <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-[#0A0A0A] border border-white/20"></div> Neutral</div>
+          <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-[#0A0A0A]"></div> Neutral</div>
           <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-[#00FFB2]"></div> Bullish</div>
-          <div className="flex items-center gap-1 ml-2"><div className="w-3 h-3 rounded-full bg-[#111] border border-white/10"></div> Inactive</div>
+          <div className="flex items-center gap-1 ml-2"><div className="w-3 h-3 rounded-full bg-[#111]"></div> Inactive</div>
         </div>
 
         <ComposableMap
@@ -191,7 +191,7 @@ export function PanAfricanHeatmap() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
-              className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#0B0F14]/90 backdrop-blur-md border border-white/10 rounded-xl p-3 shadow-2xl pointer-events-none flex items-center gap-4"
+              className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-[#0B0F14]/90 backdrop-blur-md rounded-xl p-3 shadow-2xl pointer-events-none flex items-center gap-4"
             >
               <div>
                 <div className="text-sm font-bold text-white">{exchangeData[hoveredCountry].name}</div>
@@ -214,9 +214,9 @@ export function PanAfricanHeatmap() {
             initial={{ opacity: 0, x: 20, width: 0 }}
             animate={{ opacity: 1, x: 0, width: '350px' }}
             exit={{ opacity: 0, x: 20, width: 0 }}
-            className="bg-[#0A0A0A] border border-white/[0.08] rounded-2xl flex flex-col overflow-hidden shrink-0 shadow-[0_0_30px_rgba(0,0,0,0.5)]"
+            className="bg-[#0A0A0A] rounded-lg flex flex-col overflow-hidden shrink-0 shadow-[0_0_30px_rgba(0,0,0,0.5)]"
           >
-            <div className="p-5 border-b border-white/[0.08] flex items-center justify-between bg-white/[0.02]">
+            <div className="p-3 flex items-center justify-between bg-white/[0.02]">
               <div>
                 <h3 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/70">{selectedData.name}</h3>
                 <p className="text-sm text-[#FFFFFF] uppercase tracking-wider">{selectedData.exchange} Exchange</p>
@@ -229,9 +229,9 @@ export function PanAfricanHeatmap() {
               </button>
             </div>
 
-            <div className="p-5 flex-1 overflow-y-auto space-y-6">
+            <div className="p-3 flex-1 overflow-y-auto space-y-3">
               {/* Main Index Performance */}
-              <div className="bg-white/[0.03] border border-white/[0.05] rounded-xl p-4 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
+              <div className="bg-white/[0.03] rounded-xl p-4 shadow-[inset_0_0_20px_rgba(255,255,255,0.02)]">
                 <div className="text-sm text-zinc-400 mb-1 uppercase tracking-wider">{selectedData.index}</div>
                 <div className="flex items-end justify-between mb-4">
                   <div className="text-2xl font-bold text-white">
@@ -269,14 +269,14 @@ export function PanAfricanHeatmap() {
 
               {/* Market Stats */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 shadow-[inset_0_0_10px_rgba(255,255,255,0.01)]">
+                <div className="bg-white/[0.02] rounded-xl p-3 shadow-[inset_0_0_10px_rgba(255,255,255,0.01)]">
                   <div className="flex items-center gap-2 text-zinc-400 mb-2">
                     <Activity className="w-4 h-4 text-[#0066FF]" />
                     <span className="text-xs font-medium uppercase tracking-wider">Volume</span>
                   </div>
                   <div className="text-sm font-semibold text-white">{selectedData.volume}</div>
                 </div>
-                <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 shadow-[inset_0_0_10px_rgba(255,255,255,0.01)]">
+                <div className="bg-white/[0.02] rounded-xl p-3 shadow-[inset_0_0_10px_rgba(255,255,255,0.01)]">
                   <div className="flex items-center gap-2 text-zinc-400 mb-2">
                     <DollarSign className="w-4 h-4 text-[#FFFFFF]" />
                     <span className="text-xs font-medium uppercase tracking-wider">Status</span>
@@ -296,7 +296,7 @@ export function PanAfricanHeatmap() {
                 </h4>
                 <div className="space-y-2">
                   {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center justify-between p-2 hover:bg-white/[0.05] rounded-lg transition-colors border border-transparent hover:border-white/5">
+                    <div key={i} className="flex items-center justify-between p-2 hover:bg-white/[0.05] rounded-lg transition-colors">
                       <div>
                         <div className="text-sm font-medium text-white">TKR{i}</div>
                         <div className="text-xs text-zinc-500">Company {i}</div>
@@ -310,7 +310,7 @@ export function PanAfricanHeatmap() {
               </div>
 
               {/* AI Insights */}
-              <div className="bg-[#0066FF]/10 border border-[#0066FF]/20 rounded-xl p-4 shadow-[inset_0_0_20px_rgba(0,102,255,0.05)]">
+              <div className="bg-[#0066FF]/10 rounded-xl p-4 shadow-[inset_0_0_20px_rgba(0,102,255,0.05)]">
                 <h4 className="text-xs font-bold text-[#0066FF] uppercase tracking-wider mb-2 flex items-center gap-2">
                   <BrainCircuit className="w-4 h-4" />
                   AI Market Insight
@@ -329,9 +329,9 @@ export function PanAfricanHeatmap() {
             initial={{ opacity: 0, width: 0 }}
             animate={{ opacity: 1, width: '350px' }}
             exit={{ opacity: 0, width: 0 }}
-            className="bg-[#0A0A0A] border border-white/[0.08] rounded-2xl flex flex-col items-center justify-center p-8 text-center shrink-0 shadow-[0_0_30px_rgba(0,0,0,0.5)]"
+            className="bg-[#0A0A0A] rounded-lg flex flex-col items-center justify-center p-4 text-center shrink-0 shadow-[0_0_30px_rgba(0,0,0,0.5)]"
           >
-            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFFFFF]/20 to-transparent flex items-center justify-center mb-4 border border-[#FFFFFF]/30">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFFFFF]/20 to-transparent flex items-center justify-center mb-4">
               <Globe className="w-8 h-8 text-[#FFFFFF]" />
             </div>
             <h3 className="text-lg font-bold text-white mb-2 uppercase tracking-wider">Select a Market</h3>

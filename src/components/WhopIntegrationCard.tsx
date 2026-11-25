@@ -111,11 +111,11 @@ export function WhopIntegrationCard() {
   };
 
   return (
-    <Card className="bg-black/60 border-white/10 overflow-hidden shadow-2xl">
-      <CardHeader className="border-b border-white/5 pb-5">
+    <Card className="bg-black/60 overflow-hidden shadow-2xl">
+      <CardHeader className="pb-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400">
+            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center text-orange-400">
               <Key className="w-5 h-5" />
             </div>
             <div>
@@ -130,12 +130,12 @@ export function WhopIntegrationCard() {
 
           <div className="flex items-center gap-2">
             {isEnvConfigured === true ? (
-              <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 bg-emerald-500/10 gap-1.5 py-1 px-3">
+              <Badge variant="outline" className="text-emerald-400 bg-emerald-500/10 gap-1.5 py-1 px-3">
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                 Configured in .env
               </Badge>
             ) : isEnvConfigured === false ? (
-              <Badge variant="outline" className="text-amber-400 border-amber-500/30 bg-amber-500/10 gap-1.5 py-1 px-3">
+              <Badge variant="outline" className="text-amber-400 bg-amber-500/10 gap-1.5 py-1 px-3">
                 <AlertCircle className="w-3.5 h-3.5" />
                 WHOP_API_KEY Not Set
               </Badge>
@@ -144,11 +144,11 @@ export function WhopIntegrationCard() {
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-6 pt-6">
+      <CardContent className="space-y-3 pt-6">
         {/* Verification Controls */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Active Key Verification */}
-          <div className="bg-neutral-950 border border-white/10 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+          <div className="bg-neutral-950 rounded-lg p-3 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -182,7 +182,7 @@ export function WhopIntegrationCard() {
           </div>
 
           {/* Test Custom Key Form */}
-          <form onSubmit={handleTestCustomKey} className="bg-neutral-950 border border-white/10 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+          <form onSubmit={handleTestCustomKey} className="bg-neutral-950 rounded-lg p-3 flex flex-col justify-between space-y-4">
             <div>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-2">
@@ -199,7 +199,7 @@ export function WhopIntegrationCard() {
                 placeholder="Enter Whop API Key (e.g., whop_...)"
                 value={customKey}
                 onChange={(e) => setCustomKey(e.target.value)}
-                className="bg-black/60 border-white/10 text-white placeholder:text-zinc-600 font-mono text-xs py-2"
+                className="bg-black/60 text-white placeholder:text-zinc-600 font-mono text-xs py-2"
               />
             </div>
 
@@ -207,7 +207,7 @@ export function WhopIntegrationCard() {
               type="submit"
               disabled={loading || !customKey.trim()}
               variant="outline"
-              className="w-full border-white/20 text-white hover:bg-white/10 font-bold text-xs uppercase tracking-wider py-2.5 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+              className="w-full text-white hover:bg-white/10 font-bold text-xs uppercase tracking-wider py-2.5 flex items-center justify-center gap-2 transition-all disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
               Test Submitted Key
@@ -217,26 +217,20 @@ export function WhopIntegrationCard() {
 
         {/* Results Panel */}
         {verificationResult && (
-          <div className={`rounded-2xl border p-5 transition-all space-y-4 ${
-            verificationResult.valid 
-              ? 'bg-emerald-500/5 border-emerald-500/20' 
-              : 'bg-rose-500/5 border-rose-500/20'
-          }`}>
+          <div className={`rounded-lg p-3 transition-all space-y-4 bg-white/[0.03] ${ verificationResult.valid ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-rose-500/5 border-rose-500/20' }`}>
             <div className="flex items-start justify-between gap-4">
               <div className="flex items-center gap-3">
                 {verificationResult.valid ? (
-                  <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                 ) : (
-                  <div className="w-9 h-9 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 shrink-0">
+                  <div className="w-9 h-9 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-400 shrink-0">
                     <AlertCircle className="w-5 h-5" />
                   </div>
                 )}
                 <div>
-                  <h4 className={`text-sm font-bold uppercase tracking-wider ${
-                    verificationResult.valid ? 'text-emerald-400' : 'text-rose-400'
-                  }`}>
+                  <h4 className={`text-sm font-bold uppercase tracking-wider ${ verificationResult.valid ? 'text-emerald-400' : 'text-rose-400' }`}>
                     {verificationResult.valid ? 'Integration Status: Valid & Active' : 'Integration Status: Verification Failed'}
                   </h4>
                   <p className="text-xs text-zinc-300 mt-0.5">{verificationResult.message}</p>
@@ -244,17 +238,15 @@ export function WhopIntegrationCard() {
               </div>
 
               {verificationResult.statusCode && (
-                <Badge variant="outline" className={`font-mono text-xs py-1 px-2.5 ${
-                  verificationResult.valid ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' : 'border-rose-500/30 text-rose-400 bg-rose-500/10'
-                }`}>
+                <Badge variant="outline" className={`font-mono text-xs py-1 px-2.5 ${ verificationResult.valid ? 'border-emerald-500/30 text-emerald-400 bg-emerald-500/10' : 'border-rose-500/30 text-rose-400 bg-rose-500/10' }`}>
                   HTTP {verificationResult.statusCode}
                 </Badge>
               )}
             </div>
 
             {/* Performance Metrics & Details */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 border-t border-white/5 font-mono text-xs">
-              <div className="bg-black/40 border border-white/5 rounded-xl p-2.5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 font-mono text-xs">
+              <div className="bg-black/40 rounded-xl p-2.5">
                 <span className="text-[9px] text-zinc-500 block uppercase font-sans font-bold">Latency</span>
                 <span className="text-white font-bold flex items-center gap-1 mt-0.5">
                   <Clock className="w-3 h-3 text-zinc-400" />
@@ -262,21 +254,21 @@ export function WhopIntegrationCard() {
                 </span>
               </div>
 
-              <div className="bg-black/40 border border-white/5 rounded-xl p-2.5">
+              <div className="bg-black/40 rounded-xl p-2.5">
                 <span className="text-[9px] text-zinc-500 block uppercase font-sans font-bold">Key Source</span>
                 <span className="text-white font-bold uppercase text-[11px] mt-0.5">
                   {verificationResult.keySource}
                 </span>
               </div>
 
-              <div className="bg-black/40 border border-white/5 rounded-xl p-2.5">
+              <div className="bg-black/40 rounded-xl p-2.5">
                 <span className="text-[9px] text-zinc-500 block uppercase font-sans font-bold">Masked Key</span>
                 <span className="text-zinc-300 font-bold text-[10px] mt-0.5 block truncate">
                   {verificationResult.maskedKey || 'N/A'}
                 </span>
               </div>
 
-              <div className="bg-black/40 border border-white/5 rounded-xl p-2.5">
+              <div className="bg-black/40 rounded-xl p-2.5">
                 <span className="text-[9px] text-zinc-500 block uppercase font-sans font-bold">Account Scope</span>
                 <span className="text-white font-bold text-[11px] mt-0.5">
                   {verificationResult.details?.accountType || 'Unknown'}
@@ -286,8 +278,8 @@ export function WhopIntegrationCard() {
 
             {/* Details from Whop API if available */}
             {verificationResult.details && (
-              <div className="bg-black/60 border border-white/10 rounded-xl p-3.5 space-y-2 text-xs font-mono">
-                <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider font-sans border-b border-white/5 pb-1 mb-2">
+              <div className="bg-black/60 rounded-xl p-3.5 space-y-2 text-xs font-mono">
+                <div className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider font-sans pb-1 mb-2">
                   Whop Entity Metadata
                 </div>
                 {verificationResult.details.id && (
@@ -330,7 +322,7 @@ export function WhopIntegrationCard() {
                 </button>
 
                 {showRawJson && (
-                  <pre className="mt-2 p-3 bg-black border border-white/10 rounded-xl text-[10px] font-mono text-emerald-400 overflow-x-auto max-h-48">
+                  <pre className="mt-2 p-3 bg-black rounded-xl text-[10px] font-mono text-emerald-400 overflow-x-auto max-h-48">
                     {JSON.stringify(verificationResult.details.raw, null, 2)}
                   </pre>
                 )}
@@ -340,7 +332,7 @@ export function WhopIntegrationCard() {
         )}
 
         {/* Documentation / Guide */}
-        <div className="bg-neutral-950 border border-white/5 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="bg-neutral-950 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <h5 className="text-xs font-bold text-white uppercase tracking-wider">How to get a Whop API Key</h5>
             <p className="text-xs text-zinc-400 max-w-xl">
@@ -351,7 +343,7 @@ export function WhopIntegrationCard() {
             href="https://whop.com/developer"
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
+            className="shrink-0 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors"
           >
             Developer Portal
             <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />

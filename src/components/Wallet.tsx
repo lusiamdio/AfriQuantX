@@ -12,33 +12,33 @@ import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { CardSystem } from './CardSystem';
 
 const assetData = [
-  { name: 'Cash (Fiat)', value: 45000, color: '#3b82f6', icon: Landmark },
-  { name: 'Investments (Equity)', value: 124500, color: '#10b981', icon: Briefcase },
-  { name: 'Crypto', value: 32000, color: '#8b5cf6', icon: Bitcoin },
-  { name: 'NFTs', value: 15000, color: '#f59e0b', icon: ImageIcon },
+  { name:'Cash (Fiat)', value: 45000, color:'#3b82f6', icon: Landmark },
+  { name:'Investments (Equity)', value: 124500, color:'#10b981', icon: Briefcase },
+  { name:'Crypto', value: 32000, color:'#8b5cf6', icon: Bitcoin },
+  { name:'NFTs', value: 15000, color:'#f59e0b', icon: ImageIcon },
 ];
 
 const recentTransactions = [
-  { id: 1, type: 'deposit', title: 'Bank Deposit', amount: '+$5,000.00', asset: 'USD', date: 'Today, 10:24 AM', status: 'completed' },
-  { id: 2, type: 'convert', title: 'Converted USD to ETH', amount: '$1,200.00', asset: 'ETH', date: 'Yesterday', status: 'completed' },
-  { id: 3, type: 'invest', title: 'Invested in Naspers', amount: '-$10,000.00', asset: 'Equity', date: 'Oct 15, 2025', status: 'completed' },
-  { id: 4, type: 'send', title: 'Sent to @SarahO', amount: '-$450.00', asset: 'USDC', date: 'Oct 12, 2025', status: 'completed' },
+  { id: 1, type:'deposit', title:'Bank Deposit', amount:'+$5,000.00', asset:'USD', date:'Today, 10:24 AM', status:'completed'},
+  { id: 2, type:'convert', title:'Converted USD to ETH', amount:'$1,200.00', asset:'ETH', date:'Yesterday', status:'completed'},
+  { id: 3, type:'invest', title:'Invested in Naspers', amount:'-$10,000.00', asset:'Equity', date:'Oct 15, 2025', status:'completed'},
+  { id: 4, type:'send', title:'Sent to @SarahO', amount:'-$450.00', asset:'USDC', date:'Oct 12, 2025', status:'completed'},
 ];
 
 const cards = [
-  { id: 'fiat', type: 'Virtual Debit', balance: '$45,000.00', currency: 'USD', number: '**** **** **** 4281', expiry: '12/28', color: 'from-blue-600 to-blue-900' },
-  { id: 'crypto', type: 'Crypto Wallet', balance: '2.45 ETH', currency: 'ETH', address: '0x71C...9A23', color: 'from-purple-600 to-purple-900' },
-  { id: 'invest', type: 'Investment Portfolio', balance: '$124,500.00', currency: 'USD', address: 'NXG-INV-9921', color: 'from-emerald-600 to-emerald-900' },
+  { id:'fiat', type:'Virtual Debit', balance:'$45,000.00', currency:'USD', number:'**** **** **** 4281', expiry:'12/28', color:'from-blue-600 to-blue-900'},
+  { id:'crypto', type:'Crypto Wallet', balance:'2.45 ETH', currency:'ETH', address:'0x71C...9A23', color:'from-purple-600 to-purple-900'},
+  { id:'invest', type:'Investment Portfolio', balance:'$124,500.00', currency:'USD', address:'NXG-INV-9921', color:'from-emerald-600 to-emerald-900'},
 ];
 
 const walletAccounts = [
-  { id: 'zar', name: 'ZAR Wallet', type: 'cash', balance: 'R 245,890.00', usdValue: 13200, icon: Landmark, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-  { id: 'usd', name: 'USD Wallet', type: 'cash', balance: '$ 31,800.00', usdValue: 31800, icon: Landmark, color: 'text-blue-400', bg: 'bg-blue-500/10' },
-  { id: 'btc', name: 'Bitcoin', type: 'crypto', balance: '0.45 BTC', usdValue: 28000, icon: Bitcoin, color: 'text-orange-400', bg: 'bg-orange-500/10' },
-  { id: 'eth', name: 'Ethereum', type: 'crypto', balance: '2.4 ETH', usdValue: 4000, icon: Bitcoin, color: 'text-purple-400', bg: 'bg-purple-500/10' },
-  { id: 'ngx', name: 'AQX Investment', type: 'equity', balance: '850 Shares', usdValue: 80000, icon: Briefcase, color: 'text-indigo-400', bg: 'bg-indigo-500/10' },
-  { id: 'naspers', name: 'Naspers Equity', type: 'equity', balance: '1,200 Shares', usdValue: 44500, icon: Briefcase, color: 'text-teal-400', bg: 'bg-teal-500/10' },
-  { id: 'nft1', name: 'African Digital Art', type: 'nft', balance: '1 Item', usdValue: 15000, icon: ImageIcon, color: 'text-pink-400', bg: 'bg-pink-500/10' },
+  { id:'zar', name:'ZAR Wallet', type:'cash', balance:'R 245,890.00', usdValue: 13200, icon: Landmark, color:'text-emerald-400', bg:'bg-emerald-500/10'},
+  { id:'usd', name:'USD Wallet', type:'cash', balance:'$ 31,800.00', usdValue: 31800, icon: Landmark, color:'text-blue-400', bg:'bg-blue-500/10'},
+  { id:'btc', name:'Bitcoin', type:'crypto', balance:'0.45 BTC', usdValue: 28000, icon: Bitcoin, color:'text-orange-400', bg:'bg-orange-500/10'},
+  { id:'eth', name:'Ethereum', type:'crypto', balance:'2.4 ETH', usdValue: 4000, icon: Bitcoin, color:'text-purple-400', bg:'bg-purple-500/10'},
+  { id:'ngx', name:'AQX Investment', type:'equity', balance:'850 Shares', usdValue: 80000, icon: Briefcase, color:'text-indigo-400', bg:'bg-indigo-500/10'},
+  { id:'naspers', name:'Naspers Equity', type:'equity', balance:'1,200 Shares', usdValue: 44500, icon: Briefcase, color:'text-teal-400', bg:'bg-teal-500/10'},
+  { id:'nft1', name:'African Digital Art', type:'nft', balance:'1 Item', usdValue: 15000, icon: ImageIcon, color:'text-pink-400', bg:'bg-pink-500/10'},
 ];
 
 const assetTabs = [
@@ -63,6 +63,13 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
   
   const [withdrawAmount, setWithdrawAmount] = useState<string>('');
   const [depositAmount, setDepositAmount] = useState<string>('');
+  const [sendRecipient, setSendRecipient] = useState<string>('');
+  const [sendAsset, setSendAsset] = useState<string>('ZAR Wallet (R 245,890.00)');
+  const [sendAmount, setSendAmount] = useState<string>('');
+  const [convertFrom, setConvertFrom] = useState<string>('BTC (Bitcoin)');
+  const [convertTo, setConvertTo] = useState<string>('AQX Equity');
+  const [convertFromAmt, setConvertFromAmt] = useState<string>('');
+  const [walletNotice, setWalletNotice] = useState<{ type:'error'|'success'; text: string } | null>(null);
   const [dbTransactions, setDbTransactions] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showWithdrawConfirmation, setShowWithdrawConfirmation] = useState(false);
@@ -114,7 +121,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
         if (acc.id === 'usd') {
           return {
             ...acc,
-            balance: `$ ${cashTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
+            balance:`$ ${cashTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`,
             usdValue: cashTotal
           };
         }
@@ -162,10 +169,10 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                  t.type === 'trade' ? `Asset Trade (${t.reference})` :
                  t.type === 'investment' ? `Investment (${t.reference})` :
                  t.reference || 'Transaction',
-          amount: (Number(t.amount) >= 0 ? '+' : '-') + '$' + Math.abs(Number(t.amount)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+          amount: (Number(t.amount) >= 0 ?'+' : '-') +'$'+ Math.abs(Number(t.amount)).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
           asset: t.metadata?.currency || 'USD',
-          date: new Date(t.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: t.status || 'completed'
+          date: new Date(t.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'}),
+          status: t.status ||'completed'
         }));
         setDbTransactions(formattedTxs);
       }
@@ -182,10 +189,11 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
     if (!amt || amt <= 0) return;
     
     setIsSubmitting(true);
+    setWalletNotice(null);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        alert("Please login first");
+        setWalletNotice({ type: 'error', text: 'Please sign in before submitting a treasury deposit.' });
         return;
       }
 
@@ -202,13 +210,15 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
       if (response.ok) {
         setShowActionModal(null);
         setDepositAmount('');
+        setWalletNotice({ type:'success', text:`Deposit of $${amt.toLocaleString()} USD initiated.`});
         fetchWalletData();
       } else {
         const errData = await response.json();
-        alert(errData.error || "Deposit failed");
+        setWalletNotice({ type: 'error', text: errData.error || 'Deposit failed' });
       }
     } catch (error) {
       console.warn("Error depositing:", error);
+      setWalletNotice({ type: 'error', text: 'Unable to reach settlement endpoint.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -218,7 +228,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
     const amt = parseFloat(withdrawAmount);
     if (!amt || amt <= 0) return;
     if (amt > WITHDRAWAL_LIMIT) {
-      alert(`Withdrawal limit is $${WITHDRAWAL_LIMIT}`);
+      setWalletNotice({ type:'error', text:`Withdrawal limit is $${WITHDRAWAL_LIMIT.toLocaleString()}`});
       return;
     }
 
@@ -228,10 +238,11 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
     }
 
     setIsSubmitting(true);
+    setWalletNotice(null);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        alert("Please login first");
+        setWalletNotice({ type: 'error', text: 'Please sign in before submitting a withdrawal.' });
         return;
       }
 
@@ -249,13 +260,15 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
         setShowWithdrawConfirmation(false);
         setShowActionModal(null);
         setWithdrawAmount('');
+        setWalletNotice({ type:'success', text:`Withdrawal of $${amt.toLocaleString()} USD submitted.`});
         fetchWalletData();
       } else {
         const errData = await response.json();
-        alert(errData.error || "Withdrawal failed");
+        setWalletNotice({ type: 'error', text: errData.error || 'Withdrawal failed' });
       }
     } catch (error) {
       console.warn("Error withdrawing:", error);
+      setWalletNotice({ type: 'error', text: 'Unable to reach settlement endpoint.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -279,7 +292,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
 
   return (
     <motion.div 
-      className="space-y-8 relative"
+      className="space-y-4 relative"
       drag="y"
       dragConstraints={{ top: 0, bottom: 0 }}
       dragElastic={0.2}
@@ -291,39 +304,39 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
     >
       {/* Pull to Refresh Indicator */}
       <motion.div 
-        className="absolute left-1/2 -translate-x-1/2 -top-12 flex items-center justify-center w-10 h-10 bg-zinc-800 rounded-full shadow-lg border border-zinc-700 z-50"
+        className="absolute left-1/2 -translate-x-1/2 -top-12 flex items-center justify-center w-10 h-10 bg-zinc-800 rounded-full shadow-lg z-50"
         animate={{ 
           y: isRefreshing ? 60 : 0,
           rotate: isRefreshing ? 360 : 0,
           opacity: isRefreshing ? 1 : 0
         }}
         transition={{ 
-          y: { type: "spring", stiffness: 300, damping: 20 },
+          y: { type:"spring", stiffness: 300, damping: 20 },
           rotate: { repeat: isRefreshing ? Infinity : 0, duration: 1, ease: "linear" }
         }}
       >
-        <RefreshCw className="w-5 h-5 text-blue-400" />
+        <RefreshCw className="w-5 h-5 text-blue-400"/>
       </motion.div>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white">NXG Wallet</h1>
           <p className="text-zinc-400 mt-1">The Intelligent Multi-Asset Financial Operating System.</p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
-          <ShieldCheck className="w-4 h-4" />
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-sm font-medium">
+          <ShieldCheck className="w-4 h-4"/>
           Secured & Encrypted
         </div>
       </div>
 
       {/* Top Section: Total Balance & Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Total Net Worth */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/[0.02] border border-white/10 rounded-3xl p-8 backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
+          className="bg-white/[0.02] rounded-xl p-4 backdrop-blur-xl relative overflow-hidden flex flex-col justify-between"
         >
           
           <div>
@@ -335,7 +348,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
             </h2>
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-sm font-medium flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5" /> +5.2% All Time
+                <TrendingUp className="w-3.5 h-3.5"/> +5.2% All Time
               </span>
             </div>
           </div>
@@ -351,10 +364,10 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
               <button 
                 key={action.id}
                 onClick={() => setShowActionModal(action.id)}
-                className="flex flex-col items-center justify-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group"
+                className="flex flex-col items-center justify-center gap-2 p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-all group"
               >
                 <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <action.icon className="w-5 h-5" />
+                  <action.icon className="w-5 h-5"/>
                 </div>
                 <span className="text-xs font-medium text-zinc-300">{action.label}</span>
               </button>
@@ -390,7 +403,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                     opacity,
                     filter: blur
                   }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  transition={{ type:"spring", stiffness: 300, damping: 30 }}
                   onClick={() => {
                     if (isActive) {
                       setShowCardSystem(true);
@@ -410,7 +423,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                     }
                   }}
                 >
-                  <div className={`w-full h-full rounded-3xl p-6 flex flex-col justify-between bg-gradient-to-br ${card.color} shadow-2xl border border-white/20 overflow-hidden relative`}>
+                  <div className={`w-full h-full rounded-xl p-3.5 flex flex-col justify-between bg-gradient-to-br ${card.color} shadow-2xl overflow-hidden relative`}>
                     
                     <div className="flex justify-between items-start relative z-10">
                       <div>
@@ -426,11 +439,11 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                         </div>
                       ) : card.id === 'crypto' ? (
                         <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                          <Bitcoin className="w-6 h-6 text-white" />
+                          <Bitcoin className="w-6 h-6 text-white"/>
                         </div>
                       ) : (
                         <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                          <Briefcase className="w-5 h-5 text-white" />
+                          <Briefcase className="w-5 h-5 text-white"/>
                         </div>
                       )}
                     </div>
@@ -465,7 +478,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
               <button 
                 key={idx}
                 onClick={() => setActiveCard(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${idx === activeCard ? 'bg-blue-500 w-6' : 'bg-white/20'}`}
+                className={`w-2 h-2 rounded-full transition-all ${idx === activeCard ?'bg-blue-500 w-6' : 'bg-white/20'}`}
               />
             ))}
           </div>
@@ -477,16 +490,16 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.15 }}
-        className="bg-white/[0.02] border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-xl"
+        className="bg-white/[0.02] rounded-xl p-3.5 md:p-4 backdrop-blur-xl"
       >
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-3">
           <h2 className="text-xl font-semibold text-white">Wallet Accounts</h2>
-          <div className="flex bg-black/20 p-1 rounded-xl border border-white/10 overflow-x-auto max-w-full scrollbar-hide">
+          <div className="flex bg-black/20 p-1 rounded-xl overflow-x-auto max-w-full scrollbar-hide">
             {assetTabs.map((tab) => (
               <button 
                 key={tab.id}
                 onClick={() => setActiveAssetTab(tab.id)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${activeAssetTab === tab.id ? 'bg-white/10 text-white shadow-sm' : 'text-zinc-400 hover:text-white'}`}
+                className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${activeAssetTab === tab.id ?'bg-white/10 text-white shadow-sm' : 'text-zinc-400 hover:text-white'}`}
               >
                 {tab.label}
               </button>
@@ -496,10 +509,10 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredAccounts.map((account) => (
-            <div key={account.id} className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer group flex items-center justify-between">
+            <div key={account.id} className="p-4 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer group flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${account.bg} ${account.color} group-hover:scale-110 transition-transform`}>
-                  <account.icon className="w-5 h-5" />
+                  <account.icon className="w-5 h-5"/>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-white">{account.name}</p>
@@ -516,21 +529,21 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
       </motion.div>
 
       {/* Middle Section: AI Insights & Asset Breakdown */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* AI Financial Brain */}
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="lg:col-span-2 bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-3xl p-6 md:p-8 relative overflow-hidden"
+          className="lg:col-span-2 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl p-3.5 md:p-4 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 p-6 opacity-10 pointer-events-none">
-            <BrainCircuit className="w-48 h-48 text-blue-500" />
+          <div className="absolute top-0 right-0 p-3.5 opacity-10 pointer-events-none">
+            <BrainCircuit className="w-48 h-48 text-blue-500"/>
           </div>
           
-          <div className="flex items-center gap-3 mb-6 relative z-10">
-            <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
-              <BrainCircuit className="w-6 h-6" />
+          <div className="flex items-center gap-3 mb-3 relative z-10">
+            <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.3)]">
+              <BrainCircuit className="w-6 h-6"/>
             </div>
             <div>
               <h2 className="text-xl font-bold text-white tracking-tight">NXG AI Brain</h2>
@@ -539,36 +552,59 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
-            <div className="bg-black/20 border border-white/5 rounded-2xl p-5 backdrop-blur-md hover:bg-black/30 transition-colors cursor-pointer group">
+            <div className="bg-black/20 rounded-lg p-3 backdrop-blur-md hover:bg-black/30 transition-colors cursor-pointer group">
               <div className="flex items-start gap-3">
                 <div className="p-2 rounded-lg bg-amber-500/10 text-amber-400 shrink-0">
-                  <Activity className="w-5 h-5" />
+                  <Activity className="w-5 h-5"/>
                 </div>
                 <div>
                   <h4 className="text-white font-medium mb-1">Idle Cash Detected</h4>
                   <p className="text-sm text-zinc-400 leading-relaxed mb-3">You are holding $45,000 in cash. Inflation is currently 4.2%.</p>
-                  <button className="text-sm font-medium text-amber-400 flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Move $10k to High-Yield <ChevronRight className="w-4 h-4" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConvertFrom('USD Cash');
+                      setConvertTo('AQX Equity');
+                      setConvertFromAmt('10000');
+                      setShowActionModal('convert');
+                    }}
+                    className="text-sm font-medium text-amber-400 flex items-center gap-1 group-hover:gap-2 transition-all"
+                  >
+                    Move $10k to High-Yield <ChevronRight className="w-4 h-4"/>
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="bg-black/20 border border-white/5 rounded-2xl p-5 backdrop-blur-md hover:bg-black/30 transition-colors cursor-pointer group">
+            <div className="bg-black/20 rounded-lg p-3 backdrop-blur-md hover:bg-black/30 transition-colors cursor-pointer group">
               <div className="flex items-start gap-3">
                 <div className="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 shrink-0">
-                  <TrendingUp className="w-5 h-5" />
+                  <TrendingUp className="w-5 h-5"/>
                 </div>
                 <div>
                   <h4 className="text-white font-medium mb-1">Crypto Volatility Alert</h4>
                   <p className="text-sm text-zinc-400 leading-relaxed mb-3">ETH is up 12% this week. Consider taking profits.</p>
-                  <button className="text-sm font-medium text-emerald-400 flex items-center gap-1 group-hover:gap-2 transition-all">
-                    Convert 1 ETH to USDC <ChevronRight className="w-4 h-4" />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setConvertFrom('BTC (Bitcoin)');
+                      setConvertTo('USD Cash');
+                      setConvertFromAmt('1');
+                      setShowActionModal('convert');
+                    }}
+                    className="text-sm font-medium text-emerald-400 flex items-center gap-1 group-hover:gap-2 transition-all"
+                  >
+                    Convert 1 ETH to USDC <ChevronRight className="w-4 h-4"/>
                   </button>
                 </div>
               </div>
             </div>
           </div>
+          {walletNotice && (
+            <div role="status" className={`mt-4 relative z-10 rounded-xl px-4 py-2.5 text-xs bg-white/[0.03] ${ walletNotice.type ==='error'?'bg-rose-500/10 text-rose-300' : 'bg-emerald-500/10 text-emerald-300'}`}>
+              {walletNotice.text}
+            </div>
+          )}
         </motion.div>
 
         {/* Asset Breakdown */}
@@ -576,9 +612,9 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/[0.02] border border-white/10 rounded-3xl p-6 backdrop-blur-xl flex flex-col"
+          className="bg-white/[0.02] rounded-xl p-3.5 backdrop-blur-xl flex flex-col"
         >
-          <h3 className="text-lg font-semibold text-white mb-6">Asset Allocation</h3>
+          <h3 className="text-lg font-semibold text-white mb-3">Asset Allocation</h3>
           <div className="h-48 w-full relative">
             <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <PieChart>
@@ -597,9 +633,9 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                   ))}
                 </Pie>
                 <RechartsTooltip 
-                  contentStyle={{ backgroundColor: '#0a0a0a', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: '#fff' }}
-                  formatter={(value: number) => `$${value.toLocaleString()}`}
+                  contentStyle={{ backgroundColor: '#0a0a0a', borderColor: 'transparent', borderRadius: '12px' }}
+                  itemStyle={{ color:'#fff'}}
+                  formatter={(value: number) =>`$${value.toLocaleString()}`}
                 />
               </PieChart>
             </ResponsiveContainer>
@@ -612,8 +648,8 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
             {assetData.map((item, i) => (
               <div key={i} className="flex items-center justify-between text-sm p-2 rounded-xl hover:bg-white/5 transition-colors cursor-pointer">
                 <div className="flex items-center gap-3">
-                  <div className="p-1.5 rounded-lg" style={{ backgroundColor: `${item.color}20`, color: item.color }}>
-                    <item.icon className="w-4 h-4" />
+                  <div className="p-1.5 rounded-lg" style={{ backgroundColor:`${item.color}20`, color: item.color }}>
+                    <item.icon className="w-4 h-4"/>
                   </div>
                   <span className="text-zinc-300 font-medium">{item.name}</span>
                 </div>
@@ -632,12 +668,12 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-white/[0.02] border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-xl"
+        className="bg-white/[0.02] rounded-xl p-3.5 md:p-4 backdrop-blur-xl"
       >
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-3">
           <h2 className="text-xl font-semibold text-white">Recent Activity</h2>
           <button onClick={() => setActiveTab('portfolio')} className="text-blue-400 hover:text-blue-300 text-sm font-medium flex items-center gap-1 transition-colors">
-            View All <ChevronRight className="w-4 h-4" />
+            View All <ChevronRight className="w-4 h-4"/>
           </button>
         </div>
         
@@ -645,7 +681,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
           {(dbTransactions.length > 0 ? dbTransactions : recentTransactions).map((tx) => (
             <motion.div 
               key={tx.id} 
-              className="relative overflow-hidden flex items-center justify-between p-4 rounded-2xl hover:bg-white/[0.04] transition-colors group cursor-pointer border border-transparent hover:border-white/5"
+              className="relative overflow-hidden flex items-center justify-between p-4 rounded-lg hover:bg-white/[0.04] transition-colors group cursor-pointer"
               whileTap={{ scale: 0.98 }}
               onClick={(e) => {
                 const rect = e.currentTarget.getBoundingClientRect();
@@ -653,12 +689,12 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                 const y = e.clientY - rect.top;
                 
                 const ripple = document.createElement('div');
-                ripple.className = 'absolute rounded-full bg-white/20 pointer-events-none animate-ripple';
-                ripple.style.left = `${x}px`;
-                ripple.style.top = `${y}px`;
-                ripple.style.width = '100px';
-                ripple.style.height = '100px';
-                ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+                ripple.className ='absolute rounded-full bg-white/20 pointer-events-none animate-ripple';
+                ripple.style.left =`${x}px`;
+                ripple.style.top =`${y}px`;
+                ripple.style.width ='100px';
+                ripple.style.height ='100px';
+                ripple.style.transform ='translate(-50%, -50%) scale(0)';
                 
                 e.currentTarget.appendChild(ripple);
                 
@@ -668,18 +704,12 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
               }}
             >
               <div className="flex items-center gap-4 relative z-10">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
-                  tx.type === 'deposit' ? 'bg-emerald-500/10 text-emerald-400' :
-                  tx.type === 'withdrawal' ? 'bg-red-500/10 text-red-400' :
-                  tx.type === 'convert' ? 'bg-blue-500/10 text-blue-400' :
-                  tx.type === 'invest' || tx.type === 'trade' || tx.type === 'investment' ? 'bg-purple-500/10 text-purple-400' :
-                  'bg-zinc-500/10 text-zinc-400'
-                }`}>
-                  {tx.type === 'deposit' ? <ArrowDownToLine className="w-5 h-5" /> :
-                   tx.type === 'withdrawal' ? <ArrowDownToLine className="w-5 h-5 rotate-180 text-red-400" /> :
-                   tx.type === 'convert' ? <RefreshCw className="w-5 h-5" /> :
-                   tx.type === 'invest' || tx.type === 'trade' || tx.type === 'investment' ? <Briefcase className="w-5 h-5" /> :
-                   <Send className="w-5 h-5" />}
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${ tx.type ==='deposit'?'bg-emerald-500/10 text-emerald-400': tx.type ==='withdrawal'?'bg-red-500/10 text-red-400': tx.type ==='convert'?'bg-blue-500/10 text-blue-400': tx.type ==='invest'|| tx.type ==='trade'|| tx.type ==='investment'?'bg-purple-500/10 text-purple-400' : 'bg-zinc-500/10 text-zinc-400'}`}>
+                  {tx.type ==='deposit'? <ArrowDownToLine className="w-5 h-5"/> :
+                   tx.type ==='withdrawal'? <ArrowDownToLine className="w-5 h-5 rotate-180 text-red-400"/> :
+                   tx.type ==='convert'? <RefreshCw className="w-5 h-5"/> :
+                   tx.type ==='invest'|| tx.type ==='trade'|| tx.type ==='investment'? <Briefcase className="w-5 h-5"/> :
+                   <Send className="w-5 h-5"/>}
                 </div>
                 <div>
                   <p className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">{tx.title}</p>
@@ -687,7 +717,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                 </div>
               </div>
               <div className="text-right relative z-10">
-                <p className={`text-sm font-bold ${tx.amount.startsWith('+') ? 'text-emerald-400' : 'text-red-400'}`}>
+                <p className={`text-sm font-bold ${tx.amount.startsWith('+') ?'text-emerald-400' : 'text-red-400'}`}>
                   {tx.amount}
                 </p>
                 <p className="text-xs text-zinc-500 mt-0.5 capitalize">{tx.status}</p>
@@ -715,27 +745,37 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-[#0a0a0f] border border-white/10 rounded-3xl shadow-2xl p-6 overflow-hidden"
+              className="relative w-full max-w-md bg-[#0a0a0f] rounded-xl shadow-2xl p-3.5 overflow-hidden"
             >
-              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500" />
-              <div className="flex justify-between items-center mb-6">
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"/>
+              <div className="flex justify-between items-center mb-3">
                 <h2 className="text-2xl font-bold text-white capitalize">{showActionModal}</h2>
                 <button onClick={() => setShowActionModal(null)} className="p-2 text-zinc-400 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                  <Plus className="w-5 h-5 rotate-45" />
+                  <Plus className="w-5 h-5 rotate-45"/>
                 </button>
               </div>
               
               {showActionModal === 'send' && (
                 <div className="space-y-4">
                   <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                    <input type="text" placeholder="Search / @Username / QR" className="w-full bg-black/40 border border-white/10 rounded-xl pl-11 pr-10 py-3.5 text-white focus:border-blue-500/50 outline-none transition-colors" />
-                    <QrCode className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 hover:text-white cursor-pointer" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500"/>
+                    <input
+                      type="text"
+                      value={sendRecipient}
+                      onChange={(e) => setSendRecipient(e.target.value)}
+                      placeholder="Search / @Username / QR"
+                      className="w-full bg-black/40 rounded-xl pl-11 pr-10 py-3.5 text-white outline-none transition-colors"
+                    />
+                    <QrCode className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 hover:text-white cursor-pointer"/>
                   </div>
                   
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Select Asset</label>
-                    <select className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors appearance-none">
+                    <select
+                      value={sendAsset}
+                      onChange={(e) => setSendAsset(e.target.value)}
+                      className="w-full bg-black/40 rounded-xl px-4 py-3.5 text-white outline-none transition-colors appearance-none"
+                    >
                       <option className="bg-[#0a0a0f]">ZAR Wallet (R 245,890.00)</option>
                       <option className="bg-[#0a0a0f]">BTC Wallet (0.45 BTC)</option>
                       <option className="bg-[#0a0a0f]">AQX Equity (850 Shares)</option>
@@ -745,47 +785,78 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Amount</label>
                     <div className="relative">
-                      <input type="number" placeholder="0.00" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors text-xl font-medium" />
-                      <button className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-blue-400 hover:text-blue-300">MAX</button>
+                      <input
+                        type="number"
+                        value={sendAmount}
+                        onChange={(e) => setSendAmount(e.target.value)}
+                        placeholder="0.00"
+                        className="w-full bg-black/40 rounded-xl px-4 py-3.5 text-white outline-none transition-colors text-xl font-medium"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (sendAsset.includes('BTC')) setSendAmount('0.45');
+                          else if (sendAsset.includes('AQX')) setSendAmount('850');
+                          else setSendAmount('245890');
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-blue-400 hover:text-blue-300"
+                      >
+                        MAX
+                      </button>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-start gap-3">
-                    <Info className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
+                  <div className="p-4 rounded-xl bg-blue-500/10 flex items-start gap-3">
+                    <Info className="w-5 h-5 text-blue-400 shrink-0 mt-0.5"/>
                     <div>
                       <p className="text-sm text-blue-400 font-medium">Auto-detecting best route (low fees)...</p>
                       <p className="text-xs text-blue-300/70 mt-1">Est. Network Fee: $0.50 | ETA: Instant</p>
                     </div>
                   </div>
 
-                  <button className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold mt-2 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const amt = parseFloat(sendAmount);
+                      if (!amt || amt <= 0) {
+                        setWalletNotice({ type: 'error', text: 'Enter a transfer amount greater than 0.' });
+                        return;
+                      }
+                      const recipient = sendRecipient.trim() || '@TreasuryCounterparty';
+                      setWalletNotice({ type:'success', text:`Transfer of ${amt.toLocaleString()} (${sendAsset.split('')[0]}) queued to ${recipient}.`});
+                      setSendAmount('');
+                      setSendRecipient('');
+                      setShowActionModal(null);
+                    }}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold mt-2 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all"
+                  >
                     Confirm Transfer
                   </button>
                 </div>
               )}
 
               {showActionModal === 'deposit' && (
-                <div className="space-y-5">
+                <div className="space-y-2.5">
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Select Method</label>
                     <div className="grid grid-cols-3 gap-2">
-                      <button onClick={() => setActiveTab('trade')} className="p-3 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 text-sm font-medium flex flex-col items-center gap-2">
-                        <CreditCard className="w-5 h-5" /> Card
+                      <button onClick={() => setActiveTab('trade')} className="p-3 rounded-xl bg-blue-500/20 text-blue-400 text-sm font-medium flex flex-col items-center gap-2">
+                        <CreditCard className="w-5 h-5"/> Card
                       </button>
-                      <button onClick={() => setActiveTab('trade')} className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium flex flex-col items-center gap-2">
-                        <Landmark className="w-5 h-5" /> Bank
+                      <button onClick={() => setActiveTab('trade')} className="p-3 rounded-xl bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium flex flex-col items-center gap-2">
+                        <Landmark className="w-5 h-5"/> Bank
                       </button>
-                      <button onClick={() => setActiveTab('trade')} className="p-3 rounded-xl bg-white/5 border border-white/10 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium flex flex-col items-center gap-2">
-                        <Bitcoin className="w-5 h-5" /> Crypto
+                      <button onClick={() => setActiveTab('trade')} className="p-3 rounded-xl bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white transition-colors text-sm font-medium flex flex-col items-center gap-2">
+                        <Bitcoin className="w-5 h-5"/> Crypto
                       </button>
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <input type="text" placeholder="Card Number" className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors" />
+                    <input type="text" placeholder="Card Number" className="w-full bg-black/40 rounded-xl px-4 py-3.5 text-white outline-none transition-colors" />
                     <div className="flex gap-3">
-                      <input type="text" placeholder="MM/YY" className="w-1/2 bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors" />
-                      <input type="text" placeholder="CVC" className="w-1/2 bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors" />
+                      <input type="text" placeholder="MM/YY" className="w-1/2 bg-black/40 rounded-xl px-4 py-3.5 text-white outline-none transition-colors" />
+                      <input type="text" placeholder="CVC" className="w-1/2 bg-black/40 rounded-xl px-4 py-3.5 text-white outline-none transition-colors" />
                     </div>
                   </div>
 
@@ -798,12 +869,12 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                         placeholder="0.00" 
                         value={depositAmount}
                         onChange={(e) => setDepositAmount(e.target.value)}
-                        className="w-full bg-black/40 border border-white/10 rounded-xl pl-8 pr-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors text-xl font-medium" 
+                        className="w-full bg-black/40 rounded-xl pl-8 pr-4 py-3.5 text-white outline-none transition-colors text-xl font-medium"
                       />
                     </div>
                   </div>
 
-                  <div className="space-y-4 pt-2 border-t border-white/10">
+                  <div className="space-y-4 pt-2">
                     <div className="flex items-center justify-between">
                       <div>
                         <h4 className="text-sm font-medium text-white">Recurring Deposit</h4>
@@ -811,9 +882,9 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                       </div>
                       <button 
                         onClick={() => setIsRecurring(!isRecurring)}
-                        className={`w-12 h-6 rounded-full transition-colors relative ${isRecurring ? 'bg-blue-500' : 'bg-white/10'}`}
+                        className={`w-12 h-6 rounded-full transition-colors relative ${isRecurring ?'bg-blue-500' : 'bg-white/10'}`}
                       >
-                        <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${isRecurring ? 'left-7' : 'left-1'}`} />
+                        <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${isRecurring ?'left-7' : 'left-1'}`} />
                       </button>
                     </div>
 
@@ -823,11 +894,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                           <button
                             key={interval}
                             onClick={() => setRecurringInterval(interval)}
-                            className={`p-2 rounded-xl text-sm font-medium capitalize transition-colors ${
-                              recurringInterval === interval 
-                                ? 'bg-blue-500/20 border border-blue-500/30 text-blue-400' 
-                                : 'bg-white/5 border border-white/10 text-zinc-400 hover:bg-white/10 hover:text-white'
-                            }`}
+                            className={`p-2 rounded-xl text-sm font-medium capitalize transition-colors ${ recurringInterval === interval ?'bg-blue-500/20 text-blue-400' : 'bg-white/5 text-zinc-400 hover:bg-white/10 hover:text-white'}`}
                           >
                             {interval}
                           </button>
@@ -841,16 +908,16 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                     disabled={isSubmitting || !depositAmount || parseFloat(depositAmount) <= 0}
                     className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold mt-2 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Processing...' : (isRecurring ? `Schedule ${recurringInterval} Deposit` : 'Deposit Now')}
+                    {isSubmitting ?'Processing...': (isRecurring ?`Schedule ${recurringInterval} Deposit`:'Deposit Now')}
                   </button>
                 </div>
               )}
 
               {showActionModal === 'withdraw' && !showWithdrawConfirmation && (
-                <div className="space-y-5">
+                <div className="space-y-2.5">
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-zinc-500 uppercase tracking-wider">Select Destination</label>
-                    <select className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors appearance-none">
+                    <select className="w-full bg-black/40 rounded-xl px-4 py-3.5 text-white outline-none transition-colors appearance-none">
                       <option className="bg-[#0a0a0f]">Linked Bank Account (...4829)</option>
                       <option className="bg-[#0a0a0f]">External Crypto Wallet</option>
                       <option className="bg-[#0a0a0f]">Debit Card (...4281)</option>
@@ -869,16 +936,22 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                         placeholder="0.00" 
                         value={withdrawAmount}
                         onChange={(e) => setWithdrawAmount(e.target.value)}
-                        className="w-full bg-black/40 border border-white/10 rounded-xl pl-8 pr-16 py-3.5 text-white outline-none focus:border-blue-500/50 transition-colors text-xl font-medium" 
+                        className="w-full bg-black/40 rounded-xl pl-8 pr-16 py-3.5 text-white outline-none transition-colors text-xl font-medium"
                       />
-                      <button className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-blue-400 hover:text-blue-300">MAX</button>
+                      <button
+                        type="button"
+                        onClick={() => setWithdrawAmount(String(WITHDRAWAL_LIMIT))}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-blue-400 hover:text-blue-300"
+                      >
+                        MAX
+                      </button>
                     </div>
                     {parseFloat(withdrawAmount) > WITHDRAWAL_LIMIT && (
                       <p className="text-xs text-red-400 mt-1">Amount exceeds daily withdrawal limit.</p>
                     )}
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+                  <div className="p-4 rounded-xl bg-white/5 space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-zinc-400">Withdrawal Fee</span>
                       <span className="text-white font-medium">$2.50</span>
@@ -900,10 +973,10 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
               )}
 
               {showActionModal === 'withdraw' && showWithdrawConfirmation && (
-                <div className="space-y-5">
+                <div className="space-y-2.5">
                   <div className="flex flex-col items-center justify-center py-4 text-center">
                     <div className="w-16 h-16 rounded-full bg-amber-500/20 flex items-center justify-center mb-4">
-                      <ShieldCheck className="w-8 h-8 text-amber-400" />
+                      <ShieldCheck className="w-8 h-8 text-amber-400"/>
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">High Value Transfer</h3>
                     <p className="text-sm text-zinc-400">
@@ -912,8 +985,8 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                     </p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-start gap-3">
-                    <Info className="w-5 h-5 text-amber-400 shrink-0 mt-0.5" />
+                  <div className="p-4 rounded-xl bg-amber-500/10 flex items-start gap-3">
+                    <Info className="w-5 h-5 text-amber-400 shrink-0 mt-0.5"/>
                     <p className="text-sm text-amber-400/90">
                       For your security, withdrawals over ${WITHDRAWAL_THRESHOLD.toLocaleString()} may be subject to additional manual review by our compliance team.
                     </p>
@@ -922,7 +995,7 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
                   <div className="flex gap-3 mt-4">
                     <button 
                       onClick={() => setShowWithdrawConfirmation(false)}
-                      className="flex-1 py-4 rounded-xl bg-white/5 border border-white/10 text-white font-medium hover:bg-white/10 transition-all"
+                      className="flex-1 py-4 rounded-xl bg-white/5 text-white font-medium hover:bg-white/10 transition-all"
                     >
                       Back
                     </button>
@@ -938,43 +1011,85 @@ export function Wallet({ setActiveTab }: { setActiveTab: (tab: string) => void }
 
               {showActionModal === 'convert' && (
                 <div className="space-y-4">
-                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10 focus-within:border-blue-500/50 transition-colors">
+                  <div className="p-4 rounded-lg bg-white/5 transition-colors">
                     <label className="text-xs text-zinc-500 uppercase font-bold tracking-wider">From</label>
                     <div className="flex justify-between items-center mt-2">
-                      <select className="bg-transparent text-white font-bold text-xl outline-none appearance-none cursor-pointer">
-                        <option className="bg-[#0a0a0f]">BTC (Bitcoin)</option>
-                        <option className="bg-[#0a0a0f]">USD Cash</option>
-                        <option className="bg-[#0a0a0f]">Naspers Equity</option>
+                      <select
+                        value={convertFrom}
+                        onChange={(e) => setConvertFrom(e.target.value)}
+                        className="bg-transparent text-white font-bold text-xl outline-none appearance-none cursor-pointer"
+                      >
+                        <option className="bg-[#0a0a0f]" value="BTC (Bitcoin)">BTC (Bitcoin)</option>
+                        <option className="bg-[#0a0a0f]" value="USD Cash">USD Cash</option>
+                        <option className="bg-[#0a0a0f]" value="Naspers Equity">Naspers Equity</option>
                       </select>
-                      <input type="text" placeholder="0.00" className="bg-transparent text-right text-2xl font-medium text-white outline-none w-1/2" />
+                      <input
+                        type="number"
+                        value={convertFromAmt}
+                        onChange={(e) => setConvertFromAmt(e.target.value)}
+                        placeholder="0.00"
+                        className="bg-transparent text-right text-2xl font-medium text-white outline-none w-1/2"
+                      />
                     </div>
-                    <p className="text-xs text-zinc-500 mt-2">Balance: 0.45 BTC</p>
+                    <p className="text-xs text-zinc-500 mt-2">Source: {convertFrom}</p>
                   </div>
                   
                   <div className="flex justify-center -my-3 relative z-10">
-                    <button className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-400 flex items-center justify-center border-4 border-[#0a0a0f] transition-colors shadow-[0_0_15px_rgba(59,130,246,0.5)]">
-                      <ArrowRightLeft className="w-4 h-4 text-white rotate-90" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const prevFrom = convertFrom;
+                        setConvertFrom(convertTo);
+                        setConvertTo(prevFrom);
+                      }}
+                      aria-label="Swap conversion assets"
+                      className="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-400 flex items-center justify-center transition-colors shadow-[0_0_15px_rgba(59,130,246,0.5)]"
+                    >
+                      <ArrowRightLeft className="w-4 h-4 text-white rotate-90"/>
                     </button>
                   </div>
 
-                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10 focus-within:border-blue-500/50 transition-colors">
+                  <div className="p-4 rounded-lg bg-white/5 transition-colors">
                     <label className="text-xs text-zinc-500 uppercase font-bold tracking-wider">To</label>
                     <div className="flex justify-between items-center mt-2">
-                      <select className="bg-transparent text-white font-bold text-xl outline-none appearance-none cursor-pointer">
-                        <option className="bg-[#0a0a0f]">AQX Equity</option>
-                        <option className="bg-[#0a0a0f]">ETH</option>
-                        <option className="bg-[#0a0a0f]">USD Cash</option>
+                      <select
+                        value={convertTo}
+                        onChange={(e) => setConvertTo(e.target.value)}
+                        className="bg-transparent text-white font-bold text-xl outline-none appearance-none cursor-pointer"
+                      >
+                        <option className="bg-[#0a0a0f]" value="AQX Equity">AQX Equity</option>
+                        <option className="bg-[#0a0a0f]" value="ETH">ETH</option>
+                        <option className="bg-[#0a0a0f]" value="USD Cash">USD Cash</option>
                       </select>
-                      <input type="text" placeholder="0.00" className="bg-transparent text-right text-2xl font-medium text-white outline-none w-1/2" />
+                      <input
+                        type="text"
+                        readOnly
+                        value={convertFromAmt ? (parseFloat(convertFromAmt) * (convertFrom.includes('BTC') ? 350 : 1)).toFixed(2) : ''}
+                        placeholder="0.00"
+                        className="bg-transparent text-right text-2xl font-medium text-white outline-none w-1/2"
+                      />
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10 flex justify-between items-center text-sm">
+                  <div className="p-4 rounded-xl bg-white/5 flex justify-between items-center text-sm">
                     <span className="text-zinc-400">Exchange Rate</span>
                     <span className="text-white font-medium">1 BTC = 350 AQX Shares</span>
                   </div>
 
-                  <button className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold mt-2 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const amt = parseFloat(convertFromAmt);
+                      if (!amt || amt <= 0) {
+                        setWalletNotice({ type: 'error', text: 'Enter an amount greater than 0 to convert.' });
+                        return;
+                      }
+                      setWalletNotice({ type:'success', text:`Converted ${amt.toLocaleString()} ${convertFrom} → ${convertTo}.`});
+                      setConvertFromAmt('');
+                      setShowActionModal(null);
+                    }}
+                    className="w-full py-4 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold mt-2 hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transition-all"
+                  >
                     Convert Now
                   </button>
                 </div>

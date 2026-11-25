@@ -1,267 +1,245 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { 
-  BarChart3, TrendingUp, TrendingDown, 
-  Activity, Globe, Cpu, Zap, ShieldCheck,
-  ArrowUpRight, ArrowDownRight, Info, BrainCircuit,
-  Sparkles
-} from 'lucide-react';
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, 
-  Tooltip, ResponsiveContainer, PieChart, Pie, Cell
+import React, { useEffect, useState } from 'react';
+import { Globe, TrendingUp, ArrowUpRight, Info, ShieldCheck } from 'lucide-react';
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from 'recharts';
+import { rwaFetch } from '../lib/rwaApi';
 
-const INDEX_DATA = [
-  { name: 'Jan', value: 1000 },
-  { name: 'Feb', value: 1050 },
-  { name: 'Mar', value: 1020 },
-  { name: 'Apr', value: 1100 },
-  { name: 'May', value: 1150 },
-  { name: 'Jun', value: 1210 },
-  { name: 'Jul', value: 1180 },
-  { name: 'Aug', value: 1250 },
-  { name: 'Sep', value: 1320 },
-  { name: 'Oct', value: 1350 },
-  { name: 'Nov', value: 1410 },
-  { name: 'Dec', value: 1485 },
+const INDEX_SERIES = [
+  { name: 'Jan', value: 1295 },
+  { name: 'Feb', value: 1318 },
+  { name: 'Mar', value: 1310 },
+  { name: 'Apr', value: 1344 },
+  { name: 'May', value: 1368 },
+  { name: 'Jun', value: 1392 },
+  { name: 'Jul', value: 1405 },
+  { name: 'Aug', value: 1421 },
+  { name: 'Sep', value: 1448 },
+  { name: 'Oct', value: 1462 },
+  { name: 'Nov', value: 1485 },
 ];
 
-const SECTOR_DATA = [
-  { name: 'Fintech', value: 45, color: '#6366f1' },
-  { name: 'E-commerce', value: 25, color: '#8b5cf6' },
-  { name: 'Healthtech', value: 15, color: '#10b981' },
-  { name: 'Edtech', value: 10, color: '#f59e0b' },
-  { name: 'Agtech', value: 5, color: '#3b82f6' },
-];
-
-const TOP_MOVERS = [
-  { symbol: 'PAYST', name: 'Paystack', change: 12.5, type: 'gainer' },
-  { symbol: 'FLW', name: 'Flutterwave', change: 8.2, type: 'gainer' },
-  { symbol: 'AND', name: 'Andela', change: -5.4, type: 'loser' },
-  { symbol: 'JUM', name: 'Jumia', change: -3.1, type: 'loser' },
+const CATEGORY_COLORS = [
+  '#10b981',
+  '#3b82f6',
+  '#8b5cf6',
+  '#f59e0b',
+  '#06b6d4',
+  '#ec4899',
+  '#84cc16',
+  '#6366f1',
+  '#94a3b8',
 ];
 
 export function Index({ setActiveTab }: { setActiveTab: (tab: string) => void }) {
+  const [methodology, setMethodology] = useState<'MARKET_CAP_WEIGHTED' | 'EQUAL_WEIGHTED' | 'LIQUIDITY_ADJUSTED'>(
+    'MARKET_CAP_WEIGHTED'
+  );
+  const [indexData, setIndexData] = useState<any>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await rwaFetch<any>(`/rwa100?methodology=${methodology}`);
+        setIndexData(res);
+      } catch {
+        // Silent fallback below
+      }
+    };
+    void load();
+  }, [methodology]);
+
+  const categories = indexData?.categories || [
+    { name: 'Real Estate', weight: 18.5, countries: ['South Africa', 'Kenya', 'Morocco'] },
+    { name: 'Energy', weight: 16.0, countries: ['Ghana', 'Kenya', 'South Africa'] },
+    { name: 'Infrastructure', weight: 15.5, countries: ['Angola', 'Morocco', 'Egypt'] },
+    { name: 'Technology', weight: 12.0, countries: ['Nigeria', 'Kenya', 'South Africa'] },
+    { name: 'Agriculture', weight: 10.5, countries: ['Kenya', 'Ghana', 'Rwanda'] },
+    { name: 'Healthcare', weight: 8.5, countries: ['Rwanda', 'Egypt'] },
+    { name:'Manufacturing', weight: 7.0, countries: ['Nigeria','Morocco','Egypt'] },
+    { name: 'Logistics', weight: 6.5, countries: ['Angola', 'South Africa'] },
+    { name: 'Financial Assets', weight: 5.5, countries: ['South Africa', 'Nigeria', 'Kenya'] },
+  ];
+
+  const constituents = indexData?.constituents || [];
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-3 bg-black text-white">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-5">
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-2 rounded-xl bg-blue-500/20 text-blue-400">
-              <Globe className="w-6 h-6" />
-            </div>
-            <h1 className="text-3xl font-bold text-white tracking-tight">AQX Tech 100</h1>
+          <p className="text-xs font-medium text-zinc-400">
+            Pan-African Flagship Benchmark · 9 RWA Sectors · 8 Priority Markets · DEMO
+          </p>
+          <div className="flex items-center gap-3 mt-1">
+            <Globe className="w-6 h-6 text-emerald-400"/>
+            <h1 className="text-3xl font-bold text-white tracking-tight">AQX RWA100</h1>
           </div>
-          <p className="text-zinc-400">The S&P 500 of African Innovation. Tracking the top 100 tech companies.</p>
+          <p className="text-sm text-zinc-400 mt-1">
+            Tracking verified real-world asset and digital capital-market instruments across Africa.
+          </p>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="text-right">
-            <p className="text-sm text-zinc-400 mb-1">Index Value</p>
-            <div className="flex items-center gap-3">
-              <span className="text-3xl font-bold text-white">1,485.20</span>
-              <span className="flex items-center px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-400 text-sm font-medium">
-                <ArrowUpRight className="w-4 h-4 mr-1" />
-                +48.5% YTD
+
+        <div className="flex flex-wrap items-center gap-4">
+          <div className="flex items-center gap-1 p-1 bg-neutral-900 rounded-lg text-xs">
+            {[
+              { id: 'MARKET_CAP_WEIGHTED', label: 'Valuation Weighted' },
+              { id: 'EQUAL_WEIGHTED', label: 'Equal Weighted' },
+              { id: 'LIQUIDITY_ADJUSTED', label: 'Liquidity Adjusted' },
+            ].map((m) => (
+              <button
+                key={m.id}
+                onClick={() => setMethodology(m.id as typeof methodology)}
+                className={`px-3 py-1.5 rounded-md font-semibold cursor-pointer whitespace-nowrap ${ methodology === m.id ?'bg-white text-black':'text-zinc-400 hover:text-white'}`}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="text-right font-mono tabular-nums">
+            <span className="text-xs text-zinc-400 block font-sans">Indicative Index Level (DEMO)</span>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl font-bold text-white">{indexData?.value?.toFixed(2) ??'1485.20'}</span>
+              <span className="text-xs text-emerald-400 font-semibold flex items-center">
+                <ArrowUpRight className="w-3.5 h-3.5"/>
+                {indexData?.annualChangePct ?? '+14.20%'} YoY
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Main Chart Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white/[0.02] border border-white/5 rounded-3xl p-6 backdrop-blur-xl">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-white">Performance History</h2>
-            <div className="flex items-center gap-2 bg-white/5 rounded-xl p-1">
-              {['1M', '3M', '6M', 'YTD', '1Y', 'ALL'].map(tf => (
-                <button key={tf} className={`px-3 py-1 text-sm font-medium rounded-lg transition-colors ${tf === 'YTD' ? 'bg-white/10 text-white' : 'text-zinc-400 hover:text-white'}`}>
-                  {tf}
-                </button>
-              ))}
+      {/* Transparent DEMO Disclaimer */}
+      <div className="p-3.5 rounded-xl bg-amber-500/10 text-xs text-amber-200 flex items-start gap-2.5">
+        <Info className="w-4 h-4 shrink-0 mt-0.5 text-amber-300"/>
+        <span>
+          {indexData?.disclaimer ||
+'DEMO METHODOLOGY SIMULATION: Index levels and constituent weights are demonstration snapshots requiring licensed external market data feeds prior to benchmark publication.'}
+        </span>
+      </div>
+
+      {/* Main Chart + Sector Breakdown */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        <div className="lg:col-span-2 bg-neutral-950 rounded-lg p-3.5 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h2 className="text-base font-bold text-white">Indicative Performance Trajectory (DEMO)</h2>
+            <div className="flex gap-4 text-xs font-mono tabular-nums text-zinc-300">
+              <span>1D: {indexData?.dailyChangePct ?? '+0.42%'}</span>
+              <span>1W: {indexData?.weeklyChangePct ?? '+1.85%'}</span>
+              <span>1M: {indexData?.monthlyChangePct ?? '+3.90%'}</span>
             </div>
           </div>
-          <div className="h-[400px] w-full">
+          <div className="h-[320px] w-full">
             <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-              <AreaChart data={INDEX_DATA} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
+              <AreaChart data={INDEX_SERIES} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                 <defs>
-                  <linearGradient id="colorIndex" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                  <linearGradient id="colorRwa"x1="0"y1="0"x2="0"y2="1">
+                    <stop offset="5%"stopColor="#10b981"stopOpacity={0.3} />
+                    <stop offset="95%"stopColor="#10b981"stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                <XAxis 
-                  dataKey="name" 
-                  stroke="rgba(255,255,255,0.2)" 
-                  fontSize={12} 
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis 
-                  stroke="rgba(255,255,255,0.2)" 
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                  tickFormatter={(value) => `${value}`}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(5, 5, 10, 0.9)', 
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: '12px',
-                    boxShadow: '0 10px 30px -10px rgba(0,0,0,0.5)'
+                <XAxis dataKey="name" stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} />
+                <YAxis stroke="#9ca3af" fontSize={12} tickLine={false} axisLine={false} domain={['auto', 'auto']} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor:'#0a0a0a',
+                    border:'none',
+                    borderRadius: '10px',
                   }}
-                  itemStyle={{ color: '#fff' }}
                 />
-                <Area 
-                  type="monotone" 
-                  dataKey="value" 
-                  stroke="#6366f1" 
-                  strokeWidth={3}
-                  fillOpacity={1} 
-                  fill="url(#colorIndex)" 
-                />
+                <Area type="monotone" dataKey="value" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#colorRwa)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Right Column: AI Insights & Sector Breakdown */}
-        <div className="space-y-6">
-          {/* AI Commentary */}
-          <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-3xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-4 opacity-10">
-              <BrainCircuit className="w-24 h-24" />
-            </div>
-            <div className="flex items-center gap-2 mb-4 relative z-10">
-              <Sparkles className="w-5 h-5 text-blue-400" />
-              <h3 className="text-lg font-semibold text-white">AI Index Intelligence</h3>
-            </div>
-            <p className="text-zinc-300 text-sm leading-relaxed relative z-10 mb-4">
-              The AQX Tech 100 shows strong bullish momentum driven by Q3 earnings in the Fintech sector. Predictive models suggest a 5-8% upside in the next quarter, heavily weighted towards emerging AI and Healthtech startups.
-            </p>
-            <button onClick={() => setActiveTab('intelligence-ngx-assistant')} className="text-sm font-medium text-blue-400 hover:text-blue-300 flex items-center gap-1 transition-colors">
-              Read Full Analysis <ArrowUpRight className="w-4 h-4" />
-            </button>
+        <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
+          <h2 className="text-base font-bold text-white">9-Sector Asset Weighting</h2>
+          <div className="h-44 relative">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
+              <PieChart>
+                <Pie data={categories} cx="50%" cy="50%" innerRadius={48} outerRadius={72} paddingAngle={3} dataKey="weight" stroke="none">
+                  {categories.map((_: any, idx: number) => (
+                    <Cell key={idx} fill={CATEGORY_COLORS[idx % CATEGORY_COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor:'#0a0a0a',
+                    border:'none',
+                    borderRadius: '8px',
+                  }}
+                />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
-
-          {/* Sector Breakdown */}
-          <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 backdrop-blur-xl">
-            <h3 className="text-lg font-semibold text-white mb-6">Sector Weighting</h3>
-            <div className="h-48 relative">
-              <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-                <PieChart>
-                  <Pie
-                    data={SECTOR_DATA}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={80}
-                    paddingAngle={5}
-                    dataKey="value"
-                    stroke="none"
-                  >
-                    {SECTOR_DATA.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: 'rgba(5, 5, 10, 0.9)', 
-                      border: '1px solid rgba(255,255,255,0.1)',
-                      borderRadius: '8px'
-                    }}
-                    itemStyle={{ color: '#fff' }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
-                <span className="text-2xl font-bold text-white">100</span>
-                <span className="text-xs text-zinc-500">Companies</span>
-              </div>
-            </div>
-            <div className="mt-4 space-y-3">
-              {SECTOR_DATA.map((sector) => (
-                <div key={sector.name} className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: sector.color }} />
-                    <span className="text-zinc-300">{sector.name}</span>
-                  </div>
-                  <span className="text-white font-medium">{sector.value}%</span>
+          <div className="space-y-2 text-xs">
+            {categories.map((cat: any, idx: number) => (
+              <div key={cat.name} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-sm"style={{ backgroundColor: CATEGORY_COLORS[idx % CATEGORY_COLORS.length] }} />
+                  <span className="text-zinc-300">{cat.name}</span>
                 </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Section: Top Movers & Investment Products */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Top Movers */}
-        <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 backdrop-blur-xl">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-white">Top Movers (24h)</h3>
-            <button onClick={() => setActiveTab('marketplace')} className="text-sm text-zinc-400 hover:text-white transition-colors">View All</button>
-          </div>
-          <div className="space-y-4">
-            {TOP_MOVERS.map((mover) => (
-              <div key={mover.symbol} className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors cursor-pointer">
-                <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mover.type === 'gainer' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400'}`}>
-                    {mover.type === 'gainer' ? <TrendingUp className="w-5 h-5" /> : <TrendingDown className="w-5 h-5" />}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-white">{mover.symbol}</p>
-                    <p className="text-xs text-zinc-400">{mover.name}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className={`font-medium ${mover.type === 'gainer' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                    {mover.change > 0 ? '+' : ''}{mover.change}%
-                  </p>
-                </div>
+                <span className="font-mono tabular-nums text-white font-semibold">{cat.weight}%</span>
               </div>
             ))}
           </div>
         </div>
+      </div>
 
-        {/* Investment Products */}
-        <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6 backdrop-blur-xl flex flex-col">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold text-white">Index Investment Products</h3>
-            <Info className="w-5 h-5 text-zinc-500" />
-          </div>
-          
-          <div className="flex-1 flex flex-col justify-center space-y-4">
-            <div onClick={() => setActiveTab('trade')} className="p-6 rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 relative overflow-hidden group cursor-pointer">
-              <div className="absolute inset-0 bg-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="relative z-10 flex items-start justify-between">
-                <div>
-                  <h4 className="text-xl font-bold text-white mb-1">AQX Tech 100 ETF</h4>
-                  <p className="text-sm text-blue-200 mb-4">Invest in the entire African tech ecosystem with a single click.</p>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="text-zinc-300"><span className="text-white font-medium">0.15%</span> Expense Ratio</span>
-                    <span className="text-zinc-300"><span className="text-white font-medium">Quarterly</span> Rebalancing</span>
-                  </div>
-                </div>
-                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
-                  <ArrowUpRight className="w-6 h-6 text-white" />
-                </div>
-              </div>
-            </div>
+      {/* Constituents Table */}
+      <div className="bg-neutral-950 rounded-lg p-3.5 space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-bold text-white flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-400"/>
+            Indexed DEMO Constituents & Country Weights
+          </h2>
+          <button
+            onClick={() => setActiveTab('marketplace')}
+            className="px-4 py-1.5 rounded-lg bg-white text-black text-xs font-bold hover:bg-zinc-200 cursor-pointer"
+          >
+            Explore RWA Marketplace
+          </button>
+        </div>
 
-            <div onClick={() => setActiveTab('marketplace')} className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
-              <div className="flex items-start justify-between">
-                <div>
-                  <h4 className="text-lg font-semibold text-white mb-1">Sector Bundles</h4>
-                  <p className="text-sm text-zinc-400">Target specific high-growth sectors like Fintech or Healthtech.</p>
-                </div>
-                <ArrowUpRight className="w-5 h-5 text-zinc-400" />
-              </div>
-            </div>
-          </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="text-zinc-400">
+                <th className="py-1.5 px-3">Passport</th>
+                <th className="py-1.5 px-3">Asset Name</th>
+                <th className="py-1.5 px-3">Category</th>
+                <th className="py-1.5 px-3">Country</th>
+                <th className="py-1.5 px-3">AQX Score</th>
+                <th className="py-1.5 px-3 text-right">Index Weight</th>
+              </tr>
+            </thead>
+            <tbody className="font-mono tabular-nums">
+              {constituents.map((item: any) => (
+                <tr key={item.assetId} className="hover:bg-white/[0.02]">
+                  <td className="py-1.5 px-3 text-zinc-300">{item.passportId}</td>
+                  <td className="py-1.5 px-3 font-sans font-semibold text-white">
+                    {item.name} <span className="text-zinc-500 font-normal">({item.ticker})</span>
+                  </td>
+                  <td className="py-1.5 px-3 font-sans text-zinc-300">{item.assetClass}</td>
+                  <td className="py-1.5 px-3 font-sans text-zinc-300">{item.country}</td>
+                  <td className="py-1.5 px-3 text-emerald-400">{item.aqxScore}/100</td>
+                  <td className="py-1.5 px-3 text-right text-white font-bold">{item.weightPercent}%</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

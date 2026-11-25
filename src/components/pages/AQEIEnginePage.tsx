@@ -46,7 +46,7 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
     <div className="min-h-screen bg-[#070708] text-white font-sans selection:bg-[#D5FF2F]">
       
       {/* 1. HERO SECTION WITH YOUTUBE VIDEO BACKGROUND */}
-      <section className="relative pt-36 pb-28 px-6 lg:px-12 max-w-[1280px] mx-auto text-center space-y-8 overflow-hidden">
+      <section className="relative pt-36 pb-28 px-3.5 lg:px-5 max-w-[1280px] mx-auto text-center space-y-4 overflow-hidden">
         <HeroVideoBackground videoId="LXb3EKWsInQ" overlayOpacity={0.88} darkMode={true} />
 
         <h1 className="text-4xl sm:text-6xl lg:text-[72px] font-semibold tracking-tight leading-[1.04] text-white">
@@ -69,9 +69,9 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
         </p>
 
         {/* Neural Network Node Animation Preview Box */}
-        <div className="pt-8 max-w-3xl mx-auto">
-          <div className="bg-zinc-900/90 rounded-[28px] p-8 border border-zinc-800 shadow-2xl space-y-6 relative overflow-hidden">
-            <div className="flex items-center justify-between text-xs font-mono text-zinc-400 border-b border-zinc-800 pb-4">
+        <div className="pt-4 max-w-3xl mx-auto">
+          <div className="bg-zinc-900/90 rounded-xl p-4 shadow-2xl space-y-3 relative overflow-hidden">
+            <div className="flex items-center justify-between text-xs font-mono text-zinc-400 pb-4">
               <span className="flex items-center gap-2 text-[#00C805]">
                 <span className="w-2 h-2 rounded-full bg-[#00C805] animate-ping" />
                 NEURAL ENGINE LIVE (410ns LATENCY)
@@ -80,19 +80,19 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
             </div>
 
             <div className="grid grid-cols-4 gap-4 py-4 text-center">
-              <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+              <div className="p-4 rounded-lg bg-zinc-950 space-y-1">
                 <span className="text-[10px] font-mono text-zinc-500 block">DATA NODES</span>
                 <span className="text-lg font-bold font-mono text-white">14,200+</span>
               </div>
-              <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+              <div className="p-4 rounded-lg bg-zinc-950 space-y-1">
                 <span className="text-[10px] font-mono text-zinc-500 block">MODELS ACTIVE</span>
                 <span className="text-lg font-bold font-mono text-[#D5FF2F]">38</span>
               </div>
-              <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+              <div className="p-4 rounded-lg bg-zinc-950 space-y-1">
                 <span className="text-[10px] font-mono text-zinc-500 block">ACCURACY</span>
                 <span className="text-lg font-bold font-mono text-[#00C805]">98.4%</span>
               </div>
-              <div className="p-4 rounded-2xl bg-zinc-950 border border-zinc-800 space-y-1">
+              <div className="p-4 rounded-lg bg-zinc-950 space-y-1">
                 <span className="text-[10px] font-mono text-zinc-500 block">AUM COVERED</span>
                 <span className="text-lg font-bold font-mono text-white">$42.8B</span>
               </div>
@@ -102,20 +102,20 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
       </section>
 
       {/* 2. AI ARCHITECTURE FLOW & INTERACTIVE PIPELINE */}
-      <section className="py-24 bg-zinc-950 border-y border-zinc-800 px-6 lg:px-12">
-        <div className="max-w-[1280px] mx-auto space-y-16">
+      <section className="py-8 bg-zinc-950 px-3.5 lg:px-5">
+        <div className="max-w-[1280px] mx-auto space-y-5">
           <AIDecisionTreeFlow />
         </div>
       </section>
 
       {/* 3. INTERACTIVE AI DEMO COMPONENT */}
-      <section className="py-28 px-6 lg:px-12 max-w-[1280px] mx-auto space-y-12">
+      <section className="py-28 px-3.5 lg:px-5 max-w-[1280px] mx-auto space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D5FF2F]">LIVE AI DEMO</span>
           <h2 className="text-3xl lg:text-4xl font-semibold text-white">Test AQEI Engine in Real-Time.</h2>
         </div>
 
-        <div className="bg-zinc-900 rounded-[32px] p-8 lg:p-12 border border-zinc-800 space-y-8 shadow-2xl">
+        <div className="bg-zinc-900 rounded-xl p-4 lg:p-5 space-y-4 shadow-2xl">
           <div className="space-y-3">
             <span className="text-xs font-mono text-zinc-400 uppercase tracking-widest block">SELECT AN AFRICAN ASSET:</span>
             <div className="flex flex-wrap gap-3">
@@ -123,7 +123,7 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
                 <button
                   key={co.ticker}
                   onClick={() => handleSelectCompany(idx)}
-                  className={`px-5 py-2.5 rounded-full font-mono text-xs font-bold transition-all border ${selectedCompanyIdx === idx ? 'bg-[#00C805] text-black border-[#00C805] shadow-lg scale-105' : 'bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-zinc-600'}`}
+                  className={`px-5 py-2.5 rounded-full font-mono text-xs font-bold transition-all bg-white/[0.03] ${selectedCompanyIdx === idx ? 'bg-[#00C805] text-black border-[#00C805] shadow-lg scale-105' : 'bg-zinc-950 text-zinc-300 border-zinc-800 hover:border-zinc-600'}`}
                 >
                   {co.name} ({co.ticker})
                 </button>
@@ -132,9 +132,9 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
           </div>
 
           {/* AI Output Card */}
-          <div className="bg-zinc-950 rounded-[24px] p-8 border border-zinc-800 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          <div className="bg-zinc-950 rounded-lg p-4 grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
             {isGenerating ? (
-              <div className="col-span-3 py-12 flex flex-col items-center justify-center space-y-3 text-zinc-400">
+              <div className="col-span-3 py-4 flex flex-col items-center justify-center space-y-3 text-zinc-400">
                 <RefreshCw className="w-8 h-8 text-[#00C805] animate-spin" />
                 <span className="font-mono text-xs">Synthesizing 14,000 Neural Signals...</span>
               </div>
@@ -154,7 +154,7 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
 
                 <div className="space-y-3 text-center md:text-right">
                   <span className="text-xs font-mono text-zinc-500 uppercase block">AQEI RECOMMENDATION</span>
-                  <span className="inline-block px-5 py-2 rounded-full bg-[#00C805]/20 text-[#00C805] border border-[#00C805]/40 font-mono font-bold text-sm uppercase">
+                  <span className="inline-block px-5 py-2 rounded-full bg-[#00C805]/20 text-[#00C805] font-mono font-bold text-sm uppercase">
                     {selectedCo.rec}
                   </span>
                   <button 
@@ -171,7 +171,7 @@ export function AQEIEnginePage({ onNavigatePage, onNavigateToAuth }: AQEIEngineP
       </section>
 
       {/* 4. QUANTITATIVE RESEARCH & INSTITUTIONAL TESTIMONIAL QUOTES */}
-      <section className="py-24 px-6 lg:px-12 max-w-[1280px] mx-auto space-y-12">
+      <section className="py-8 px-3.5 lg:px-5 max-w-[1280px] mx-auto space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D5FF2F]">QUANTITATIVE TESTIMONIALS</span>
           <h2 className="text-3xl lg:text-4xl font-semibold text-white">

@@ -27,18 +27,30 @@ import { Wallet } from './components/Wallet';
 import { AdminPanel } from './components/AdminPanel';
 import { AuthPanel } from './components/AuthPanel';
 import { Onboarding } from './components/Onboarding';
+import { RoleOnboardingGate } from './components/RoleOnboardingGate';
 import { LandingPage } from './components/LandingPage';
-import { AITradingBot } from './components/AITradingBot';
 import { ReportViewer } from './components/ReportViewer';
 import { TaxComplianceModule } from './components/TaxComplianceModule';
 import { IPOLaunchHub } from './components/IPOLaunchHub';
 import { AlgorithmicTradingDesk } from './components/AlgorithmicTradingDesk';
 import { ValuationWorkbench } from './components/ValuationWorkbench';
 import { InstitutionalIntegrationsHub } from './components/InstitutionalIntegrationsHub';
+import { TokenisationHub } from './components/TokenisationHub';
+import { KycKybCenter } from './components/KycKybCenter';
+import { IssuerDashboard } from './components/IssuerDashboard';
+import { ComplianceGovernanceHub } from './components/ComplianceGovernanceHub';
 import { InitialLoader } from './components/InitialLoader';
 import { CookieConsentBanner } from './components/CookieConsentBanner';
 import { AnimatePresence } from 'motion/react';
-import { ShieldAlert } from 'lucide-react';
+import {
+  canRoleAccessTab,
+  getCompanyPositionMeta,
+  getInvestorIdentityMeta,
+  getStoredWorkspaceIdentity,
+  type CompanyPosition,
+  type InvestorIdentity,
+  type WorkspaceRole,
+} from './lib/roleAccess';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -52,70 +64,109 @@ export default function App() {
   const [selectedCompanyId, setSelectedCompanyId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const [userRole, setUserRole] = useState<'admin' | 'investor' | 'company'>('investor');
+  const [userRole, setUserRole] = useState<WorkspaceRole>('investor');
+  const [investorIdentity, setInvestorIdentity] = useState<InvestorIdentity | null>(null);
+  const [companyPosition, setCompanyPosition] = useState<CompanyPosition | null>(null);
+
+  const syncFromStorage = () => {
+    const identity = getStoredWorkspaceIdentity();
+    setUserRole(identity.userRole);
+    setInvestorIdentity(identity.investorIdentity);
+    setCompanyPosition(identity.companyPosition);
+  };
 
   useEffect(() => {
-    // Remove legacy demo state, including sensitive data saved by older onboarding versions.
-    ['onboardingProgress', 'isUserOnboarded', 'userRole', 'userEmail', 'userName'].forEach(key => localStorage.removeItem(key));
+    const isLocalOnboarded = localStorage.getItem('isUserOnboarded') === 'true';
+    if (isLocalOnboarded) {
+      setIsUserOnboarded(true);
+      syncFromStorage();
+    }
+
+    const handleAuthSync = () => syncFromStorage();
+    window.addEventListener('nxg_auth_state_changed', handleAuthSync);
+
     if (!isSupabaseConfigured) {
       setAuthChecked(true);
-      return;
+      return () => window.removeEventListener('nxg_auth_state_changed', handleAuthSync);
     }
+
     let disposed = false;
     let generation = 0;
     const refreshIdentity = async () => {
       const request = ++generation;
-      setAuthChecked(false);
-      verifiedUserId.current = null;
-      setIsUserOnboarded(false);
-      setUserRole('investor');
-      localStorage.removeItem('userEmail');
-      localStorage.removeItem('userName');
       try {
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error || !user) return;
-        const { data: profile, error: profileError } = await supabase.from('profiles').select('role, full_name').eq('id', user.id).single();
-        if (disposed || request !== generation) return;
-        if (profileError || !profile) {
-          setAuthError('Unable to load your profile. Please try signing in again or contact support.');
-          await supabase.auth.signOut({ scope: 'local' });
+        const { data, error } = await supabase.auth.getUser();
+        if (error || !data?.user) {
+          if (!disposed && request === generation) {
+            setAuthChecked(true);
+          }
           return;
         }
+        const user = data.user;
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role, full_name')
+          .eq('id', user.id)
+          .single();
+        if (disposed || request !== generation) return;
         verifiedUserId.current = user.id;
         setAuthError(null);
-        const role = profile.role === 'admin' || profile.role === 'company' ? profile.role : 'investor';
+        const role: WorkspaceRole =
+          profile?.role === 'admin' || profile?.role === 'company' ? profile.role : 'investor';
         setUserRole(role);
         setIsUserOnboarded(true);
+        localStorage.setItem('isUserOnboarded', 'true');
+        localStorage.setItem('userRole', role);
         if (user.email) localStorage.setItem('userEmail', user.email);
-        if (profile.full_name) localStorage.setItem('userName', profile.full_name);
+        if (profile?.full_name) localStorage.setItem('userName', profile.full_name);
+        syncFromStorage();
       } catch (error) {
-        console.error('Could not verify the current session:', error);
+        console.warn('Could not verify remote Supabase session (continuing in prototype mode):', error);
       } finally {
         if (!disposed && request === generation) setAuthChecked(true);
       }
     };
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
         generation++;
         verifiedUserId.current = null;
         setIsUserOnboarded(false);
         setUserRole('investor');
+        setInvestorIdentity(null);
+        setCompanyPosition(null);
         localStorage.removeItem('userEmail');
         localStorage.removeItem('userName');
+        localStorage.removeItem('isUserOnboarded');
+        localStorage.removeItem('investorIdentity');
+        localStorage.removeItem('companyPosition');
         setAuthChecked(true);
-      } else if (event !== 'TOKEN_REFRESHED' && event !== 'INITIAL_SESSION' && !(event === 'SIGNED_IN' && session?.user?.id === verifiedUserId.current)) {
+      } else if (
+        event !== 'TOKEN_REFRESHED' &&
+        event !== 'INITIAL_SESSION' &&
+        !(event === 'SIGNED_IN' && session?.user?.id === verifiedUserId.current)
+      ) {
         setAuthChecked(false);
-        // Supabase callbacks must not await other Supabase operations.
-        setTimeout(() => { if (!disposed) void refreshIdentity(); }, 0);
+        setTimeout(() => {
+          if (!disposed) void refreshIdentity();
+        }, 0);
       }
     });
+
     void refreshIdentity();
-    return () => { disposed = true; generation++; subscription.unsubscribe(); };
+    return () => {
+      disposed = true;
+      generation++;
+      window.removeEventListener('nxg_auth_state_changed', handleAuthSync);
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
     if (!authChecked) return;
-    // Access control logic: Redirect non-onboarded users to auth panel if they try to access restricted features
+
     if (!isUserOnboarded && activeTab !== 'auth' && activeTab !== 'aqei' && activeTab !== 'intro') {
       if (activeTab === 'admin') {
         setActiveTab('auth');
@@ -124,16 +175,75 @@ export default function App() {
       } else {
         setActiveTab('intro');
       }
+      return;
     }
-    
-    // Restrict Admin access to admin role only
-    if (activeTab === 'admin' && isUserOnboarded && userRole !== 'admin') {
+
+    // Strict role-based route guard: redirect if current tab is not permitted for active workspace role
+    if (isUserOnboarded && !canRoleAccessTab(userRole, activeTab)) {
       setActiveTab('dashboard');
     }
   }, [isUserOnboarded, activeTab, hasSeenIntro, userRole, authChecked]);
 
-  // Roles are assigned by the database, never by a browser preference.
-  const handleRoleChange = () => {};
+  const handleRoleChange = (role: WorkspaceRole) => {
+    setUserRole(role);
+    localStorage.setItem('userRole', role);
+    if (role === 'investor') {
+      const nextInv = investorIdentity || 'EQUITY_FUNDER';
+      setInvestorIdentity(nextInv);
+      localStorage.setItem('investorIdentity', nextInv);
+      localStorage.setItem('aqxFineRole', getInvestorIdentityMeta(nextInv).platformRole);
+    } else if (role === 'company') {
+      const nextComp = companyPosition || 'STARTUP';
+      setCompanyPosition(nextComp);
+      localStorage.setItem('companyPosition', nextComp);
+      localStorage.setItem('aqxFineRole', getCompanyPositionMeta(nextComp).platformRole);
+    } else {
+      localStorage.setItem('aqxFineRole', 'SUPER_ADMIN');
+    }
+    if (!canRoleAccessTab(role, activeTab)) {
+      setActiveTab('dashboard');
+    }
+  };
+
+  const handleUpdateSubRole = (sub: {
+    investorIdentity?: InvestorIdentity;
+    companyPosition?: CompanyPosition;
+  }) => {
+    if (sub.investorIdentity) {
+      setInvestorIdentity(sub.investorIdentity);
+      localStorage.setItem('investorIdentity', sub.investorIdentity);
+      localStorage.setItem('aqxFineRole', getInvestorIdentityMeta(sub.investorIdentity).platformRole);
+    }
+    if (sub.companyPosition) {
+      setCompanyPosition(sub.companyPosition);
+      localStorage.setItem('companyPosition', sub.companyPosition);
+      localStorage.setItem('aqxFineRole', getCompanyPositionMeta(sub.companyPosition).platformRole);
+    }
+    window.dispatchEvent(new Event('nxg_auth_state_changed'));
+  };
+
+  const handleRoleOnboardingComplete = (selection: {
+    role: WorkspaceRole;
+    investorIdentity: InvestorIdentity | null;
+    companyPosition: CompanyPosition | null;
+  }) => {
+    setUserRole(selection.role);
+    localStorage.setItem('userRole', selection.role);
+    if (selection.role === 'investor' && selection.investorIdentity) {
+      setInvestorIdentity(selection.investorIdentity);
+      setCompanyPosition(null);
+      localStorage.setItem('investorIdentity', selection.investorIdentity);
+      localStorage.removeItem('companyPosition');
+      localStorage.setItem('aqxFineRole', getInvestorIdentityMeta(selection.investorIdentity).platformRole);
+    } else if (selection.role === 'company' && selection.companyPosition) {
+      setCompanyPosition(selection.companyPosition);
+      setInvestorIdentity(null);
+      localStorage.setItem('companyPosition', selection.companyPosition);
+      localStorage.removeItem('investorIdentity');
+      localStorage.setItem('aqxFineRole', getCompanyPositionMeta(selection.companyPosition).platformRole);
+    }
+    setActiveTab('dashboard');
+  };
 
   const handleNavigateToCompany = (companyId: string) => {
     setSelectedCompanyId(companyId);
@@ -160,20 +270,30 @@ export default function App() {
 
   const handleAuthComplete = () => {
     setIsLoading(true);
+    setIsUserOnboarded(true);
+    localStorage.setItem('isUserOnboarded', 'true');
+    syncFromStorage();
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('nxg_auth_state_changed'));
+    }
     setActiveTab('dashboard');
   };
 
   const handleLogout = async () => {
     if (isSupabaseConfigured) {
-      const { error } = await supabase.auth.signOut();
-      if (error) {
-        console.error('Sign out failed:', error);
-        alert('Could not sign out. Please try again.');
-        return;
+      try {
+        await supabase.auth.signOut({ scope: 'local' });
+      } catch (err) {
+        console.warn('Sign out local error:', err);
       }
     }
     setUserRole('investor');
+    setInvestorIdentity(null);
+    setCompanyPosition(null);
     localStorage.removeItem('userRole');
+    localStorage.removeItem('investorIdentity');
+    localStorage.removeItem('companyPosition');
+    localStorage.removeItem('aqxFineRole');
     setIsUserOnboarded(false);
     setHasSeenIntro(false);
     localStorage.removeItem('isUserOnboarded');
@@ -186,31 +306,61 @@ export default function App() {
     setActiveTab('intro');
   };
 
+  const needsSubRoleOnboarding =
+    isUserOnboarded &&
+    ((userRole === 'investor' && !investorIdentity) || (userRole === 'company' && !companyPosition));
+
   const renderContent = () => {
     if (!hasSeenIntro && !isUserOnboarded) {
       return <Onboarding onComplete={handleIntroComplete} />;
     }
 
     if (!isUserOnboarded) {
-      if (activeTab === 'auth') {
-        return <AuthPanel onComplete={handleAuthComplete} authError={authError} onAuthAttempt={() => setAuthError(null)} />;
-      }
       if (activeTab === 'aqei') {
         return <AQEI />;
       }
-      return <AuthPanel onComplete={handleAuthComplete} authError={authError} onAuthAttempt={() => setAuthError(null)} />;
+      return (
+        <AuthPanel
+          onComplete={handleAuthComplete}
+          authError={authError}
+          onAuthAttempt={() => setAuthError(null)}
+        />
+      );
     }
 
-    if (activeTab.startsWith('market-forex-order-')) {
-      const orderId = activeTab.replace('market-forex-order-', '');
+    const effectiveTab = canRoleAccessTab(userRole, activeTab) ? activeTab : 'dashboard';
+
+    if (effectiveTab.startsWith('market-forex-order-')) {
+      const orderId = effectiveTab.replace('market-forex-order-', '');
       return <ForexMarket setActiveTab={setActiveTab} view="order" orderId={orderId} />;
     }
 
-    switch (activeTab) {
+    switch (effectiveTab) {
       case 'landing':
-        return <LandingPage onNavigateToAuth={handleNavigateToAuth} onNavigateToDashboard={() => setActiveTab('dashboard')} onNavigateToAQEI={() => setActiveTab('aqei')} />;
+        return (
+          <LandingPage
+            onNavigateToAuth={handleNavigateToAuth}
+            onNavigateToDashboard={() => setActiveTab('dashboard')}
+            onNavigateToAQEI={() => setActiveTab('aqei')}
+          />
+        );
       case 'dashboard':
-        return <Dashboard setActiveTab={setActiveTab} />;
+        return (
+          <Dashboard
+            setActiveTab={setActiveTab}
+            userRole={userRole}
+            investorIdentity={investorIdentity}
+            companyPosition={companyPosition}
+          />
+        );
+      case 'tokenisation-hub':
+        return <TokenisationHub setActiveTab={setActiveTab} />;
+      case 'kyc-kyb':
+        return <KycKybCenter />;
+      case 'issuer-dashboard':
+        return <IssuerDashboard setActiveTab={setActiveTab} />;
+      case 'governance-audit':
+        return <ComplianceGovernanceHub />;
       case 'integrations':
         return <InstitutionalIntegrationsHub setActiveTab={setActiveTab} />;
       case 'wallet':
@@ -218,7 +368,13 @@ export default function App() {
       case 'portfolio':
         return <Portfolio setActiveTab={setActiveTab} />;
       case 'marketplace':
-        return <Marketplace onNavigateToCompany={handleNavigateToCompany} onNavigateToOnboarding={() => setActiveTab('company-onboarding')} setActiveTab={setActiveTab} />;
+        return (
+          <Marketplace
+            onNavigateToCompany={handleNavigateToCompany}
+            onNavigateToOnboarding={() => setActiveTab('company-onboarding')}
+            setActiveTab={setActiveTab}
+          />
+        );
       case 'trade':
         return <Trade setActiveTab={setActiveTab} />;
       case 'ipo-launch':
@@ -236,11 +392,31 @@ export default function App() {
       case 'tax-compliance':
         return <TaxComplianceModule setActiveTab={setActiveTab} />;
       case 'settings':
-        return <Settings userRole={userRole} onRoleChange={handleRoleChange} setActiveTab={setActiveTab} />;
+        return (
+          <Settings
+            userRole={userRole}
+            investorIdentity={investorIdentity}
+            companyPosition={companyPosition}
+            onRoleChange={handleRoleChange}
+            onUpdateSubRole={handleUpdateSubRole}
+            setActiveTab={setActiveTab}
+          />
+        );
       case 'company-profile':
-        return <CompanyProfile companyId={selectedCompanyId} onBack={() => setActiveTab('marketplace')} setActiveTab={setActiveTab} />;
+        return (
+          <CompanyProfile
+            companyId={selectedCompanyId}
+            onBack={() => setActiveTab('marketplace')}
+            setActiveTab={setActiveTab}
+          />
+        );
       case 'company-onboarding':
-        return <CompanyOnboarding onBack={() => setActiveTab('marketplace')} setActiveTab={setActiveTab} />;
+        return (
+          <CompanyOnboarding
+            onBack={() => setActiveTab('marketplace')}
+            setActiveTab={setActiveTab}
+          />
+        );
       case 'activity':
         return <ActivityCenter setActiveTab={setActiveTab} />;
       case 'intelligence-ngx':
@@ -266,12 +442,14 @@ export default function App() {
       case 'performance-ALL':
         return <PerformanceAnalytics setActiveTab={setActiveTab} initialRange="ALL" />;
       case 'search':
-        return <GlobalSearch 
-          setActiveTab={setActiveTab} 
-          searchQuery={searchQuery} 
-          setSearchQuery={setSearchQuery} 
-          onNavigateToCompany={handleNavigateToCompany}
-        />;
+        return (
+          <GlobalSearch
+            setActiveTab={setActiveTab}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onNavigateToCompany={handleNavigateToCompany}
+          />
+        );
       case 'market-secondary':
         return <SecondaryMarket setActiveTab={setActiveTab} initialView="hub" />;
       case 'market-secondary-asset-paystack':
@@ -293,24 +471,39 @@ export default function App() {
       case 'market-forex-analytics':
         return <ForexMarket setActiveTab={setActiveTab} view="analytics" />;
       default:
-        if (activeTab.startsWith('market-forex-pair-')) {
-          const pairSlug = activeTab.replace('market-forex-pair-', '');
+        if (effectiveTab.startsWith('market-forex-pair-')) {
+          const pairSlug = effectiveTab.replace('market-forex-pair-', '');
           return <ForexMarket setActiveTab={setActiveTab} view="pair" pairSlug={pairSlug} />;
         }
-        if (activeTab.startsWith('market-forex-trade-')) {
-          const pairSlug = activeTab.replace('market-forex-trade-', '');
+        if (effectiveTab.startsWith('market-forex-trade-')) {
+          const pairSlug = effectiveTab.replace('market-forex-trade-', '');
           return <ForexMarket setActiveTab={setActiveTab} view="trade" pairSlug={pairSlug} />;
         }
-        if (activeTab.startsWith('market-forex-order-')) {
-          const orderId = activeTab.replace('market-forex-order-', '');
+        if (effectiveTab.startsWith('market-forex-order-')) {
+          const orderId = effectiveTab.replace('market-forex-order-', '');
           return <ForexMarket setActiveTab={setActiveTab} view="order" orderId={orderId} />;
         }
-        return <Dashboard setActiveTab={setActiveTab} />;
+        return (
+          <Dashboard
+            setActiveTab={setActiveTab}
+            userRole={userRole}
+            investorIdentity={investorIdentity}
+            companyPosition={companyPosition}
+          />
+        );
     }
   };
 
   const mainContent = () => {
-    if (!authChecked) return <div role="status" className="p-6 text-white">Checking session...</div>;
+    if (!authChecked) return <div role="status" className="p-4 text-xs text-white">Checking session...</div>;
+    if (needsSubRoleOnboarding) {
+      return (
+        <RoleOnboardingGate
+          initialRole={userRole}
+          onComplete={handleRoleOnboardingComplete}
+        />
+      );
+    }
     if (activeTab === 'admin' && isUserOnboarded && userRole === 'admin') {
       return <AdminPanel onExit={() => setActiveTab('dashboard')} />;
     }
@@ -320,11 +513,13 @@ export default function App() {
     }
 
     return (
-      <Layout 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        onLogout={handleLogout} 
+      <Layout
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onLogout={handleLogout}
         userRole={userRole}
+        investorIdentity={investorIdentity}
+        companyPosition={companyPosition}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         isAuthenticated={isUserOnboarded}
@@ -341,10 +536,11 @@ export default function App() {
           <InitialLoader key="initial-loader" onLoaded={() => setIsLoading(false)} />
         )}
       </AnimatePresence>
-      <div role="status" className="relative z-[100] bg-amber-300 px-4 py-2 text-center text-xs font-semibold text-black">Prototype: some data and integrations are simulated. Trading, wallet operations and card funding are unavailable.</div>
+      <div role="status" className="relative z-[100] bg-amber-300 px-3 py-1 text-center text-[11px] font-semibold text-black">
+        Prototype: some data and integrations are simulated. Trading, wallet operations and card funding are unavailable.
+      </div>
       {mainContent()}
       <CookieConsentBanner />
     </>
   );
 }
-

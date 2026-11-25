@@ -42,7 +42,7 @@ export function AboutPage({ onNavigatePage, onNavigateToAuth }: AboutPageProps) 
     <div className="min-h-screen bg-white text-[#0D0F13] font-sans selection:bg-[#D9A94E] selection:text-[#0D0F13] overflow-x-hidden">
       
       {/* 1. FULL-BLEED HERO SECTION WITH 3D MOTION GRAPHICS & FINANCIAL REFLECTIONS VIDEO */}
-      <section className="relative w-full min-h-[88vh] sm:min-h-[94vh] flex items-center justify-center bg-[#0D0F13] text-[#F4F1E8] px-6 sm:px-12 lg:px-16 xl:px-24 overflow-hidden border-b border-white/[0.08]">
+      <section className="relative w-full min-h-[88vh] sm:min-h-[94vh] flex items-center justify-center bg-[#0D0F13] text-[#F4F1E8] px-3.5 sm:px-5 lg:px-16 xl:px-24 overflow-hidden">
         
         {/* Full-bleed Auto-playing Muted Video of Financial Markets & Reflections */}
         <HeroVideoBackground 
@@ -57,7 +57,7 @@ export function AboutPage({ onNavigatePage, onNavigateToAuth }: AboutPageProps) 
         {/* 3D Interactive Finance Universe Motion Graphics (Bank Cards, Currencies, Market Screens) */}
         <About3DFinanceUniverse darkMode={true} />
 
-        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-8 py-28 sm:py-36 pointer-events-none">
+        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-4 py-28 sm:py-36 pointer-events-none">
           
           <motion.h1 
             initial={{ opacity: 0, y: 24 }}
@@ -84,8 +84,8 @@ export function AboutPage({ onNavigatePage, onNavigateToAuth }: AboutPageProps) 
       </section>
 
       {/* 2. MISSION STATEMENT */}
-      <section className="py-24 sm:py-32 bg-[#F5F5F7] border-y border-black/[0.06] px-6 sm:px-12 lg:px-16 xl:px-24 text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
+      <section className="py-8 sm:py-32 bg-[#F5F5F7] px-3.5 sm:px-5 lg:px-16 xl:px-24 text-center">
+        <div className="max-w-4xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D9A94E]">OUR CORE PURPOSE</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0D0F13] leading-tight tracking-tight">
             "To remove friction, FX barriers, and access limits for every institutional and private allocator building wealth in Africa."
@@ -94,15 +94,15 @@ export function AboutPage({ onNavigatePage, onNavigateToAuth }: AboutPageProps) 
       </section>
 
       {/* 3. STORY TIMELINE */}
-      <section className="py-28 lg:py-36 px-6 sm:px-12 lg:px-16 xl:px-24 max-w-7xl mx-auto space-y-16">
+      <section className="py-28 lg:py-36 px-3.5 sm:px-5 lg:px-16 xl:px-24 max-w-6xl mx-auto space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#34A87E]">OUR MILESTONES</span>
           <h2 className="text-3xl lg:text-5xl font-extrabold text-[#0D0F13] tracking-tight">From vision to $42B+ AUM infrastructure.</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {TIMELINE_EVENTS.map((event, idx) => (
-            <div key={idx} className="bg-[#F5F5F7] rounded-3xl p-8 border border-black/[0.06] space-y-4 relative">
+            <div key={idx} className="bg-[#F5F5F7] rounded-xl p-4 space-y-4 relative">
               <span className="text-3xl font-extrabold font-mono text-[#D9A94E] block">{event.year}</span>
               <h3 className="text-xl font-bold text-[#0D0F13] tracking-tight">{event.title}</h3>
               <p className="text-sm text-[#6E737B] leading-relaxed">{event.desc}</p>
@@ -115,24 +115,24 @@ export function AboutPage({ onNavigatePage, onNavigateToAuth }: AboutPageProps) 
       <AfriQuantXInvestmentBankSection onNavigateToAuth={onNavigateToAuth} />
 
       {/* 4. LEADERSHIP */}
-      <section className="py-28 lg:py-36 bg-[#0D0F13] text-[#F4F1E8] border-y border-white/[0.08] px-6 sm:px-12 lg:px-16 xl:px-24">
-        <div className="max-w-7xl mx-auto space-y-16">
+      <section className="py-28 lg:py-36 bg-[#0D0F13] text-[#F4F1E8] px-3.5 sm:px-5 lg:px-16 xl:px-24">
+        <div className="max-w-6xl mx-auto space-y-5">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#D9A94E]">EXECUTIVE LEADERSHIP</span>
             <h2 className="text-3xl lg:text-5xl font-extrabold text-[#F4F1E8] tracking-tight">Backed by industry pioneers.</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {LEADERSHIP.map((leader, idx) => (
-              <div key={idx} className="bg-[#14171F] rounded-3xl p-8 border border-white/[0.08] space-y-5 hover:border-[#D9A94E]/50 transition-all">
-                <div className="w-14 h-14 rounded-2xl bg-[#191D27] border border-white/[0.12] flex items-center justify-center font-mono font-bold text-lg text-[#F4F1E8]">
+              <div key={idx} className="bg-[#14171F] rounded-xl p-4 space-y-2.5 transition-all">
+                <div className="w-14 h-14 rounded-lg bg-[#191D27] flex items-center justify-center font-mono font-bold text-lg text-[#F4F1E8]">
                   {leader.initials}
                 </div>
                 <div>
                   <h3 className="text-2xl font-bold text-[#F4F1E8] tracking-tight">{leader.name}</h3>
                   <span className="text-xs font-mono text-[#34A87E] font-bold block mt-1">{leader.role}</span>
                 </div>
-                <p className="text-sm text-[#F4F1E8]/60 leading-relaxed pt-3 border-t border-white/[0.06]">{leader.bio}</p>
+                <p className="text-sm text-[#F4F1E8]/60 leading-relaxed pt-3">{leader.bio}</p>
               </div>
             ))}
           </div>
@@ -140,22 +140,18 @@ export function AboutPage({ onNavigatePage, onNavigateToAuth }: AboutPageProps) 
       </section>
 
       {/* 5. INTERACTIVE OFFICE LOCATIONS */}
-      <section className="py-28 lg:py-36 px-6 sm:px-12 lg:px-16 xl:px-24 max-w-7xl mx-auto space-y-12">
+      <section className="py-28 lg:py-36 px-3.5 sm:px-5 lg:px-16 xl:px-24 max-w-6xl mx-auto space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#6E737B]">GLOBAL PRESENCE</span>
           <h2 className="text-3xl lg:text-5xl font-extrabold text-[#0D0F13] tracking-tight">Our Regional Hubs.</h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {OFFICES.map((off, idx) => (
             <div 
               key={idx}
               onClick={() => setActiveOffice(idx)}
-              className={`p-7 rounded-3xl border cursor-pointer transition-all space-y-3 ${
-                activeOffice === idx 
-                  ? 'bg-[#0D0F13] text-[#F4F1E8] border-[#0D0F13] shadow-xl' 
-                  : 'bg-[#F5F5F7] text-[#0D0F13] border-black/[0.06] hover:border-black/[0.15]'
-              }`}
+              className={`p-3.5 rounded-xl cursor-pointer transition-all space-y-3 bg-white/[0.03] ${ activeOffice === idx ? 'bg-[#0D0F13] text-[#F4F1E8] border-[#0D0F13] shadow-xl' : 'bg-[#F5F5F7] text-[#0D0F13] border-black/[0.06] hover:border-black/[0.15]' }`}
             >
               <MapPin className={`w-5 h-5 ${activeOffice === idx ? 'text-[#D9A94E]' : 'text-[#34A87E]'}`} />
               <h4 className="font-bold text-xl tracking-tight">{off.city}</h4>

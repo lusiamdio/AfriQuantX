@@ -1,20 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Search, ArrowRight, LayoutDashboard, Briefcase, Store, BarChart3, Rocket, Cpu, Calculator, Scale, FileText } from 'lucide-react';
+import {
+  Search,
+  ArrowRight,
+  LayoutDashboard,
+  Briefcase,
+  Store,
+  BarChart3,
+  Rocket,
+  Cpu,
+  Calculator,
+  Scale,
+  FileText,
+  Layers,
+  ShieldCheck,
+  Building2,
+} from 'lucide-react';
+import { canRoleAccessTab, type WorkspaceRole } from '../lib/roleAccess';
 
 interface CommandPaletteProps {
   isOpen: boolean;
   onClose: () => void;
   onNavigate: (tab: string) => void;
+  userRole?: WorkspaceRole;
 }
 
-export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPaletteProps) {
+export function CommandPalette({ isOpen, onClose, onNavigate, userRole = 'investor' }: CommandPaletteProps) {
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => inputRef.current?.focus(), 100);
+      setTimeout(() => inputRef.current?.focus(), 80);
     } else {
       setQuery('');
     }
@@ -31,18 +48,24 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
   }, [isOpen, onClose]);
 
   const actions = [
-    { id: 'dashboard', label: 'Go to Dashboard', icon: LayoutDashboard },
-    { id: 'tax-compliance', label: 'Tax & Compliance Hub (TaxBit Audit Reports)', icon: Scale },
-    { id: 'reports', label: 'Reports & Audits (ReportViewer)', icon: FileText },
-    { id: 'ipo-launch', label: 'IPO Launch & Bookbuilding Hub', icon: Rocket },
-    { id: 'algo-trading', label: 'Algorithmic Execution Desk (TWAP/VWAP)', icon: Cpu },
-    { id: 'valuation-workbench', label: 'DCF & LBO Valuation Workbench', icon: Calculator },
-    { id: 'portfolio', label: 'View Portfolio', icon: Briefcase },
-    { id: 'marketplace', label: 'Explore Markets', icon: Store },
-    { id: 'index', label: 'Market Index', icon: BarChart3 },
+    { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
+    { id:'marketplace', label:'RWA Marketplace & Offerings', icon: Store },
+    { id: 'index', label: 'AQX RWA100 Benchmark Index', icon: BarChart3 },
+    { id: 'portfolio', label: 'Portfolio & Asset Allocations', icon: Briefcase },
+    { id: 'market-secondary', label: 'Controlled Secondary Market', icon: ArrowRight },
+    { id: 'algo-trading', label: 'Algorithmic Execution Desk', icon: Cpu },
+    { id: 'issuer-dashboard', label: 'Issuer & Fund Console', icon: Building2 },
+    { id: 'tokenisation-hub', label: 'Asset Tokenisation & Passports', icon: Layers },
+    { id: 'ipo-launch', label: 'Capital Raise & IPO Bookbuilding', icon: Rocket },
+    { id: 'kyc-kyb', label: 'KYC / KYB Verification Center', icon: ShieldCheck },
+    { id: 'valuation-workbench', label: 'DCF & Valuation Workbench', icon: Calculator },
+    { id: 'tax-compliance', label: 'Tax & Compliance Hub', icon: Scale },
+    { id: 'reports', label: 'Reports & Audit Statements', icon: FileText },
+    { id: 'governance-audit', label: 'Governance & Immutable Audit', icon: ShieldCheck },
   ];
 
-  const filteredActions = actions.filter(action => 
+  const roleAllowedActions = actions.filter((action) => canRoleAccessTab(userRole, action.id));
+  const filteredActions = roleAllowedActions.filter((action) =>
     action.label.toLowerCase().includes(query.toLowerCase())
   );
 
@@ -50,41 +73,40 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[20vh] px-4">
-        <motion.div 
+      <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[18vh] px-4">
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-[#05070D]/80 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/75 backdrop-blur-sm"
           onClick={onClose}
         />
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: -20 }}
+          initial={{ opacity: 0, scale: 0.96, y: -12 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: -20 }}
-          transition={{ type: 'spring', bounce: 0, duration: 0.3 }}
-          className="relative w-full max-w-2xl bg-[#0A0F1C] border border-white/[0.1] rounded-2xl shadow-[0_0_50px_rgba(0,102,255,0.1)] overflow-hidden"
+          exit={{ opacity: 0, scale: 0.96, y: -12 }}
+          transition={{ duration: 0.16 }}
+          className="relative w-full max-w-xl bg-[#0D111A] rounded-lg shadow-2xl overflow-hidden"
         >
-          <div className="flex items-center px-4 py-4 border-b border-white/[0.05]">
-            <Search className="w-5 h-5 text-zinc-400 mr-3" />
+          <div className="flex items-center px-4 py-3.5 bg-white/[0.03]">
+            <Search className="w-4 h-4 text-slate-400 mr-3 shrink-0"/>
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Type a command or search..."
-              className="flex-1 bg-transparent border-none outline-none text-white text-lg placeholder:text-zinc-600 font-sans"
+              placeholder="Jump to workspace section..."
+              className="flex-1 bg-transparent outline-none text-white text-sm placeholder:text-slate-500"
             />
-            <div className="flex items-center gap-1">
-              <kbd className="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-zinc-400 font-bold">ESC</kbd>
-            </div>
+            <kbd className="px-2 py-0.5 bg-white/5 rounded text-[10px] font-mono text-slate-400">
+              ESC
+            </kbd>
           </div>
-          
-          <div className="max-h-[60vh] overflow-y-auto p-2">
+
+          <div className="max-h-[55vh] overflow-y-auto p-2">
             {filteredActions.length > 0 ? (
-              <div className="space-y-1">
-                <div className="px-3 py-2 text-xs font-bold text-zinc-500 uppercase tracking-wider">Suggestions</div>
-                {filteredActions.map((action, index) => {
+              <div className="space-y-0.5">
+                {filteredActions.map((action) => {
                   const Icon = action.icon;
                   return (
                     <button
@@ -93,22 +115,24 @@ export function CommandPalette({ isOpen, onClose, onNavigate }: CommandPalettePr
                         onNavigate(action.id);
                         onClose();
                       }}
-                      className="w-full flex items-center justify-between px-3 py-3 rounded-xl hover:bg-white/5 text-left group transition-colors"
+                      className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-white/[0.06] text-left group transition-colors cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-[#0066FF]/20 group-hover:text-[#0066FF] transition-colors">
-                          <Icon className="w-4 h-4" />
+                        <div className="w-8 h-8 rounded-lg bg-[#141A26] flex items-center justify-center text-slate-300 group-hover:text-emerald-400 transition-colors">
+                          <Icon className="w-4 h-4"/>
                         </div>
-                        <span className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">{action.label}</span>
+                        <span className="text-sm font-medium text-slate-200 group-hover:text-white transition-colors">
+                          {action.label}
+                        </span>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-zinc-600 opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0" />
+                      <ArrowRight className="w-4 h-4 text-slate-500 opacity-0 group-hover:opacity-100 transition-opacity"/>
                     </button>
                   );
                 })}
               </div>
             ) : (
-              <div className="py-12 text-center text-zinc-500 text-sm">
-                No results found for "{query}"
+              <div className="py-4 text-center text-slate-400 text-sm">
+                No matching workspace views for &ldquo;{query}&rdquo;
               </div>
             )}
           </div>

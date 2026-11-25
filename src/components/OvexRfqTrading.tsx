@@ -107,17 +107,17 @@ export function OvexRfqTrading() {
   const currentPairStat = altStats[selectedMarket.toUpperCase()];
 
   return (
-    <div id="ovex-rfq-terminal" className="bg-black border border-[#FFFFFF]/30 rounded-2xl p-6 text-white space-y-6">
+    <div id="ovex-rfq-terminal" className="bg-black rounded-lg p-3.5 text-white space-y-3">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#FFFFFF]/20 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#FFFFFF]/10 border border-[#FFFFFF]/40 flex items-center justify-center text-[#FFFFFF]">
-            <Landmark className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-xl bg-[#FFFFFF]/10 flex items-center justify-center text-[#FFFFFF]">
+            <Landmark className="w-5 h-5"/>
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl font-bold text-white tracking-tight">OVEX Prime & AltcoinTrader Institutional Mesh</h2>
-              <span className="px-2 py-0.5 rounded-full bg-[#FFFFFF]/10 border border-[#FFFFFF]/40 text-[#FFFFFF] text-[10px] font-mono uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded-full bg-[#FFFFFF]/10 text-[#FFFFFF] text-[10px] font-mono uppercase tracking-wider">
                 Deep OTC & RFQ
               </span>
             </div>
@@ -136,15 +136,11 @@ export function OvexRfqTrading() {
               <button
                 key={m.id}
                 onClick={() => { setSelectedMarket(m.id); setQuote(null); }}
-                className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all flex items-center gap-2 shrink-0 border ${
-                  isSelected 
-                    ? 'bg-[#FFFFFF] text-black font-bold border-[#FFFFFF]' 
-                    : 'bg-black/60 text-zinc-300 border-white/10 hover:border-[#FFFFFF]/40'
-                }`}
+                className={`px-3 py-1.5 rounded-xl text-xs font-mono transition-all flex items-center gap-2 shrink-0 bg-white/[0.03] ${ isSelected ?'bg-[#FFFFFF] text-black font-bold' : 'bg-black/60 text-zinc-300'}`}
               >
                 <span>{m.base}/ZAR</span>
                 {stat && (
-                  <span className={isSelected ? 'text-black' : 'text-[#FFFFFF]'}>
+                  <span className={isSelected ?'text-black' : 'text-[#FFFFFF]'}>
                     R {parseFloat(stat.Price).toLocaleString('en-ZA', { maximumFractionDigits: 2 })}
                   </span>
                 )}
@@ -155,49 +151,37 @@ export function OvexRfqTrading() {
       </div>
 
       {/* Navigation Sub-Tabs */}
-      <div className="flex gap-2 border-b border-white/10 pb-3">
+      <div className="flex gap-2 pb-3">
         <button
           onClick={() => setActiveTab('rfq')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 ${
-            activeTab === 'rfq'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 ${ activeTab ==='rfq'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <Zap className="w-4 h-4" />
+          <Zap className="w-4 h-4"/>
           Institutional RFQ (Guaranteed Quote)
         </button>
         <button
           onClick={() => setActiveTab('orderbook')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 ${
-            activeTab === 'orderbook'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 ${ activeTab ==='orderbook'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <Layers className="w-4 h-4" />
+          <Layers className="w-4 h-4"/>
           AltcoinTrader Orderbook Depth
         </button>
         <button
           onClick={() => setActiveTab('history')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 ${
-            activeTab === 'history'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 ${ activeTab ==='history'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <Clock className="w-4 h-4" />
+          <Clock className="w-4 h-4"/>
           OTC Settlements History
         </button>
       </div>
 
       {/* Content Area */}
       {activeTab === 'rfq' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
           {/* RFQ Parameters Configurator */}
-          <div className="lg:col-span-7 space-y-4 bg-white/[0.02] border border-white/10 rounded-xl p-5">
+          <div className="lg:col-span-7 space-y-4 bg-white/[0.02] rounded-xl p-3">
             <h3 className="text-sm font-bold text-[#FFFFFF] uppercase tracking-wider flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4" />
+              <ShieldCheck className="w-4 h-4"/>
               Configure Institutional OTC Request
             </h3>
 
@@ -205,21 +189,13 @@ export function OvexRfqTrading() {
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => { setSide('buy'); setQuote(null); }}
-                className={`py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border ${
-                  side === 'buy'
-                    ? 'bg-[#FFFFFF] text-black border-[#FFFFFF] shadow-[0_0_15px_rgba(212,175,55,0.3)]'
-                    : 'bg-black text-zinc-400 border-white/10 hover:border-white/20'
-                }`}
+                className={`py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all bg-white/[0.03] ${ side ==='buy'?'bg-[#FFFFFF] text-black shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'bg-black text-zinc-400'}`}
               >
                 Buy {SUPPORTED_MARKETS.find(m => m.id === selectedMarket)?.base} (ZAR In)
               </button>
               <button
                 onClick={() => { setSide('sell'); setQuote(null); }}
-                className={`py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all border ${
-                  side === 'sell'
-                    ? 'bg-[#FFFFFF] text-black border-[#FFFFFF] shadow-[0_0_15px_rgba(212,175,55,0.3)]'
-                    : 'bg-black text-zinc-400 border-white/10 hover:border-white/20'
-                }`}
+                className={`py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-all bg-white/[0.03] ${ side ==='sell'?'bg-[#FFFFFF] text-black shadow-[0_0_15px_rgba(212,175,55,0.3)]' : 'bg-black text-zinc-400'}`}
               >
                 Sell {SUPPORTED_MARKETS.find(m => m.id === selectedMarket)?.base} (ZAR Out)
               </button>
@@ -237,7 +213,7 @@ export function OvexRfqTrading() {
                   value={amount}
                   onChange={(e) => { setAmount(e.target.value); setQuote(null); }}
                   placeholder="250000"
-                  className="w-full bg-black border border-white/15 rounded-xl px-4 py-3 text-white font-mono text-lg focus:outline-none focus:border-[#FFFFFF] transition-colors"
+                  className="w-full bg-black rounded-xl px-4 py-3 text-white font-mono text-lg focus:outline-none transition-colors"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[#FFFFFF]">
                   {side === 'buy' ? 'ZAR' : SUPPORTED_MARKETS.find(m => m.id === selectedMarket)?.base}
@@ -249,7 +225,7 @@ export function OvexRfqTrading() {
                   <button
                     key={val}
                     onClick={() => { setAmount(val); setQuote(null); }}
-                    className="px-2.5 py-1 rounded-lg bg-black border border-white/10 text-zinc-300 hover:border-[#FFFFFF]/50 text-[11px] font-mono transition-colors"
+                    className="px-2.5 py-1 rounded-lg bg-black text-zinc-300 text-[11px] font-mono transition-colors"
                   >
                     R {(parseInt(val) / 1000).toFixed(0)}k
                   </button>
@@ -258,9 +234,9 @@ export function OvexRfqTrading() {
             </div>
 
             {/* Prefunded & Execution Option */}
-            <div className="p-3 bg-black/60 border border-white/10 rounded-xl flex items-center justify-between text-xs">
+            <div className="p-3 bg-black/60 rounded-xl flex items-center justify-between text-xs">
               <div className="flex items-center gap-2">
-                <Lock className="w-4 h-4 text-[#FFFFFF]" />
+                <Lock className="w-4 h-4 text-[#FFFFFF]"/>
                 <span className="text-zinc-300">Prefunded Settlement Account</span>
               </div>
               <label className="flex items-center gap-2 cursor-pointer">
@@ -287,7 +263,7 @@ export function OvexRfqTrading() {
                 </>
               ) : (
                 <>
-                  <RefreshCw className="w-4 h-4" />
+                  <RefreshCw className="w-4 h-4"/>
                   Get Guaranteed 15s RFQ Price Quote
                 </>
               )}
@@ -295,15 +271,15 @@ export function OvexRfqTrading() {
           </div>
 
           {/* Guaranteed Quote & Lock-in Card */}
-          <div className="lg:col-span-5 flex flex-col justify-between bg-white/[0.02] border border-white/10 rounded-xl p-5 relative overflow-hidden">
+          <div className="lg:col-span-5 flex flex-col justify-between bg-white/[0.02] rounded-xl p-3 relative overflow-hidden">
             <div>
-              <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+              <div className="flex items-center justify-between pb-3 mb-4">
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#FFFFFF]" />
+                  <Clock className="w-4 h-4 text-[#FFFFFF]"/>
                   Live Quote Terminal
                 </h3>
                 {quote && quoteCountdown > 0 && (
-                  <span className="px-2.5 py-1 rounded-full bg-[#FFFFFF]/20 border border-[#FFFFFF] text-[#FFFFFF] text-xs font-mono font-bold animate-pulse">
+                  <span className="px-2.5 py-1 rounded-full bg-[#FFFFFF]/20 text-[#FFFFFF] text-xs font-mono font-bold animate-pulse">
                     Locks in: {quoteCountdown}s
                   </span>
                 )}
@@ -311,14 +287,14 @@ export function OvexRfqTrading() {
 
               {quote ? (
                 <div className="space-y-4">
-                  <div className="p-4 bg-black border border-[#FFFFFF]/40 rounded-xl space-y-2">
+                  <div className="p-4 bg-black rounded-xl space-y-2">
                     <div className="text-[11px] text-zinc-400 uppercase tracking-wider font-semibold">
                       Guaranteed Rate Lock
                     </div>
                     <div className="text-xl font-mono font-bold text-[#FFFFFF]">
                       {quote.rate_display}
                     </div>
-                    <div className="text-xs text-zinc-300 flex justify-between pt-2 border-t border-white/10">
+                    <div className="text-xs text-zinc-300 flex justify-between pt-2">
                       <span>Receiving:</span>
                       <span className="text-white font-mono font-bold">
                         {quote.to_amount} {side === 'buy' ? SUPPORTED_MARKETS.find(m => m.id === selectedMarket)?.base : 'ZAR'}
@@ -330,7 +306,7 @@ export function OvexRfqTrading() {
                     </div>
                   </div>
 
-                  <div className="text-[11px] text-zinc-400 space-y-1 bg-black/40 p-3 rounded-lg border border-white/5 font-mono">
+                  <div className="text-[11px] text-zinc-400 space-y-1 bg-black/40 p-3 rounded-lg font-mono">
                     <div className="flex justify-between">
                       <span>Quote Token:</span>
                       <span className="text-[#FFFFFF] truncate max-w-[160px]">{quote.quote_token}</span>
@@ -354,21 +330,21 @@ export function OvexRfqTrading() {
                         </>
                       ) : (
                         <>
-                          <CheckCircle2 className="w-4 h-4" />
+                          <CheckCircle2 className="w-4 h-4"/>
                           Accept & Execute OTC Block (Lock Rate)
                         </>
                       )}
                     </button>
                   ) : (
-                    <div className="p-3 bg-red-950/30 border border-red-500/30 rounded-xl text-center text-xs text-red-300">
+                    <div className="p-3 bg-red-950/30 rounded-xl text-center text-xs text-red-300">
                       Quote expired. Request a new quote to lock in latest price.
                     </div>
                   )}
                 </div>
               ) : executionReceipt ? (
-                <div className="p-4 bg-black border border-[#FFFFFF] rounded-xl space-y-3">
+                <div className="p-4 bg-black rounded-xl space-y-3">
                   <div className="flex items-center gap-2 text-[#FFFFFF] font-bold text-sm">
-                    <CheckCircle2 className="w-5 h-5 text-[#FFFFFF]" />
+                    <CheckCircle2 className="w-5 h-5 text-[#FFFFFF]"/>
                     Trade Settled Instantly
                   </div>
                   <p className="text-xs text-zinc-300">{executionReceipt.message}</p>
@@ -378,9 +354,9 @@ export function OvexRfqTrading() {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center py-10 text-center space-y-3">
-                  <div className="w-12 h-12 rounded-full bg-white/[0.02] border border-white/10 flex items-center justify-center text-zinc-500">
-                    <Zap className="w-6 h-6 text-[#FFFFFF]" />
+                <div className="flex flex-col items-center justify-center py-4 text-center space-y-3">
+                  <div className="w-12 h-12 rounded-full bg-white/[0.02] flex items-center justify-center text-zinc-500">
+                    <Zap className="w-6 h-6 text-[#FFFFFF]"/>
                   </div>
                   <p className="text-xs text-zinc-400 max-w-xs">
                     Click <span className="text-[#FFFFFF] font-semibold">"Get Guaranteed 15s RFQ Price Quote"</span> to stream institutional prices direct from OVEX liquidity mesh.
@@ -389,9 +365,9 @@ export function OvexRfqTrading() {
               )}
             </div>
 
-            <div className="pt-4 border-t border-white/10 flex items-center justify-between text-[11px] text-zinc-400">
+            <div className="pt-4 flex items-center justify-between text-[11px] text-zinc-400">
               <span className="flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-ping" />
+                <span className="w-2 h-2 rounded-full bg-[#FFFFFF] animate-ping"/>
                 OVEX OTC API v2 Active
               </span>
               <span className="font-mono text-[#FFFFFF]">Zero Slippage Lock</span>
@@ -410,8 +386,8 @@ export function OvexRfqTrading() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Bids (Buy Orders) */}
-            <div className="bg-white/[0.02] border border-white/10 rounded-xl p-4 space-y-2">
-              <div className="text-xs font-bold text-[#FFFFFF] uppercase tracking-wider flex justify-between border-b border-white/10 pb-2">
+            <div className="bg-white/[0.02] rounded-xl p-4 space-y-2">
+              <div className="text-xs font-bold text-[#FFFFFF] uppercase tracking-wider flex justify-between pb-2">
                 <span>Bid Price (ZAR)</span>
                 <span>Volume</span>
                 <span>Total (ZAR)</span>
@@ -428,8 +404,8 @@ export function OvexRfqTrading() {
             </div>
 
             {/* Asks (Sell Orders) */}
-            <div className="bg-white/[0.02] border border-white/10 rounded-xl p-4 space-y-2">
-              <div className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex justify-between border-b border-white/10 pb-2">
+            <div className="bg-white/[0.02] rounded-xl p-4 space-y-2">
+              <div className="text-xs font-bold text-zinc-300 uppercase tracking-wider flex justify-between pb-2">
                 <span>Ask Price (ZAR)</span>
                 <span>Volume</span>
                 <span>Total (ZAR)</span>
@@ -450,7 +426,7 @@ export function OvexRfqTrading() {
 
       {/* OTC Settlements History */}
       {activeTab === 'history' && (
-        <div className="bg-white/[0.02] border border-white/10 rounded-xl p-4 space-y-3">
+        <div className="bg-white/[0.02] rounded-xl p-4 space-y-3">
           <div className="flex justify-between items-center text-xs text-zinc-400">
             <span>OVEX Institutional Broker OTC Settlement Logs</span>
             <span className="font-mono text-[#FFFFFF]">Total Settled: {otcHistory.length}</span>
@@ -459,7 +435,7 @@ export function OvexRfqTrading() {
           <div className="overflow-x-auto">
             <table className="w-full text-xs text-left">
               <thead>
-                <tr className="text-zinc-400 border-b border-white/10 pb-2 font-mono uppercase">
+                <tr className="text-zinc-400 pb-2 font-mono uppercase">
                   <th className="py-2">Trade ID</th>
                   <th className="py-2">Market</th>
                   <th className="py-2">Side</th>
@@ -469,15 +445,13 @@ export function OvexRfqTrading() {
                   <th className="py-2">Settlement</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 font-mono">
+              <tbody className="font-mono">
                 {otcHistory.map((trade: any) => (
                   <tr key={trade.id} className="hover:bg-white/[0.02]">
                     <td className="py-2.5 text-[#FFFFFF] font-bold">{trade.id}</td>
                     <td className="py-2.5 text-white font-bold">{trade.market}</td>
                     <td className="py-2.5">
-                      <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${
-                        trade.side === 'buy' ? 'bg-[#FFFFFF]/20 text-[#FFFFFF]' : 'bg-white/10 text-white'
-                      }`}>
+                      <span className={`px-2 py-0.5 rounded text-[10px] uppercase font-bold ${ trade.side ==='buy'?'bg-[#FFFFFF]/20 text-[#FFFFFF]' : 'bg-white/10 text-white'}`}>
                         {trade.side}
                       </span>
                     </td>
@@ -485,7 +459,7 @@ export function OvexRfqTrading() {
                     <td className="py-2.5 text-zinc-300">{trade.volume}</td>
                     <td className="py-2.5 text-white font-bold">{trade.total}</td>
                     <td className="py-2.5">
-                      <span className="px-2 py-0.5 rounded bg-emerald-950/50 border border-emerald-500/30 text-emerald-400 text-[10px]">
+                      <span className="px-2 py-0.5 rounded bg-emerald-950/50 text-emerald-400 text-[10px]">
                         {trade.state}
                       </span>
                     </td>

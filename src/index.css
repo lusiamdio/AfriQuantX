@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
+@custom-variant dark (&:where(:not(.light-mode), :not(.light-mode) *));
 
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
 
-  --color-revolut-black: #0A0A0A;
-  --color-revolut-ink: #191C1F;
+  --color-revolut-black: #07090E;
+  --color-revolut-ink: #0D111A;
   --color-revolut-grey: #F5F5F7;
   --color-revolut-darkgrey: #E5E5EA;
   --color-revolut-blue: #0666EB;
@@ -35,8 +36,48 @@
 
 @layer base {
   body {
-    @apply bg-black text-white antialiased selection:bg-white selection:text-black;
+    @apply bg-[#07090E] text-slate-100 antialiased selection:bg-emerald-400/30 selection:text-white;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid rgba(52, 211, 153, 0.7);
+    outline-offset: 2px;
+  }
+
+  /* Enforce zero borderlines platform-wide (preserve CSS border-based spin loaders) */
+  *:not(.animate-spin),
+  *:not(.animate-spin)::before,
+  *:not(.animate-spin)::after {
+    border-width: 0 !important;
+    border-style: none !important;
+  }
+
+  hr {
+    display: none;
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 0.4rem 0.65rem;
+    font-size: 0.75rem;
+    line-height: 1.15rem;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.015);
   }
 }
 
@@ -239,7 +280,7 @@
   width: 280px;
   height: 200px;
   background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   border-radius: 22px 22px 60px 60px;
   z-index: 5;
   box-shadow:
@@ -285,7 +326,7 @@
   height: 24px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
 }
 
 .wallet .card-bottom {
@@ -677,6 +718,10 @@ html.light-mode .divide-white\/\[0\.04\] {
 html.light-mode header,
 html.light-mode aside {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+html.light-mode tbody tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.025);
 }
 
 html.light-mode input,

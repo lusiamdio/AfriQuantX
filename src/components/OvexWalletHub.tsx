@@ -157,17 +157,17 @@ export function OvexWalletHub() {
   };
 
   return (
-    <div id="ovex-wallet-mesh" className="bg-black border border-[#FFFFFF]/30 rounded-2xl p-6 text-white space-y-6">
+    <div id="ovex-wallet-mesh" className="bg-black rounded-lg p-3.5 text-white space-y-3">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#FFFFFF]/20 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#FFFFFF]/10 border border-[#FFFFFF]/40 flex items-center justify-center text-[#FFFFFF]">
-            <Wallet className="w-5 h-5" />
+          <div className="w-10 h-10 rounded-xl bg-[#FFFFFF]/10 flex items-center justify-center text-[#FFFFFF]">
+            <Wallet className="w-5 h-5"/>
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-xl font-bold text-white tracking-tight">OVEX Prime Custody & CARF Compliance Mesh</h2>
-              <span className="px-2 py-0.5 rounded-full bg-[#FFFFFF]/10 border border-[#FFFFFF]/40 text-[#FFFFFF] text-[10px] font-mono uppercase">
+              <span className="px-2 py-0.5 rounded-full bg-[#FFFFFF]/10 text-[#FFFFFF] text-[10px] font-mono uppercase">
                 Tier 3 Institutional
               </span>
             </div>
@@ -180,82 +180,62 @@ export function OvexWalletHub() {
         {pendingCarf.length > 0 && (
           <button
             onClick={() => setActiveTab('carf')}
-            className="px-3 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[#FFFFFF] text-xs font-mono font-bold flex items-center gap-2 animate-pulse"
+            className="px-3 py-1.5 rounded-xl bg-amber-500/10 text-[#FFFFFF] text-xs font-mono font-bold flex items-center gap-2 animate-pulse"
           >
-            <AlertTriangle className="w-4 h-4 text-[#FFFFFF]" />
+            <AlertTriangle className="w-4 h-4 text-[#FFFFFF]"/>
             {pendingCarf.length} Pending CARF Declarations
           </button>
         )}
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-white/10 pb-3 overflow-x-auto">
+      <div className="flex gap-2 pb-3 overflow-x-auto">
         <button
           onClick={() => setActiveTab('deposit')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${
-            activeTab === 'deposit'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${ activeTab ==='deposit'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <ArrowDownToLine className="w-4 h-4" />
+          <ArrowDownToLine className="w-4 h-4"/>
           Deposit & Custody Address
         </button>
         <button
           onClick={() => setActiveTab('withdraw')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${
-            activeTab === 'withdraw'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${ activeTab ==='withdraw'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <ArrowUpFromLine className="w-4 h-4" />
+          <ArrowUpFromLine className="w-4 h-4"/>
           Instant Withdrawal (RTC EFT)
         </button>
         <button
           onClick={() => setActiveTab('carf')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${
-            activeTab === 'carf'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${ activeTab ==='carf'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <ShieldCheck className="w-4 h-4" />
+          <ShieldCheck className="w-4 h-4"/>
           CARF Regulatory Declarations
           {pendingCarf.length > 0 && (
-            <span className="w-2 h-2 rounded-full bg-[#FFFFFF] ml-1 animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-[#FFFFFF] ml-1 animate-ping"/>
           )}
         </button>
         <button
           onClick={() => setActiveTab('offshore')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${
-            activeTab === 'offshore'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${ activeTab ==='offshore'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <Globe className="w-4 h-4" />
+          <Globe className="w-4 h-4"/>
           SARB Offshore Allowances
         </button>
         <button
           onClick={() => setActiveTab('fees')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${
-            activeTab === 'fees'
-              ? 'bg-[#FFFFFF] text-black font-extrabold'
-              : 'bg-black text-zinc-400 hover:text-white border border-white/10'
-          }`}
+          className={`px-4 py-2 rounded-xl text-xs font-bold transition-colors flex items-center gap-2 shrink-0 ${ activeTab ==='fees'?'bg-[#FFFFFF] text-black font-extrabold' : 'bg-black text-zinc-400 hover:text-white '}`}
         >
-          <Layers className="w-4 h-4" />
+          <Layers className="w-4 h-4"/>
           Fee Schedule & Limits
         </button>
       </div>
 
       {/* Tab: Deposit Address */}
       {activeTab === 'deposit' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] border border-white/10 rounded-xl p-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] rounded-xl p-3">
             <h3 className="text-sm font-bold text-[#FFFFFF] uppercase tracking-wider flex items-center gap-2">
-              <ArrowDownToLine className="w-4 h-4" />
+              <ArrowDownToLine className="w-4 h-4"/>
               Generate Multi-Chain Deposit Address
             </h3>
 
@@ -274,11 +254,7 @@ export function OvexWalletHub() {
                   <button
                     key={c.id}
                     onClick={() => { setSelectedCurrency(c.id); loadDepositAddress(c.id); }}
-                    className={`p-2.5 rounded-xl text-xs font-mono transition-all border text-center ${
-                      selectedCurrency === c.id
-                        ? 'bg-[#FFFFFF] text-black font-bold border-[#FFFFFF]'
-                        : 'bg-black text-zinc-300 border-white/10 hover:border-white/20'
-                    }`}
+                    className={`p-2.5 rounded-xl text-xs font-mono transition-all text-center bg-white/[0.03] ${ selectedCurrency === c.id ?'bg-[#FFFFFF] text-black font-bold' : 'bg-black text-zinc-300'}`}
                   >
                     {c.label}
                   </button>
@@ -288,31 +264,31 @@ export function OvexWalletHub() {
 
             {/* Address Display Box */}
             {loadingDeposit ? (
-              <div className="py-10 flex flex-col items-center justify-center gap-2 text-zinc-400 text-xs">
+              <div className="py-4 flex flex-col items-center justify-center gap-2 text-zinc-400 text-xs">
                 <RefreshCw className="w-5 h-5 animate-spin text-[#FFFFFF]" />
                 Generating dedicated institutional escrow address from OVEX...
               </div>
             ) : depositData ? (
               <div className="space-y-4 pt-2">
-                <div className="p-4 bg-black border border-[#FFFFFF]/40 rounded-xl space-y-3">
+                <div className="p-4 bg-black rounded-xl space-y-3">
                   <div className="flex justify-between items-center text-xs text-zinc-400">
                     <span>Network: <strong className="text-white font-mono">{depositData.network}</strong></span>
                     <span className="text-[#FFFFFF] font-mono">Confirmations: {depositData.confirmations_required}</span>
                   </div>
 
-                  <div className="p-3 bg-white/[0.03] rounded-lg border border-white/10 flex items-center justify-between gap-3">
+                  <div className="p-3 bg-white/[0.03] rounded-lg flex items-center justify-between gap-3">
                     <span className="font-mono text-xs text-white break-all">{depositData.address}</span>
                     <button
                       onClick={() => handleCopy(depositData.address)}
                       className="p-2 rounded-lg bg-[#FFFFFF]/10 hover:bg-[#FFFFFF]/20 text-[#FFFFFF] shrink-0 transition-colors"
                       title="Copy Address"
                     >
-                      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      {copied ? <Check className="w-4 h-4"/> : <Copy className="w-4 h-4"/>}
                     </button>
                   </div>
 
                   {depositData.memo && (
-                    <div className="p-3 bg-white/[0.02] rounded-lg border border-white/5 flex items-center justify-between text-xs font-mono">
+                    <div className="p-3 bg-white/[0.02] rounded-lg flex items-center justify-between text-xs font-mono">
                       <span className="text-zinc-400">Required Memo/Tag: <strong className="text-[#FFFFFF]">{depositData.memo}</strong></span>
                       <button onClick={() => handleCopy(depositData.memo!)} className="text-[#FFFFFF] text-[11px] underline">Copy</button>
                     </div>
@@ -324,9 +300,9 @@ export function OvexWalletHub() {
                   </div>
                 </div>
 
-                <div className="text-xs text-zinc-400 bg-black/40 p-3 rounded-lg border border-white/5 space-y-1">
+                <div className="text-xs text-zinc-400 bg-black/40 p-3 rounded-lg space-y-1">
                   <p className="flex items-center gap-1.5 text-emerald-400 font-semibold">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400"/>
                     Guaranteed 1:1 Institutional Custody
                   </p>
                   <p className="text-[11px]">
@@ -338,7 +314,7 @@ export function OvexWalletHub() {
           </div>
 
           {/* Deposit History */}
-          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] border border-white/10 rounded-xl p-5">
+          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] rounded-xl p-3">
             <h3 className="text-sm font-bold text-white flex items-center justify-between">
               <span>Recent Deposit Transactions</span>
               <span className="text-xs font-mono text-[#FFFFFF]">{depositsHistory.length} Recorded</span>
@@ -346,10 +322,10 @@ export function OvexWalletHub() {
 
             <div className="space-y-2">
               {depositsHistory.map((dep) => (
-                <div key={dep.id} className="p-3.5 bg-black border border-white/10 rounded-xl space-y-2 text-xs">
+                <div key={dep.id} className="p-3.5 bg-black rounded-xl space-y-2 text-xs">
                   <div className="flex justify-between items-center">
                     <span className="font-mono font-bold text-[#FFFFFF]">{dep.amount} {dep.currency}</span>
-                    <span className="px-2 py-0.5 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-mono text-[10px]">
+                    <span className="px-2 py-0.5 rounded-full bg-emerald-950/40 text-emerald-400 font-mono text-[10px]">
                       {dep.state} ({dep.confirmations}/{dep.required_confirmations} conf)
                     </span>
                   </div>
@@ -357,9 +333,9 @@ export function OvexWalletHub() {
                     <span className="truncate max-w-[220px]">TX: {dep.txid}</span>
                     <span>{dep.created_at}</span>
                   </div>
-                  <div className="flex justify-between items-center text-[10px] pt-1 border-t border-white/5">
+                  <div className="flex justify-between items-center text-[10px] pt-1">
                     <span className="text-zinc-500">CARF Tax Declaration:</span>
-                    <span className={dep.carf_declared ? 'text-emerald-400' : 'text-amber-400 font-bold'}>
+                    <span className={dep.carf_declared ?'text-emerald-400' : 'text-amber-400 font-bold'}>
                       {dep.carf_declared ? `Declared (${dep.carf_transfer_type})` : 'Declaration Pending'}
                     </span>
                   </div>
@@ -372,10 +348,10 @@ export function OvexWalletHub() {
 
       {/* Tab: Instant Withdrawal */}
       {activeTab === 'withdraw' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] border border-white/10 rounded-xl p-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] rounded-xl p-3">
             <h3 className="text-sm font-bold text-[#FFFFFF] uppercase tracking-wider flex items-center gap-2">
-              <ArrowUpFromLine className="w-4 h-4" />
+              <ArrowUpFromLine className="w-4 h-4"/>
               Institutional Instant Withdrawal
             </h3>
 
@@ -385,7 +361,7 @@ export function OvexWalletHub() {
                 <select
                   value={withdrawCurrency}
                   onChange={(e) => setWithdrawCurrency(e.target.value)}
-                  className="w-full bg-black border border-white/15 rounded-xl px-4 py-2.5 text-white font-mono text-sm focus:outline-none focus:border-[#FFFFFF]"
+                  className="w-full bg-black rounded-xl px-4 py-2.5 text-white font-mono text-sm focus:outline-none"
                 >
                   <option value="ZAR">South African Rand (ZAR Instant RTC EFT)</option>
                   <option value="USD">US Dollar (SWIFT Wire)</option>
@@ -399,7 +375,7 @@ export function OvexWalletHub() {
                 <select
                   value={withdrawBeneficiary}
                   onChange={(e) => setWithdrawBeneficiary(e.target.value)}
-                  className="w-full bg-black border border-white/15 rounded-xl px-4 py-2.5 text-white font-mono text-sm focus:outline-none focus:border-[#FFFFFF]"
+                  className="w-full bg-black rounded-xl px-4 py-2.5 text-white font-mono text-sm focus:outline-none"
                 >
                   <option value="1">Investec Corporate Treasury (Acc: ...9941)</option>
                   <option value="2">Standard Bank Prime Escrow (Acc: ...8820)</option>
@@ -415,7 +391,7 @@ export function OvexWalletHub() {
                     value={withdrawAmount}
                     onChange={(e) => setWithdrawAmount(e.target.value)}
                     placeholder="100000"
-                    className="w-full bg-black border border-white/15 rounded-xl px-4 py-3 text-white font-mono text-lg focus:outline-none focus:border-[#FFFFFF]"
+                    className="w-full bg-black rounded-xl px-4 py-3 text-white font-mono text-lg focus:outline-none"
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-[#FFFFFF]">
                     {withdrawCurrency}
@@ -423,7 +399,7 @@ export function OvexWalletHub() {
                 </div>
               </div>
 
-              <div className="p-3 bg-black/60 border border-white/10 rounded-xl text-xs space-y-1">
+              <div className="p-3 bg-black/60 rounded-xl text-xs space-y-1">
                 <div className="flex justify-between text-zinc-400">
                   <span>Network / Clearing Fee:</span>
                   <span className="text-[#FFFFFF] font-mono font-bold">R 0.00 (Zero Fee)</span>
@@ -446,7 +422,7 @@ export function OvexWalletHub() {
                   </>
                 ) : (
                   <>
-                    <ArrowUpFromLine className="w-4 h-4" />
+                    <ArrowUpFromLine className="w-4 h-4"/>
                     Confirm & Dispatch Instant Withdrawal
                   </>
                 )}
@@ -454,9 +430,9 @@ export function OvexWalletHub() {
             </form>
 
             {withdrawResult && (
-              <div className="p-4 bg-black border border-emerald-500/40 rounded-xl space-y-2 text-xs">
+              <div className="p-4 bg-black rounded-xl space-y-2 text-xs">
                 <div className="flex items-center gap-2 text-emerald-400 font-bold">
-                  <CheckCircle2 className="w-4 h-4" />
+                  <CheckCircle2 className="w-4 h-4"/>
                   {withdrawResult.message}
                 </div>
                 <div className="text-[11px] font-mono text-zinc-400">
@@ -466,7 +442,7 @@ export function OvexWalletHub() {
             )}
           </div>
 
-          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] border border-white/10 rounded-xl p-5">
+          <div className="lg:col-span-6 space-y-4 bg-white/[0.02] rounded-xl p-3">
             <h3 className="text-sm font-bold text-white flex items-center justify-between">
               <span>Withdrawal Audit Trail</span>
               <span className="text-xs font-mono text-[#FFFFFF]">{withdrawsHistory.length} Completed</span>
@@ -474,10 +450,10 @@ export function OvexWalletHub() {
 
             <div className="space-y-2">
               {withdrawsHistory.map((w) => (
-                <div key={w.id} className="p-3.5 bg-black border border-white/10 rounded-xl space-y-1.5 text-xs">
+                <div key={w.id} className="p-3.5 bg-black rounded-xl space-y-1.5 text-xs">
                   <div className="flex justify-between">
                     <span className="font-mono font-bold text-white">{w.amount} {w.currency}</span>
-                    <span className="px-2 py-0.5 rounded bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-mono text-[10px]">
+                    <span className="px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-400 font-mono text-[10px]">
                       {w.state}
                     </span>
                   </div>
@@ -495,11 +471,11 @@ export function OvexWalletHub() {
 
       {/* Tab: CARF Regulatory Compliance */}
       {activeTab === 'carf' && (
-        <div className="space-y-6">
-          <div className="p-5 bg-gradient-to-r from-black via-white/[0.02] to-black border border-[#FFFFFF]/40 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="space-y-3">
+          <div className="p-3 bg-gradient-to-r from-black via-white/[0.02] to-black rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-[#FFFFFF]" />
+                <ShieldCheck className="w-5 h-5 text-[#FFFFFF]"/>
                 <h3 className="text-base font-bold text-white">OECD & SARS Crypto-Asset Reporting Framework (CARF)</h3>
               </div>
               <p className="text-xs text-zinc-400 mt-1 max-w-2xl">
@@ -512,35 +488,35 @@ export function OvexWalletHub() {
                 disabled={declaringCarf}
                 className="px-4 py-2.5 bg-[#FFFFFF] hover:bg-[#FFFFFF]/90 text-black font-extrabold rounded-xl text-xs uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(212,175,55,0.3)] shrink-0 flex items-center gap-2"
               >
-                <CheckCircle2 className="w-4 h-4" />
+                <CheckCircle2 className="w-4 h-4"/>
                 Declare All as Self-Transfer
               </button>
             )}
           </div>
 
           {carfSuccessMsg && (
-            <div className="p-4 bg-emerald-950/40 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <div className="p-4 bg-emerald-950/40 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0"/>
               {carfSuccessMsg}
             </div>
           )}
 
           {/* Pending CARF Declarations */}
-          <div className="bg-white/[0.02] border border-white/10 rounded-xl p-5 space-y-4">
+          <div className="bg-white/[0.02] rounded-xl p-3 space-y-4">
             <h4 className="text-xs font-bold text-[#FFFFFF] uppercase tracking-wider flex items-center justify-between">
               <span>Pending CARF Regulatory Declarations</span>
               <span className="font-mono">{pendingCarf.length} Pending</span>
             </h4>
 
             {pendingCarf.length === 0 ? (
-              <div className="py-8 text-center text-xs text-zinc-400 flex flex-col items-center gap-2">
-                <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+              <div className="py-3.5 text-center text-xs text-zinc-400 flex flex-col items-center gap-2">
+                <CheckCircle2 className="w-8 h-8 text-emerald-400"/>
                 <span>All deposits have been fully declared and registered under CARF tax compliance guidelines.</span>
               </div>
             ) : (
               <div className="space-y-3">
                 {pendingCarf.map((item) => (
-                  <div key={item.id} className="p-4 bg-black border border-white/10 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
+                  <div key={item.id} className="p-4 bg-black rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4 text-xs">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="font-mono font-bold text-white text-sm">{item.amount} {item.currency}</span>
@@ -558,7 +534,7 @@ export function OvexWalletHub() {
                       onClick={() => setSelectedPendingItem(item)}
                       className="px-4 py-2 rounded-xl bg-white/10 hover:bg-[#FFFFFF] hover:text-black text-white font-bold text-xs transition-colors shrink-0 flex items-center gap-2"
                     >
-                      <FileCheck2 className="w-4 h-4" />
+                      <FileCheck2 className="w-4 h-4"/>
                       File Declaration
                     </button>
                   </div>
@@ -569,9 +545,9 @@ export function OvexWalletHub() {
 
           {/* Modal / Dialog for single declaration */}
           {selectedPendingItem && (
-            <div className="p-5 bg-black border border-[#FFFFFF] rounded-xl space-y-4">
+            <div className="p-3 bg-black rounded-xl space-y-4">
               <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                <FileCheck2 className="w-4 h-4 text-[#FFFFFF]" />
+                <FileCheck2 className="w-4 h-4 text-[#FFFFFF]"/>
                 Declare Transfer Origin for Deposit #{selectedPendingItem.id} ({selectedPendingItem.amount} {selectedPendingItem.currency})
               </h4>
 
@@ -582,11 +558,7 @@ export function OvexWalletHub() {
                     <label
                       key={t.id}
                       onClick={() => setSelectedCarfType(t.id)}
-                      className={`p-3 rounded-xl border flex items-center justify-between cursor-pointer transition-all ${
-                        selectedCarfType === t.id
-                          ? 'bg-[#FFFFFF]/10 border-[#FFFFFF] text-white'
-                          : 'bg-black border-white/10 text-zinc-400 hover:border-white/20'
-                      }`}
+                      className={`p-3 rounded-xl flex items-center justify-between cursor-pointer transition-all bg-white/[0.03] ${ selectedCarfType === t.id ?'bg-[#FFFFFF]/10 text-white' : 'bg-black text-zinc-400'}`}
                     >
                       <div className="flex items-center gap-3">
                         <input
@@ -616,7 +588,7 @@ export function OvexWalletHub() {
                   disabled={declaringCarf}
                   className="px-5 py-2 rounded-xl bg-[#FFFFFF] text-black text-xs font-extrabold flex items-center gap-2"
                 >
-                  {declaringCarf ? 'Submitting to SARS/CARF...' : 'Submit Official Declaration'}
+                  {declaringCarf ?'Submitting to SARS/CARF...' : 'Submit Official Declaration'}
                 </button>
               </div>
             </div>
@@ -626,49 +598,49 @@ export function OvexWalletHub() {
 
       {/* Tab: SARB Offshore Allowances */}
       {activeTab === 'offshore' && offshoreData && (
-        <div className="space-y-6">
+        <div className="space-y-3">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="p-5 bg-white/[0.02] border border-white/10 rounded-xl space-y-3">
+            <div className="p-3 bg-white/[0.02] rounded-xl space-y-3">
               <div className="text-xs text-zinc-400 font-mono uppercase tracking-wider">
                 Single Discretionary Allowance (SDA)
               </div>
               <div className="text-2xl font-bold font-mono text-[#FFFFFF]">
                 {offshoreData.sarb_allowances?.sda_remaining} <span className="text-xs text-zinc-400 font-normal">Remaining</span>
               </div>
-              <div className="text-xs text-zinc-400 flex justify-between pt-2 border-t border-white/10 font-mono">
+              <div className="text-xs text-zinc-400 flex justify-between pt-2 font-mono">
                 <span>Annual Cap: {offshoreData.sarb_allowances?.sda_limit}</span>
                 <span>Utilized: {offshoreData.sarb_allowances?.sda_utilized}</span>
               </div>
             </div>
 
-            <div className="p-5 bg-white/[0.02] border border-white/10 rounded-xl space-y-3">
+            <div className="p-3 bg-white/[0.02] rounded-xl space-y-3">
               <div className="text-xs text-zinc-400 font-mono uppercase tracking-wider">
                 Foreign Investment Allowance (FIA)
               </div>
               <div className="text-2xl font-bold font-mono text-[#FFFFFF]">
                 {offshoreData.sarb_allowances?.fia_remaining} <span className="text-xs text-zinc-400 font-normal">Remaining</span>
               </div>
-              <div className="text-xs text-zinc-400 flex justify-between pt-2 border-t border-white/10 font-mono">
+              <div className="text-xs text-zinc-400 flex justify-between pt-2 font-mono">
                 <span>Annual Cap: {offshoreData.sarb_allowances?.fia_limit}</span>
                 <span>Utilized: {offshoreData.sarb_allowances?.fia_utilized}</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white/[0.02] border border-white/10 rounded-xl p-5 space-y-3">
+          <div className="bg-white/[0.02] rounded-xl p-3 space-y-3">
             <h4 className="text-xs font-bold text-white uppercase tracking-wider">
               Offshore Arbitrage & Capital Export History
             </h4>
             <div className="space-y-2">
               {offshoreData.transactions?.map((tx: any) => (
-                <div key={tx.id} className="p-3 bg-black border border-white/10 rounded-xl flex justify-between items-center text-xs font-mono">
+                <div key={tx.id} className="p-3 bg-black rounded-xl flex justify-between items-center text-xs font-mono">
                   <div>
                     <span className="text-[#FFFFFF] font-bold">{tx.type}</span>
                     <span className="text-zinc-400 ml-2">({tx.amount} @ {tx.fx_rate})</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-zinc-500">{tx.date}</span>
-                    <span className="px-2 py-0.5 rounded bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 text-[10px]">
+                    <span className="px-2 py-0.5 rounded bg-emerald-950/40 text-emerald-400 text-[10px]">
                       {tx.status}
                     </span>
                   </div>
@@ -681,10 +653,10 @@ export function OvexWalletHub() {
 
       {/* Tab: Fees Schedule */}
       {activeTab === 'fees' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white/[0.02] border border-white/10 rounded-xl p-5 space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="bg-white/[0.02] rounded-xl p-3 space-y-3">
             <h4 className="text-xs font-bold text-[#FFFFFF] uppercase tracking-wider">Deposit Fee Schedule</h4>
-            <div className="divide-y divide-white/5 text-xs font-mono">
+            <div className="text-xs font-mono">
               {Object.entries(feesData.deposit || {}).map(([key, val]) => (
                 <div key={key} className="py-2.5 flex justify-between text-zinc-300">
                   <span>{key.replace('_', ' ')}</span>
@@ -694,9 +666,9 @@ export function OvexWalletHub() {
             </div>
           </div>
 
-          <div className="bg-white/[0.02] border border-white/10 rounded-xl p-5 space-y-3">
+          <div className="bg-white/[0.02] rounded-xl p-3 space-y-3">
             <h4 className="text-xs font-bold text-[#FFFFFF] uppercase tracking-wider">Withdrawal Fee Schedule</h4>
-            <div className="divide-y divide-white/5 text-xs font-mono">
+            <div className="text-xs font-mono">
               {Object.entries(feesData.withdraw || {}).map(([key, val]) => (
                 <div key={key} className="py-2.5 flex justify-between text-zinc-300">
                   <span>{key.replace('_', ' ')}</span>

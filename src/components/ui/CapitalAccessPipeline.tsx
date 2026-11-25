@@ -137,11 +137,11 @@ export function CapitalAccessPipeline({ onNavigateToAuth }: CapitalAccessPipelin
   const activeIndex = PIPELINE_STAGES.findIndex(s => s.id === activeStageId);
 
   return (
-    <div className="w-full space-y-16">
+    <div className="w-full space-y-5">
       
       {/* Step Indicator Navigation */}
       <div className="relative">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-6 relative z-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-3 relative z-10">
           {PIPELINE_STAGES.map((stage, idx) => {
             const isActive = stage.id === activeStageId;
             const isCompleted = idx < activeIndex;
@@ -151,20 +151,10 @@ export function CapitalAccessPipeline({ onNavigateToAuth }: CapitalAccessPipelin
               <button
                 key={stage.id}
                 onClick={() => setActiveStageId(stage.id)}
-                className={`text-left p-4 lg:p-5 transition-all duration-300 group ${
-                  isActive 
-                    ? 'border-b-2 lg:border-b-0 border-[#D9A94E]' 
-                    : 'opacity-60 hover:opacity-100'
-                }`}
+                className={`text-left p-4 lg:p-3 transition-all duration-300 group ${ isActive ? 'border-b-2 lg:border-b-0 border-[#D9A94E]' : 'opacity-60 hover:opacity-100' }`}
               >
                 <div className="flex items-center gap-3 mb-3">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 ${
-                    isActive 
-                      ? 'bg-[#0D0F13] text-[#D9A94E] ring-4 ring-[#D9A94E]/20 shadow-md' 
-                      : isCompleted
-                      ? 'bg-[#34A87E] text-white'
-                      : 'bg-black/[0.06] text-[#0D0F13]'
-                  }`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 ${ isActive ? 'bg-[#0D0F13] text-[#D9A94E] ring-4 ring-[#D9A94E]/20 shadow-md' : isCompleted ? 'bg-[#34A87E] text-white' : 'bg-black/[0.06] text-[#0D0F13]' }`}>
                     {isCompleted ? (
                       <CheckCircle2 className="w-4 h-4" />
                     ) : (
@@ -176,9 +166,7 @@ export function CapitalAccessPipeline({ onNavigateToAuth }: CapitalAccessPipelin
                   </span>
                 </div>
 
-                <div className={`text-sm lg:text-base font-bold tracking-tight line-clamp-1 transition-colors ${
-                  isActive ? 'text-[#0D0F13]' : 'text-[#6E737B] group-hover:text-[#0D0F13]'
-                }`}>
+                <div className={`text-sm lg:text-base font-bold tracking-tight line-clamp-1 transition-colors ${ isActive ? 'text-[#0D0F13]' : 'text-[#6E737B] group-hover:text-[#0D0F13]' }`}>
                   {stage.title.split('&')[0]}
                 </div>
                 <div className="text-xs font-mono text-[#D9A94E] font-medium mt-1">
@@ -198,10 +186,10 @@ export function CapitalAccessPipeline({ onNavigateToAuth }: CapitalAccessPipelin
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -16 }}
           transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start pt-6 border-t border-black/[0.06]"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-16 items-start pt-6"
         >
           {/* Left Column: Stage Overview & Key Telemetry */}
-          <div className="lg:col-span-6 space-y-6">
+          <div className="lg:col-span-6 space-y-3">
             <div className="flex items-center gap-3">
               <span className="font-mono text-xs font-bold uppercase tracking-widest px-3 py-1 bg-black/[0.05] rounded-full text-[#0D0F13]">
                 {activeStage.step}
@@ -221,7 +209,7 @@ export function CapitalAccessPipeline({ onNavigateToAuth }: CapitalAccessPipelin
             </p>
 
             {/* Key Metrics Row */}
-            <div className="grid grid-cols-2 gap-8 pt-4 border-t border-black/[0.06]">
+            <div className="grid grid-cols-2 gap-4 pt-4">
               {activeStage.metrics.map((m, i) => (
                 <div key={i} className="space-y-1">
                   <div className="text-[11px] font-mono uppercase tracking-wider text-[#6E737B]">
@@ -251,7 +239,7 @@ export function CapitalAccessPipeline({ onNavigateToAuth }: CapitalAccessPipelin
           </div>
 
           {/* Right Column: Key Deliverables & Underwriting Standards */}
-          <div className="lg:col-span-6 space-y-6 lg:pl-8 lg:border-l border-black/[0.06]">
+          <div className="lg:col-span-6 space-y-3 lg:pl-8">
             <div className="text-xs font-mono font-bold uppercase tracking-wider text-[#0D0F13]">
               Institutional Execution Standards &amp; Deliverables
             </div>
@@ -263,7 +251,7 @@ export function CapitalAccessPipeline({ onNavigateToAuth }: CapitalAccessPipelin
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: idx * 0.08 }}
-                  className="flex items-start gap-4 py-3 border-b border-black/[0.04]"
+                  className="flex items-start gap-4 py-3"
                 >
                   <div className="w-5 h-5 rounded-full bg-[#34A87E]/10 text-[#34A87E] flex items-center justify-center shrink-0 mt-0.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />

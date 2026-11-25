@@ -23,8 +23,8 @@ export function AfricanGlobeCanvas() {
     <div className="relative w-full aspect-square max-w-[500px] mx-auto flex items-center justify-center p-4">
       
       {/* Outer Orbit Rings */}
-      <div className="absolute inset-0 rounded-full border border-dashed border-gray-300/60 animate-spin-slow pointer-events-none" />
-      <div className="absolute inset-8 rounded-full border border-gray-200/50 pointer-events-none" />
+      <div className="absolute inset-0 rounded-full animate-spin-slow pointer-events-none bg-white/[0.03]" />
+      <div className="absolute inset-8 rounded-full pointer-events-none bg-white/[0.03]" />
       <div className="absolute inset-16 rounded-full bg-radial from-[#00C805]/10 via-[#D5FF2F]/5 to-transparent blur-2xl pointer-events-none" />
 
       {/* Futuristic Vector Globe Sphere */}
@@ -135,7 +135,7 @@ export function AfricanGlobeCanvas() {
         initial={{ opacity: 0, y: 10, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.3 }}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-black text-white p-4 rounded-2xl shadow-2xl border border-gray-800 flex items-center gap-4 min-w-[260px]"
+        className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-black text-white p-4 rounded-lg shadow-2xl flex items-center gap-4 min-w-[260px]"
       >
         <div className="w-10 h-10 rounded-xl bg-[#D5FF2F] text-black font-extrabold flex items-center justify-center font-mono text-sm shrink-0">
           {AFRICAN_HUBS[activeHub].name.substring(0, 3).toUpperCase()}
